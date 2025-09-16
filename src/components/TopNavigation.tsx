@@ -54,7 +54,9 @@ const TopNavigation: React.FC = () => {
 
           {/* Controls */}
           <div className="flex items-center space-x-4">
-            <LanguageSelector />
+            <div className="hidden md:block">
+              <LanguageSelector />
+            </div>
             
             <Button
               variant="ghost"
@@ -121,6 +123,8 @@ const TopNavigation: React.FC = () => {
                     </>
                   )}
                 </Button>
+                
+                <LanguageSelector />
               </div>
             </div>
           </div>
