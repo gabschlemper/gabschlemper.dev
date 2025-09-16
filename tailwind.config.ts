@@ -13,31 +13,41 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        inter: ['Inter', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
+        "background-secondary": "hsl(var(--background-secondary))", 
+        "background-card": "hsl(var(--background-card))",
         foreground: "hsl(var(--foreground))",
+        "foreground-muted": "hsl(var(--foreground-muted))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          glow: "hsl(var(--primary-glow))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+        "nav-active": "hsl(var(--nav-active))",
+        "nav-hover": "hsl(var(--nav-hover))",
+        accent: {
+          DEFAULT: "hsl(var(--accent-blue))",
+          blue: "hsl(var(--accent-blue))",
+          green: "hsl(var(--accent-green))",
+          purple: "hsl(var(--accent-purple))",
+          orange: "hsl(var(--accent-orange))",
+          pink: "hsl(var(--accent-pink))",
+          yellow: "hsl(var(--accent-yellow))",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",

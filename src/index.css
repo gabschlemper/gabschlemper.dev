@@ -2,41 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Modern Developer Portfolio Design System */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Portfolio Color Palette */
+    --background: 220 26% 6%;
+    --background-secondary: 222 32% 8%;
+    --background-card: 224 36% 10%;
+    --foreground: 210 40% 98%;
+    --foreground-muted: 215 20% 65%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Brand Colors */
+    --primary: 193 80% 50%;
+    --primary-foreground: 220 26% 6%;
+    --primary-glow: 193 100% 60%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --secondary: 217 32% 17%;
+    --secondary-foreground: 210 40% 98%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Accent Colors for Tech Badges */
+    --accent-blue: 213 94% 68%;
+    --accent-green: 142 76% 36%;
+    --accent-purple: 262 83% 58%;
+    --accent-orange: 31 98% 48%;
+    --accent-pink: 322 84% 60%;
+    --accent-yellow: 54 91% 48%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* UI Elements */
+    --muted: 217 32% 17%;
+    --muted-foreground: 215 20% 65%;
+    --border: 217 32% 17%;
+    --input: 217 32% 17%;
+    --ring: 193 80% 50%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Navigation */
+    --nav-active: 193 80% 50%;
+    --nav-hover: 224 36% 12%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(193 80% 50%), hsl(213 94% 68%));
+    --gradient-background: linear-gradient(180deg, hsl(220 26% 6%), hsl(222 32% 8%));
+    --gradient-card: linear-gradient(145deg, hsl(224 36% 10%), hsl(217 32% 17%));
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Shadows */
+    --shadow-glow: 0 0 30px hsl(193 80% 50% / 0.2);
+    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.3);
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Animation */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -99,7 +117,130 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    background: var(--gradient-background);
+    @apply text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+}
+
+@layer components {
+  /* Tech Badge Styles */
+  .tech-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+    @apply transition-all duration-300 hover:scale-110;
+    @apply border border-opacity-20;
+  }
+
+  .tech-badge-react {
+    background: hsl(var(--accent-blue) / 0.1);
+    color: hsl(var(--accent-blue));
+    border-color: hsl(var(--accent-blue));
+  }
+
+  .tech-badge-typescript {
+    background: hsl(var(--accent-blue) / 0.1);
+    color: hsl(var(--accent-blue));
+    border-color: hsl(var(--accent-blue));
+  }
+
+  .tech-badge-vue {
+    background: hsl(var(--accent-green) / 0.1);
+    color: hsl(var(--accent-green));
+    border-color: hsl(var(--accent-green));
+  }
+
+  .tech-badge-javascript {
+    background: hsl(var(--accent-yellow) / 0.1);
+    color: hsl(var(--accent-yellow));
+    border-color: hsl(var(--accent-yellow));
+  }
+
+  .tech-badge-testing {
+    background: hsl(var(--accent-purple) / 0.1);
+    color: hsl(var(--accent-purple));
+    border-color: hsl(var(--accent-purple));
+  }
+
+  .tech-badge-cloud {
+    background: hsl(var(--accent-orange) / 0.1);
+    color: hsl(var(--accent-orange));
+    border-color: hsl(var(--accent-orange));
+  }
+
+  .tech-badge-default {
+    background: hsl(var(--primary) / 0.1);
+    color: hsl(var(--primary));
+    border-color: hsl(var(--primary));
+  }
+
+  /* Navigation Styles */
+  .nav-link {
+    @apply relative px-4 py-2 text-foreground-muted transition-all duration-300;
+    @apply hover:text-foreground hover:bg-nav-hover rounded-lg;
+  }
+
+  .nav-link.active {
+    @apply text-primary bg-nav-hover;
+  }
+
+  .nav-link::before {
+    content: '';
+    @apply absolute left-0 top-0 h-full w-1 bg-primary rounded-r-full;
+    @apply scale-y-0 origin-center transition-transform duration-300;
+  }
+
+  .nav-link.active::before {
+    @apply scale-y-100;
+  }
+
+  /* Card Styles */
+  .portfolio-card {
+    @apply rounded-xl border border-border bg-background-card;
+    @apply p-6 transition-all duration-300 hover:shadow-lg;
+    box-shadow: var(--shadow-card);
+  }
+
+  .portfolio-card:hover {
+    @apply border-primary/30;
+    box-shadow: var(--shadow-glow), var(--shadow-card);
+  }
+
+  /* Animations */
+  .fade-in {
+    @apply opacity-0 translate-y-6;
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  .fade-in-delay-1 { animation-delay: 0.1s; }
+  .fade-in-delay-2 { animation-delay: 0.2s; }
+  .fade-in-delay-3 { animation-delay: 0.3s; }
+  .fade-in-delay-4 { animation-delay: 0.4s; }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .float-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Glowing text effect */
+  .glow-text {
+    @apply text-primary;
+    text-shadow: 0 0 20px hsl(var(--primary) / 0.5);
   }
 }
