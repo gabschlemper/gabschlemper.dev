@@ -38,7 +38,7 @@ const translations: Translations = {
   'experience.title': { en: 'Experience', pt: 'Experiência', es: 'Experiencia' },
   
   // Dynamox
-  'experience.dynamox.title': { en: 'Software Developer', pt: 'Desenvolvedor de Software', es: 'Desarrollador de Software' },
+  'experience.dynamox.title': { en: 'Full Stack Developer', pt: 'Desenvolvedor Full Stack', es: 'Desarrollador Full Stack' },
   'experience.dynamox.company': { en: 'Dynamox', pt: 'Dynamox', es: 'Dynamox' },
   'experience.dynamox.period': { en: 'Feb 2025 – Present', pt: 'Fev 2025 – Atual', es: 'Feb 2025 – Presente' },
   'experience.dynamox.location': { en: 'Florianópolis, Brazil', pt: 'Florianópolis, Brasil', es: 'Florianópolis, Brasil' },
@@ -87,23 +87,6 @@ const translations: Translations = {
     es: 'Siempre interesado en nuevas oportunidades y colaboraciones. ¡No dudes en contactarme!'
   },
 
-  // Education
-  'education.title': { en: 'Education', pt: 'Educação', es: 'Educación' },
-  'education.senai': { 
-    en: 'Analysis and System Development', 
-    pt: 'Análise e Desenvolvimento de Sistemas', 
-    es: 'Análisis y Desarrollo de Sistemas' 
-  },
-  'education.cs50': { 
-    en: 'CS50: Introduction to Computer Science', 
-    pt: 'CS50: Introdução à Ciência da Computação', 
-    es: 'CS50: Introducción a la Informática' 
-  },
-  'education.rocketseat': { 
-    en: 'FullStack Ignite Bootcamp', 
-    pt: 'Bootcamp FullStack Ignite', 
-    es: 'Bootcamp FullStack Ignite' 
-  },
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
