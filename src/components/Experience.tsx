@@ -56,13 +56,13 @@ const Experience: React.FC = () => {
 
 
   return (
-    <section id="experience" className="py-20">
+    <section id="experience" className="py-12 md:py-20">
       <div className="max-w-4xl">
-        <h2 className="text-3xl lg:text-4xl font-bold mb-12 text-primary fade-in">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-8 md:mb-12 text-primary fade-in">
           {t('experience.title')}
         </h2>
         
-        <div className="space-y-8">
+        <div className="space-y-6 md:space-y-8">
           {experiences.map((exp, index) => (
             <div 
               key={exp.id} 
@@ -70,7 +70,7 @@ const Experience: React.FC = () => {
             >
               <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start mb-4">
                 <div className="mb-4 lg:mb-0">
-                  <h3 className="text-xl font-semibold text-foreground mb-1">
+                  <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-1">
                     {exp.title}
                   </h3>
                   <p className="text-primary font-medium mb-2">
@@ -83,7 +83,7 @@ const Experience: React.FC = () => {
                 </div>
               </div>
               
-              <p className="text-foreground-muted leading-relaxed mb-6">
+              <p className="text-sm sm:text-base text-foreground-muted leading-relaxed mb-4 md:mb-6">
                 {exp.description}
               </p>
               
