@@ -1,9 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Minimalist Developer Portfolio Design System */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
@@ -21,11 +19,11 @@
     --secondary: 0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
 
-    /* Accent Colors for Tech Badges (New Palette) */
-    --accent-dark-green: 128 48% 18%;   /* #1f3b23 */
-    --accent-light-green: 96 23% 45%;  /* #6a8b58 */
-    --accent-brown: 30 53% 36%;        /* #8b5a2b */
-    --accent-yellow: 47 79% 60%;       /* #e8c547 */
+    /* Accent Colors for Tech Badges (Purple Palette) */
+    --accent-purple-1: 244 65% 31%;   /* #211C84 */
+    --accent-purple-2: 235 58% 55%;  /* #4D55CC */
+    --accent-purple-3: 245 47% 63%;   /* #7A73D1 */
+    --accent-purple-4: 259 36% 75%;   /* #B5A8D5 */
 
     /* UI Elements */
     --muted: 0 0% 96.1%;
@@ -115,46 +113,32 @@
     @apply border;
   }
 
-  .tech-badge-react,
-  .tech-badge-typescript {
-    background: hsl(var(--accent-dark-green) / 0.15);
-    color: hsl(var(--accent-dark-green));
-    border-color: hsl(var(--accent-dark-green) / 0.2);
+  .tech-badge-color-1 {
+    background: hsl(var(--accent-purple-1) / 0.15);
+    color: hsl(var(--accent-purple-1));
+    border-color: hsl(var(--accent-purple-1) / 0.2);
   }
 
-  .dark .tech-badge-react,
-  .dark .tech-badge-typescript {
-    color: hsl(var(--accent-light-green));
+  .dark .tech-badge-color-1 {
+    color: hsl(var(--accent-purple-3));
   }
 
-  .tech-badge-vue {
-    background: hsl(var(--accent-light-green) / 0.1);
-    color: hsl(var(--accent-light-green));
-    border-color: hsl(var(--accent-light-green) / 0.2);
+  .tech-badge-color-2 {
+    background: hsl(var(--accent-purple-2) / 0.1);
+    color: hsl(var(--accent-purple-2));
+    border-color: hsl(var(--accent-purple-2) / 0.2);
   }
 
-  .tech-badge-javascript {
-    background: hsl(var(--accent-yellow) / 0.1);
-    color: hsl(var(--accent-yellow));
-    border-color: hsl(var(--accent-yellow) / 0.2);
+  .tech-badge-color-3 {
+    background: hsl(var(--accent-purple-3) / 0.1);
+    color: hsl(var(--accent-purple-3));
+    border-color: hsl(var(--accent-purple-3) / 0.2);
   }
 
-  .tech-badge-testing {
-    background: hsl(var(--accent-brown) / 0.1);
-    color: hsl(var(--accent-brown));
-    border-color: hsl(var(--accent-brown) / 0.2);
-  }
-
-  .tech-badge-cloud {
-    background: hsl(var(--accent-light-green) / 0.1);
-    color: hsl(var(--accent-light-green));
-    border-color: hsl(var(--accent-light-green) / 0.2);
-  }
-
-  .tech-badge-default {
-    background: hsl(var(--accent-brown) / 0.1);
-    color: hsl(var(--accent-brown));
-    border-color: hsl(var(--accent-brown) / 0.2);
+  .tech-badge-color-4 {
+    background: hsl(var(--accent-purple-4) / 0.1);
+    color: hsl(var(--accent-purple-4));
+    border-color: hsl(var(--accent-purple-4) / 0.2);
   }
 
   /* Navigation Styles */

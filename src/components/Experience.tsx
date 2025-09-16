@@ -1,5 +1,15 @@
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useRandomBadgeClass } from '@/hooks/use-random-badge-class';
+
+const TechBadge: React.FC<{ tech: string }> = ({ tech }) => {
+  const badgeClass = useRandomBadgeClass(tech);
+  return (
+    <span className={`tech-badge ${badgeClass}`}>
+      {tech}
+    </span>
+  );
+};
 
 interface ExperienceItem {
   id: string;
@@ -44,15 +54,6 @@ const Experience: React.FC = () => {
     }
   ];
 
-  const getTechBadgeClass = (tech: string): string => {
-    const lowerTech = tech.toLowerCase();
-    if (lowerTech.includes('react') || lowerTech.includes('typescript')) return 'tech-badge-react';
-    if (lowerTech.includes('vue')) return 'tech-badge-vue';
-    if (lowerTech.includes('javascript')) return 'tech-badge-javascript';
-    if (lowerTech.includes('test') || lowerTech.includes('cypress') || lowerTech.includes('jest') || lowerTech.includes('vitest') || lowerTech.includes('playwright')) return 'tech-badge-testing';
-    if (lowerTech.includes('gcp') || lowerTech.includes('cloud') || lowerTech.includes('c#') || lowerTech.includes('.net')) return 'tech-badge-cloud';
-    return 'tech-badge-default';
-  };
 
   return (
     <section id="experience" className="py-20">
@@ -87,13 +88,8 @@ const Experience: React.FC = () => {
               </p>
               
               <div className="flex flex-wrap gap-2">
-                {exp.technologies.map((tech, techIndex) => (
-                  <span 
-                    key={techIndex}
-                    className={`tech-badge ${getTechBadgeClass(tech)}`}
-                  >
-                    {tech}
-                  </span>
+                {exp.technologies.map((tech) => (
+                  <TechBadge key={tech} tech={tech} />
                 ))}
               </div>
             </div>
