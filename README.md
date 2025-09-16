@@ -1,33 +1,23 @@
-# Personal Portfolio Website
+# Gabriela Schlemper - Personal Website
 
-A modern, responsive personal portfolio website showcasing my skills, experience, and projects as a Full Stack Developer. Built with cutting-edge technologies and featuring a clean, professional design with multi-language support.
+Welcome to my personal portfolio website! This project showcases my skills, projects, and professional experience as a fullstack developer so far. Built with modern technologies and best practices, the website serves as a dynamic platform to present my expertise and connect with potential collaborators and employers.
 
-## ✨ Features
+## 🚀 Technologies Used
 
-- **Responsive Design**: Optimized for all devices and screen sizes
-- **Multi-language Support**: Available in English, Portuguese, and Spanish
-- **Dark/Light Theme**: Toggle between themes for better user experience
-- **Modern UI Components**: Built with shadcn/ui for consistent, accessible design
-- **Smooth Animations**: Engaging fade-in animations and transitions
-- **Performance Optimized**: Fast loading times with Vite bundler
-- **SEO Friendly**: Proper meta tags and semantic HTML structure
+- **Next.js**: Leveraged for its powerful server-side rendering and static site generation capabilities, ensuring optimal performance and SEO friendliness.
+- **React**: Utilized for building reusable UI components and managing the application's state efficiently.
+- **TypeScript**: Implemented to enhance code quality and maintainability through static type checking.
+- **Tailwind CSS**: Adopted for rapid and responsive UI development with utility-first CSS classes.
+- **Next-Intl**: Integrated for seamless internationalization, supporting multiple languages.
 
-## 🛠️ Tech Stack
+## 🛠️ Features
 
-### Frontend
-- **React 18** - Modern React with hooks and functional components
-- **TypeScript** - Type-safe development
-- **Vite** - Fast build tool and development server
-- **Tailwind CSS** - Utility-first CSS framework
-- **shadcn/ui** - High-quality, accessible UI components
-
-### Development Tools
-- **ESLint** - Code linting and formatting
-- **PostCSS** - CSS processing
-- **React Router** - Client-side routing
-- **Lucide React** - Beautiful icons
-- **React Hook Form** - Form handling
-- **Zod** - Schema validation
+- **Responsive Design**: Ensures a seamless user experience across various devices and screen sizes.
+- **Internationalization (i18n)**: Supports multiple languages (English, Portuguese, and Spanish) to cater to a diverse audience.
+- **Dark/Light Theme**: Toggle between themes for better user experience.
+- **Modern UI Components**: Built with shadcn/ui for consistent, accessible design.
+- **Performance Optimized**: Implements best practices for performance optimization, including image optimization and code splitting.
+- **Accessible Navigation**: Focuses on accessibility to provide an inclusive experience for all users.
 
 ## 🚀 Getting Started
 
@@ -68,7 +58,14 @@ npm run build
 yarn build
 ```
 
-The built files will be in the `dist` directory, ready for deployment.
+## 🎯 Project Strategy
+
+The primary goal of this project is to create a professional and personal online presence that effectively communicates my skills and experiences with a minimalist aesthetic. The strategy behind the development focuses on:
+
+- **User Experience (UX)**: Designing intuitive navigation and a clean layout to ensure visitors can easily find information.
+- **Maintainability**: Writing clean, modular, and well-documented code to simplify future maintenance and updates.
+- **SEO Best Practices**: Ensuring the website is discoverable through search engines by following SEO best practices.
+- **Performance**: Optimizing loading times and responsiveness for an optimal user experience.
 
 ## 📁 Project Structure
 
@@ -79,67 +76,31 @@ src/
 │   ├── Contact.tsx     # Contact section
 │   ├── Experience.tsx  # Work experience section
 │   ├── Hero.tsx        # Hero/landing section
-│   ├── Skills.tsx      # Skills and technologies
-│   └── ...
+│   └── Skills.tsx      # Skills and technologies
 ├── contexts/           # React contexts
 │   ├── LanguageContext.tsx  # Multi-language support
 │   └── ThemeContext.tsx     # Theme management
 ├── hooks/              # Custom React hooks
 ├── lib/                # Utility functions
-├── pages/              # Page components
 └── styles/             # Global styles
 ```
-
-## 🌐 Multi-language Support
-
-The website supports three languages:
-- **English** (default)
-- **Portuguese** 
-- **Spanish**
-
-Language switching is handled through React Context and can be toggled using the language selector in the navigation.
-
-## 🎨 Customization
-
-### Themes
-The website supports both light and dark themes. Theme preference is managed through React Context and persisted in localStorage.
-
-### Colors
-Color scheme can be customized in `tailwind.config.ts`. The project uses CSS custom properties for theme-aware colors.
-
-### Content
-All text content is managed through the translation system in `src/contexts/LanguageContext.tsx`, making it easy to update or add new languages.
-
-## 📱 Responsive Design
-
-The website is fully responsive and optimized for:
-- **Desktop** (1024px+)
-- **Tablet** (768px - 1023px)
-- **Mobile** (320px - 767px)
 
 ## 🚀 Deployment
 
 The project can be deployed to any static hosting service:
-
 - **Vercel** (recommended)
 - **Netlify**
 - **GitHub Pages**
 - **AWS S3 + CloudFront**
 
-Simply run `npm run build` and deploy the `dist` folder.
-
 ## 📄 License
 
 This project is open source and available under the [MIT License](LICENSE).
 
-## 🤝 Contributing
+## 📫 Contact
 
-While this is a personal portfolio, suggestions and improvements are welcome! Feel free to open an issue or submit a pull request.
-
-## 📞 Contact
-
-For any questions or collaboration opportunities, feel free to reach out through the contact form on the website or connect with me on social media.
+Feel free to reach out to me via email or connect with me on [LinkedIn](https://linkedin.com) and [GitHub](https://github.com).
 
 ---
 
-Built with ❤️ using React, TypeScript, and modern web technologies.
+Built with ❤️ using Next.js, React, TypeScript, and modern web technologies.

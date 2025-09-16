@@ -18,14 +18,14 @@ const Contact: React.FC = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
             <a 
-              href="mailto:your.email@example.com"
+              href="mailto:gabschlemper@gmail.com"
               className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium transition-all duration-200 hover:bg-primary/90"
             >
               Send Email
             </a>
             
             <a 
-              href="https://linkedin.com/in/yourprofile" 
+              href="https://linkedin.com/in/gabrielaschlemper" 
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-6 py-3 border border-border text-foreground rounded-lg font-medium transition-all duration-200 hover:bg-muted"
