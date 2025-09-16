@@ -4,6 +4,7 @@ const badgeClasses = [
   'tech-badge-color-1',
   'tech-badge-color-2',
   'tech-badge-color-3',
+  'tech-badge-color-4',
 ];
 
 export const useRandomBadgeClass = (itemId: string | number) => {
