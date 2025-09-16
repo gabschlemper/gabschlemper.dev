@@ -77,62 +77,6 @@ const Skills: React.FC = () => {
           ))}
         </div>
 
-        {/* Education Section */}
-        <div className="mt-16">
-          <h3 className="text-2xl font-semibold text-foreground mb-8 fade-in">
-            {t('education.title')}
-          </h3>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="portfolio-card fade-in-delay-1">
-              <h4 className="text-lg font-medium text-primary mb-2">
-                {t('education.senai')}
-              </h4>
-              <p className="text-foreground-muted text-sm">
-                Senai/SC — Florianópolis, Brazil
-              </p>
-              <p className="text-foreground-muted text-sm">
-                Jan 2024 – Jul 2026
-              </p>
-            </div>
-            
-            <div className="portfolio-card fade-in-delay-2">
-              <h4 className="text-lg font-medium text-primary mb-2">
-                {t('education.cs50')}
-              </h4>
-              <p className="text-foreground-muted text-sm">
-                Harvard University
-              </p>
-              <p className="text-foreground-muted text-sm">
-                Oct 2023 – Jan 2024
-              </p>
-            </div>
-            
-            <div className="portfolio-card fade-in-delay-3">
-              <h4 className="text-lg font-medium text-primary mb-2">
-                {t('education.rocketseat')}
-              </h4>
-              <p className="text-foreground-muted text-sm">
-                Rocketseat
-              </p>
-              <p className="text-foreground-muted text-sm">
-                May 2023 – Nov 2023
-              </p>
-            </div>
-            
-            <div className="portfolio-card fade-in-delay-4">
-              <h4 className="text-lg font-medium text-primary mb-2">
-                English Language Immersion
-              </h4>
-              <p className="text-foreground-muted text-sm">
-                Berlitz Dublin Language Centre
-              </p>
-              <p className="text-foreground-muted text-sm">
-                Mar 2022 – Nov 2022
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

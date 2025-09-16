@@ -33,7 +33,7 @@ const TopNavigation: React.FC = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <h1 className="text-xl font-bold text-primary">Portfolio</h1>
+            <h1 className="text-xl font-bold text-primary">gabschlemper.dev</h1>
           </div>
 
           {/* Desktop Navigation */}

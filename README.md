@@ -1,73 +1,145 @@
-# Welcome to your Lovable project
+# Personal Portfolio Website
 
-## Project info
+A modern, responsive personal portfolio website showcasing my skills, experience, and projects as a Full Stack Developer. Built with cutting-edge technologies and featuring a clean, professional design with multi-language support.
 
-**URL**: https://lovable.dev/projects/4838c4b2-a237-41e6-aac7-ef5dc8d3f51d
+## ✨ Features
 
-## How can I edit this code?
+- **Responsive Design**: Optimized for all devices and screen sizes
+- **Multi-language Support**: Available in English, Portuguese, and Spanish
+- **Dark/Light Theme**: Toggle between themes for better user experience
+- **Modern UI Components**: Built with shadcn/ui for consistent, accessible design
+- **Smooth Animations**: Engaging fade-in animations and transitions
+- **Performance Optimized**: Fast loading times with Vite bundler
+- **SEO Friendly**: Proper meta tags and semantic HTML structure
 
-There are several ways of editing your application.
+## 🛠️ Tech Stack
 
-**Use Lovable**
+### Frontend
+- **React 18** - Modern React with hooks and functional components
+- **TypeScript** - Type-safe development
+- **Vite** - Fast build tool and development server
+- **Tailwind CSS** - Utility-first CSS framework
+- **shadcn/ui** - High-quality, accessible UI components
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/4838c4b2-a237-41e6-aac7-ef5dc8d3f51d) and start prompting.
+### Development Tools
+- **ESLint** - Code linting and formatting
+- **PostCSS** - CSS processing
+- **React Router** - Client-side routing
+- **Lucide React** - Beautiful icons
+- **React Hook Form** - Form handling
+- **Zod** - Schema validation
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🚀 Getting Started
 
-**Use your preferred IDE**
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn package manager
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Installation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd gabschlemper.dev
+   ```
 
-Follow these steps:
+2. **Install dependencies**
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+3. **Start the development server**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+4. **Open your browser**
+   Navigate to `http://localhost:5173` to view the website
 
-# Step 3: Install the necessary dependencies.
-npm i
+### Build for Production
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```bash
+npm run build
+# or
+yarn build
 ```
 
-**Edit a file directly in GitHub**
+The built files will be in the `dist` directory, ready for deployment.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 📁 Project Structure
 
-**Use GitHub Codespaces**
+```
+src/
+├── components/          # Reusable UI components
+│   ├── ui/             # shadcn/ui components
+│   ├── Contact.tsx     # Contact section
+│   ├── Experience.tsx  # Work experience section
+│   ├── Hero.tsx        # Hero/landing section
+│   ├── Skills.tsx      # Skills and technologies
+│   └── ...
+├── contexts/           # React contexts
+│   ├── LanguageContext.tsx  # Multi-language support
+│   └── ThemeContext.tsx     # Theme management
+├── hooks/              # Custom React hooks
+├── lib/                # Utility functions
+├── pages/              # Page components
+└── styles/             # Global styles
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🌐 Multi-language Support
 
-## What technologies are used for this project?
+The website supports three languages:
+- **English** (default)
+- **Portuguese** 
+- **Spanish**
 
-This project is built with:
+Language switching is handled through React Context and can be toggled using the language selector in the navigation.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 🎨 Customization
 
-## How can I deploy this project?
+### Themes
+The website supports both light and dark themes. Theme preference is managed through React Context and persisted in localStorage.
 
-Simply open [Lovable](https://lovable.dev/projects/4838c4b2-a237-41e6-aac7-ef5dc8d3f51d) and click on Share -> Publish.
+### Colors
+Color scheme can be customized in `tailwind.config.ts`. The project uses CSS custom properties for theme-aware colors.
 
-## Can I connect a custom domain to my Lovable project?
+### Content
+All text content is managed through the translation system in `src/contexts/LanguageContext.tsx`, making it easy to update or add new languages.
 
-Yes, you can!
+## 📱 Responsive Design
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+The website is fully responsive and optimized for:
+- **Desktop** (1024px+)
+- **Tablet** (768px - 1023px)
+- **Mobile** (320px - 767px)
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## 🚀 Deployment
+
+The project can be deployed to any static hosting service:
+
+- **Vercel** (recommended)
+- **Netlify**
+- **GitHub Pages**
+- **AWS S3 + CloudFront**
+
+Simply run `npm run build` and deploy the `dist` folder.
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 🤝 Contributing
+
+While this is a personal portfolio, suggestions and improvements are welcome! Feel free to open an issue or submit a pull request.
+
+## 📞 Contact
+
+For any questions or collaboration opportunities, feel free to reach out through the contact form on the website or connect with me on social media.
+
+---
+
+Built with ❤️ using React, TypeScript, and modern web technologies.
