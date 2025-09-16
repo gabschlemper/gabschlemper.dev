@@ -47,19 +47,19 @@ const Skills: React.FC = () => {
   };
 
   return (
-    <section id="skills" className="py-12 lg:py-20">
-      <div className="max-w-4xl w-full">
-        <h2 className="text-3xl lg:text-4xl font-bold mb-8 lg:mb-12 glow-text fade-in text-center lg:text-left">
+    <section id="skills" className="py-20">
+      <div className="max-w-4xl">
+        <h2 className="text-3xl lg:text-4xl font-bold mb-12 text-primary fade-in">
           {t('skills.title')}
         </h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {skillCategories.map((category, categoryIndex) => (
             <div 
               key={category.title}
               className={`portfolio-card fade-in-delay-${categoryIndex % 4 + 1}`}
             >
-              <h3 className="text-lg lg:text-xl font-semibold text-foreground mb-4 lg:mb-6">
+              <h3 className="text-xl font-semibold text-foreground mb-6">
                 {category.title}
               </h3>
               
@@ -67,8 +67,7 @@ const Skills: React.FC = () => {
                 {category.skills.map((skill, skillIndex) => (
                   <span 
                     key={skillIndex}
-                    className={`tech-badge ${getTechBadgeClass(skill)} text-xs lg:text-sm`}
-                    style={{ animationDelay: `${skillIndex * 0.05}s` }}
+                    className={`tech-badge ${getTechBadgeClass(skill)}`}
                   >
                     {skill}
                   </span>
@@ -79,14 +78,14 @@ const Skills: React.FC = () => {
         </div>
 
         {/* Education Section */}
-        <div className="mt-12 lg:mt-16">
-          <h3 className="text-xl lg:text-2xl font-semibold text-foreground mb-6 lg:mb-8 fade-in text-center lg:text-left">
+        <div className="mt-16">
+          <h3 className="text-2xl font-semibold text-foreground mb-8 fade-in">
             {t('education.title')}
           </h3>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="portfolio-card fade-in-delay-1">
-              <h4 className="text-base lg:text-lg font-medium text-primary mb-2">
+              <h4 className="text-lg font-medium text-primary mb-2">
                 {t('education.senai')}
               </h4>
               <p className="text-foreground-muted text-sm">
@@ -98,7 +97,7 @@ const Skills: React.FC = () => {
             </div>
             
             <div className="portfolio-card fade-in-delay-2">
-              <h4 className="text-base lg:text-lg font-medium text-primary mb-2">
+              <h4 className="text-lg font-medium text-primary mb-2">
                 {t('education.cs50')}
               </h4>
               <p className="text-foreground-muted text-sm">
@@ -110,7 +109,7 @@ const Skills: React.FC = () => {
             </div>
             
             <div className="portfolio-card fade-in-delay-3">
-              <h4 className="text-base lg:text-lg font-medium text-primary mb-2">
+              <h4 className="text-lg font-medium text-primary mb-2">
                 {t('education.rocketseat')}
               </h4>
               <p className="text-foreground-muted text-sm">
@@ -122,7 +121,7 @@ const Skills: React.FC = () => {
             </div>
             
             <div className="portfolio-card fade-in-delay-4">
-              <h4 className="text-base lg:text-lg font-medium text-primary mb-2">
+              <h4 className="text-lg font-medium text-primary mb-2">
                 English Language Immersion
               </h4>
               <p className="text-foreground-muted text-sm">
