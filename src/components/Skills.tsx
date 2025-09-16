@@ -1,5 +1,15 @@
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useRandomBadgeClass } from '@/hooks/use-random-badge-class';
+
+const TechBadge: React.FC<{ skill: string }> = ({ skill }) => {
+  const badgeClass = useRandomBadgeClass(skill);
+  return (
+    <span className={`tech-badge ${badgeClass}`}>
+      {skill}
+    </span>
+  );
+};
 
 interface SkillCategory {
   title: string;
@@ -36,15 +46,6 @@ const Skills: React.FC = () => {
     }
   ];
 
-  const getTechBadgeClass = (skill: string): string => {
-    const lowerSkill = skill.toLowerCase();
-    if (lowerSkill.includes('react') || lowerSkill.includes('typescript')) return 'tech-badge-react';
-    if (lowerSkill.includes('vue')) return 'tech-badge-vue';
-    if (lowerSkill.includes('javascript')) return 'tech-badge-javascript';
-    if (lowerSkill.includes('test') || lowerSkill.includes('cypress') || lowerSkill.includes('jest') || lowerSkill.includes('vitest') || lowerSkill.includes('playwright')) return 'tech-badge-testing';
-    if (lowerSkill.includes('google') || lowerSkill.includes('cloud') || lowerSkill.includes('github') || lowerSkill.includes('ci/cd')) return 'tech-badge-cloud';
-    return 'tech-badge-default';
-  };
 
   return (
     <section id="skills" className="py-20">
@@ -64,13 +65,8 @@ const Skills: React.FC = () => {
               </h3>
               
               <div className="flex flex-wrap gap-2">
-                {category.skills.map((skill, skillIndex) => (
-                  <span 
-                    key={skillIndex}
-                    className={`tech-badge ${getTechBadgeClass(skill)}`}
-                  >
-                    {skill}
-                  </span>
+                {category.skills.map((skill) => (
+                  <TechBadge key={skill} skill={skill} />
                 ))}
               </div>
             </div>
