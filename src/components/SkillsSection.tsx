@@ -2,57 +2,27 @@ import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
-// Import tool icons
-import reactIcon from '@/assets/react-icon.png';
-import javascriptIcon from '@/assets/javascript-icon.png';
-import typescriptIcon from '@/assets/typescript-icon.png';
-import vueIcon from '@/assets/vue-icon.png';
-import nodejsIcon from '@/assets/nodejs-icon.png';
-import nextjsIcon from '@/assets/nextjs-icon.png';
-import htmlIcon from '@/assets/html-icon.png';
-import cssIcon from '@/assets/css-icon.png';
-import figmaIcon from '@/assets/figma-icon.png';
-import gitIcon from '@/assets/git-icon.png';
-import gcpIcon from '@/assets/gcp-icon.png';
-import tailwindIcon from '@/assets/tailwind-icon.png';
-import jestIcon from '@/assets/jest-icon.png';
-import cypressIcon from '@/assets/cypress-icon.png';
-import playwrightIcon from '@/assets/playwright-icon.png';
-import vitestIcon from '@/assets/vitest-icon.png';
-import reduxIcon from '@/assets/redux-icon.png';
-import sqlIcon from '@/assets/sql-icon.png';
-
 const SkillsSection: React.FC = () => {
   const { t } = useLanguage();
 
   const tools = [
-    { name: 'React', icon: reactIcon },
-    { name: 'JavaScript', icon: javascriptIcon },
-    { name: 'TypeScript', icon: typescriptIcon },
-    { name: 'Vue.js', icon: vueIcon },
-    { name: 'Node.js', icon: nodejsIcon },
-    { name: 'Next.js', icon: nextjsIcon },
-    { name: 'HTML', icon: htmlIcon },
-    { name: 'CSS', icon: cssIcon },
-    { name: 'Figma', icon: figmaIcon },
-    { name: 'Git', icon: gitIcon },
-    { name: 'Google Cloud', icon: gcpIcon },
-    { name: 'Tailwind CSS', icon: tailwindIcon },
-    { name: 'Jest', icon: jestIcon },
-    { name: 'Cypress', icon: cypressIcon },
-    { name: 'Playwright', icon: playwrightIcon },
-    { name: 'Vitest', icon: vitestIcon },
-    { name: 'Redux', icon: reduxIcon },
-    { name: 'SQL', icon: sqlIcon }
-  ];
-
-  const skillLevels = [
-    { name: 'HTML', level: 95 },
-    { name: 'React', level: 90 },
-    { name: 'CSS', level: 88 },
-    { name: 'JavaScript', level: 85 },
-    { name: 'TypeScript', level: 80 },
-    { name: 'Vue.js', level: 75 }
+    { name: 'React', iconUrl: 'https://skillicons.dev/icons?i=react' },
+    { name: 'JavaScript', iconUrl: 'https://skillicons.dev/icons?i=js' },
+    { name: 'TypeScript', iconUrl: 'https://skillicons.dev/icons?i=ts' },
+    { name: 'Vue.js', iconUrl: 'https://skillicons.dev/icons?i=vue' },
+    { name: 'Node.js', iconUrl: 'https://skillicons.dev/icons?i=nodejs' },
+    { name: 'Next.js', iconUrl: 'https://skillicons.dev/icons?i=nextjs' },
+    { name: 'HTML', iconUrl: 'https://skillicons.dev/icons?i=html' },
+    { name: 'CSS', iconUrl: 'https://skillicons.dev/icons?i=css' },
+    { name: 'Figma', iconUrl: 'https://skillicons.dev/icons?i=figma' },
+    { name: 'Git', iconUrl: 'https://skillicons.dev/icons?i=git' },
+    { name: 'Google Cloud', iconUrl: 'https://skillicons.dev/icons?i=gcp' },
+    { name: 'Tailwind CSS', iconUrl: 'https://skillicons.dev/icons?i=tailwind' },
+    { name: 'Jest', iconUrl: 'https://skillicons.dev/icons?i=jest' },
+    { name: 'Cypress', iconUrl: 'https://skillicons.dev/icons?i=cypress' },
+    { name: 'Vitest', iconUrl: 'https://skillicons.dev/icons?i=vitest' },
+    { name: 'Redux', iconUrl: 'https://skillicons.dev/icons?i=redux' },
+    { name: 'SQL', iconUrl: 'https://skillicons.dev/icons?i=mysql' }
   ];
 
   return (
@@ -81,7 +51,7 @@ const SkillsSection: React.FC = () => {
                     <div className="text-center">
                       <div className="w-16 h-16 mx-auto mb-4 rounded-lg overflow-hidden">
                         <img 
-                          src={tool.icon} 
+                          src={tool.iconUrl} 
                           alt={`${tool.name} icon`} 
                           className="w-full h-full object-cover"
                           loading="lazy"
@@ -98,27 +68,6 @@ const SkillsSection: React.FC = () => {
             <CarouselPrevious className="hidden md:flex" />
             <CarouselNext className="hidden md:flex" />
           </Carousel>
-        </div>
-
-        {/* Skills Progress Bars */}
-        <div className="fade-in-delay-2">
-          <h3 className="text-xl font-semibold mb-8 text-center text-primary">Skill Proficiency</h3>
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {skillLevels.map((skill) => (
-              <div key={skill.name} className="bg-background-card border border-border rounded-lg p-4">
-                <div className="flex justify-between items-center mb-3">
-                  <span className="text-foreground font-medium">{skill.name}</span>
-                  <span className="text-primary text-sm font-bold">{skill.level}%</span>
-                </div>
-                <div className="skill-bar">
-                  <div 
-                    className="skill-progress" 
-                    style={{ width: `${skill.level}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>
