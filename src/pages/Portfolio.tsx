@@ -17,9 +17,8 @@ const Portfolio: React.FC = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <HeroSection />
           <WhyHireSection />
-          <JourneySection />
-          <SkillsSection />
           <ExperienceTimeline />
+          <SkillsSection />
           <Contact />
         </div>
       </main>

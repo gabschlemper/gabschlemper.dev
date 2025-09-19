@@ -31,13 +31,13 @@ const translations: Translations = {
   // Why Hire Me Section
   'whyhire.title': { en: 'Why hire me for your next project?', pt: 'Por que me contratar para seu próximo projeto?', es: '¿Por qué contratarme para tu próximo proyecto?' },
   'whyhire.description': { 
-    en: 'I am a professional with a degree in computer science, with more than two years of experience, including 1 year of experience working as a software developer and 2 years as a freelancer.',
-    pt: 'Sou uma profissional com formação em ciência da computação, com mais de dois anos de experiência, incluindo 1 ano de experiência trabalhando como desenvolvedora de software e 2 anos como freelancer.',
-    es: 'Soy una profesional con formación en ciencias de la computación, con más de dos años de experiencia, incluyendo 1 año de experiencia trabajando como desarrolladora de software y 2 años como freelancer.'
-  },
-  'whyhire.yearsExp': { en: '3 years', pt: '3 anos', es: '3 años' },
+  en: 'A Full Stack developer who loves turning complex product needs into fast, accessible, and maintainable interfaces. I bring the discipline and teamwork mindset from my background in physical education into every project.',
+  pt: 'Uma desenvolvedora Full Stack que adora transformar necessidades complexas de produtos em interfaces rápidas, acessíveis e fáceis de manter. Trago a disciplina e mentalidade de trabalho em equipe da minha formação em educação física para cada projeto.',
+  es: 'Una desarrolladora Full Stack que ama convertir necesidades complejas de productos en interfaces rápidas, accesibles y fáciles de mantener. Aporto la disciplina y mentalidad de trabajo en equipo de mi formación en educación física a cada proyecto.'
+},
+  'whyhire.yearsExp': { en: '5 years', pt: '5 anos', es: '5 años' },
   'whyhire.expLabel': { en: 'Experience', pt: 'Experiência', es: 'Experiencia' },
-  'whyhire.projectsCount': { en: '+50 Projects', pt: '+50 Projetos', es: '+50 Proyectos' },
+  'whyhire.projectsCount': { en: '+20 Projects', pt: '+20 Pro jetos', es: '+20 Proyectos' },
   'whyhire.projectsLabel': { en: 'GitHub', pt: 'GitHub', es: 'GitHub' },
 
   // Journey Section

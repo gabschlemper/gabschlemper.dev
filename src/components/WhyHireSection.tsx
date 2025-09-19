@@ -33,7 +33,7 @@ const WhyHireSection: React.FC = () => {
             {/* Social Links */}
             <div className="flex gap-4 mb-8">
               <a 
-                href="https://github.com/gabrielaschlemper" 
+                href="https://github.com/gabschlemper" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 border border-border rounded-lg hover:bg-muted transition-colors"

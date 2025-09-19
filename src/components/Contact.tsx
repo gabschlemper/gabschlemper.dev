@@ -6,7 +6,7 @@ const Contact: React.FC = () => {
 
   return (
     <section id="contact" className="py-12 md:py-20">
-      <div className="max-w-4xl">
+      <div className="max-w-4xl m-auto">
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-8 md:mb-12 text-primary fade-in text-center">
           {t('contact.title')}
         </h2>
