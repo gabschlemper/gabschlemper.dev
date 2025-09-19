@@ -6,87 +6,79 @@
 @layer base {
   :root {
     /* Light Mode Colors */
-    --background: 0 0% 100%;
-    --background-secondary: 0 0% 98%;
+    --background: 220 15% 95%;
+    --background-secondary: 220 15% 90%;
     --background-card: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --foreground-muted: 0 0% 45.1%;
+    --foreground: 220 15% 15%;
+    --foreground-muted: 220 10% 40%;
 
     /* Brand Colors */
-    --primary: 0 0% 9%;
+    --primary: 217 91% 60%;
     --primary-foreground: 0 0% 98%;
 
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
+    --secondary: 220 15% 90%;
+    --secondary-foreground: 220 15% 15%;
 
-    /* Accent Colors for Tech Badges (Purple Palette) */
-    --accent-purple-1: 244 65% 31%;   /* #211C84 */
-    --accent-purple-2: 235 58% 55%;  /* #4D55CC */
-    --accent-purple-3: 245 47% 63%;   /* #7A73D1 */
-    --accent-purple-4: 259 36% 75%;   /* #B5A8D5 */
+    /* Blue Accent Colors */
+    --accent-blue-1: 217 91% 60%;    /* Main blue */
+    --accent-blue-2: 213 93% 68%;    /* Lighter blue */
+    --accent-blue-3: 224 76% 78%;    /* Even lighter */
+    --accent-blue-4: 233 54% 85%;    /* Lightest */
 
     /* UI Elements */
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
+    --muted: 220 15% 90%;
+    --muted-foreground: 220 10% 50%;
+    --border: 220 13% 85%;
+    --input: 220 13% 85%;
+    --ring: 217 91% 60%;
 
     /* Navigation */
-    --nav-hover: 0 0% 96.1%;
+    --nav-hover: 220 15% 90%;
 
     /* Minimal shadows */
     --shadow-minimal: 0 1px 3px 0 hsl(0 0% 0% / 0.1);
+    --shadow-glow: 0 0 20px hsl(217 91% 60% / 0.3);
 
     /* Animation */
     --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
     --radius: 0.75rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    /* Dark Mode Colors */
-    --background: 0 0% 3.9%;
-    --background-secondary: 0 0% 6%;
-    --background-card: 0 0% 3.9%;
+    /* Dark Mode Colors - Deep Navy Theme */
+    --background: 222 47% 11%;        /* Very dark navy */
+    --background-secondary: 222 47% 8%; /* Even darker navy */
+    --background-card: 222 47% 13%;   /* Card background */
     --foreground: 0 0% 98%;
-    --foreground-muted: 0 0% 63.9%;
+    --foreground-muted: 0 0% 70%;
 
     /* Brand Colors */
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
+    --primary: 217 91% 60%;           /* Bright blue */
+    --primary-foreground: 222 47% 11%;
 
-    --secondary: 0 0% 14.9%;
+    --secondary: 222 47% 16%;
     --secondary-foreground: 0 0% 98%;
 
+    /* Blue Accent Colors for dark theme */
+    --accent-blue-1: 217 91% 60%;    /* Main blue */
+    --accent-blue-2: 213 93% 68%;    /* Lighter blue */
+    --accent-blue-3: 224 76% 78%;    /* Even lighter */
+    --accent-blue-4: 233 54% 85%;    /* Lightest */
+
     /* UI Elements */
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 98%;
+    --muted: 222 47% 16%;
+    --muted-foreground: 0 0% 60%;
+    --border: 222 47% 20%;
+    --input: 222 47% 16%;
+    --ring: 217 91% 60%;
 
     /* Navigation */
-    --nav-hover: 0 0% 14.9%;
+    --nav-hover: 222 47% 16%;
 
     /* Minimal shadows */
-    --shadow-minimal: 0 1px 3px 0 hsl(0 0% 0% / 0.3);
+    --shadow-minimal: 0 1px 3px 0 hsl(0 0% 0% / 0.5);
+    --shadow-glow: 0 0 30px hsl(217 91% 60% / 0.4);
   }
 }
 
@@ -108,37 +100,56 @@
 @layer components {
   /* Tech Badge Styles */
   .tech-badge {
-    @apply inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium;
+    @apply inline-flex items-center px-4 py-2 rounded-full text-sm font-medium;
     @apply transition-all duration-200;
-    @apply border;
+    @apply border-0;
   }
 
   .tech-badge-color-1 {
-    background: hsl(var(--accent-purple-1) / 0.15);
-    color: hsl(var(--accent-purple-1));
-    border-color: hsl(var(--accent-purple-1) / 0.2);
-  }
-
-  .dark .tech-badge-color-1 {
-    color: hsl(var(--accent-purple-3));
+    background: hsl(var(--accent-blue-1) / 0.2);
+    color: hsl(var(--accent-blue-1));
   }
 
   .tech-badge-color-2 {
-    background: hsl(var(--accent-purple-2) / 0.1);
-    color: hsl(var(--accent-purple-2));
-    border-color: hsl(var(--accent-purple-2) / 0.2);
+    background: hsl(var(--accent-blue-2) / 0.2);
+    color: hsl(var(--accent-blue-2));
   }
 
   .tech-badge-color-3 {
-    background: hsl(var(--accent-purple-3) / 0.1);
-    color: hsl(var(--accent-purple-3));
-    border-color: hsl(var(--accent-purple-3) / 0.2);
+    background: hsl(var(--accent-blue-3) / 0.2);
+    color: hsl(var(--accent-blue-3));
   }
 
   .tech-badge-color-4 {
-    background: hsl(var(--accent-purple-4) / 0.1);
-    color: hsl(var(--accent-purple-4));
-    border-color: hsl(var(--accent-purple-4) / 0.2);
+    background: hsl(var(--accent-blue-4) / 0.2);
+    color: hsl(var(--accent-blue-4));
+  }
+
+  /* Skill Progress Bars */
+  .skill-bar {
+    @apply w-full h-2 bg-muted rounded-full overflow-hidden;
+  }
+
+  .skill-progress {
+    @apply h-full rounded-full transition-all duration-700 ease-out;
+    background: linear-gradient(90deg, hsl(var(--accent-blue-1)), hsl(var(--accent-blue-2)));
+  }
+
+  /* Hero Section */
+  .hero-title {
+    background: linear-gradient(135deg, hsl(var(--foreground)), hsl(var(--accent-blue-1)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glowing button effect */
+  .btn-glow {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+  }
+
+  .btn-glow:hover {
+    box-shadow: 0 0 30px hsl(var(--primary) / 0.5);
   }
 
   /* Navigation Styles */
