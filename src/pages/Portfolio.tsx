@@ -4,6 +4,7 @@ import HeroSection from '@/components/HeroSection';
 import WhyHireSection from '@/components/WhyHireSection';
 import JourneySection from '@/components/JourneySection';
 import SkillsSection from '@/components/SkillsSection';
+import ExperienceTimeline from '@/components/ExperienceTimeline';
 import Contact from '@/components/Contact';
 
 const Portfolio: React.FC = () => {
@@ -18,6 +19,7 @@ const Portfolio: React.FC = () => {
           <WhyHireSection />
           <JourneySection />
           <SkillsSection />
+          <ExperienceTimeline />
           <Contact />
         </div>
       </main>
