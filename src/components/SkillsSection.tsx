@@ -26,7 +26,7 @@ const SkillsSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-20">
+    <section id="skills" className="py-20">
       <div className="fade-in">
         <h2 className="text-2xl md:text-4xl font-bold mb-4 text-center">
           <span className="text-primary">What I Use to</span> <span className="text-foreground">Build Stuff</span>
