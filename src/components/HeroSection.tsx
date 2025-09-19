@@ -5,7 +5,7 @@ const HeroSection: React.FC = () => {
   const { t } = useLanguage();
 
   const scrollToWhy = () => {
-    const element = document.getElementById('why-hire');
+    const element = document.getElementById('about');
     element?.scrollIntoView({ behavior: 'smooth' });
   };
 
