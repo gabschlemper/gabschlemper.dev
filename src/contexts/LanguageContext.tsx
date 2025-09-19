@@ -17,7 +17,7 @@ interface Translations {
 const translations: Translations = {
   // Navigation
   'nav.about': { en: 'About', pt: 'Sobre', es: 'Acerca' },
-  'nav.experience': { en: 'Experience', pt: 'Experiência', es: 'Experiencia' },
+  'nav.experience': { en: 'Journey', pt: 'Jornada', es: 'Trayectoria' },
   'nav.skills': { en: 'Skills', pt: 'Habilidades', es: 'Habilidades' },
   'nav.contact': { en: 'Contact', pt: 'Contato', es: 'Contacto' },
 
@@ -31,37 +31,18 @@ const translations: Translations = {
   // Why Hire Me Section
   'whyhire.title': { en: 'Why hire me for your next project?', pt: 'Por que me contratar para seu próximo projeto?', es: '¿Por qué contratarme para tu próximo proyecto?' },
   'whyhire.description': { 
-  en: 'A Full Stack developer who loves turning complex product needs into fast, accessible, and maintainable interfaces. I bring the discipline and teamwork mindset from my background in physical education into every project.',
-  pt: 'Uma desenvolvedora Full Stack que adora transformar necessidades complexas de produtos em interfaces rápidas, acessíveis e fáceis de manter. Trago a disciplina e mentalidade de trabalho em equipe da minha formação em educação física para cada projeto.',
-  es: 'Una desarrolladora Full Stack que ama convertir necesidades complejas de productos en interfaces rápidas, accesibles y fáciles de mantener. Aporto la disciplina y mentalidad de trabajo en equipo de mi formación en educación física a cada proyecto.'
-},
+    en: 'Frontend specialist with full stack capabilities, passionate about bridging design and engineering. I create responsive, accessible UIs with React and TypeScript while collaborating effectively across teams to deliver exceptional user experiences.',
+    pt: 'Especialista em frontend com capacidades full stack, apaixonada por unir design e engenharia. Crio interfaces responsivas e acessíveis com React e TypeScript, colaborando efetivamente entre equipes para entregar experiências excepcionais aos usuários.',
+    es: 'Especialista frontend con capacidades full stack, apasionada por unir diseño e ingeniería. Creo interfaces responsivas y accesibles con React y TypeScript, colaborando efectivamente entre equipos para entregar experiencias excepcionales a los usuarios.'
+  },
   'whyhire.yearsExp': { en: '5 years', pt: '5 anos', es: '5 años' },
   'whyhire.expLabel': { en: 'Experience', pt: 'Experiência', es: 'Experiencia' },
-  'whyhire.projectsCount': { en: '+20 Projects', pt: '+20 Pro jetos', es: '+20 Proyectos' },
+  'whyhire.projectsCount': { en: '+20 Projects', pt: '+20 Projetos', es: '+20 Proyectos' },
   'whyhire.projectsLabel': { en: 'GitHub', pt: 'GitHub', es: 'GitHub' },
 
   // Journey Section
-  'journey.title': { en: 'My Academic and Professional Journey', pt: 'Minha Jornada Acadêmica e Profissional', es: 'Mi Trayectoria Académica y Profesional' },
-  'journey.education': { en: 'Education', pt: 'Educação', es: 'Educación' },
-  'journey.experience': { en: 'Professional Experience', pt: 'Experiência Profissional', es: 'Experiencia Profesional' },
+  'journey.title': { en: 'Professional Journey', pt: 'Jornada Profissional', es: 'Trayectoria Profesional' },
 
-  // Education
-  'education.senai.title': { en: 'Analysis and System Development', pt: 'Análise e Desenvolvimento de Sistemas', es: 'Análisis y Desarrollo de Sistemas' },
-  'education.senai.period': { en: '2024 - 2026', pt: '2024 - 2026', es: '2024 - 2026' },
-  'education.senai.institution': { en: 'Senai/SC', pt: 'Senai/SC', es: 'Senai/SC' },
-  
-  'education.cs50.title': { en: 'CS50: Introduction to Computer Science', pt: 'CS50: Introdução à Ciência da Computação', es: 'CS50: Introducción a las Ciencias de la Computación' },
-  'education.cs50.period': { en: '2023 - 2024', pt: '2023 - 2024', es: '2023 - 2024' },
-  'education.cs50.institution': { en: 'Harvard University', pt: 'Universidade de Harvard', es: 'Universidad de Harvard' },
-  
-  'education.bootcamp.title': { en: 'FullStack Ignite Bootcamp', pt: 'Bootcamp FullStack Ignite', es: 'Bootcamp FullStack Ignite' },
-  'education.bootcamp.period': { en: '2023', pt: '2023', es: '2023' },
-  'education.bootcamp.institution': { en: 'Rocketseat', pt: 'Rocketseat', es: 'Rocketseat' },
-  
-  'education.english.title': { en: 'English Language Immersion', pt: 'Imersão em Língua Inglesa', es: 'Inmersión en Idioma Inglés' },
-  'education.english.period': { en: '2022', pt: '2022', es: '2022' },
-  'education.english.institution': { en: 'Dublin, Ireland', pt: 'Dublin, Irlanda', es: 'Dublín, Irlanda' },
-  
   // Dynamox
   'experience.dynamox.title': { en: 'Full Stack Developer', pt: 'Desenvolvedor Full Stack', es: 'Desarrollador Full Stack' },
   'experience.dynamox.company': { en: 'Dynamox', pt: 'Dynamox', es: 'Dynamox' },
@@ -94,15 +75,6 @@ const translations: Translations = {
     pt: 'Construí sites e aplicações responsivos e interativos usando React.js, Next.js e Gatsby para clientes mundialmente. Otimizei performance, acessibilidade e engajamento do usuário em projetos diversos.',
     es: 'Construí sitios web y aplicaciones responsivas e interactivas usando React.js, Next.js y Gatsby para clientes de todo el mundo. Optimicé rendimiento, accesibilidad y engagement del usuario en proyectos diversos.'
   },
-
-  // Skills Section
-  'skills.title': { en: 'Skills & Technologies', pt: 'Habilidades e Tecnologias', es: 'Habilidades y Tecnologías' },
-  'skills.languages': { en: 'Languages', pt: 'Linguagens', es: 'Lenguajes' },
-  'skills.frameworks': { en: 'Frameworks', pt: 'Frameworks', es: 'Frameworks' },
-  'skills.frontend': { en: 'Frontend', pt: 'Frontend', es: 'Frontend' },
-  'skills.testing': { en: 'Testing', pt: 'Testes', es: 'Testing' },
-  'skills.devops': { en: 'DevOps/Cloud', pt: 'DevOps/Cloud', es: 'DevOps/Cloud' },
-  'skills.other': { en: 'Other', pt: 'Outros', es: 'Otros' },
 
   // Contact Section
   'contact.title': { en: 'Get In Touch', pt: 'Entre em Contato', es: 'Ponte en Contacto' },
