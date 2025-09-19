@@ -22,20 +22,45 @@ const translations: Translations = {
   'nav.contact': { en: 'Contact', pt: 'Contato', es: 'Contacto' },
 
   // Hero Section
-  'hero.name': { en: 'Your Name', pt: 'Seu Nome', es: 'Tu Nombre' },
-  'hero.title': { en: 'Full Stack Developer', pt: 'Desenvolvedor Full Stack', es: 'Desarrollador Full Stack' },
-  'hero.subtitle': { en: 'I build accessible, pixel-perfect digital experiences for the web.', pt: 'Eu crio experiências digitais acessíveis e pixel-perfect para a web.', es: 'Construyo experiencias digitales accesibles y pixel-perfect para la web.' },
+  'hero.greeting': { en: 'Hey, I am', pt: 'Olá, eu sou', es: 'Hola, soy' },
+  'hero.name': { en: 'Gabriela Schlemper', pt: 'Gabriela Schlemper', es: 'Gabriela Schlemper' },
+  'hero.role': { en: 'Web Dev', pt: 'Desenvolvedora Web', es: 'Desarrolladora Web' },
+  'hero.tagline': { en: 'Building your dream pixel by pixel!', pt: 'Construindo seu sonho pixel por pixel!', es: '¡Construyendo tu sueño pixel por pixel!' },
+  'hero.readMore': { en: 'Read More', pt: 'Ler Mais', es: 'Leer Más' },
 
-  // About Section
-  'about.title': { en: 'About Me', pt: 'Sobre Mim', es: 'Sobre Mí' },
-  'about.description': { 
-    en: 'Detail-oriented frontend developer passionate about bridging design and engineering. Recognized for building scalable, modular UIs and thriving in collaborative, agile environments. Seeking opportunities to apply expertise in React, TypeScript, and UI/UX best practices.',
-    pt: 'Desenvolvedor frontend detalhista e apaixonado por conectar design e engenharia. Reconhecido por construir interfaces escaláveis e modulares, prosperando em ambientes colaborativos e ágeis. Buscando oportunidades para aplicar expertise em React, TypeScript e melhores práticas de UI/UX.',
-    es: 'Desarrollador frontend detallista y apasionado por conectar diseño e ingeniería. Reconocido por construir interfaces escalables y modulares, prosperando en entornos colaborativos y ágiles. Buscando oportunidades para aplicar experiencia en React, TypeScript y mejores prácticas de UI/UX.'
+  // Why Hire Me Section
+  'whyhire.title': { en: 'Why hire me for your next project?', pt: 'Por que me contratar para seu próximo projeto?', es: '¿Por qué contratarme para tu próximo proyecto?' },
+  'whyhire.description': { 
+    en: 'I am a professional with a degree in computer science, with more than two years of experience, including 1 year of experience working as a software developer and 2 years as a freelancer.',
+    pt: 'Sou uma profissional com formação em ciência da computação, com mais de dois anos de experiência, incluindo 1 ano de experiência trabalhando como desenvolvedora de software e 2 anos como freelancer.',
+    es: 'Soy una profesional con formación en ciencias de la computación, con más de dos años de experiencia, incluyendo 1 año de experiencia trabajando como desarrolladora de software y 2 años como freelancer.'
   },
+  'whyhire.yearsExp': { en: '3 years', pt: '3 anos', es: '3 años' },
+  'whyhire.expLabel': { en: 'Experience', pt: 'Experiência', es: 'Experiencia' },
+  'whyhire.projectsCount': { en: '+50 Projects', pt: '+50 Projetos', es: '+50 Proyectos' },
+  'whyhire.projectsLabel': { en: 'GitHub', pt: 'GitHub', es: 'GitHub' },
 
-  // Experience Section
-  'experience.title': { en: 'Experience', pt: 'Experiência', es: 'Experiencia' },
+  // Journey Section
+  'journey.title': { en: 'My Academic and Professional Journey', pt: 'Minha Jornada Acadêmica e Profissional', es: 'Mi Trayectoria Académica y Profesional' },
+  'journey.education': { en: 'Education', pt: 'Educação', es: 'Educación' },
+  'journey.experience': { en: 'Professional Experience', pt: 'Experiência Profissional', es: 'Experiencia Profesional' },
+
+  // Education
+  'education.senai.title': { en: 'Analysis and System Development', pt: 'Análise e Desenvolvimento de Sistemas', es: 'Análisis y Desarrollo de Sistemas' },
+  'education.senai.period': { en: '2024 - 2026', pt: '2024 - 2026', es: '2024 - 2026' },
+  'education.senai.institution': { en: 'Senai/SC', pt: 'Senai/SC', es: 'Senai/SC' },
+  
+  'education.cs50.title': { en: 'CS50: Introduction to Computer Science', pt: 'CS50: Introdução à Ciência da Computação', es: 'CS50: Introducción a las Ciencias de la Computación' },
+  'education.cs50.period': { en: '2023 - 2024', pt: '2023 - 2024', es: '2023 - 2024' },
+  'education.cs50.institution': { en: 'Harvard University', pt: 'Universidade de Harvard', es: 'Universidad de Harvard' },
+  
+  'education.bootcamp.title': { en: 'FullStack Ignite Bootcamp', pt: 'Bootcamp FullStack Ignite', es: 'Bootcamp FullStack Ignite' },
+  'education.bootcamp.period': { en: '2023', pt: '2023', es: '2023' },
+  'education.bootcamp.institution': { en: 'Rocketseat', pt: 'Rocketseat', es: 'Rocketseat' },
+  
+  'education.english.title': { en: 'English Language Immersion', pt: 'Imersão em Língua Inglesa', es: 'Inmersión en Idioma Inglés' },
+  'education.english.period': { en: '2022', pt: '2022', es: '2022' },
+  'education.english.institution': { en: 'Dublin, Ireland', pt: 'Dublin, Irlanda', es: 'Dublín, Irlanda' },
   
   // Dynamox
   'experience.dynamox.title': { en: 'Full Stack Developer', pt: 'Desenvolvedor Full Stack', es: 'Desarrollador Full Stack' },

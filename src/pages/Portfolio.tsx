@@ -1,8 +1,9 @@
 import React from 'react';
 import TopNavigation from '@/components/TopNavigation';
-import Hero from '@/components/Hero';
-import Experience from '@/components/Experience';
-import Skills from '@/components/Skills';
+import HeroSection from '@/components/HeroSection';
+import WhyHireSection from '@/components/WhyHireSection';
+import JourneySection from '@/components/JourneySection';
+import SkillsSection from '@/components/SkillsSection';
 import Contact from '@/components/Contact';
 
 const Portfolio: React.FC = () => {
@@ -12,10 +13,11 @@ const Portfolio: React.FC = () => {
       
       {/* Main Content */}
       <main className="pt-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
-          <Hero />
-          <Experience />
-          <Skills />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <HeroSection />
+          <WhyHireSection />
+          <JourneySection />
+          <SkillsSection />
           <Contact />
         </div>
       </main>
