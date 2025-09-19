@@ -35,7 +35,7 @@ const ExperienceTimeline: React.FC = () => {
   ];
 
   return (
-    <section className="py-20">
+    <section id="experience" className="py-20">
       <div className="fade-in">
         <h2 className="text-2xl md:text-4xl font-bold mb-16 text-center">
           <span className="text-primary">Professional</span> <span className="text-foreground">Experience</span>

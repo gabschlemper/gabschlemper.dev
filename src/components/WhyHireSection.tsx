@@ -6,7 +6,7 @@ const WhyHireSection: React.FC = () => {
   const { t } = useLanguage();
 
   return (
-    <section id="why-hire" className="py-20">
+    <section id="about" className="py-20">
       <div className="fade-in">
         <h2 className="text-2xl md:text-4xl font-bold mb-16 text-center text-foreground">
           {t('whyhire.title')}

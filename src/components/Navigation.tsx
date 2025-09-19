@@ -8,7 +8,7 @@ const Navigation: React.FC = () => {
 
   const navItems = [
     { id: 'about', label: t('nav.about') },
-    { id: 'experience', label: t('nav.experience') },
+    { id: 'journey', label: t('nav.experience') },
     { id: 'skills', label: t('nav.skills') },
     { id: 'contact', label: t('nav.contact') },
   ];
