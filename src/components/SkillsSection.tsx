@@ -35,7 +35,6 @@ const SkillsSection: React.FC = () => {
           Here are the powerful tools and technologies I use to bring your ideas to life. From front-end frameworks to back-end systems, I create seamless, scalable solutions tailored to your needs, delivering high-quality results with lasting impact.
         </p>
         
-        {/* Tools Carousel */}
         <div className="mb-16 fade-in-delay-1">
           <Carousel
             opts={{
@@ -47,13 +46,13 @@ const SkillsSection: React.FC = () => {
             <CarouselContent className="-ml-2 md:-ml-4">
               {tools.map((tool, index) => (
                 <CarouselItem key={tool.name} className="pl-2 md:pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5">
-                  <div className="bg-background-card border border-border rounded-xl p-6 hover:border-primary/30 transition-all duration-300 hover:scale-105 group">
+                  <div className="bg-background-card border border-border rounded-xl p-6 hover:border-primary hover:shadow-lg transition-all duration-300 group">
                     <div className="text-center">
                       <div className="w-16 h-16 mx-auto mb-4 rounded-lg overflow-hidden">
                         <img 
                           src={tool.iconUrl} 
                           alt={`${tool.name} icon`} 
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           loading="lazy"
                         />
                       </div>
