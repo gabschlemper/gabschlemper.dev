@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Navigation from '@/components/Navigation';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -33,10 +34,10 @@ const Blog: React.FC = () => {
         
         <header className="mb-12">
           <h1 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-            {t('blog.title')}
+            Blog
           </h1>
           <p className="text-foreground-muted max-w-2xl">
-            {t('blog.subtitle')}
+            Thoughts on web development.
           </p>
         </header>
 
@@ -53,7 +54,7 @@ const Blog: React.FC = () => {
                 </h2>
                 
                 <div className="flex items-center gap-4 mb-3">
-                  <time className="text-sm text-foreground-muted">
+                  <time className="text-sm text-muted-foreground">
                     {new Date(post.date).toLocaleDateString(language, {
                       year: 'numeric',
                       month: 'long',
@@ -65,7 +66,7 @@ const Blog: React.FC = () => {
                       {post.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="text-xs px-2 py-1 rounded bg-muted text-foreground"
+                          className="text-xs px-2 py-1 rounded bg-primary/10 text-primary font-medium"
                         >
                           {tag}
                         </span>
@@ -74,13 +75,14 @@ const Blog: React.FC = () => {
                   )}
                 </div>
 
-                <p className="text-foreground-muted mb-4">{post.excerpt}</p>
+                <p className="text-muted-foreground mb-4">{post.excerpt}</p>
 
                 <Link
                   to={`/blog/${post.slug}`}
-                  className="text-accent hover:text-accent/80 transition-colors font-medium"
+                  className="inline-flex items-center gap-1 text-primary hover:text-primary/80 transition-colors font-medium group"
                 >
-                  Read more &gt;&gt;
+                  Read more
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </article>
             ))
