@@ -1,14 +1,19 @@
-import { getAllBlogPosts } from './src/lib/blog';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 /**
- * Generate dynamic sitemap.xml including all blog posts
- * Run this script before deployment: node scripts/generate-sitemap.js
+ * Generate static sitemap.xml
+ * This version generates a basic sitemap without reading MDX files
+ * to avoid Node.js compatibility issues with Vite's import.meta.glob
  */
 function generateSitemap() {
-  const posts = getAllBlogPosts();
   const baseUrl = 'https://gabschlemper.dev';
+  const currentDate = new Date().toISOString().split('T')[0];
   
   // Static pages
   const staticPages = [
@@ -17,33 +22,23 @@ function generateSitemap() {
     { url: '/blog', priority: '0.8', changefreq: 'weekly' },
   ];
 
-  // Dynamic blog posts
-  const blogPages = posts.map(post => ({
-    url: `/blog/${post.slug}`,
-    priority: '0.7',
-    changefreq: 'monthly',
-    lastmod: post.lastModified || post.date,
-  }));
-
-  const allPages = [...staticPages, ...blogPages];
-
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${allPages.map(page => `  <url>
+${staticPages.map(page => `  <url>
     <loc>${baseUrl}${page.url}</loc>
-    ${page.lastmod ? `<lastmod>${page.lastmod}</lastmod>` : `<lastmod>${new Date().toISOString().split('T')[0]}</lastmod>`}
+    <lastmod>${currentDate}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>`).join('\n')}
 </urlset>`;
 
   // Write to public directory
-  const outputPath = join(process.cwd(), 'public', 'sitemap.xml');
+  const outputPath = join(__dirname, '..', 'public', 'sitemap.xml');
   writeFileSync(outputPath, sitemap);
   
-  console.log(`✅ Sitemap generated with ${allPages.length} URLs`);
-  console.log(`   - ${staticPages.length} static pages`);
-  console.log(`   - ${blogPages.length} blog posts`);
+  console.log(`✅ Sitemap generated with ${staticPages.length} URLs`);
+  console.log(`   Written to: ${outputPath}`);
 }
 
 generateSitemap();
+
