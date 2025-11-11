@@ -17,6 +17,7 @@ interface Translations {
 const translations: Translations = {
   // Navigation
   'nav.about': { en: 'About', pt: 'Sobre', es: 'Acerca' },
+  'nav.blog': { en: 'Blog', pt: 'Blog', es: 'Blog' },
   'nav.experience': { en: 'Journey', pt: 'Jornada', es: 'Trayectoria' },
   'nav.skills': { en: 'Skills', pt: 'Habilidades', es: 'Habilidades' },
   'nav.contact': { en: 'Contact', pt: 'Contato', es: 'Contacto' },
@@ -83,6 +84,39 @@ const translations: Translations = {
     pt: 'Sempre interessado em novas oportunidades e colaborações. Fique à vontade para entrar em contato!',
     es: 'Siempre interesado en nuevas oportunidades y colaboraciones. ¡No dudes en contactarme!'
   },
+
+  // Blog Section
+  'blog.title': { en: "Gabriela Schlemper's Blog", pt: 'Blog da Gabriela Schlemper', es: 'Blog de Gabriela Schlemper' },
+  'blog.subtitle': { en: 'The latest ideas, writing, and projects from Gabriela Schlemper.', pt: 'As últimas ideias, escritos e projetos de Gabriela Schlemper.', es: 'Las últimas ideas, escritos y proyectos de Gabriela Schlemper.' },
+  
+  'blog.post1.title': { en: 'Optimizing React Performance for Large Applications', pt: 'Otimizando Performance do React em Aplicações Grandes', es: 'Optimizando el Rendimiento de React en Aplicaciones Grandes' },
+  'blog.post1.date': { en: '6 days ago', pt: '6 dias atrás', es: 'hace 6 días' },
+  'blog.post1.excerpt': { en: 'An honest look at performance optimization techniques for React applications. Learn how to identify bottlenecks and improve your app\'s speed.', pt: 'Um olhar honesto sobre técnicas de otimização de performance para aplicações React. Aprenda como identificar gargalos e melhorar a velocidade do seu app.', es: 'Una mirada honesta a las técnicas de optimización de rendimiento para aplicaciones React. Aprende a identificar cuellos de botella y mejorar la velocidad de tu aplicación.' },
+  
+  'blog.post2.title': { en: 'Building Scalable Design Systems', pt: 'Construindo Design Systems Escaláveis', es: 'Construyendo Sistemas de Diseño Escalables' },
+  'blog.post2.date': { en: '19 days ago', pt: '19 dias atrás', es: 'hace 19 días' },
+  'blog.post2.excerpt': { en: 'My experience creating design systems that scale with your product. From components to documentation, here\'s what worked and what didn\'t.', pt: 'Minha experiência criando design systems que escalam com seu produto. De componentes a documentação, aqui está o que funcionou e o que não funcionou.', es: 'Mi experiencia creando sistemas de diseño que escalan con tu producto. Desde componentes hasta documentación, esto es lo que funcionó y lo que no.' },
+
+  // Journey Section
+  'journey.education': { en: 'Education', pt: 'Educação', es: 'Educación' },
+  'journey.experience': { en: 'Professional Experience', pt: 'Experiência Profissional', es: 'Experiencia Profesional' },
+
+  // Education
+  'education.senai.title': { en: 'Technical Course in Systems Development', pt: 'Curso Técnico em Desenvolvimento de Sistemas', es: 'Curso Técnico en Desarrollo de Sistemas' },
+  'education.senai.period': { en: '2020 - 2022', pt: '2020 - 2022', es: '2020 - 2022' },
+  'education.senai.institution': { en: 'SENAI', pt: 'SENAI', es: 'SENAI' },
+
+  'education.cs50.title': { en: 'CS50: Introduction to Computer Science', pt: 'CS50: Introdução à Ciência da Computação', es: 'CS50: Introducción a la Ciencia de la Computación' },
+  'education.cs50.period': { en: '2021', pt: '2021', es: '2021' },
+  'education.cs50.institution': { en: 'Harvard University (Online)', pt: 'Universidade de Harvard (Online)', es: 'Universidad de Harvard (En línea)' },
+
+  'education.bootcamp.title': { en: 'Full Stack Web Development Bootcamp', pt: 'Bootcamp de Desenvolvimento Web Full Stack', es: 'Bootcamp de Desarrollo Web Full Stack' },
+  'education.bootcamp.period': { en: '2021', pt: '2021', es: '2021' },
+  'education.bootcamp.institution': { en: 'Digital Innovation One', pt: 'Digital Innovation One', es: 'Digital Innovation One' },
+
+  'education.english.title': { en: 'Advanced English Course', pt: 'Curso de Inglês Avançado', es: 'Curso de Inglés Avanzado' },
+  'education.english.period': { en: '2019 - 2022', pt: '2019 - 2022', es: '2019 - 2022' },
+  'education.english.institution': { en: 'CNA Language School', pt: 'CNA Idiomas', es: 'CNA Idiomas' },
 
 };
 
