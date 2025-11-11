@@ -1,0 +1,69 @@
+---
+title: "#1 Problemas do Project Euler - Múltiplos de 3 e 5"
+date: "2024-09-15"
+excerpt: "Se listarmos todos os números naturais abaixo de 10 que são múltiplos de 3 ou 5, obtemos 3, 5, 6 e 9. A soma desses múltiplos é 23. Encontre a soma de todos os múltiplos de 3 ou 5 abaixo do parâmetro fornecido."
+slug: "project-euler-multiples-3-and-5"
+tags: ["JavaScript", "Algoritmos", "Project Euler"]
+language: "pt-br"
+author: "Gabriela Schlemper"
+readingTime: "3 min de leitura"
+keywords: ["Project Euler", "algoritmos JavaScript", "múltiplos", "resolução de problemas", "desafios de código", "FreeCodeCamp"]
+---
+
+# #1 Problemas do Project Euler
+
+## Múltiplos de 3 e 5
+
+Se listarmos todos os números naturais abaixo de 10 que são múltiplos de 3 ou 5, obtemos 3, 5, 6 e 9. A soma desses múltiplos é 23.
+
+**Encontre a soma de todos os múltiplos de 3 ou 5 abaixo do parâmetro fornecido.**
+
+### Casos de Teste
+
+A função deve atender aos seguintes requisitos:
+
+- `multiplesOf3and5(10)` deve retornar um número.
+- `multiplesOf3and5(49)` deve retornar 543.
+- `multiplesOf3and5(1000)` deve retornar 233168.
+- `multiplesOf3and5(8456)` deve retornar 16687353.
+- `multiplesOf3and5(19564)` deve retornar 89301183.
+
+### Solução
+
+Aqui está minha abordagem para resolver este problema:
+
+```javascript
+function multiplesOf3and5(number) {
+  let sum = 0 
+  for(let i = 1; i < number; i++) {
+    if (i % 3 === 0 || i % 5 === 0) {
+      sum += i
+    }
+  }
+  
+  return sum;
+}
+```
+
+### Explicação
+
+A solução é direta:
+
+1. **Inicialize uma variável soma** para armazenar o total
+2. **Percorra todos os números** de 1 até o número fornecido (exclusivo)
+3. **Verifique se é divisível** por 3 ou 5 usando o operador módulo (`%`)
+4. **Adicione à soma** se a condição for atendida
+5. **Retorne a soma final**
+
+### Complexidade de Tempo
+
+- **Tempo:** O(n) - Iteramos por todos os números uma vez
+- **Espaço:** O(1) - Usamos apenas uma quantidade constante de espaço extra
+
+### Otimização Alternativa
+
+Para números muito grandes, existe uma abordagem matemática usando a fórmula de série aritmética que executa em tempo O(1), mas a solução iterativa funciona bem para a maioria dos casos práticos.
+
+---
+
+*Interessado em mais soluções do Project Euler? Fique ligado para os próximos posts!*
