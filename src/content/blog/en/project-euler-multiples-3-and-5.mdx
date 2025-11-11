@@ -1,0 +1,69 @@
+---
+title: "#1 Project Euler Problems - Multiples of 3 and 5"
+date: "2024-09-15"
+excerpt: "If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23. Find the sum of all the multiples of 3 or 5 below the provided parameter."
+slug: "project-euler-multiples-3-and-5"
+tags: ["JavaScript", "Algorithms", "Project Euler"]
+language: "en"
+author: "Gabriela Schlemper"
+readingTime: "3 min read"
+keywords: ["Project Euler", "JavaScript algorithms", "multiples", "problem solving", "coding challenges", "FreeCodeCamp"]
+---
+
+# #1 Project Euler Problems
+
+## Multiples of 3 and 5
+
+If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.
+
+**Find the sum of all the multiples of 3 or 5 below the provided parameter.**
+
+### Test Cases
+
+The function should meet the following requirements:
+
+- `multiplesOf3and5(10)` should return a number.
+- `multiplesOf3and5(49)` should return 543.
+- `multiplesOf3and5(1000)` should return 233168.
+- `multiplesOf3and5(8456)` should return 16687353.
+- `multiplesOf3and5(19564)` should return 89301183.
+
+### Solution
+
+Here's my approach to solving this problem:
+
+```javascript
+function multiplesOf3and5(number) {
+  let sum = 0 
+  for(let i = 1; i < number; i++) {
+    if (i % 3 === 0 || i % 5 === 0) {
+      sum += i
+    }
+  }
+  
+  return sum;
+}
+```
+
+### Explanation
+
+The solution is straightforward:
+
+1. **Initialize a sum variable** to store the total
+2. **Loop through all numbers** from 1 to the provided number (exclusive)
+3. **Check if divisible** by 3 or 5 using the modulo operator (`%`)
+4. **Add to sum** if the condition is met
+5. **Return the final sum**
+
+### Time Complexity
+
+- **Time:** O(n) - We iterate through all numbers once
+- **Space:** O(1) - We only use a constant amount of extra space
+
+### Alternative Optimization
+
+For very large numbers, there's a mathematical approach using the arithmetic series formula that runs in O(1) time, but the iterative solution works well for most practical cases.
+
+---
+
+*Interested in more Project Euler solutions? Stay tuned for upcoming posts!*
