@@ -2,27 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Navigation from '@/components/Navigation';
+import Breadcrumb from '@/components/Breadcrumb';
+import { BLOG_POSTS } from '@/constants/blogPosts';
 
 const Blog: React.FC = () => {
   const { t } = useLanguage();
 
-  const blogPosts = [
-    {
-      id: 1,
-      title: t('blog.post1.title'),
-      date: t('blog.post1.date'),
-      tags: ['React', 'TypeScript', 'Performance'],
-      excerpt: t('blog.post1.excerpt'),
-      slug: 'optimizing-react-performance'
-    },
-    {
-      id: 2,
-      title: t('blog.post2.title'),
-      date: t('blog.post2.date'),
-      tags: ['Frontend', 'Design Systems', 'UX'],
-      excerpt: t('blog.post2.excerpt'),
-      slug: 'building-design-systems'
-    }
+  const breadcrumbItems = [
+    { label: 'Home', href: '/' },
+    { label: t('nav.blog') }
   ];
 
   return (
@@ -30,30 +18,28 @@ const Blog: React.FC = () => {
       <Navigation />
       
       <main className="max-w-4xl mx-auto px-4 py-20">
-        <div className="mb-12">
-          <nav className="text-sm text-foreground-muted mb-6">
-            <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
-            <span className="mx-2">&gt;</span>
-            <span className="text-foreground">Blog</span>
-          </nav>
-          
+        <Breadcrumb items={breadcrumbItems} />
+        
+        <header className="mb-12">
           <h1 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
             {t('blog.title')}
           </h1>
           <p className="text-foreground-muted max-w-2xl">
             {t('blog.subtitle')}
           </p>
-        </div>
+        </header>
 
         <div className="space-y-8">
-          {blogPosts.map((post) => (
+          {BLOG_POSTS.map((post) => (
             <article key={post.id} className="border-b border-border pb-8">
               <h2 className="text-2xl font-bold mb-2 text-foreground hover:text-accent transition-colors">
-                <Link to={`/blog/${post.slug}`}>{post.title}</Link>
+                <Link to={`/blog/${post.slug}`}>{t(post.titleKey)}</Link>
               </h2>
               
               <div className="flex items-center gap-4 mb-3">
-                <time className="text-sm text-foreground-muted">{post.date}</time>
+                <time className="text-sm text-foreground-muted">
+                  {t(post.dateKey)}
+                </time>
                 <div className="flex gap-2">
                   {post.tags.map((tag) => (
                     <span
@@ -66,7 +52,7 @@ const Blog: React.FC = () => {
                 </div>
               </div>
 
-              <p className="text-foreground-muted mb-4">{post.excerpt}</p>
+              <p className="text-foreground-muted mb-4">{t(post.excerptKey)}</p>
 
               <Link
                 to={`/blog/${post.slug}`}
@@ -76,15 +62,6 @@ const Blog: React.FC = () => {
               </Link>
             </article>
           ))}
-        </div>
-
-        <div className="text-center mt-12">
-          <Link
-            to="/"
-            className="text-accent hover:text-accent/80 transition-colors"
-          >
-            Older posts
-          </Link>
         </div>
       </main>
     </div>
