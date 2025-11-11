@@ -56,15 +56,19 @@ export function getAllBlogPosts(): BlogPost[] {
  * Get blog posts filtered by language
  */
 export function getBlogPostsByLanguage(lang: string): BlogPost[] {
-  return getAllBlogPosts().filter(post => post.language === lang);
+  // Handle pt -> pt-br mapping for blog posts
+  const langToMatch = lang === 'pt' ? 'pt-br' : lang;
+  return getAllBlogPosts().filter(post => post.language === langToMatch);
 }
 
 /**
  * Get a single blog post by slug and language
  */
 export function getBlogPost(slug: string, lang: string): BlogPost | undefined {
+  // Handle pt -> pt-br mapping for blog posts
+  const langToMatch = lang === 'pt' ? 'pt-br' : lang;
   return getAllBlogPosts().find(
-    post => post.slug === slug && post.language === lang
+    post => post.slug === slug && post.language === langToMatch
   );
 }
 
