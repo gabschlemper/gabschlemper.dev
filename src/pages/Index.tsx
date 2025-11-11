@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Navigation from '@/components/Navigation';
+import { ResponsiveImage } from '@/components/ResponsiveImage';
 import { Github, Linkedin } from 'lucide-react';
 
 const Index: React.FC = () => {
@@ -15,10 +16,12 @@ const Index: React.FC = () => {
         <div className="max-w-2xl w-full py-20">
           <div className="text-center mb-8">
             <div className="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-accent">
-              <img 
-                src="/images/profile.png" 
-                alt="Gabriela Schlemper" 
+              <ResponsiveImage
+                src="/images/profile"
+                alt="Gabriela Schlemper"
                 className="w-full h-full object-cover"
+                sizes="128px"
+                priority={true}
               />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-3 text-foreground">
