@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { Analytics } from '@vercel/analytics/next';
 import Index from "./pages/Index";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
@@ -31,6 +32,7 @@ const App = () => (
             </Routes>
           </BrowserRouter>
           <SpeedInsights />
+          <Analytics />
         </TooltipProvider>
       </LanguageProvider>
     </ThemeProvider>
