@@ -6,6 +6,7 @@ interface SEOProps {
   image?: string;
   url?: string;
   type?: string;
+  keywords?: string[];
 }
 
 export const useSEO = ({
@@ -13,7 +14,8 @@ export const useSEO = ({
   description,
   image,
   url,
-  type = 'website'
+  type = 'website',
+  keywords
 }: SEOProps) => {
   useEffect(() => {
     // Update title
@@ -66,5 +68,9 @@ export const useSEO = ({
     if (type) {
       updateMetaTag('og:type', type, true);
     }
-  }, [title, description, image, url, type]);
+
+    if (keywords && keywords.length > 0) {
+      updateMetaTag('keywords', keywords.join(', '));
+    }
+  }, [title, description, image, url, type, keywords]);
 };

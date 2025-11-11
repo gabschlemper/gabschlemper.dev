@@ -1,0 +1,145 @@
+---
+title: "GetServerSideProps vs GetStaticProps in Next.js"
+date: "2024-07-10"
+excerpt: "Understanding the key differences between GetServerSideProps and GetStaticProps in Next.js, and when to use each for optimal performance."
+slug: "nextjs-getserversideprops-vs-getstaticprops"
+tags: ["Next.js", "React", "SSR", "SSG", "Performance"]
+language: "en"
+author: "Gabriela Schlemper"
+readingTime: "6 min read"
+keywords: ["Next.js", "GetServerSideProps", "GetStaticProps", "SSR", "SSG", "Static Site Generation", "Server-Side Rendering", "React", "performance optimization", "caching"]
+---
+
+# GetServerSideProps vs GetStaticProps in Next.js
+
+In Next.js, we are presented with the option to utilize `GetServerSideProps`, a feature that facilitates data fetching exclusively on the server-side and abstains from execution on the client's browser. But what about `GetStaticProps`? Are you familiar with the distinctions between the two?
+
+## The E-commerce Example
+
+Imagine you're running an e-commerce platform dedicated to selling T-shirts. How often do you change the product images? Probably not very frequently, right? 
+
+**The problem with employing `getServerSideProps`** is that every time our page is reloaded, it triggers an API call, consuming:
+- ⏱️ Time
+- 💾 Memory
+- 🔄 Processing power
+
+This ultimately results in a **slower page load**.
+
+## Enter Static Site Generation (SSG)
+
+Next.js offers functionality known as **Static Site Generation (SSG)**. Essentially, when dealing with pages that experience infrequent changes, we can implement a caching mechanism to present the same page version to all users. This concept is encapsulated in `GetStaticProps`.
+
+## Important Consideration
+
+Here's an important consideration: **When you switch to using `GetStaticProps`, you don't have access to the request context** (req, res, cookies, user infos). 
+
+This is because this method runs during the build of your application and you provide a `revalidate` number. It means if you set it to 5 seconds, every 5 seconds, Next.js will create a new version of your page.
+
+## Examples
+
+### Using GetServerSideProps
+
+```javascript
+export async function getServerSideProps(context) {
+  // Access the request context (context) here
+  // Fetch data based on the request
+  const data = await fetchData();
+
+  // Return the data as props
+  return {
+    props: {
+      data,
+    },
+  };
+}
+```
+
+**Key characteristics:**
+- ✅ Runs on every request
+- ✅ Has access to request context
+- ✅ Good for dynamic, user-specific data
+- ❌ Slower initial page load
+- ❌ Can't be cached by CDN
+
+### Using GetStaticProps
+
+```javascript
+export async function getStaticProps() {
+  // Cannot access the request context (context) here
+  // Fetch data for the static page
+  const data = await fetchData();
+
+  // Return the data as props
+  return {
+    props: {
+      data,
+    },
+    // Revalidate property for dynamic regeneration
+    revalidate: 5, // Regenerate every 5 seconds
+  };
+}
+```
+
+**Key characteristics:**
+- ✅ Runs at build time
+- ✅ Pages can be cached by CDN
+- ✅ Extremely fast page loads
+- ✅ Can use Incremental Static Regeneration (ISR)
+- ❌ No access to request context
+- ❌ Not suitable for user-specific data
+
+## When to Use Each?
+
+### Use GetServerSideProps when:
+
+- You need access to request-time information (cookies, headers, query params)
+- Data is user-specific and can't be cached
+- Content changes on every request
+- You need authentication information
+
+**Examples:**
+- User dashboard with personalized data
+- Shopping cart
+- Admin panels
+- Real-time data displays
+
+### Use GetStaticProps when:
+
+- Content doesn't change frequently
+- Data is the same for all users
+- Page can be pre-rendered at build time
+- Performance is critical
+
+**Examples:**
+- Blog posts
+- Product catalog
+- Marketing pages
+- Documentation
+
+## Quick Reminder
+
+**If your page requires dynamic information**, using `GetStaticProps` might not be suitable. This is because static pages are generated during build time, making it impractical when you need to dynamically alter information based on user-specific conditions.
+
+## Comparison Table
+
+| Feature | GetServerSideProps | GetStaticProps |
+|---------|-------------------|----------------|
+| **Runs** | Every request | Build time (+ revalidation) |
+| **Context access** | ✅ Yes | ❌ No |
+| **CDN caching** | ❌ No | ✅ Yes |
+| **Performance** | Slower | Faster |
+| **Use case** | Dynamic data | Static/semi-static data |
+| **ISR support** | ❌ No | ✅ Yes |
+
+## Conclusion
+
+Both `getServerSideProps` and `getStaticProps` have their place in Next.js applications. The key is understanding your data requirements and choosing the right tool for the job:
+
+- **Dynamic, user-specific data?** → `getServerSideProps`
+- **Static or infrequently changing data?** → `getStaticProps`
+
+By making the right choice, you can significantly improve your application's performance and user experience!
+
+---
+
+*Have questions about Next.js data fetching? Feel free to reach out on [LinkedIn](https://linkedin.com/in/gabrielaschlemper)!*

@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Navigation from '@/components/Navigation';
 import Breadcrumb from '@/components/Breadcrumb';
-import { BLOG_POSTS } from '@/constants/blogPosts';
 import { useSEO } from '@/hooks/useSEO';
+import { getBlogPostsByLanguage } from '@/lib/blog';
 
 const Blog: React.FC = () => {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
+
+  // Get blog posts for current language
+  const posts = getBlogPostsByLanguage(language);
 
   useSEO({
     title: 'Blog - Gabriela Schlemper | Tech Articles & Insights',
@@ -38,38 +41,50 @@ const Blog: React.FC = () => {
         </header>
 
         <div className="space-y-8">
-          {BLOG_POSTS.map((post) => (
-            <article key={post.id} className="border-b border-border pb-8">
-              <h2 className="text-2xl font-bold mb-2 text-foreground hover:text-accent transition-colors">
-                <Link to={`/blog/${post.slug}`}>{t(post.titleKey)}</Link>
-              </h2>
-              
-              <div className="flex items-center gap-4 mb-3">
-                <time className="text-sm text-foreground-muted">
-                  {t(post.dateKey)}
-                </time>
-                <div className="flex gap-2">
-                  {post.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-xs px-2 py-1 rounded bg-muted text-foreground"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+          {posts.length === 0 ? (
+            <p className="text-foreground-muted">
+              No blog posts available in {language.toUpperCase()} yet.
+            </p>
+          ) : (
+            posts.map((post) => (
+              <article key={post.slug} className="border-b border-border pb-8">
+                <h2 className="text-2xl font-bold mb-2 text-foreground hover:text-accent transition-colors">
+                  <Link to={`/blog/${post.slug}`}>{post.title}</Link>
+                </h2>
+                
+                <div className="flex items-center gap-4 mb-3">
+                  <time className="text-sm text-foreground-muted">
+                    {new Date(post.date).toLocaleDateString(language, {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                  </time>
+                  {post.tags && post.tags.length > 0 && (
+                    <div className="flex gap-2">
+                      {post.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-xs px-2 py-1 rounded bg-muted text-foreground"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              </div>
 
-              <p className="text-foreground-muted mb-4">{t(post.excerptKey)}</p>
+                <p className="text-foreground-muted mb-4">{post.excerpt}</p>
 
-              <Link
-                to={`/blog/${post.slug}`}
-                className="text-accent hover:text-accent/80 transition-colors font-medium"
-              >
-                Read more &gt;&gt;
-              </Link>
-            </article>
-          ))}
+                <Link
+                  to={`/blog/${post.slug}`}
+                  className="text-accent hover:text-accent/80 transition-colors font-medium"
+                >
+                  Read more &gt;&gt;
+                </Link>
+              </article>
+            ))
+          )}
         </div>
       </main>
     </div>
