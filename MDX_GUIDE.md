@@ -8,8 +8,7 @@ src/
 │   ├── en/               ← English posts
 │   │   ├── post-1.mdx
 │   │   └── post-2.mdx
-│   ├── pt/               ← Portuguese posts
-│   └── es/               ← Spanish posts
+│   └── pt-br/            ← Portuguese posts
 ├── lib/blog.ts           ← Blog post loader utilities
 ├── types/mdx.d.ts        ← TypeScript definitions
 └── pages/

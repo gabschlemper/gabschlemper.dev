@@ -13,7 +13,7 @@ Welcome to my personal portfolio website! This project showcases my skills, proj
 ## 🛠️ Features
 
 - **Responsive Design**: Ensures a seamless user experience across various devices and screen sizes.
-- **Internationalization (i18n)**: Supports multiple languages (English, Portuguese, and Spanish) to cater to a diverse audience.
+- **Internationalization (i18n)**: Supports multiple languages (English and Portuguese) to cater to a diverse audience.
 - **Dark/Light Theme**: Toggle between themes for better user experience.
 - **Modern UI Components**: Built with shadcn/ui for consistent, accessible design.
 - **Performance Optimized**: Implements best practices for performance optimization, including image optimization and code splitting.
