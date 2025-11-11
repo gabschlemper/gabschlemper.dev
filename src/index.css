@@ -5,80 +5,75 @@
 
 @layer base {
   :root {
-    /* Light Mode Colors */
-    --background: 220 15% 95%;
-    --background-secondary: 220 15% 90%;
-    --background-card: 0 0% 100%;
+    --background: 0 0% 100%;
     --foreground: 220 15% 15%;
-    --foreground-muted: 220 10% 40%;
-
-    /* Brand Colors */
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 98%;
-
-    --secondary: 220 15% 90%;
+    --foreground-muted: 220 10% 45%;
+    
+    --card: 0 0% 98%;
+    --card-foreground: 220 15% 15%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 15%;
+    
+    --primary: 0 85% 60%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 0 0% 95%;
     --secondary-foreground: 220 15% 15%;
-
-    /* Blue Accent Colors */
-    --accent-blue-1: 217 91% 60%;    /* Main blue */
-    --accent-blue-2: 213 93% 68%;    /* Lighter blue */
-    --accent-blue-3: 224 76% 78%;    /* Even lighter */
-    --accent-blue-4: 233 54% 85%;    /* Lightest */
-
-    /* UI Elements */
-    --muted: 220 15% 90%;
-    --muted-foreground: 220 10% 50%;
-    --border: 220 13% 85%;
-    --input: 220 13% 85%;
-    --ring: 217 91% 60%;
-
-    /* Navigation */
-    --nav-hover: 220 15% 90%;
-
-    /* Minimal shadows */
-    --shadow-minimal: 0 1px 3px 0 hsl(0 0% 0% / 0.1);
-    --shadow-glow: 0 0 20px hsl(217 91% 60% / 0.3);
-
-    /* Animation */
-    --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-
-    --radius: 0.75rem;
+    
+    --muted: 0 0% 95%;
+    --muted-foreground: 220 10% 45%;
+    
+    --accent: 0 85% 60%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 220 10% 85%;
+    --input: 220 10% 85%;
+    --ring: 0 85% 60%;
+    
+    --radius: 0.5rem;
+    
+    --background-card: 0 0% 98%;
+    --nav-bg: 0 0% 100%;
+    --nav-hover: 0 0% 95%;
   }
 
   .dark {
-    /* Dark Mode Colors - Deep Navy Theme */
-    --background: 222 47% 11%;        /* Very dark navy */
-    --background-secondary: 222 47% 8%; /* Even darker navy */
-    --background-card: 222 47% 13%;   /* Card background */
-    --foreground: 0 0% 98%;
-    --foreground-muted: 0 0% 70%;
-
-    /* Brand Colors */
-    --primary: 217 91% 60%;           /* Bright blue */
-    --primary-foreground: 222 47% 11%;
-
-    --secondary: 222 47% 16%;
-    --secondary-foreground: 0 0% 98%;
-
-    /* Blue Accent Colors for dark theme */
-    --accent-blue-1: 217 91% 60%;    /* Main blue */
-    --accent-blue-2: 213 93% 68%;    /* Lighter blue */
-    --accent-blue-3: 224 76% 78%;    /* Even lighter */
-    --accent-blue-4: 233 54% 85%;    /* Lightest */
-
-    /* UI Elements */
-    --muted: 222 47% 16%;
-    --muted-foreground: 0 0% 60%;
-    --border: 222 47% 20%;
-    --input: 222 47% 16%;
-    --ring: 217 91% 60%;
-
-    /* Navigation */
-    --nav-hover: 222 47% 16%;
-
-    /* Minimal shadows */
-    --shadow-minimal: 0 1px 3px 0 hsl(0 0% 0% / 0.5);
-    --shadow-glow: 0 0 30px hsl(217 91% 60% / 0.4);
+    --background: 220 15% 8%;
+    --foreground: 0 0% 95%;
+    --foreground-muted: 220 10% 60%;
+    
+    --card: 220 15% 10%;
+    --card-foreground: 0 0% 95%;
+    
+    --popover: 220 15% 10%;
+    --popover-foreground: 0 0% 95%;
+    
+    --primary: 0 85% 60%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 220 15% 15%;
+    --secondary-foreground: 0 0% 95%;
+    
+    --muted: 220 15% 15%;
+    --muted-foreground: 220 10% 60%;
+    
+    --accent: 0 85% 60%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 220 15% 20%;
+    --input: 220 15% 20%;
+    --ring: 0 85% 60%;
+    
+    --background-card: 220 15% 12%;
+    --nav-bg: 220 15% 8%;
+    --nav-hover: 220 15% 15%;
   }
 }
 
