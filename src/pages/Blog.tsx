@@ -4,9 +4,17 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import Navigation from '@/components/Navigation';
 import Breadcrumb from '@/components/Breadcrumb';
 import { BLOG_POSTS } from '@/constants/blogPosts';
+import { useSEO } from '@/hooks/useSEO';
 
 const Blog: React.FC = () => {
   const { t } = useLanguage();
+
+  useSEO({
+    title: 'Blog - Gabriela Schlemper | Tech Articles & Insights',
+    description: 'Read articles about Full Stack Development, Frontend Engineering, React, TypeScript, Vue.js, and modern web development best practices.',
+    url: 'https://gabschlemper.dev/blog',
+    image: 'https://gabschlemper.dev/images/profile-512.webp'
+  });
 
   const breadcrumbItems = [
     { label: 'Home', href: '/' },

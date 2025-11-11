@@ -1,3 +1,7 @@
+User-agent: *
+Allow: /
+
+# Specific bots
 User-agent: Googlebot
 Allow: /
 
@@ -10,7 +14,5 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
-Allow: /
-
-Sitemap: https://yourportfolio.com/sitemap.xml
+# Sitemap location
+Sitemap: https://gabschlemper.dev/sitemap.xml
