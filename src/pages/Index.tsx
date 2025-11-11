@@ -40,7 +40,7 @@ const Index: React.FC = () => {
 
           <div className="flex justify-center gap-4 mb-8">
             <a
-              href="https://github.com/gabrielaschlemper"
+              href="https://github.com/gabschlemper"
               target="_blank"
               rel="noopener noreferrer"
               className="text-foreground hover:text-accent transition-colors"
