@@ -4,6 +4,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import Navigation from '@/components/Navigation';
 import Breadcrumb from '@/components/Breadcrumb';
 import { getBlogPostBySlug } from '@/constants/blogPosts';
+import { useSEO } from '@/hooks/useSEO';
 
 const BlogPost: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -18,6 +19,14 @@ const BlogPost: React.FC = () => {
   if (!post) {
     return <Navigate to="/blog" replace />;
   }
+
+  useSEO({
+    title: `${t(post.titleKey)} - Gabriela Schlemper Blog`,
+    description: t(post.excerptKey),
+    url: `https://gabschlemper.dev/blog/${slug}`,
+    image: 'https://gabschlemper.dev/images/profile-512.webp',
+    type: 'article'
+  });
 
   const breadcrumbItems = [
     { label: 'Home', href: '/' },
