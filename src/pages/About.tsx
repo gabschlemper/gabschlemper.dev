@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
-import JourneySection from '@/components/JourneySection';
+import ExperienceTimeline from '@/components/ExperienceTimeline';
 import SkillsSection from '@/components/SkillsSection';
 
 const About: React.FC = () => {
@@ -16,7 +16,7 @@ const About: React.FC = () => {
           <span className="text-foreground">About</span>
         </nav>
 
-        <JourneySection />
+        <ExperienceTimeline />
         <SkillsSection />
       </main>
     </div>
