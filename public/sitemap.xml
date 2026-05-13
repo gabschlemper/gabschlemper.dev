@@ -18,4 +18,22 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://gabschlemper.dev/blog/exploring-project-euler</loc>
+    <lastmod>2024-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gabschlemper.dev/blog/nextjs-getserversideprops-vs-getstaticprops</loc>
+    <lastmod>2024-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gabschlemper.dev/blog/project-euler-multiples-3-and-5</loc>
+    <lastmod>2024-09-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>
