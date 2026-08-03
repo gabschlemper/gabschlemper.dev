@@ -1,11 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
-import { componentTagger } from "lovable-tagger";
-import mdx from '@mdx-js/rollup';
-import remarkGfm from 'remark-gfm';
-import remarkFrontmatter from 'remark-frontmatter';
-import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -13,36 +8,24 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
-  plugins: [
-    mdx({
-      remarkPlugins: [remarkGfm, remarkFrontmatter, remarkMdxFrontmatter],
-      providerImportSource: '@mdx-js/react',
-      jsxRuntime: 'automatic',
-      development: false,
-    }),
-    react(),
-    mode === "development" && componentTagger()
-  ].filter(Boolean),
+  plugins: [react()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
   build: {
-    // Split chunks for better caching
     rollupOptions: {
       output: {
         manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'mdx-vendor': ['@mdx-js/react', 'react-syntax-highlighter'],
+          "react-vendor": ["react", "react-dom", "react-router-dom"],
         },
       },
     },
-    // Minify for production
-    minify: 'terser',
+    minify: "terser",
     terserOptions: {
       compress: {
-        drop_console: mode === 'production',
+        drop_console: mode === "production",
       },
     },
   },

@@ -1,106 +1,87 @@
-# Gabriela Schlemper - Personal Website
+# gabschlemper.dev — Engineering Knowledge Base
 
-Welcome to my personal portfolio website! This project showcases my skills, projects, and professional experience as a fullstack developer so far. Built with modern technologies and best practices.
+A portfolio built as a documentation repository rather than a landing page. Every
+claim it makes links to the case study that proves it.
 
-## 🚀 Technologies Used
+> I document engineering decisions instead of listing technologies.
 
-- **Next.js**: Leveraged for its powerful server-side rendering and static site generation capabilities, ensuring optimal performance and SEO friendliness.
-- **React**: Utilized for building reusable UI components and managing the application's state efficiently.
-- **TypeScript**: Implemented to enhance code quality and maintainability through static type checking.
-- **Tailwind CSS**: Adopted for rapid and responsive UI development with utility-first CSS classes.
-- **Next-Intl**: Integrated for seamless internationalization, supporting multiple languages.
+## Concept
 
-## 🛠️ Features
+The site is an evidence graph. Four entity types cross-reference each other:
 
-- **Responsive Design**: Ensures a seamless user experience across various devices and screen sizes.
-- **Internationalization (i18n)**: Supports multiple languages (English and Portuguese) to cater to a diverse audience.
-- **Dark/Light Theme**: Toggle between themes for better user experience.
-- **Modern UI Components**: Built with shadcn/ui for consistent, accessible design.
-- **Performance Optimized**: Implements best practices for performance optimization, including image optimization and code splitting.
-- **Accessible Navigation**: Focuses on accessibility to provide an inclusive experience for all users.
+| Entity           | Count | Role                                                        |
+| ---------------- | ----- | ----------------------------------------------------------- |
+| **Companies**    | 3     | Where the work happened                                      |
+| **Case studies** | 10    | Context → constraints → alternatives → decision → trade-offs |
+| **Capabilities** | 18    | Claims, each backed by the documents that prove it           |
+| **Technologies** | 27    | How each was actually used, not a logo grid                  |
 
-## 🚀 Getting Started
+Plus a profile, a career journey, 8 engineering principles with origin stories, and
+an **Evidence Map** that renders the whole graph so any claim can be traced back to
+its source.
 
-### Prerequisites
-- Node.js (v18 or higher)
-- npm or yarn package manager
+## Stack
 
-### Installation
+- **Vite** + **React 18** + **TypeScript** (strict)
+- **react-router-dom** — real URLs, so every document is shareable
+- Plain CSS with custom properties — no utility framework
+- Fonts: Special Elite (display), Courier Prime (body), JetBrains Mono (metadata)
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd gabschlemper.dev
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
-
-3. **Start the development server**
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
-
-4. **Open your browser**
-   Navigate to `http://localhost:5173` to view the website
-
-### Build for Production
+## Getting started
 
 ```bash
-npm run build
-# or
-yarn build
+pnpm install
+pnpm dev          # http://localhost:8080
 ```
 
-## 🎯 Project Strategy
+Other scripts:
 
-The primary goal of this project is to create a professional and personal online presence that effectively communicates my skills and experiences with a minimalist aesthetic. The strategy behind the development focuses on:
+```bash
+pnpm build            # production build
+pnpm typecheck        # tsc --noEmit
+pnpm lint             # eslint
+pnpm generate-sitemap # regenerate public/sitemap.xml from the route data
+```
 
-- **User Experience (UX)**: Designing intuitive navigation and a clean layout to ensure visitors can easily find information.
-- **Maintainability**: Writing clean, modular, and well-documented code to simplify future maintenance and updates.
-- **SEO Best Practices**: Ensuring the website is discoverable through search engines by following SEO best practices.
-- **Performance**: Optimizing loading times and responsiveness for an optimal user experience.
-
-## 📁 Project Structure
+## Project structure
 
 ```
 src/
-├── components/          # Reusable UI components
-│   ├── ui/             # shadcn/ui components
-│   ├── Contact.tsx     # Contact section
-│   ├── Experience.tsx  # Work experience section
-│   ├── Hero.tsx        # Hero/landing section
-│   └── Skills.tsx      # Skills and technologies
-├── contexts/           # React contexts
-│   ├── LanguageContext.tsx  # Multi-language support
-│   └── ThemeContext.tsx     # Theme management
-├── hooks/              # Custom React hooks
-├── lib/                # Utility functions
-└── styles/             # Global styles
+├── data/
+│   └── knowledge-base.ts   # all content — the single source of truth
+├── lib/
+│   ├── evidenceMap.ts      # graph layout for the Evidence Map
+│   ├── nav.ts              # sidebar structure
+│   ├── search.ts           # ⌘K search index
+│   ├── slug.ts             # technology name → URL slug
+│   ├── useDocumentMeta.ts  # per-route title and description
+│   └── useTheme.ts         # dark/light, persisted to localStorage
+├── components/
+│   ├── CommandPalette.tsx  # ⌘K
+│   └── Sidebar.tsx
+├── pages/                  # one component per screen
+├── config.ts               # contact links, accent, feature flags
+└── index.css               # design tokens and all component styles
 ```
 
-## 🚀 Deployment
+## Editing content
 
-The project can be deployed to any static hosting service:
-- **Vercel** (recommended)
-- **Netlify**
-- **GitHub Pages**
-- **AWS S3 + CloudFront**
+All prose lives in `src/data/knowledge-base.ts`, typed against the interfaces at the
+top of that file. Adding a case study means appending one object to `cases` — the
+capability pages, technology pages, search index, sitemap and Evidence Map all pick
+it up automatically from the cross-references.
 
-## 📄 License
+The upstream source for this content is the
+[professional-knowledge-base](https://github.com/gabschlemper) repository
+(`companies/*.md`, `case-studies/*.md`, `profile/`).
 
-This project is open source and available under the [MIT License](LICENSE).
+## Design
 
-## 📫 Contact
+The visual design was authored in Claude Design and ported to React by hand. The
+original export is kept at `design/Engineering Knowledge Base.html` for reference —
+it is not part of the build.
 
-Feel free to reach out to me via email or connect with me on [LinkedIn](https://linkedin.com) and [GitHub](https://github.com).
+## Deployment
 
----
-
-Built with ❤️ using Next.js, React, TypeScript, and modern web technologies.
+Static build, deployed on Vercel. The SPA needs a catch-all rewrite to `index.html`
+so deep links like `/cases/single-computation-path` resolve on hard refresh.

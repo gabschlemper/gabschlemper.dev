@@ -1,24 +1,18 @@
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useDocumentMeta } from "../lib/useDocumentMeta";
 
-const NotFound = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    console.error("404 Error: User attempted to access non-existent route:", location.pathname);
-  }, [location.pathname]);
+export default function NotFound() {
+  useDocumentMeta("Not found", "No document exists at this path.");
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">404</h1>
-        <p className="mb-4 text-xl text-gray-600">Oops! Page not found</p>
-        <a href="/" className="text-blue-500 underline hover:text-blue-700">
-          Return to Home
-        </a>
-      </div>
+    <div className="screen">
+      <div className="notfound-code">404 / no such document</div>
+      <h1 className="display">Nothing filed here</h1>
+      <p className="lede">
+        This path does not match any document in the repository. Press{" "}
+        <span className="kbd">⌘K</span> to search, or start from the{" "}
+        <Link to="/">index</Link>.
+      </p>
     </div>
   );
-};
-
-export default NotFound;
+}
