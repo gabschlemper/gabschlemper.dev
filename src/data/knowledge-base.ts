@@ -1078,7 +1078,8 @@ export const cases: CaseStudy[] = [
         "id": "context",
         "title": "Context",
         "paras": [
-          "This is my evidence for security as an engineering practice, not a one-off fire drill. Security was one of the six competency areas in my promotion dossier, and this is the concrete work behind that: I didn't wait for an audit to force the issue — I closed the gap and made hardening the default for how backend services ship."
+          "This is my evidence for security as an engineering practice, not a one-off fire drill. Security was one of the six competency areas in my promotion dossier, and this is the concrete work behind that: I didn't wait for an audit to force the issue — I closed the gap and made hardening the default for how backend services ship.",
+          "It's the case I point to whenever an interviewer asks whether I've worked on security specifically, rather than picking it up as a side effect of other work."
         ]
       },
       {
