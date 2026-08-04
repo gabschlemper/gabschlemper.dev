@@ -19,14 +19,10 @@ export default function Sidebar({ theme, onToggleTheme, onOpenPalette }: Props) 
         type="button"
         className="sidebar-brand"
         onClick={() => navigate("/")}
-        aria-label="Engineering Knowledge Base — home"
+        aria-label="Gabriela Schlemper — home"
       >
-        <div className="sidebar-brand-title">
-          Engineering
-          <br />
-          Knowledge Base
-        </div>
-        <div className="sidebar-brand-sub">gabriela schlemper · public docs</div>
+        <div className="sidebar-brand-title">Gabriela Schlemper</div>
+        <div className="sidebar-brand-sub">Engineering Knowledge Base · public docs</div>
       </button>
 
       <button type="button" className="search-trigger" onClick={onOpenPalette}>

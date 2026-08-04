@@ -14,6 +14,10 @@ export const config = {
   /** Show the "open to opportunities" badge. */
   openToWork: true,
 
+  /** Shown near the top of the home screen — the fact recruiters filter on first. */
+  availability:
+    "Based in Bray, Ireland (EU) · Italian citizenship, no sponsorship needed in Europe · remote or on-site",
+
   /**
    * Contact links. Empty strings are omitted from the contact row rather than
    * rendered as dead links.
@@ -21,7 +25,7 @@ export const config = {
   email: "gabschlemper@gmail.com",
   linkedin: "https://linkedin.com/in/gabrielaschlemper",
   github: "https://github.com/gabschlemper",
-  cvUrl: "",
+  cvUrl: "/cv/Gabriela-Schlemper-CV.pdf",
 
   /** Shown bottom-left in the sidebar. */
   revision: "rev. 2026.07 — written, not generated",

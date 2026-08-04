@@ -37,11 +37,38 @@ export interface Company {
   lessons: string[]
 }
 
+export interface DiagramNode {
+  id: string
+  lines: string[]
+  sub?: string
+  x: number
+  y: number
+  w: number
+  h: number
+  /** accent = the chosen path; removed = what was eliminated, not part of the flow. */
+  variant?: "accent" | "removed"
+}
+
+export interface DiagramEdge {
+  from: string
+  to: string
+  label?: string
+}
+
+export interface CaseDiagramSpec {
+  width: number
+  height: number
+  nodes: DiagramNode[]
+  edges: DiagramEdge[]
+}
+
 export interface CaseSection {
   id: string
   title: string
   paras?: string[]
   bullets?: string[]
+  /** Hand-authored architecture diagram illustrating this section — text-derived, not decorative. */
+  diagram?: CaseDiagramSpec
 }
 
 export interface CaseStudy {
@@ -88,19 +115,9 @@ export const profile: Profile = {
   ],
   "evolution": [
     {
-      "year": "2022",
-      "label": "Learning professional software development",
-      "detail": "Freelance work under an experienced engineer. Git, code review, delivery discipline."
-    },
-    {
-      "year": "2023",
-      "label": "Building production frontend applications",
-      "detail": "Frontend Intern at AQTech. Vue, real users, real constraints."
-    },
-    {
-      "year": "2024",
-      "label": "Building frontend systems",
-      "detail": "Design System, component architecture, standards the team adopted voluntarily."
+      "year": "Today",
+      "label": "Platform engineering, architecture and AI-assisted development",
+      "detail": "Interested in the systems that make other engineers faster and safer."
     },
     {
       "year": "2025",
@@ -108,9 +125,19 @@ export const profile: Profile = {
       "detail": "Dynamox. Cross-service consistency, event-driven architecture, ownership."
     },
     {
-      "year": "Today",
-      "label": "Platform engineering, architecture and AI-assisted development",
-      "detail": "Interested in the systems that make other engineers faster and safer."
+      "year": "2024",
+      "label": "Building frontend systems",
+      "detail": "Design System, component architecture, standards the team adopted voluntarily."
+    },
+    {
+      "year": "2023",
+      "label": "Building production frontend applications",
+      "detail": "Frontend Intern at AQTech. Vue, real users, real constraints."
+    },
+    {
+      "year": "2022",
+      "label": "Learning professional software development",
+      "detail": "Freelance work under an experienced engineer. Git, code review, delivery discipline."
     }
   ],
   "howIThink": [
@@ -156,7 +183,7 @@ export const stats: Stat[] = [
   },
   {
     "label": "Case Studies",
-    "value": "10"
+    "value": "11"
   },
   {
     "label": "Architecture Decisions",
@@ -165,48 +192,85 @@ export const stats: Stat[] = [
   {
     "label": "Promotion",
     "value": "Jr → Mid in ~11mo"
+  },
+  {
+    "label": "This Site's JS (gzip)",
+    "value": "~25 kB"
   }
 ]
 
 export const companies: Company[] = [
   {
-    "id": "freelance",
-    "name": "Freelance",
-    "role": "Frontend Developer",
-    "period": "2022",
-    "domain": "Client web applications",
-    "phase": "Learning professional software development",
-    "summary": "Implemented frontend features inside existing applications while working under an experienced software engineer.",
+    "id": "dynamox",
+    "name": "Dynamox",
+    "role": "Junior → Mid-level Software Engineer",
+    "period": "2025 – Present",
+    "domain": "Industrial inspection & condition monitoring",
+    "phase": "Learning distributed systems and software architecture",
+    "summary": "Promoted to Mid-level in ~11 months. Became the team's reference for cross-service synchronization. Work spans frontend, backend and infrastructure.",
     "overview": [
-      "My entry point into professional software. I worked inside existing codebases owned by real clients, under the review of an experienced engineer who treated every pull request as a teaching moment.",
-      "The value of this period wasn't the features shipped — it was internalizing how professional engineering teams actually operate: version control discipline, code review culture, and the difference between code that works and code that can be maintained."
+      "Dynamox builds condition-monitoring and industrial inspection products: sensors on physical machines, event pipelines carrying their data, and software that turns it into inspection routes and decisions.",
+      "I joined as a Junior and was promoted to Mid-level after roughly eleven months. My focus shifted from features to architecture: I became the team's reference for cross-service synchronization — the person consulted whenever two services need to agree about the same fact."
     ],
     "businessDomain": [
-      "Small client web applications: marketing sites, dashboards, internal tools. Low individual stakes, high learning density."
+      "Industrial customers run inspection routes across thousands of physical assets. Data flows through an event-driven architecture (Kafka) into multiple services, each with its own view of the world.",
+      "The core engineering tension: derived, customer-facing data must stay consistent across services that fail, retry and deploy independently."
     ],
     "responsibilities": [
-      "Implementing frontend features inside existing applications",
-      "Responding to code review and iterating until mergeable",
-      "Reproducing and fixing UI bugs reported by clients"
+      "Cross-service data synchronization and ownership boundaries",
+      "Backend services in NestJS/Fastify over Kafka and PostgreSQL",
+      "Frontend features in React; infra in Terraform and Kubernetes",
+      "Observability and AI-assisted workflows (Sentry, Vertex AI)"
     ],
     "achievements": [
-      "Learned Git, branching and professional delivery workflow from zero",
-      "Internalized code review as a learning tool — a principle I still hold",
-      "Shipped production features within weeks of starting"
+      "Promoted Junior → Mid-level in ~11 months",
+      "Redesigned a cross-service metric to a single computation path",
+      "Became team reference for cross-service synchronization",
+      "Founded an analytics service after an OLTP vs OLAP evaluation",
+      "Conducts 200+ code reviews per year across backend, frontend and test code"
     ],
     "technologies": [
-      "JavaScript",
-      "Git",
-      "HTML/CSS"
+      "React",
+      "NestJS",
+      "Fastify",
+      "Kafka",
+      "PostgreSQL",
+      "Prisma",
+      "Terraform",
+      "BigQuery",
+      "Python",
+      "Vertex AI",
+      "Kubernetes",
+      "Sentry"
     ],
     "capabilities": [
+      "Distributed Systems",
+      "Backend Engineering",
       "Frontend Engineering",
-      "Communication"
+      "System Design",
+      "Architecture",
+      "Observability",
+      "Reliability",
+      "Ownership",
+      "Technical Leadership",
+      "Testing",
+      "Security"
     ],
-    "caseIds": [],
+    "caseIds": [
+      "single-computation-path",
+      "workspace-sync",
+      "analytics-service",
+      "prod-data-correction",
+      "asset-tree-search",
+      "error-observability",
+      "ai-route-generation",
+      "flaky-e2e",
+      "container-hardening"
+    ],
     "lessons": [
-      "Code review is one of the fastest learning tools in software engineering.",
-      "Reading existing code well is a more valuable skill than writing new code fast."
+      "Eventually consistent derived data should have exactly one computation path.",
+      "If a value can always be recomputed from source, favor recomputation over synchronization.",
+      "Consistency debates end when ownership is explicit."
     ]
   },
   {
@@ -261,8 +325,7 @@ export const companies: Company[] = [
     ],
     "caseIds": [
       "design-system",
-      "tree-selector",
-      "flaky-e2e"
+      "tree-selector"
     ],
     "lessons": [
       "A Design System succeeds only when adoption becomes the easiest path.",
@@ -271,71 +334,43 @@ export const companies: Company[] = [
     ]
   },
   {
-    "id": "dynamox",
-    "name": "Dynamox",
-    "role": "Junior → Mid-level Software Engineer",
-    "period": "2025 – Present",
-    "domain": "Industrial inspection & condition monitoring",
-    "phase": "Learning distributed systems and software architecture",
-    "summary": "Promoted to Mid-level in ~11 months. Became the team's reference for cross-service synchronization. Work spans frontend, backend and infrastructure.",
+    "id": "freelance",
+    "name": "Freelance",
+    "role": "Frontend Developer",
+    "period": "2022",
+    "domain": "Client web applications",
+    "phase": "Learning professional software development",
+    "summary": "Implemented frontend features inside existing applications while working under an experienced software engineer.",
     "overview": [
-      "Dynamox builds condition-monitoring and industrial inspection products: sensors on physical machines, event pipelines carrying their data, and software that turns it into inspection routes and decisions.",
-      "I joined as a Junior and was promoted to Mid-level after roughly eleven months. My focus shifted from features to architecture: I became the team's reference for cross-service synchronization — the person consulted whenever two services need to agree about the same fact."
+      "My entry point into professional software. I worked inside existing codebases owned by real clients, under the review of an experienced engineer who treated every pull request as a teaching moment.",
+      "The value of this period wasn't the features shipped — it was internalizing how professional engineering teams actually operate: version control discipline, code review culture, and the difference between code that works and code that can be maintained."
     ],
     "businessDomain": [
-      "Industrial customers run inspection routes across thousands of physical assets. Data flows through an event-driven architecture (Kafka) into multiple services, each with its own view of the world.",
-      "The core engineering tension: derived, customer-facing data must stay consistent across services that fail, retry and deploy independently."
+      "Small client web applications: marketing sites, dashboards, internal tools. Low individual stakes, high learning density."
     ],
     "responsibilities": [
-      "Cross-service data synchronization and ownership boundaries",
-      "Backend services in NestJS/Fastify over Kafka and PostgreSQL",
-      "Frontend features in React; infra in Terraform and Kubernetes",
-      "Observability and AI-assisted workflows (Sentry, Vertex AI)"
+      "Implementing frontend features inside existing applications",
+      "Responding to code review and iterating until mergeable",
+      "Reproducing and fixing UI bugs reported by clients"
     ],
     "achievements": [
-      "Promoted Junior → Mid-level in ~11 months",
-      "Redesigned a cross-service metric to a single computation path",
-      "Became team reference for cross-service synchronization",
-      "Founded an analytics service after an OLTP vs OLAP evaluation"
+      "Learned Git, branching and professional delivery workflow from zero",
+      "Internalized code review as a learning tool — a principle I still hold",
+      "Shipped production features within weeks of starting"
     ],
     "technologies": [
-      "React",
-      "NestJS",
-      "Fastify",
-      "Kafka",
-      "PostgreSQL",
-      "Prisma",
-      "Terraform",
-      "BigQuery",
-      "Python",
-      "Vertex AI",
-      "Kubernetes",
-      "Sentry"
+      "JavaScript",
+      "Git",
+      "HTML/CSS"
     ],
     "capabilities": [
-      "Distributed Systems",
-      "Backend Engineering",
       "Frontend Engineering",
-      "System Design",
-      "Architecture",
-      "Observability",
-      "Reliability",
-      "Ownership",
-      "Technical Leadership"
+      "Communication"
     ],
-    "caseIds": [
-      "single-computation-path",
-      "workspace-sync",
-      "analytics-service",
-      "prod-data-correction",
-      "asset-tree-search",
-      "error-observability",
-      "ai-route-generation"
-    ],
+    "caseIds": [],
     "lessons": [
-      "Eventually consistent derived data should have exactly one computation path.",
-      "If a value can always be recomputed from source, favor recomputation over synchronization.",
-      "Consistency debates end when ownership is explicit."
+      "Code review is one of the fastest learning tools in software engineering.",
+      "Reading existing code well is a more valuable skill than writing new code fast."
     ]
   }
 ]
@@ -413,7 +448,26 @@ export const cases: CaseStudy[] = [
           "Exactly one service owns the metric. It is the only code path in the company allowed to compute it.",
           "Every other service that touches underlying data stops computing anything. Instead it emits a lightweight 'stale' signal — 'route X may have changed'. The owner recomputes the metric from the source of truth, idempotently, whenever a signal arrives.",
           "This is where a personal principle crystallized: eventually consistent derived data should have exactly one computation path. And its corollary: if a value can always be recomputed from source, favor recomputation over synchronization."
-        ]
+        ],
+        "diagram": {
+          "width": 800,
+          "height": 400,
+          "nodes": [
+            { "id": "kafka", "lines": ["Kafka: inspection · edit · delete events"], "x": 200, "y": 16, "w": 400, "h": 40 },
+            { "id": "svcA", "lines": ["Service A", "(own projection)"], "x": 60, "y": 110, "w": 220, "h": 54 },
+            { "id": "svcB", "lines": ["Service B", "(own projection)"], "x": 520, "y": 110, "w": 220, "h": 54 },
+            { "id": "owner", "lines": ["Metric Owner Service"], "sub": "idempotent recompute · single computation path", "x": 205, "y": 220, "w": 390, "h": 64, "variant": "accent" },
+            { "id": "dashboards", "lines": ["Dashboards"], "sub": "customer-facing", "x": 290, "y": 330, "w": 220, "h": 44 },
+            { "id": "removed", "lines": ["✕ removed:", "2nd computation on B", "+ reconciliation job"], "x": 615, "y": 220, "w": 175, "h": 64, "variant": "removed" }
+          ],
+          "edges": [
+            { "from": "kafka", "to": "svcA" },
+            { "from": "kafka", "to": "svcB" },
+            { "from": "svcA", "to": "owner", "label": "stale signal" },
+            { "from": "svcB", "to": "owner", "label": "stale signal" },
+            { "from": "owner", "to": "dashboards", "label": "recomputed value" }
+          ]
+        }
       },
       {
         "id": "tradeoffs",
@@ -470,7 +524,8 @@ export const cases: CaseStudy[] = [
       "Frontend Engineering",
       "Design Systems",
       "Technical Leadership",
-      "Developer Experience"
+      "Developer Experience",
+      "Accessibility"
     ],
     "technologies": [
       "Vue 3",
@@ -527,7 +582,25 @@ export const cases: CaseStudy[] = [
         "paras": [
           "Build the Design System as the path of least resistance: importing the system component had to be strictly less work than writing a local one.",
           "Every component shipped with usage docs and copy-pasteable examples. I migrated the highest-traffic screens myself first, so the system proved itself before anyone was asked to adopt it."
-        ]
+        ],
+        "diagram": {
+          "width": 760,
+          "height": 260,
+          "nodes": [
+            { "id": "screenA", "lines": ["Screen: Asset list"], "x": 40, "y": 16, "w": 170, "h": 44 },
+            { "id": "screenB", "lines": ["Screen: Sensor detail"], "x": 225, "y": 16, "w": 170, "h": 44 },
+            { "id": "screenC", "lines": ["Screen: Route editor"], "x": 410, "y": 16, "w": 170, "h": 44 },
+            { "id": "removed", "lines": ["✕ phased out:", "local one-off", "components"], "x": 600, "y": 16, "w": 150, "h": 70, "variant": "removed" },
+            { "id": "ds", "lines": ["Design System"], "sub": "tokens · patterns · a11y defaults · docs", "x": 180, "y": 100, "w": 400, "h": 64, "variant": "accent" },
+            { "id": "vuetify", "lines": ["Vuetify (base library)"], "x": 280, "y": 190, "w": 200, "h": 44 }
+          ],
+          "edges": [
+            { "from": "vuetify", "to": "ds", "label": "wraps" },
+            { "from": "ds", "to": "screenA" },
+            { "from": "ds", "to": "screenB" },
+            { "from": "ds", "to": "screenC" }
+          ]
+        }
       },
       {
         "id": "tradeoffs",
@@ -542,7 +615,7 @@ export const cases: CaseStudy[] = [
         "id": "implementation",
         "title": "Implementation",
         "paras": [
-          "TypeScript component library on Vue 3 wrapping Vuetify: design tokens, form patterns, data-density presets and accessibility defaults baked in. Documentation lived beside the code and every component page answered 'when do I use this instead of X'.",
+          "TypeScript component library on Vue 3 wrapping Vuetify, paired with a Figma component library kept in sync with the code: design tokens, form patterns, data-density presets and accessibility defaults baked in. Documentation lived beside the code and every component page answered 'when do I use this instead of X'.",
           "Adoption strategy: migrate loud screens first, pair with each developer on their first use, and treat every 'the system can't do X' as a bug in the system, not the developer."
         ]
       },
@@ -583,7 +656,8 @@ export const cases: CaseStudy[] = [
     "capabilities": [
       "Architecture",
       "Frontend Engineering",
-      "Component Architecture"
+      "Component Architecture",
+      "UX"
     ],
     "technologies": [
       "Vue 3",
@@ -640,7 +714,21 @@ export const cases: CaseStudy[] = [
         "paras": [
           "Build it — but as an abstraction, not a one-off. The component separated tree state (expansion, tri-state selection, async loading) from rendering, so future screens could reuse the logic with different visuals.",
           "The dependency calculus: a library saves weeks now and costs indefinitely; owned code costs weeks now and stays exactly as capable as we need. For a component this central to the domain, ownership won."
-        ]
+        ],
+        "diagram": {
+          "width": 760,
+          "height": 260,
+          "nodes": [
+            { "id": "state", "lines": ["Tree State"], "sub": "expansion · tri-state · async loading (pure)", "x": 60, "y": 16, "w": 260, "h": 64 },
+            { "id": "render", "lines": ["Tree Renderer"], "sub": "virtualized view", "x": 440, "y": 16, "w": 260, "h": 64, "variant": "accent" },
+            { "id": "consumer", "lines": ["Any screen with a hierarchy"], "x": 250, "y": 140, "w": 260, "h": 50 },
+            { "id": "removed", "lines": ["✕ rejected:", "3rd-party tree libs", "(gaps in core selection)"], "x": 560, "y": 140, "w": 190, "h": 70, "variant": "removed" }
+          ],
+          "edges": [
+            { "from": "state", "to": "render", "label": "drives" },
+            { "from": "render", "to": "consumer", "label": "used by" }
+          ]
+        }
       },
       {
         "id": "tradeoffs",
@@ -703,6 +791,7 @@ export const cases: CaseStudy[] = [
       "PostgreSQL"
     ],
     "impact": [
+      "Atomic 7-table transaction",
       "Consistent workspace state across services"
     ],
     "difficulty": "High",
@@ -721,7 +810,8 @@ export const cases: CaseStudy[] = [
         "id": "decision",
         "title": "Decision",
         "paras": [
-          "Defined explicit ownership per entity type and an event contract for propagating edits, with idempotent consumers and ordering guaranteed per-entity via Kafka partitioning keys. Consumers converge on the owner's state rather than negotiating."
+          "Defined explicit ownership per entity type and an event contract for propagating edits, with idempotent consumers and ordering guaranteed per-entity via Kafka partitioning keys. Consumers converge on the owner's state rather than negotiating.",
+          "The write path itself is an atomic, seven-table transaction (NestJS, Prisma, PostgreSQL) that publishes its Kafka event only after the transaction commits — so a downstream consumer can never observe an edit that could still be rolled back."
         ]
       },
       {
@@ -737,21 +827,21 @@ export const cases: CaseStudy[] = [
     "id": "flaky-e2e",
     "featured": false,
     "title": "Making a flaky E2E suite deterministic",
-    "company": "AQTech",
+    "company": "Dynamox",
     "category": "Quality Engineering",
-    "summary": "Investigated intermittent failures and redesigned the testing strategy to make CI reliable again.",
+    "summary": "Diagnosed intermittent failures in the backend's E2E suite and redesigned the testing strategy, taking it from 25-37 non-deterministic failures to 302 passing tests with zero failures — without skips or weakened assertions.",
     "capabilities": [
       "Testing",
       "Reliability",
-      "Frontend Engineering"
+      "Backend Engineering"
     ],
     "technologies": [
-      "Vue 3",
+      "NestJS",
       "TypeScript"
     ],
     "impact": [
-      "CI trusted again",
-      "Red builds meant real bugs"
+      "25-37 flaky failures → 302 passing, zero failures",
+      "No skips, no weakened assertions"
     ],
     "difficulty": "Medium",
     "ownership": "Investigation & redesign",
@@ -762,21 +852,21 @@ export const cases: CaseStudy[] = [
         "id": "context",
         "title": "Context",
         "paras": [
-          "The E2E suite failed intermittently. The team had learned to click 'retry' — which meant the suite no longer communicated anything."
+          "The backend's E2E suite failed intermittently — 25 to 37 non-deterministic failures per run. The team had learned to click 'retry', which meant the suite no longer communicated anything."
         ]
       },
       {
         "id": "decision",
         "title": "Decision",
         "paras": [
-          "Categorized a month of failures: nearly all traced to time-dependent waits and shared test state. Replaced sleeps with condition-based waits, isolated test data per run, and moved genuinely-flaky integration concerns down the pyramid into deterministic component tests."
+          "Categorized a month of failures: nearly all traced to time-dependent waits and shared test state. Replaced sleeps with condition-based waits, isolated test data per run, and moved genuinely-flaky integration concerns down the pyramid into deterministic component tests. No test was skipped and no assertion was weakened to make the suite green — every fix addressed the actual non-determinism."
         ]
       },
       {
         "id": "impact",
         "title": "Impact",
         "paras": [
-          "A red build became information again. The deeper lesson: a test suite's value is its trustworthiness, not its coverage."
+          "The suite now runs 302 passing tests with zero failures, down from 25-37 non-deterministic failures per run. A red build became information again. The deeper lesson: a test suite's value is its trustworthiness, not its coverage."
         ]
       }
     ]
@@ -847,7 +937,7 @@ export const cases: CaseStudy[] = [
       "Prisma"
     ],
     "impact": [
-      "Zero-downtime corrections, fully reversible"
+      "~33,000 records fixed, zero downtime, fully reversible"
     ],
     "difficulty": "Medium",
     "ownership": "End-to-end",
@@ -872,7 +962,7 @@ export const cases: CaseStudy[] = [
         "id": "impact",
         "title": "Impact",
         "paras": [
-          "Corrections shipped without downtime and with a guaranteed undo path. The scripts became the team's standard for production data changes."
+          "Corrections shipped without downtime and with a guaranteed undo path — roughly 33,000 live records fixed with no maintenance window. The scripts became the team's standard for production data changes."
         ]
       }
     ]
@@ -887,7 +977,8 @@ export const cases: CaseStudy[] = [
     "capabilities": [
       "Frontend Engineering",
       "Backend Engineering",
-      "System Design"
+      "System Design",
+      "UX"
     ],
     "technologies": [
       "React",
@@ -913,7 +1004,7 @@ export const cases: CaseStudy[] = [
         "id": "decision",
         "title": "Decision",
         "paras": [
-          "Server-side search returning matches with their ancestor paths, so the tree can open directly to a result; plus predictive prefetch of likely-next levels based on expansion patterns. The tree renders only what's visible."
+          "Server-side search implemented as a recursive SQL traversal, returning matches with their ancestor paths so the tree can open directly to a result; plus progressive prefetch of likely-next levels based on expansion patterns. The tree renders only what's visible."
         ]
       },
       {
@@ -1020,6 +1111,54 @@ export const cases: CaseStudy[] = [
         ]
       }
     ]
+  },
+  {
+    "id": "container-hardening",
+    "featured": false,
+    "title": "Hardening containers and closing a 135-CVE gap",
+    "company": "Dynamox",
+    "category": "Security",
+    "summary": "Rebuilt backend services on hardened, non-root container images and worked through a full dependency vulnerability scan, remediating 7 critical CVEs across two services.",
+    "capabilities": [
+      "Security",
+      "Reliability",
+      "Backend Engineering"
+    ],
+    "technologies": [
+      "Docker",
+      "Kubernetes"
+    ],
+    "impact": [
+      "7 critical CVEs remediated",
+      "135-CVE dependency scan cleared"
+    ],
+    "difficulty": "Medium",
+    "ownership": "End-to-end",
+    "customerFacing": "Indirect",
+    "readingTime": "2 min",
+    "sections": [
+      {
+        "id": "context",
+        "title": "Context",
+        "paras": [
+          "Backend services at Dynamox ran in containers on Kubernetes (GKE) without a formal hardening or CVE-remediation practice. Vulnerability exposure in base images and dependencies is easy to defer — it doesn't fail a build, it just accumulates."
+        ]
+      },
+      {
+        "id": "decision",
+        "title": "Decision",
+        "paras": [
+          "Rebuilt service images on hardened, non-root Docker bases and ran a full dependency vulnerability scan across two services — 135 CVEs flagged in total. Prioritized and remediated the 7 rated critical first, then worked down the rest."
+        ]
+      },
+      {
+        "id": "impact",
+        "title": "Impact",
+        "paras": [
+          "Cleared the 135-CVE scan with all 7 critical vulnerabilities remediated, and containers now run as non-root by default. Security hardening became a standing part of how backend services ship, not an audit-triggered scramble."
+        ]
+      }
+    ]
   }
 ]
 
@@ -1093,6 +1232,11 @@ export const capabilities: Capability[] = [
     "id": "accessibility",
     "name": "Accessibility",
     "desc": "Defaults baked into components, not retrofitted per screen."
+  },
+  {
+    "id": "security",
+    "name": "Security",
+    "desc": "Hardening containers, remediating CVEs, keeping dependency risk visible."
   },
   {
     "id": "communication",
@@ -1211,7 +1355,11 @@ export const technologies: Technology[] = [
   },
   {
     "name": "Kubernetes",
-    "usage": "Deployment platform for Dynamox services."
+    "usage": "Deployment platform for Dynamox services (GKE)."
+  },
+  {
+    "name": "Docker",
+    "usage": "Hardened, non-root container images for backend services on GKE."
   },
   {
     "name": "Sentry",

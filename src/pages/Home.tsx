@@ -39,6 +39,10 @@ export default function Home() {
         </div>
       )}
 
+      {config.availability && (
+        <p className="availability-line">{config.availability}</p>
+      )}
+
       <p className="hero-oneliner">{profile.oneLiner}</p>
       <p className="hero-evidence">
         Every experience in this repository answers one question:{" "}
@@ -49,7 +53,7 @@ export default function Home() {
       <div className="journey-strip">
         {companies.map((company, i) => (
           <Fragment key={company.id}>
-            {i > 0 && <div className="journey-arrow">→</div>}
+            {i > 0 && <div className="journey-arrow">←</div>}
             <Link className="card-link" to={`/companies/${company.id}`}>
               <div className="journey-card">
                 <div className="journey-card-period">{company.period}</div>

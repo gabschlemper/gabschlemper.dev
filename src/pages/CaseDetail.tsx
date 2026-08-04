@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import CaseDiagram from "../components/CaseDiagram";
 import { capabilities, cases, companies } from "../data/knowledge-base";
 import { techSlug } from "../lib/slug";
 import { useDocumentMeta } from "../lib/useDocumentMeta";
@@ -128,6 +129,7 @@ export default function CaseDetail() {
                   <span style={{ textWrap: "pretty" }}>{bullet}</span>
                 </div>
               ))}
+              {section.diagram && <CaseDiagram spec={section.diagram} />}
             </section>
           ))}
         </article>

@@ -41,9 +41,9 @@ export default function EvidenceMapPage() {
                   key={`${edge.a}->${edge.b}`}
                   d={edge.d}
                   fill="none"
-                  stroke={hot ? "var(--accent)" : "var(--border2)"}
-                  strokeWidth={1.1}
-                  opacity={focus ? (hot ? 0.9 : 0.06) : 0.5}
+                  stroke={hot ? "var(--accent)" : "var(--text3)"}
+                  strokeWidth={hot ? 1.4 : 1.1}
+                  opacity={focus ? (hot ? 0.9 : 0.06) : 0.7}
                 />
               );
             })}

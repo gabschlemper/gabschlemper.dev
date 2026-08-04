@@ -11,7 +11,7 @@
   --border2: #403a33;
   --text: #ede9e1;
   --text2: #a69f92;
-  --text3: #736c60;
+  --text3: #8a8172; /* 4.78:1 on --bg — WCAG AA for the 10-11.5px labels that use it */
   --accent: #7da3ee;
   --sel: rgba(125, 163, 238, 0.16);
 
@@ -28,7 +28,7 @@
   --border2: #cfc9bd;
   --text: #1b1915;
   --text2: #6e685d;
-  --text3: #9c9587;
+  --text3: #786f61; /* 4.70:1 on light --bg — WCAG AA for the 10-11.5px labels that use it */
   --accent: #2563eb;
   --sel: rgba(37, 99, 235, 0.12);
 }
@@ -537,6 +537,13 @@ a:hover {
   text-decoration: none;
 }
 
+.availability-line {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--text2);
+  margin: 0 0 22px;
+}
+
 .hero-oneliner {
   font-size: 19px;
   line-height: 1.6;
@@ -654,7 +661,7 @@ a:hover {
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 1px;
   background: var(--border);
   border: 1px solid var(--border);
@@ -1226,6 +1233,51 @@ a:hover {
 }
 
 /* ---------------------------------------------------------------------------
+   Case diagrams
+   --------------------------------------------------------------------------- */
+
+.diagram-frame {
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 6px;
+  margin-top: 18px;
+  padding: 14px;
+}
+
+.diagram-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.diagram-node-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  fill: var(--text);
+}
+
+.diagram-node-label.accent {
+  fill: var(--accent);
+  font-weight: 700;
+}
+
+.diagram-node-label.removed {
+  fill: var(--text3);
+}
+
+.diagram-node-sub {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  fill: var(--text3);
+}
+
+.diagram-edge-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  fill: var(--text3);
+}
+
+/* ---------------------------------------------------------------------------
    Capabilities / technologies
    --------------------------------------------------------------------------- */
 
@@ -1625,12 +1677,21 @@ a:hover {
     flex-direction: column;
   }
 
+  /* Visual order only: content (name, headline) reads before the nav on
+     mobile, even though the sidebar stays first in DOM/tab order so
+     keyboard and screen-reader users still meet navigation first — the
+     skip-link exists for exactly this trade-off. */
+  .main {
+    order: 1;
+  }
+
   .sidebar {
+    order: 2;
     width: 100%;
     position: static;
     height: auto;
     border-right: none;
-    border-bottom: 1px solid var(--border);
+    border-top: 1px solid var(--border);
   }
 
   .nav {
@@ -1660,7 +1721,7 @@ a:hover {
   }
 
   .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .two-col,
@@ -1688,6 +1749,6 @@ a:hover {
   }
 
   .stats-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
