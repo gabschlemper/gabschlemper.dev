@@ -1,14 +1,8 @@
 import { Link } from "react-router-dom";
 import { companies, technologies } from "../data/knowledge-base";
 import { techSlug } from "../lib/slug";
-import { useDocumentMeta } from "../lib/useDocumentMeta";
 
 export default function Technologies() {
-  useDocumentMeta(
-    "Technologies",
-    "Every entry documents how I used it — not a logo grid.",
-  );
-
   return (
     <div className="screen screen--wide">
       <div className="eyebrow">technologies / how, not just what</div>

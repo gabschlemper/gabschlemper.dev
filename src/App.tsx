@@ -12,6 +12,7 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import CommandPalette from "./components/CommandPalette";
 import Sidebar from "./components/Sidebar";
 import { useTheme } from "./lib/useTheme";
+import { useRouteMeta } from "./lib/useRouteMeta";
 
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
@@ -36,11 +37,13 @@ function ScrollToTop() {
   return null;
 }
 
-function Shell() {
+export function Shell() {
   const { theme, toggle } = useTheme();
   const [paletteOpen, setPaletteOpen] = useState(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
+  useRouteMeta();
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {

@@ -8,16 +8,14 @@ const root = join(__dirname, "..");
 const BASE_URL = "https://gabschlemper.dev";
 
 /**
- * The route table lives in TypeScript, so bundle the data and slug helpers
- * in-memory rather than duplicating them here.
+ * The route table lives in TypeScript, so bundle the data and route helpers
+ * in-memory rather than duplicating them here. Sharing allRoutes() with
+ * scripts/prerender.js keeps the two build steps from ever drifting apart.
  */
-async function loadData() {
+async function loadRoutes() {
   const result = await esbuild.build({
     stdin: {
-      contents: `
-        export { capabilities, cases, companies, technologies } from "./src/data/knowledge-base";
-        export { techSlug } from "./src/lib/slug";
-      `,
+      contents: `export { allRoutes } from "./src/lib/meta";`,
       resolveDir: root,
       loader: "ts",
     },
@@ -28,47 +26,54 @@ async function loadData() {
   });
 
   const code = result.outputFiles[0].text;
-  return import(`data:text/javascript;base64,${Buffer.from(code).toString("base64")}`);
+  const { allRoutes } = await import(
+    `data:text/javascript;base64,${Buffer.from(code).toString("base64")}`
+  );
+  return allRoutes();
 }
 
-function urlEntry(path, priority, changefreq, lastmod) {
+function priorityFor(path) {
+  if (path === "/") return "1.0";
+  if (path === "/profile") return "0.9";
+  if (path === "/cases") return "0.9";
+  if (path.startsWith("/cases/")) return "0.8";
+  if (path === "/journey") return "0.8";
+  if (path === "/companies") return "0.8";
+  if (path === "/capabilities") return "0.8";
+  if (path === "/principles") return "0.8";
+  if (path.startsWith("/companies/")) return "0.7";
+  if (path === "/technologies") return "0.7";
+  if (path.startsWith("/capabilities/")) return "0.6";
+  if (path === "/map") return "0.6";
+  if (path.startsWith("/technologies/")) return "0.5";
+  return "0.5";
+}
+
+function changefreqFor(path) {
+  if (path === "/" || path === "/cases") return "weekly";
+  return "monthly";
+}
+
+function urlEntry(path, lastmod) {
   return `  <url>
     <loc>${BASE_URL}${path}</loc>
     <lastmod>${lastmod}</lastmod>
-    <changefreq>${changefreq}</changefreq>
-    <priority>${priority}</priority>
+    <changefreq>${changefreqFor(path)}</changefreq>
+    <priority>${priorityFor(path)}</priority>
   </url>`;
 }
 
-const { capabilities, cases, companies, technologies, techSlug } = await loadData();
+const routes = await loadRoutes();
 const today = new Date().toISOString().split("T")[0];
-
-const entries = [
-  urlEntry("/", "1.0", "weekly", today),
-  urlEntry("/profile", "0.9", "monthly", today),
-  urlEntry("/journey", "0.8", "monthly", today),
-  urlEntry("/companies", "0.8", "monthly", today),
-  urlEntry("/cases", "0.9", "weekly", today),
-  urlEntry("/capabilities", "0.8", "monthly", today),
-  urlEntry("/technologies", "0.7", "monthly", today),
-  urlEntry("/principles", "0.8", "monthly", today),
-  urlEntry("/map", "0.6", "monthly", today),
-  ...companies.map((c) => urlEntry(`/companies/${c.id}`, "0.7", "monthly", today)),
-  ...cases.map((c) => urlEntry(`/cases/${c.id}`, "0.8", "monthly", today)),
-  ...capabilities.map((c) => urlEntry(`/capabilities/${c.id}`, "0.6", "monthly", today)),
-  ...technologies.map((t) =>
-    urlEntry(`/technologies/${techSlug(t.name)}`, "0.5", "monthly", today),
-  ),
-];
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${entries.join("\n")}
+${routes.map((path) => urlEntry(path, today)).join("\n")}
 </urlset>
 `;
 
 const outputPath = join(root, "public", "sitemap.xml");
 writeFileSync(outputPath, sitemap);
 
-console.log(`✅ Sitemap generated with ${entries.length} URLs`);
+console.log(`✅ Sitemap generated with ${routes.length} URLs`);
 console.log(`   Written to: ${outputPath}`);

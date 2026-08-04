@@ -1,13 +1,7 @@
 import { Link } from "react-router-dom";
 import { capabilities, cases, companies } from "../data/knowledge-base";
-import { useDocumentMeta } from "../lib/useDocumentMeta";
 
 export default function Capabilities() {
-  useDocumentMeta(
-    "Capabilities",
-    "Not technologies — capabilities. Each one links to the documents that prove it.",
-  );
-
   return (
     <div className="screen screen--wide">
       <div className="eyebrow">capabilities / claims with evidence</div>

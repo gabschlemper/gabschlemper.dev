@@ -2,11 +2,8 @@ import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import { config, contactLinks } from "../config";
 import { cases, companies, profile, stats } from "../data/knowledge-base";
-import { useDocumentMeta } from "../lib/useDocumentMeta";
 
 export default function Home() {
-  useDocumentMeta(undefined, profile.headline);
-
   const featured = cases.filter((study) => study.featured);
   const links = contactLinks();
 

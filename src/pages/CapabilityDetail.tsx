@@ -1,14 +1,10 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { capabilities, cases, companies } from "../data/knowledge-base";
-import { useDocumentMeta } from "../lib/useDocumentMeta";
 import NotFound from "./NotFound";
 
 export default function CapabilityDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const capability = capabilities.find((entry) => entry.id === id);
-
-  useDocumentMeta(capability?.name, capability?.desc ?? "");
 
   if (!capability) return <NotFound />;
 
@@ -22,9 +18,7 @@ export default function CapabilityDetail() {
   return (
     <div className="screen">
       <div className="breadcrumb">
-        <button type="button" onClick={() => navigate("/capabilities")}>
-          capabilities
-        </button>
+        <Link to="/capabilities">capabilities</Link>
         <span>/</span>
         <span>{capability.name}</span>
       </div>

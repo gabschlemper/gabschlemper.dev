@@ -1,15 +1,11 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { cases, companies } from "../data/knowledge-base";
 import { techSlug } from "../lib/slug";
-import { useDocumentMeta } from "../lib/useDocumentMeta";
 import NotFound from "./NotFound";
 
 export default function CompanyDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const company = companies.find((entry) => entry.id === id);
-
-  useDocumentMeta(company?.name, company?.summary ?? "");
 
   if (!company) return <NotFound />;
 
@@ -20,9 +16,7 @@ export default function CompanyDetail() {
   return (
     <div className="screen">
       <div className="breadcrumb">
-        <button type="button" onClick={() => navigate("/companies")}>
-          companies
-        </button>
+        <Link to="/companies">companies</Link>
         <span>/</span>
         <span>{company.name}</span>
       </div>

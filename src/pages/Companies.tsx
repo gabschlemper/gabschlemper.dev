@@ -1,10 +1,7 @@
 import { Link } from "react-router-dom";
 import { companies } from "../data/knowledge-base";
-import { useDocumentMeta } from "../lib/useDocumentMeta";
 
 export default function Companies() {
-  useDocumentMeta("Companies", "Where the engineering happened, and what each phase taught.");
-
   return (
     <div className="screen">
       <div className="eyebrow">companies / {companies.length} entries</div>

@@ -1,13 +1,7 @@
 import { Link } from "react-router-dom";
 import { companies, profile } from "../data/knowledge-base";
-import { useDocumentMeta } from "../lib/useDocumentMeta";
 
 export default function Journey() {
-  useDocumentMeta(
-    "Career Journey",
-    "Each stage is defined by what I was learning, not where I was sitting.",
-  );
-
   return (
     <div className="screen">
       <div className="eyebrow">career journey / evolution</div>

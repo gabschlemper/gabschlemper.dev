@@ -1,9 +1,6 @@
 import { profile } from "../data/knowledge-base";
-import { useDocumentMeta } from "../lib/useDocumentMeta";
 
 export default function Profile() {
-  useDocumentMeta("Profile", "Technical identity: how I work, evidenced elsewhere in this repository.");
-
   return (
     <div className="screen">
       <div className="eyebrow">profile / technical identity</div>

@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { config } from "../config";
 import { numberedNavGroups } from "../lib/nav";
 import type { Theme } from "../lib/useTheme";
@@ -10,20 +10,14 @@ interface Props {
 }
 
 export default function Sidebar({ theme, onToggleTheme, onOpenPalette }: Props) {
-  const navigate = useNavigate();
   const groups = numberedNavGroups();
 
   return (
     <aside className="sidebar">
-      <button
-        type="button"
-        className="sidebar-brand"
-        onClick={() => navigate("/")}
-        aria-label="Gabriela Schlemper — home"
-      >
+      <Link className="sidebar-brand" to="/" aria-label="Gabriela Schlemper — home">
         <div className="sidebar-brand-title">Gabriela Schlemper</div>
         <div className="sidebar-brand-sub">Engineering Knowledge Base · public docs</div>
-      </button>
+      </Link>
 
       <button type="button" className="search-trigger" onClick={onOpenPalette}>
         <span>search…</span>

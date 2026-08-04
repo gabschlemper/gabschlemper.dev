@@ -1,17 +1,11 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { buildEvidenceMap } from "../lib/evidenceMap";
-import { useDocumentMeta } from "../lib/useDocumentMeta";
 
 export default function EvidenceMapPage() {
   const navigate = useNavigate();
   const [focus, setFocus] = useState<string | null>(null);
   const map = useMemo(() => buildEvidenceMap(), []);
-
-  useDocumentMeta(
-    "Evidence Map",
-    "Capabilities connect to the case studies that prove them, the companies where they happened, and the technologies involved.",
-  );
 
   const active = focus ? map.neighbours(focus) : null;
 

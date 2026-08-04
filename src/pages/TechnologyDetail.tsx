@@ -1,16 +1,12 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { cases, companies, technologies } from "../data/knowledge-base";
 import { techNameFromSlug } from "../lib/slug";
-import { useDocumentMeta } from "../lib/useDocumentMeta";
 import NotFound from "./NotFound";
 
 export default function TechnologyDetail() {
   const { slug } = useParams();
-  const navigate = useNavigate();
   const name = slug ? techNameFromSlug(slug) : undefined;
   const tech = technologies.find((entry) => entry.name === name);
-
-  useDocumentMeta(tech?.name, tech?.usage ?? "");
 
   if (!tech) return <NotFound />;
 
@@ -24,9 +20,7 @@ export default function TechnologyDetail() {
   return (
     <div className="screen">
       <div className="breadcrumb">
-        <button type="button" onClick={() => navigate("/technologies")}>
-          technologies
-        </button>
+        <Link to="/technologies">technologies</Link>
         <span>/</span>
         <span>{tech.name}</span>
       </div>

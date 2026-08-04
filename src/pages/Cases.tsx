@@ -1,13 +1,7 @@
 import { Link } from "react-router-dom";
 import { cases } from "../data/knowledge-base";
-import { useDocumentMeta } from "../lib/useDocumentMeta";
 
 export default function Cases() {
-  useDocumentMeta(
-    "Case Studies",
-    "Context, constraints, alternatives, decision, trade-offs. Never just the output.",
-  );
-
   // Featured first, otherwise source order.
   const sorted = [...cases].sort(
     (a, b) => Number(b.featured) - Number(a.featured),

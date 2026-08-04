@@ -1,21 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import CaseDiagram from "../components/CaseDiagram";
 import { capabilities, cases, companies } from "../data/knowledge-base";
 import { techSlug } from "../lib/slug";
-import { useDocumentMeta } from "../lib/useDocumentMeta";
 import NotFound from "./NotFound";
 
 export default function CaseDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const study = cases.find((entry) => entry.id === id);
 
   const [progress, setProgress] = useState(0);
   const [activeSection, setActiveSection] = useState("");
   const [copied, setCopied] = useState(false);
-
-  useDocumentMeta(study?.title, study?.summary ?? "");
 
   useEffect(() => {
     if (!study) return;
@@ -95,9 +91,7 @@ export default function CaseDetail() {
       <div className="screen screen--case">
         <article>
           <div className="breadcrumb">
-            <button type="button" onClick={() => navigate("/cases")}>
-              case-studies
-            </button>
+            <Link to="/cases">case-studies</Link>
             <span>/</span>
             <span>{study.id}</span>
           </div>
@@ -146,13 +140,9 @@ export default function CaseDetail() {
             <div>
               <div className="case-fact-key">company</div>
               {company ? (
-                <button
-                  type="button"
-                  className="case-fact-link"
-                  onClick={() => navigate(`/companies/${company.id}`)}
-                >
+                <Link className="case-fact-link" to={`/companies/${company.id}`}>
                   {study.company}
-                </button>
+                </Link>
               ) : (
                 <div className="case-fact-val">{study.company}</div>
               )}
