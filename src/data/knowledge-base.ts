@@ -184,7 +184,7 @@ export const stats: Stat[] = [
   },
   {
     "label": "Case Studies",
-    "value": "11"
+    "value": "12"
   },
   {
     "label": "Architecture Decisions",
@@ -220,8 +220,9 @@ export const companies: Company[] = [
     "achievements": [
       "Became the team's reference for cross-service synchronization — an atomic, seven-table edit propagation across two services, culminating in an architecture decision I owned autonomously.",
       "Made an unreliable test suite trustworthy again, unblocking the team's CI — and, in review, empirically disproved three of four proposed production changes.",
-      "Founded a new analytics/reporting service, including the OLTP-vs-OLAP architecture decision behind it.",
+      "Founded a new analytics/reporting service, including the OLTP-vs-OLAP architecture decision behind it — reviewed and signed off by seven stakeholders across engineering and the platform team, with a security/privacy risk review folded into the decision itself and a latency risk I caught and corrected between two versions of the ADR.",
       "Owned production reliability and data-integrity work — safe, reversible large-scale data corrections and incident response with post-mortems.",
+      "Turned a customer-blocking production incident into a documented architecture decision — a post-mortem, an ADR, and a rebuilt consumer — then root-caused a later production deadlock to a messaging-partition mismatch and closed a silent-failure gap with retry and a dead-letter queue.",
       "Delivered a complex feature end to end, alone, across database, backend, and front end.",
       "Raised the team's engineering baseline in observability, security, and documentation, often on my own initiative.",
       "Prototyped applied AI with a safety-first design — a human-in-the-loop agent for bulk route creation.",
@@ -249,17 +250,16 @@ export const companies: Company[] = [
       "Technical Decision Making",
       "Communication",
       "Ownership",
+      "Technical Leadership",
       "Performance Engineering",
       "Frontend Engineering",
       "Backend Engineering",
       "Product Thinking",
       "UX",
+      "Debugging",
       "Security",
       "Reliability",
-      "AI Engineering",
-      "Technical Leadership",
       "Observability",
-      "Debugging",
       "Testing",
       "Incident Response"
     ],
@@ -271,13 +271,13 @@ export const companies: Company[] = [
       "prod-data-correction",
       "asset-tree-search",
       "error-observability",
-      "ai-route-generation",
+      "human-in-the-loop-ai-agent-for-bulk-route-creation",
       "container-hardening"
     ],
     "lessons": [
       "Eventually-consistent derived data should have exactly one computation path. Multiple writers deriving the same value is the defect; consolidating the derivation is the fix.",
-      "Push hierarchy traversal into the database. A recursive query that returns matches with their ancestors beats a per-level request cascade the client has to orchestrate.",
-      "Analytical load does not belong on your transactional store. When heavy aggregations and live traffic share a database, the fix is usually to separate the workload, not to tune the query."
+      "Parallel AI agents need the same safety design as any other concurrent workers. Isolate their work by disjoint file ownership, or they will corrupt each other's changes exactly like any other race condition.",
+      "Push hierarchy traversal into the database. A recursive query that returns matches with their ancestors beats a per-level request cascade the client has to orchestrate."
     ]
   },
   {
@@ -304,7 +304,7 @@ export const companies: Company[] = [
     "achievements": [
       "Introduced frontend engineering standards where none existed — identified the absence of a Design System on my own initiative, proposed it, built the Figma components, validated them with product owners and engineers, implemented the reusable Vue components, and taught the team to use them until it became part of how the team built software.",
       "Became the team's frontend reference — influenced how the team built frontend software (architecture, reusable components, Figma, accessibility, UX), with most new screens passing through me.",
-      "Made a build-vs-buy call and shipped a reusable abstraction — built a hierarchical selector component in-house instead of pulling in an external dependency for a single need.",
+      "Made a build-vs-buy call and shipped a reusable abstraction — built a hierarchical (tree) selector in-house instead of pulling in an external dependency for a single screen's need, designing it as a general, lazily-loading component the team could reuse rather than a one-off. (Summarized here rather than as a standalone case study — see note below.)",
       "Contributed to a greenfield Vue 3 product developed alongside the existing Vue 2 platform."
     ],
     "technologies": [
@@ -329,18 +329,14 @@ export const companies: Company[] = [
       "Communication",
       "Design Systems",
       "Accessibility",
-      "Developer Experience",
-      "Technical Decision Making",
-      "Component Architecture",
-      "UX"
+      "Developer Experience"
     ],
     "caseIds": [
       "design-system",
-      "tree-selector"
+      "hierarchical-selector-component"
     ],
     "lessons": [
-      "UI inconsistency is an engineering problem, not a cosmetic one. Duplicated, divergent components are a missing-abstraction problem; the fix is a shared foundation, not more careful styling.",
-      "A dependency is a long-term liability, not a free shortcut. \"There's a library for it\" isn't a decision — weigh the lasting cost of owning that dependency against the cost of building the piece you actually need."
+      "UI inconsistency is an engineering problem, not a cosmetic one. Duplicated, divergent components are a missing-abstraction problem; the fix is a shared foundation, not more careful styling."
     ]
   },
   {
@@ -611,6 +607,121 @@ export const cases: CaseStudy[] = [
     ]
   },
   {
+    "id": "ai-orchestrated-feature-flag-removal",
+    "featured": false,
+    "title": "Designing the safety guarantees for an AI-orchestrated cleanup, not just automating the grind",
+    "company": "Dynamox",
+    "category": "Architecture",
+    "summary": "Designed and built a Claude Code skill that safely orchestrates parallel agents to remove expired feature flags across a shared frontend and two backend services, closing a 35-task cleanup epic (25+ flags plus obsolete product-tour infrastructure, ~3,100 lines removed in one commit) — with disjoint-file-set batching so agents can't collide, diff-against-baseline validation instead of absolute pass/fail, and an enforced two-repository deploy order so infrastructure changes can never precede the code that depends on them.",
+    "capabilities": [
+      "System Design",
+      "Technical Decision Making",
+      "Ownership",
+      "Technical Leadership"
+    ],
+    "technologies": [
+      "claude-code",
+      "TypeScript",
+      "React"
+    ],
+    "impact": [
+      "Closed a 35-task cleanup epic spanning a shared frontend and two backend services, removing 25+ expired feature flags and obsolete product-tour infrastructure — one commit alone removed roughly 3,100 lines of dead code.",
+      "Produced a reusable tool, not a one-off script: the same skill applies to the next flag-cleanup epic in any of the three repositories, encoding conventions that used to live only in memory.",
+      "Removed the failure modes that make this kind of cleanup dangerous by hand — misclassifying a flag, agents colliding on a shared file, or getting the two-repository deploy order backward — by designing them out of the tool rather than depending on whoever runs it remembering all three under time pressure.",
+      "Qualitative: a simpler, more legible codebase as a direct result of the dead-code removal; no isolated before/after build-time metric was captured for this change alone."
+    ],
+    "difficulty": "High",
+    "ownership": "End-to-end",
+    "customerFacing": "No",
+    "readingTime": "2 min",
+    "sections": [
+      {
+        "id": "context",
+        "title": "Context",
+        "paras": [
+          "This is my clearest evidence of treating AI agents as a workforce that needs real systems-design thinking, not just a faster way to type code. The interesting engineering here isn't \"I used AI to remove some flags\" — it's recognizing that running several agents concurrently on a shared codebase is a concurrency problem (agents can collide on the same file), that generic tooling output is noisy in a large, imperfect codebase (a raw typecheck or dead-code report drowns the real signal), and that one specific decision in this workflow can silently change what ships to production and therefore must stay a human's call. Encoding all three into a reusable tool, instead of doing the task once by hand and moving on, is the kind of leverage-building that scales past any single cleanup."
+        ]
+      },
+      {
+        "id": "problem",
+        "title": "Problem",
+        "paras": [
+          "Feature flags and old product tours had accumulated across a shared frontend and two backend services, tracked as 35 individual removal tasks in one epic. The three services didn't share a convention for where a flag's value actually lives or how code reads it: the frontend keeps values in environment files with several code patterns for reading them (direct access, a typed helper, and local re-export indirections that had to be traced); one backend reads a typed environment service gated by a decorator; the other keeps its flag values in a separate infrastructure repository entirely, deployed independently from the service code that reads them.",
+          "That last point is the sharpest edge: removing a flag's value from the infrastructure repo before the corresponding code change has deployed can silently disable a feature that's still live in production, with no error to catch it."
+        ]
+      },
+      {
+        "id": "constraints",
+        "title": "Constraints",
+        "bullets": [
+          "No single mechanical rule covered all three repos. Each had a different storage convention and different code patterns for reading a flag, so a tool that worked for one repo's shape would silently miss cases in another.",
+          "The flag's real production value decides what's safe to automate. A flag that's `true` in production means the old code path is genuinely dead and safe to delete automatically; a flag that's `false` might mean a feature the team still intends to ship — collapsing that distinction automatically risks deleting code nobody had abandoned.",
+          "Parallelizing the removal introduces a new failure mode. Multiple agents editing a shared, large codebase at once can collide on the same file and corrupt each other's work if nothing coordinates who touches what.",
+          "Standard safety checks are noisy at this scale. A monorepo with pre-existing typecheck errors and dead-code false positives makes an absolute pass/fail reading useless — it either hides a real regression in the noise or flags phantom ones.",
+          "The two-repository case has an ordering invariant that's easy to get backward under time pressure, and getting it backward has a production consequence, not just a failed build."
+        ]
+      },
+      {
+        "id": "decision",
+        "title": "Decision",
+        "paras": [
+          "I treated the parallel agents as a workforce that needed the same safety design any concurrent system does, and treated the one production-affecting decision as something the tool should surface, not resolve on its own."
+        ],
+        "bullets": [
+          "Encoded each repo's real storage and reading conventions explicitly, so classification is deterministic per repository instead of re-derived by hand each time.",
+          "Made the flag's real production value drive the decision. `true` in production inlines to `true` and deletes the dead path automatically; `false` in production stops and asks, recommending the safe default (keep production behavior) rather than guessing silently — because that one branch can change what ships.",
+          "Batched agents by disjoint file sets, computed from the overlap between the files each flag touches, so agents assigned to the same batch never write to the same file; flags that shared a file were serialized instead of parallelized.",
+          "Validated by diffing against a pre-change baseline — typecheck error counts and a dead-code report, run once on the unmodified code and once after — instead of reading either tool's raw output, so only regressions the removal actually introduced show up.",
+          "Made the two-repository deploy order an explicit, enforced step, not a note in a wiki page: the service's own change ships and deploys first; the infrastructure change that removes the now-unused variable is marked as dependent on that deploy and never allowed to precede it.",
+          "Required an explicit confirmation gate before committing or opening a PR, with a checklist of affected screens or endpoints — derived from the files actually touched — for a human to verify manually before merge."
+        ]
+      },
+      {
+        "id": "tradeoffs",
+        "title": "Trade-offs",
+        "bullets": [
+          "Disjoint-file-set batching over parallelizing by default. Computing file overlap before assigning work costs a planning step, but letting agents share a file without it risks a silently broken merge — worth the extra step once dozens of tasks are running concurrently.",
+          "Diffing against a baseline over trusting a tool's raw output. Running each safety check twice costs time, but an absolute reading in a large, imperfect codebase either buries a real regression in pre-existing noise or reports phantom ones — neither is usable.",
+          "Asking before inlining a flag that's `false` in production, over always deleting the path that never shipped. A slower, human-confirmed step here is the right cost, because automating it wrong means silently killing a feature the team hadn't abandoned.",
+          "Enforcing the deploy order in the tool over documenting it and trusting reviewers. A rule that only lives in a person's memory doesn't survive turnover or a rushed release; encoding it means it can't be skipped by accident."
+        ]
+      },
+      {
+        "id": "impact",
+        "title": "Impact",
+        "bullets": [
+          "Closed a 35-task cleanup epic spanning a shared frontend and two backend services, removing 25+ expired feature flags and obsolete product-tour infrastructure — one commit alone removed roughly 3,100 lines of dead code.",
+          "Produced a reusable tool, not a one-off script: the same skill applies to the next flag-cleanup epic in any of the three repositories, encoding conventions that used to live only in memory.",
+          "Removed the failure modes that make this kind of cleanup dangerous by hand — misclassifying a flag, agents colliding on a shared file, or getting the two-repository deploy order backward — by designing them out of the tool rather than depending on whoever runs it remembering all three under time pressure.",
+          "Qualitative: a simpler, more legible codebase as a direct result of the dead-code removal; no isolated before/after build-time metric was captured for this change alone."
+        ]
+      },
+      {
+        "id": "lessons",
+        "title": "Lessons Learned",
+        "paras": [
+          "Reusable engineering knowledge I carry forward from this:"
+        ],
+        "bullets": [
+          "Parallel AI agents need the same safety design as any other concurrent workers. Isolate their work by disjoint file ownership, or they will corrupt each other's changes exactly like any other race condition.",
+          "Validate against a baseline, not an absolute reading, in any codebase old enough to have pre-existing noise. Otherwise the signal you actually care about is either buried or drowned by false positives.",
+          "Encode an invariant in the tool; don't just document it. A rule that depends on a person remembering it under pressure will eventually be skipped — a tool that enforces it can't be.",
+          "Automate everything except the one decision that can silently change production behavior. That single branch deserves a human, even inside an otherwise fully automated pipeline."
+        ]
+      },
+      {
+        "id": "evidence",
+        "title": "Evidence",
+        "bullets": [
+          "Closed Jira epic with 35 subtasks across a shared frontend and two backend services; 25+ feature flags and obsolete product-tour infrastructure removed, including one commit that removed roughly 3,100 lines of dead code.",
+          "Built a reusable Claude Code skill encoding the classification, parallel-safety, and validation rules for all three repositories' conventions.",
+          "Part of a broader, sustained practice of building reliable tooling on top of AI coding agents: a from-scratch MCP server exposing SonarCloud's API for quality-gate review inside the same workflow, and further tools automating bug-investigation-to-shipped-fix (with git/Jira archaeology and PR creation), team-scoped production-error triage, and post-incident latency analysis.",
+          "Source (private): Dynamox engineering tracker (Jira epic and subtasks) and personal tooling repository."
+        ]
+      }
+    ]
+  },
+  {
     "id": "asset-tree-search",
     "featured": false,
     "title": "Delivering a large asset tree end to end, from recursive SQL to progressive prefetch",
@@ -721,6 +832,112 @@ export const cases: CaseStudy[] = [
           "Feature shipped to production behind a feature flag after staging.",
           "Documented use cases including alternative actor flows.",
           "Source (private): consolidated career knowledge base."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "code-review-technical-leadership",
+    "featured": false,
+    "title": "Choosing the right altitude to fix a bug found in review, not just the fastest patch",
+    "company": "Dynamox",
+    "category": "Collaboration",
+    "summary": "In code review, caught a null-safety bug that would have crashed three production components, and fixed the defect class — not the three instances — by proposing a shared data-layer helper to the PR's author instead of patching each render site myself; one of 100+ reviews I did that semester.",
+    "capabilities": [
+      "Technical Leadership",
+      "Communication",
+      "Debugging"
+    ],
+    "technologies": [
+      "React",
+      "TypeScript"
+    ],
+    "impact": [
+      "Prevented a crash in three production components before it shipped.",
+      "Removed the underlying defect class, not just the three known instances, via a shared data-layer helper any future consumer now goes through.",
+      "Kept the fix owned by its original author, reinforcing the pattern for them rather than substituting my judgment for theirs.",
+      "Part of a review practice recognized in performance feedback for the clarity of its questions and documentation — over 100 reviews in a single half-year, across front end, back end, and tests."
+    ],
+    "difficulty": "Medium",
+    "ownership": "Contributed",
+    "customerFacing": "Yes",
+    "readingTime": "2 min",
+    "sections": [
+      {
+        "id": "context",
+        "title": "Context",
+        "paras": [
+          "Most of my case studies are about work I owned end to end; this one is evidence of a different, equally important capability — raising the quality bar on someone else's work without taking it over. Code review is where a lot of real engineering judgment is invisible: catching a defect that isn't obviously wrong, deciding to fix the general case instead of the instance, and choosing to suggest rather than rewrite so the author keeps ownership and the lesson. This is part of a sustained practice — over 100 reviews across front end, back end, and tests in a single half, alongside pair programming on critical work — not a one-off catch."
+        ]
+      },
+      {
+        "id": "problem",
+        "title": "Problem",
+        "paras": [
+          "A teammate's pull request rendered a list of items after filtering it, but a nearby piece of logic in the same component still referred to the length of the original, unfiltered array. Both lines were locally correct — neither was wrong on its own — but they encoded an assumption that the two values would always agree. They wouldn't: the moment the filter actually removed an item, the two derived values would diverge, and three components shared this exact pattern."
+        ]
+      },
+      {
+        "id": "constraints",
+        "title": "Constraints",
+        "bullets": [
+          "The bug was invisible line by line. Nothing in the diff was individually wrong; the defect only exists in the *relationship* between two values derived from the same source — exactly the kind of bug a fast, diff-focused review misses.",
+          "The fast fix was tempting and insufficient. Patching the three known call sites would have made the visible symptom disappear without removing the underlying defect class — the next component built the same way would reintroduce it.",
+          "It wasn't my code. Proposing a deeper structural change to someone else's pull request risks either being ignored (too soft) or taking over their work (too heavy) — getting the balance right is itself the skill."
+        ]
+      },
+      {
+        "id": "decision",
+        "title": "Decision",
+        "paras": [
+          "I recognized the shape of the bug before deciding what to do about it: two values derived from the same source, read independently, with no guarantee they'd stay in sync — the same kind of problem I've solved architecturally elsewhere by giving a derived value a single computation path."
+        ],
+        "bullets": [
+          "Traced the pattern to all three affected components, not just the one in the diff, so the fix could address the actual defect class.",
+          "Proposed a shared helper at the data layer — one place that derives the value both pieces of logic need, so nothing downstream can read two different answers from the same source again.",
+          "Suggested it to the author instead of implementing it myself. Leaving the change in their hands cost an extra review round, but kept their ownership of the PR intact and taught the pattern rather than silently overriding their work."
+        ]
+      },
+      {
+        "id": "tradeoffs",
+        "title": "Trade-offs",
+        "bullets": [
+          "A shared data-layer helper over patching the three render sites. Fixing all three instances is faster; giving them one shared source removes the defect class for any future consumer too — worth the extra design step for a pattern that had already repeated three times.",
+          "Suggesting the fix over implementing it myself. Writing the fix directly would have been quicker and guaranteed my preferred outcome, but it would have taken the PR away from its author. Proposing it and letting them apply it cost a review cycle and produced a teammate who understood the pattern, not just a merged fix.",
+          "Reviewing the invariant over reviewing the diff. Reasoning about what the two derived values were supposed to guarantee together — rather than checking each line in isolation — is slower per review but is the only way this class of bug gets caught before production."
+        ]
+      },
+      {
+        "id": "impact",
+        "title": "Impact",
+        "bullets": [
+          "Prevented a crash in three production components before it shipped.",
+          "Removed the underlying defect class, not just the three known instances, via a shared data-layer helper any future consumer now goes through.",
+          "Kept the fix owned by its original author, reinforcing the pattern for them rather than substituting my judgment for theirs.",
+          "Part of a review practice recognized in performance feedback for the clarity of its questions and documentation — over 100 reviews in a single half-year, across front end, back end, and tests."
+        ]
+      },
+      {
+        "id": "lessons",
+        "title": "Lessons Learned",
+        "paras": [
+          "Reusable engineering knowledge I carry forward from this:"
+        ],
+        "bullets": [
+          "A value with two independent readers is a bug waiting for the day they diverge. The same principle that governs cross-service data consistency applies just as much inside a single component.",
+          "In review, fix the class when you can see it, not just the instance in front of you. Three repeats of the same pattern is a signal that patching the visible one will leave the other two to fail later.",
+          "Suggest, don't take over. A review that fixes the pattern and hands the implementation back teaches it; a review that silently rewrites the PR doesn't.",
+          "Review what the code assumes, not just what it changed. The bug was only visible when reasoning about the invariant the two lines were supposed to share."
+        ]
+      },
+      {
+        "id": "evidence",
+        "title": "Evidence",
+        "bullets": [
+          "Caught and redirected a null-safety divergence bug across three components before release, via a proposed shared abstraction rather than a direct rewrite.",
+          "Part of a sustained review practice: 100+ code reviews in a single half (up from 18 the cycle before), across front end, back end, and tests, plus pair programming on critical deliveries.",
+          "Recognized in performance feedback for the clarity of review questions and PR documentation.",
+          "Source (private): consolidated career knowledge base and performance-review evidence."
         ]
       }
     ]
@@ -945,18 +1162,21 @@ export const cases: CaseStudy[] = [
       "System Design",
       "Technical Decision Making",
       "Ownership",
-      "Backend Engineering"
+      "Backend Engineering",
+      "Security"
     ],
     "technologies": [
       "NestJS",
       "Fastify",
       "BigQuery",
-      "Terraform"
+      "Terraform",
+      "redis"
     ],
     "impact": [
       "Founded the reporting service (founding author) with analytical reads separated from the transactional database — the structural fix for the indicator timeouts.",
-      "Delivered the base service integrated with the analytical warehouse, with a curated, cost-aware data model and infrastructure-as-code load routines.",
-      "Made the architecture decision reviewable by framing the trade-offs explicitly rather than defaulting into them.",
+      "Delivered the base service integrated with the analytical warehouse, with a curated, cost-aware, tenant-isolated data model and infrastructure-as-code load routines.",
+      "Made the architecture decision reviewable and cross-functional by framing it as an explicit matrix with a written comparison, a security/privacy review, and a preliminary recommendation — reviewed and signed off by seven stakeholders across engineering and the platform team, not decided in isolation.",
+      "Caught and closed a latency risk before it shipped, by revising my own first-pass recommendation once I identified that the analytical warehouse wasn't inherently low-latency — turning a potential post-launch incident into a design requirement instead.",
       "Qualitative: analytical architecture in rollout to eliminate the timeouts; end-state indicator latency not yet captured as a before/after number. <!-- TODO: add latency numbers once available -->"
     ],
     "difficulty": "High",
@@ -968,38 +1188,42 @@ export const cases: CaseStudy[] = [
         "id": "context",
         "title": "Context",
         "paras": [
-          "This is my strongest evidence of strategic, data-architecture-level system design and of greenfield ownership. Most of my work extends existing systems; here I started one, which meant making foundational choices — runtime, release process, data model, cost model — that are expensive to reverse later.",
-          "It shows I can hold a decision at the altitude of *where a class of workload belongs* (transactional store vs. analytical warehouse) rather than at the altitude of a single query, and that I evaluate an architecture against cost and lock-in, not just fit."
+          "This is my strongest evidence of strategic, data-architecture-level system design and of greenfield ownership. Most of my work extends existing systems; here I started one, which meant making foundational choices — runtime, release process, data model, cost model, tenant isolation — that are expensive to reverse later.",
+          "It shows I can hold a decision at the altitude of *where a class of workload belongs* (transactional store vs. analytical warehouse) rather than at the altitude of a single query; that I decompose a conflated decision into independent axes instead of comparing bundled options; and that I revise my own prior analysis when I find a real gap in it, instead of defending the first version. It's also my clearest evidence that I fold security and privacy into an architecture decision as a first-class input — not a checklist applied afterward — and that the decision itself was reviewed and signed off by stakeholders across engineering and the platform team, not made in isolation."
         ]
       },
       {
         "id": "problem",
         "title": "Problem",
         "paras": [
-          "A set of customer-facing indicators aggregated large volumes of inspection data. Those aggregations ran as heavy analytical queries directly against the transactional database that also served live application traffic. As data grew, the indicators started timing out — and the analytical load competed with the transactional workload it shared a store with. Optimizing individual queries was treating the symptom; the workload was in the wrong place."
+          "A set of customer-facing indicators aggregated large volumes of inspection data. Those aggregations ran as heavy analytical queries — several joins plus runtime calculations (aggregations, percentages, counts) — directly against the transactional database that also served live application traffic. As data grew, the indicators started timing out: the schema had been designed for transactional access, not for analytical reads, and the analytical load competed with the transactional workload it shared a store with. Optimizing individual queries was treating the symptom; the workload was in the wrong place, and a related reporting feature was about to need the same aggregations, which would only add to the contention."
         ]
       },
       {
         "id": "constraints",
         "title": "Constraints",
         "bullets": [
-          "It was a class-of-workload decision, not a query fix. The real question was architectural — where analytical reads should live — and getting it wrong would just move the timeouts around.",
+          "The decision had two conflated axes. An earlier pass at this decision compared only two bundled alternatives, each changing *both* which service owns the reporting logic *and* which database backs it — which made it hard to tell which axis was actually driving each trade-off.",
+          "The obvious fix under-weighted a real risk. The analytical warehouse under consideration is not, by nature, a low-latency store — every query has a floor of hundreds of milliseconds to seconds. Serving a synchronous, customer-facing screen straight from it risked trading timeouts for slowness instead of fixing them.",
           "Founding a service means irreversible-ish choices. Runtime, project structure, release tooling, and the data model are cheap to pick and expensive to change once code and data accumulate.",
-          "The trade-off space was wide. Analytical warehouse vs. tuned OLTP, read-model separation (CQRS) and its eventual consistency, multi-tenancy, query cost, and vendor lock-in all interacted.",
-          "Cost is a first-class constraint in analytics. An analytical warehouse bills by data scanned, so the data model itself is a cost decision."
+          "The trade-off space was wide and cross-functional. Load isolation, deploy isolation, operational complexity, eventual consistency, multi-tenancy, cost, and vendor lock-in all interacted — and the decision had to be legible enough for stakeholders across engineering and the platform team to review and sign off on it.",
+          "Cost is a first-class constraint in analytics. An analytical warehouse bills by data scanned, so an unfiltered query is both a cost problem and — at the extreme — an availability problem.",
+          "The data crosses a privacy boundary. The analytical copy would carry multi-tenant operational data, including fields that can identify the person who performed an inspection — a data-protection question baked into the architecture, not bolted on after."
         ]
       },
       {
         "id": "decision",
         "title": "Decision",
         "paras": [
-          "I started from the trade-off, then de-risked the build."
+          "I started from the trade-off, corrected my own analysis when it had a gap, then de-risked the build."
         ],
         "bullets": [
-          "Framed the OLTP-vs-OLAP trade-off explicitly and critically reviewed the proposed architecture decision — the analytical warehouse choice, read-model separation and its eventual-consistency implications, multi-tenancy, cost, and vendor lock-in — rather than accepting it as given. I backed this with comparative research on stacks (frameworks, ORMs, observability, testing) and a market benchmark.",
-          "Separated analytical reads from the transactional store, so reporting queries stop competing with live traffic and run against a store built for aggregation.",
+          "Decomposed the decision into an explicit 2×2 matrix — which service owns the reporting logic (the existing transactional service vs. a new one) crossed with which database backs it (a tuned relational store vs. an analytical warehouse) — instead of comparing bundled alternatives. Isolating the two axes made each trade-off legible on its own: workload isolation turned out to depend almost entirely on the service axis, while analytical fit and cost depended almost entirely on the database axis.",
+          "Went back and corrected my own earlier recommendation. After the first pass, I identified that the analytical warehouse I was recommending is not a low-latency store by nature, and that serving a synchronous, customer-facing screen directly from it could trade one kind of timeout for a different kind of slowness. I revised the decision to require an explicit serving layer rather than querying the warehouse on every request.",
+          "Negotiated an explicit ownership boundary with the platform team. Their existing ingestion pipeline already moved operational events into the analytical warehouse; I scoped the new service to own only the aggregation layer, the API, and the cache on top of it — with one well-defined layer of cleaned tables as the contract between the two domains — rather than duplicating ingestion, retry, and dead-lettering the platform team had already built.",
+          "Ran a full security and privacy risk review as part of the same decision — confidentiality (least-privilege access and per-tenant authorization on every read), integrity (deduplicating events that can arrive more than once or out of order), availability (an unfiltered query becomes a cost and availability risk in a scan-billed warehouse), and privacy (fields that can identify the person who performed an inspection) — with a concrete mitigation for each, backed by comparative research on stacks and a market benchmark for the rest of the decision.",
           "Built a walking skeleton — the thinnest end-to-end version of the service (a lean runtime, project scaffolding, containerization, and a working connection to the analytical warehouse) — to prove the shape before investing in features. I'm the founding author of the repository.",
-          "Modeled curated analytical tables for cost, including a daily snapshot and a most-recent view, using clustering so common queries scan less data.",
+          "Modeled curated analytical tables for cost and tenant isolation, including a daily snapshot and a most-recent view, partitioned by date and clustered with the tenant identifier first so common queries scan less data and one tenant's query can't see another's rows.",
           "Created the dataset, tables, and load routines as infrastructure-as-code, including the consistency and daily-incremental logic, so the data layer is reproducible rather than hand-built."
         ]
       },
@@ -1008,9 +1232,10 @@ export const cases: CaseStudy[] = [
         "title": "Trade-offs",
         "bullets": [
           "Separating analytical reads from OLTP over tuning the transactional queries. Moving the workload removes the root cause — resource contention on a store built for transactions — where tuning only postpones it. Accepted cost: a second data store and a pipeline to keep it current.",
-          "An analytical warehouse with clustering over an unoptimized schema. Designing tables and clustering for the common access patterns costs modeling effort up front but directly controls query cost, which in a scan-billed warehouse is the running bill.",
-          "Eventual consistency for reporting over strict freshness. Reporting can tolerate briefly stale data, so a read model refreshed on a schedule is acceptable — and far cheaper — than keeping an analytical copy strictly in lock-step.",
-          "A performance-oriented runtime and conventional release tooling over the defaults. Choosing these at founding time set the service up to scale and to release predictably, accepting a bit more setup than the path of least resistance."
+          "A materialized serving layer with a cache in front of it, over querying the warehouse directly on every request. Costs an extra moving part — scheduled materialization and cache invalidation — but is what actually fixes a synchronous, customer-facing screen; querying a scan-billed warehouse live on every request would have re-created the latency problem in a new place.",
+          "A hard cost ceiling that fails a query closed, over trusting every query to be written efficiently. A query missing its required filters is rejected before it runs, rather than allowed to scan (and bill for) an entire table. Costs an occasional rejected query; buys a bounded, predictable bill instead of a silent cost or availability incident.",
+          "Owning only the aggregation layer over owning ingestion end-to-end. The rejected alternative would have rebuilt the messaging consumers, retry, and dead-lettering the platform team's pipeline already provided. The extra operational surface — and the historical-data migration that came with it — wasn't worth the marginal control it bought.",
+          "Eventual consistency for reporting over strict freshness. Reporting can tolerate briefly stale data, so a read model refreshed on a schedule is acceptable — and far cheaper — than keeping an analytical copy strictly in lock-step."
         ]
       },
       {
@@ -1018,8 +1243,9 @@ export const cases: CaseStudy[] = [
         "title": "Impact",
         "bullets": [
           "Founded the reporting service (founding author) with analytical reads separated from the transactional database — the structural fix for the indicator timeouts.",
-          "Delivered the base service integrated with the analytical warehouse, with a curated, cost-aware data model and infrastructure-as-code load routines.",
-          "Made the architecture decision reviewable by framing the trade-offs explicitly rather than defaulting into them.",
+          "Delivered the base service integrated with the analytical warehouse, with a curated, cost-aware, tenant-isolated data model and infrastructure-as-code load routines.",
+          "Made the architecture decision reviewable and cross-functional by framing it as an explicit matrix with a written comparison, a security/privacy review, and a preliminary recommendation — reviewed and signed off by seven stakeholders across engineering and the platform team, not decided in isolation.",
+          "Caught and closed a latency risk before it shipped, by revising my own first-pass recommendation once I identified that the analytical warehouse wasn't inherently low-latency — turning a potential post-launch incident into a design requirement instead.",
           "Qualitative: analytical architecture in rollout to eliminate the timeouts; end-state indicator latency not yet captured as a before/after number. <!-- TODO: add latency numbers once available -->"
         ]
       },
@@ -1030,10 +1256,11 @@ export const cases: CaseStudy[] = [
           "Reusable engineering knowledge I carry forward from this:"
         ],
         "bullets": [
+          "Decompose a conflated decision into independent axes before comparing alternatives. Bundling two choices into one \"either/or\" option makes it look like a single trade-off when it's really two — and you can end up trading away something that didn't need to be on the table.",
+          "Revisit your own decision when you find a real gap in it. Catching that a synchronous, customer-facing read path can't tolerate a store's natural latency floor — and fixing the recommendation before it shipped — was worth more than defending the first version.",
+          "Security and privacy analysis belongs inside the architecture decision, not after it. A data model decision already determines your tenant-isolation boundary, your access boundary, and your cost-based availability risk — reviewing those separately, later, is reviewing them too late to change cheaply.",
           "Analytical load does not belong on your transactional store. When heavy aggregations and live traffic share a database, the fix is usually to separate the workload, not to tune the query.",
-          "A walking skeleton de-risks a greenfield service. Proving the thinnest end-to-end path first surfaces the foundational choices while they're still cheap to change.",
-          "In an analytical warehouse, the data model is a cost decision. Clustering and curated tables for the real access patterns are what keep a scan-billed store affordable.",
-          "Evaluate an architecture against cost and lock-in, not just fit. The right choice is the one you can still afford and still leave later."
+          "In an analytical warehouse, the data model is a cost decision — and an unbounded query is an availability risk, not just a slow one. Clustering, curated tables, and a hard cost ceiling per query are what keep a scan-billed store both affordable and predictable."
         ]
       },
       {
@@ -1041,9 +1268,10 @@ export const cases: CaseStudy[] = [
         "title": "Evidence",
         "bullets": [
           "Founding author of the service repository; built the walking skeleton and data layer.",
-          "Framed and critically reviewed the OLTP-vs-OLAP architecture decision with comparative research and a market benchmark.",
+          "Authored a written architecture decision comparing four alternatives across an explicit service × database matrix, with a dedicated security/privacy risk analysis and cost guardrails as part of the recommendation — reviewed and approved by seven stakeholders across engineering and the platform team.",
+          "Revised the decision between two versions after identifying a latency risk the first version had underweighted.",
           "Curated analytical tables and infrastructure-as-code load routines.",
-          "Source (private): consolidated career knowledge base."
+          "Source (private): consolidated career knowledge base; internal architecture decision record."
         ]
       }
     ]
@@ -1145,294 +1373,6 @@ export const cases: CaseStudy[] = [
           "Cleared a 135-CVE dependency scan with all 7 critical vulnerabilities remediated across two services.",
           "Rebuilt service images on hardened, non-root Docker bases.",
           "Cited as one of six competency areas (security) in my promotion dossier (see companies/dynamox.md).",
-          "Source (private): consolidated career knowledge base."
-        ]
-      }
-    ]
-  },
-  {
-    "id": "tree-selector",
-    "featured": true,
-    "title": "Building a hierarchical selector instead of taking a dependency",
-    "company": "AQTech",
-    "category": "Frontend Architecture",
-    "summary": "Needed a tree selector the UI library didn't provide. Chose to build a reusable abstraction instead of introducing another dependency.",
-    "capabilities": [
-      "Technical Decision Making",
-      "Frontend Engineering",
-      "System Design",
-      "Ownership",
-      "Component Architecture",
-      "UX"
-    ],
-    "technologies": [
-      "Vue",
-      "TypeScript"
-    ],
-    "impact": [
-      "Reusable abstraction adopted across the app",
-      "Zero new dependencies",
-      "Full control over performance and UX"
-    ],
-    "difficulty": "Medium",
-    "ownership": "End-to-end",
-    "customerFacing": "Yes",
-    "readingTime": "5 min",
-    "sections": [
-      {
-        "id": "context",
-        "title": "Context",
-        "paras": [
-          "Wind farm data is hierarchical: farm → turbine → component → sensor. Nearly every screen needed users to select nodes from this hierarchy — sometimes one, sometimes thousands via cascading selection.",
-          "Vuetify offered no tree selector matching our needs."
-        ]
-      },
-      {
-        "id": "problem",
-        "title": "Problem",
-        "paras": [
-          "The obvious move was npm install. But the candidates each failed somewhere: no cascading tri-state selection, poor performance past a few thousand nodes, styling that fought our Design System, or an API that couldn't express our async-loading hierarchy."
-        ]
-      },
-      {
-        "id": "constraints",
-        "title": "Constraints",
-        "bullets": [
-          "Hierarchies with thousands of nodes, loaded lazily by level.",
-          "Tri-state cascading selection (checking a farm checks its turbines).",
-          "Had to compose with the Design System's tokens and form patterns.",
-          "Long-term maintenance falls on a small team — every dependency is a liability someone inherits."
-        ]
-      },
-      {
-        "id": "alternatives",
-        "title": "Alternatives Considered",
-        "bullets": [
-          "Adopt a third-party tree component and patch the gaps. Rejected: the gaps were in core behavior (selection semantics, async loading), exactly where patching a foreign codebase is most expensive.",
-          "Flatten the UX to avoid trees entirely. Rejected: the hierarchy is the domain; hiding it made selection slower for users.",
-          "Build a reusable tree-selector abstraction in-house. Chosen."
-        ]
-      },
-      {
-        "id": "decision",
-        "title": "Decision",
-        "paras": [
-          "Build it — but as an abstraction, not a one-off. The component separated tree state (expansion, tri-state selection, async loading) from rendering, so future screens could reuse the logic with different visuals.",
-          "The dependency calculus: a library saves weeks now and costs indefinitely; owned code costs weeks now and stays exactly as capable as we need. For a component this central to the domain, ownership won."
-        ],
-        "diagram": {
-          "width": 760,
-          "height": 260,
-          "nodes": [
-            {
-              "id": "state",
-              "lines": [
-                "Tree State"
-              ],
-              "sub": "expansion · tri-state · async loading (pure)",
-              "x": 60,
-              "y": 16,
-              "w": 260,
-              "h": 64
-            },
-            {
-              "id": "render",
-              "lines": [
-                "Tree Renderer"
-              ],
-              "sub": "virtualized view",
-              "x": 440,
-              "y": 16,
-              "w": 260,
-              "h": 64,
-              "variant": "accent"
-            },
-            {
-              "id": "consumer",
-              "lines": [
-                "Any screen with a hierarchy"
-              ],
-              "x": 250,
-              "y": 140,
-              "w": 260,
-              "h": 50
-            },
-            {
-              "id": "removed",
-              "lines": [
-                "✕ rejected:",
-                "3rd-party tree libs",
-                "(gaps in core selection)"
-              ],
-              "x": 560,
-              "y": 140,
-              "w": 190,
-              "h": 70,
-              "variant": "removed"
-            }
-          ],
-          "edges": [
-            {
-              "from": "state",
-              "to": "render",
-              "label": "drives"
-            },
-            {
-              "from": "render",
-              "to": "consumer",
-              "label": "used by"
-            }
-          ]
-        }
-      },
-      {
-        "id": "tradeoffs",
-        "title": "Trade-offs",
-        "bullets": [
-          "We own the bugs. Accepted: bugs in core UX are cheaper to fix in code we understand.",
-          "No community fixes or upgrades for free. Accepted: the component's scope is stable — the domain hierarchy doesn't churn.",
-          "Higher upfront cost. Accepted; it amortized within months across screens."
-        ]
-      },
-      {
-        "id": "implementation",
-        "title": "Implementation",
-        "paras": [
-          "TypeScript + Vue 3 composition API. Selection state as a pure module with exhaustive unit tests (tri-state cascades are edge-case factories); virtualized rendering for large hierarchies; async node loading with optimistic expansion.",
-          "Shipped through the Design System with docs and examples, so 'need a tree?' had exactly one answer."
-        ]
-      },
-      {
-        "id": "impact",
-        "title": "Impact",
-        "bullets": [
-          "Adopted across the application wherever hierarchies appear.",
-          "Zero new runtime dependencies.",
-          "Selection performance stayed flat as customer hierarchies grew."
-        ]
-      },
-      {
-        "id": "lessons",
-        "title": "Lessons Learned",
-        "paras": [
-          "A dependency is a long-term liability, not a shortcut. The evaluation isn't 'can it do this today' but 'who pays when it can't do what we need in a year'.",
-          "Build-vs-buy is really own-vs-rent: the closer a component is to the heart of the domain, the stronger the case for owning it."
-        ]
-      },
-      {
-        "id": "evidence",
-        "title": "Evidence",
-        "paras": [
-          "Capabilities demonstrated: Architecture (dependency calculus, abstraction boundaries), Component Architecture (state/render separation), Frontend Engineering (virtualization, async loading, testing), UX (dense engineering data kept legible under time pressure)."
-        ]
-      }
-    ]
-  },
-  {
-    "id": "ai-route-generation",
-    "featured": false,
-    "title": "Designing a safe human-in-the-loop AI agent for bulk route creation",
-    "company": "Dynamox",
-    "category": "Architecture",
-    "summary": "Prototyped an AI agent that lets support create inspection routes in bulk from spreadsheets, designed around a safety rule — the LLM only ranks candidates and never emits identifiers, and all writes go through human-in-the-loop confirmation with preview/dry-run.",
-    "capabilities": [
-      "Product Thinking",
-      "Technical Decision Making",
-      "Security",
-      "System Design",
-      "AI Engineering"
-    ],
-    "technologies": [
-      "Python",
-      "Vertex AI"
-    ],
-    "impact": [
-      "A working write-mode MVP of an agent that creates inspection routes in bulk from spreadsheets, targeting a large, repetitive support cost.",
-      "Established a reusable safety pattern for LLM-driven writes — rank-don't-emit, human-in-the-loop, preview/dry-run — beyond this one agent.",
-      "Qualitative: prototype/MVP stage; the support-time reduction was the target, not yet a measured before/after result. <!-- TODO: add realized time savings if the agent goes to production -->"
-    ],
-    "difficulty": "Medium",
-    "ownership": "End-to-end",
-    "customerFacing": "No",
-    "readingTime": "2 min",
-    "sections": [
-      {
-        "id": "context",
-        "title": "Context",
-        "paras": [
-          "This is my evidence of applied-AI judgment — specifically, of knowing where a probabilistic system must *not* be trusted. The interesting engineering isn't wiring up an LLM; it's drawing the boundary between what the model is allowed to decide (ranking, natural language) and what must stay deterministic and human-approved (which identifier gets written).",
-          "It also shows product thinking: the work started from a real support cost and a target to cut it, and the design kept a human in control precisely because the cost of a wrong automated write would have outweighed the time saved."
-        ]
-      },
-      {
-        "id": "problem",
-        "title": "Problem",
-        "paras": [
-          "Support was creating inspection routes in bulk from spreadsheets manually — a recurring monthly cost of many tickets, each taking a long time. The dominant pain was resolving asset names in the spreadsheet to the exact identifiers in a large asset hierarchy: a fuzzy, error-prone lookup that a person had to do by hand, over and over. The goal was to automate the flow and cut the time substantially, without introducing a new way to create wrong data."
-        ]
-      },
-      {
-        "id": "constraints",
-        "title": "Constraints",
-        "bullets": [
-          "The core task is exactly where LLMs are dangerous. Resolving a name to an identifier is fuzzy matching — tempting to hand to a model — but an identifier must be *exact*, and a confidently-wrong guess would create routes against the wrong assets.",
-          "The action is a real write. This isn't a chatbot; the agent creates production data, so a mistake has consequences a wrong sentence wouldn't.",
-          "It had to actually save time. Too much human confirmation and it's no faster than doing it by hand; too little and it's unsafe. The balance was the design problem.",
-          "It was new territory. Building an agent that takes actions safely meant establishing patterns, not following an existing one."
-        ]
-      },
-      {
-        "id": "decision",
-        "title": "Decision",
-        "paras": [
-          "I started from the safety boundary and built the automation inside it."
-        ],
-        "bullets": [
-          "Did end-to-end discovery — the API contracts for creating and updating routes and the legacy script support already used — so I understood the deterministic path before adding any AI.",
-          "Designed an asset resolver with a golden rule: the LLM *never emits an asset identifier*. Resolution goes code match → normalized-name match → fuzzy match with human confirmation and aliases, and the model's only job is to rank candidates that the API returned — the write itself is deterministic, with a preview/dry-run.",
-          "Put every write behind human-in-the-loop confirmation. A read-only preview tool shows what would be created; the create action requires explicit confirmation before it runs.",
-          "Defined a field-completeness policy by risk bucket — for each field, decide whether to ask the user, default and warn, offer candidates, or omit — so the agent's autonomy scales with how costly being wrong is.",
-          "Prototyped it as an agent with tests, reusing existing asset-navigation tooling rather than reinventing it, and reached a working write-mode MVP."
-        ]
-      },
-      {
-        "id": "tradeoffs",
-        "title": "Trade-offs",
-        "bullets": [
-          "LLM as ranker over LLM as source of identifiers. Letting the model only rank API-provided candidates — never produce IDs — keeps correctness deterministic while still using the model for the fuzzy part it's good at. Accepted cost: more plumbing than \"ask the model for the ID\", and it's the whole point.",
-          "Human-in-the-loop confirmation before every write over full automation. Requiring approval trades some of the time savings for a guarantee that no wrong data is created unattended — the right trade when the downside is corrupt production routes.",
-          "Preview/dry-run over write-first. Showing the intended result before acting makes the agent auditable and builds the operator's trust, at the cost of an extra step.",
-          "Risk-bucketed field completeness over one uniform rule. Tailoring how much the agent decides per field is more design than a blanket policy, but it concentrates human attention where mistakes actually matter."
-        ]
-      },
-      {
-        "id": "impact",
-        "title": "Impact",
-        "bullets": [
-          "A working write-mode MVP of an agent that creates inspection routes in bulk from spreadsheets, targeting a large, repetitive support cost.",
-          "Established a reusable safety pattern for LLM-driven writes — rank-don't-emit, human-in-the-loop, preview/dry-run — beyond this one agent.",
-          "Qualitative: prototype/MVP stage; the support-time reduction was the target, not yet a measured before/after result. <!-- TODO: add realized time savings if the agent goes to production -->"
-        ]
-      },
-      {
-        "id": "lessons",
-        "title": "Lessons Learned",
-        "paras": [
-          "Reusable engineering knowledge I carry forward from this:"
-        ],
-        "bullets": [
-          "Constrain the LLM to what it's good at. Use it for ranking and natural language; keep anything that must be exact — identifiers, writes — deterministic.",
-          "Never let a probabilistic system emit values that must be precise. A confidently-wrong identifier is worse than no answer; have the model choose among verified candidates instead.",
-          "Human-in-the-loop is the safety boundary for AI actions. When an agent writes real data, confirmation and a preview are the guardrails that make it deployable.",
-          "Scale autonomy with the cost of being wrong. Deciding per field how much the agent may assume puts human attention exactly where a mistake would hurt."
-        ]
-      },
-      {
-        "id": "evidence",
-        "title": "Evidence",
-        "bullets": [
-          "End-to-end discovery, asset-resolver design, and a write-mode MVP with tests.",
-          "Safety pattern: LLM ranks API candidates and never emits identifiers; all writes behind human-in-the-loop confirmation with preview/dry-run.",
           "Source (private): consolidated career knowledge base."
         ]
       }
@@ -1661,6 +1601,123 @@ export const cases: CaseStudy[] = [
           "Self-imposed constraints: no skipped tests, no weakened assertions, no inflated timeouts.",
           "In review, empirically disproved and reverted three of four proposed production changes.",
           "Source (private): consolidated career knowledge base."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "production-incident-role-bindings-consumer",
+    "featured": false,
+    "title": "Responding to a production incident with the missing architecture decision, not just a patch",
+    "company": "Dynamox",
+    "category": "Incident",
+    "summary": "Root-caused a customer-blocking production incident to an undocumented architecture assumption, rebuilt the affected consumer with a post-mortem, an ADR, and business-rules documentation, then — after rollout exposed a database deadlock — diagnosed it to a Kafka partitioning mismatch and replaced silent message loss with retry, a dead-letter queue, and per-user serialization.",
+    "capabilities": [
+      "Incident Response",
+      "System Design",
+      "Communication",
+      "Ownership"
+    ],
+    "technologies": [
+      "NestJS",
+      "Kafka",
+      "PostgreSQL"
+    ],
+    "impact": [
+      "Resolved the customer-blocking incident and documented the missing architecture decision so the same gap can't reopen silently.",
+      "Gave the domain a properly workspace-aware consumer in the team's current service, where none had existed before.",
+      "Eliminated the production deadlock at its root cause (partition-key mismatch), not by papering over the symptom.",
+      "Replaced silent message loss with a recoverable failure path — retry for transient errors, a dead-letter queue for permanent ones — closing a gap where failures had previously disappeared without a trace.",
+      "Qualitative: higher confidence in the reliability of a permissions-critical consumer; no incident of the same kind recurred after the fix."
+    ],
+    "difficulty": "High",
+    "ownership": "End-to-end",
+    "customerFacing": "Yes",
+    "readingTime": "2 min",
+    "sections": [
+      {
+        "id": "context",
+        "title": "Context",
+        "paras": [
+          "This is my clearest evidence of incident response that fixes the class of bug, not the instance — and of staying with a problem across two acts: the initial incident, and the subtler failure mode that only appeared once the fix was in production. Both times, I resisted the fastest available patch in favor of understanding why the system had been wrong in the first place, and left the answer documented so the next person wouldn't have to rediscover it.",
+          "It also shows an operational maturity that goes beyond \"fixed the bug\": diagnosing a production deadlock from logs, tracing it to a specific mismatch between a messaging system's partitioning and the data's actual contention pattern, is systems-level reasoning under pressure — the kind of debugging that separates \"restarted the pod\" from actually understanding the failure."
+        ]
+      },
+      {
+        "id": "problem",
+        "title": "Problem",
+        "paras": [
+          "A customer was stuck on a permanent \"sync error\" screen and could not complete their work — a hard block, not a cosmetic bug. The proximate cause traced to how a permissions-management consumer handled an edit: a decision about whether that consumer's logic should be scoped to a workspace had never been made explicit anywhere, so a change that assumed the wrong scope went out uncaught. The underlying consumer for this domain also only existed in the team's legacy service; the newer service had no equivalent, which was part of why the gap had never surfaced before.",
+          "Months after the rebuild shipped, a second, unrelated-looking problem appeared: the new consumer started throwing database deadlocks in production."
+        ]
+      },
+      {
+        "id": "constraints",
+        "title": "Constraints",
+        "bullets": [
+          "The real defect wasn't in the code path that failed — it was in a decision that was never written down. Patching the immediate scope bug would have left the same class of mistake possible on the next change, because nothing recorded *why* the consumer needed to behave the way it should.",
+          "The user's own words made the stakes concrete. They were blocked mid-task and frustrated; there was no ambiguity about whether this mattered.",
+          "The deadlock was intermittent and non-obvious. A generic \"transaction failed\" error gives no hint by itself that the actual cause is a mismatch between how work is distributed (partitioning) and how the underlying data is actually contended.",
+          "The existing failure handling made the deadlock worse than it looked. Failed messages were being silently swallowed and their offset committed anyway — so before it could even be fixed properly, the failure mode itself had to change from \"disappears without a trace\" to \"visible and recoverable.\""
+        ]
+      },
+      {
+        "id": "decision",
+        "title": "Decision",
+        "paras": [
+          "I treated the incident as two separate diagnosis problems, months apart, and refused to close either with a surface-level fix."
+        ],
+        "bullets": [
+          "Wrote the post-mortem first. Before rebuilding anything, I documented what happened and why, so the incident had an owned record rather than just a fixed ticket.",
+          "Made the missing decision explicit in an ADR — why the consumer needs to respect workspace scope, how it should handle deletions, how to protect record accountability, and how edge cases should behave — instead of encoding the fix only in code where the next person would have to reverse-engineer the reasoning.",
+          "Documented the business rules separately, because they had been scattered across application code with no central reference — which was itself part of why the original gap went unnoticed.",
+          "Rebuilt the consumer properly in the team's current service and stack, rather than patching the legacy implementation, since the domain didn't have an equivalent there yet.",
+          "Months later, diagnosed the deadlock from production logs, not guesswork. I searched for the specific error signature, found repeated bursts, and confirmed the mechanism: the topic was partitioned by the identifier of the change itself, not by the user it affected — so multiple messages about the *same* user could land on different partitions and be processed concurrently, colliding when they updated the same row.",
+          "Fixed the mechanism, not just the symptom. I serialized updates per affected user so concurrent messages about the same person can no longer race each other, and replaced the silent failure path with retry for transient errors and a dead-letter queue for permanent ones — so a failure is now visible and recoverable instead of invisible."
+        ]
+      },
+      {
+        "id": "tradeoffs",
+        "title": "Trade-offs",
+        "bullets": [
+          "Writing a post-mortem, an ADR, and business-rules documentation over shipping a direct fix. Documentation took real time the fastest patch wouldn't have, but the original gap existed *because* the decision was never written down — repeating that mistake would have cost more later than it saved now.",
+          "Rebuilding the consumer in the current stack over patching the legacy one. A patch would have been faster, but it would have kept the domain split across two services with no single source of truth, and left the newer service without behavior it needed.",
+          "Diagnosing the deadlock's root cause over adding a retry and calling it fixed. A blind retry would have masked the collision without removing it; tracing the mismatch to the partition key made the fix address the actual contention instead of hiding it.",
+          "Serializing per user over widening the transaction or the retry budget. Narrowing the fix to exactly the colliding scope (same user, concurrent messages) avoided a broader, vaguer slowdown that a more defensive fix would have introduced everywhere."
+        ]
+      },
+      {
+        "id": "impact",
+        "title": "Impact",
+        "bullets": [
+          "Resolved the customer-blocking incident and documented the missing architecture decision so the same gap can't reopen silently.",
+          "Gave the domain a properly workspace-aware consumer in the team's current service, where none had existed before.",
+          "Eliminated the production deadlock at its root cause (partition-key mismatch), not by papering over the symptom.",
+          "Replaced silent message loss with a recoverable failure path — retry for transient errors, a dead-letter queue for permanent ones — closing a gap where failures had previously disappeared without a trace.",
+          "Qualitative: higher confidence in the reliability of a permissions-critical consumer; no incident of the same kind recurred after the fix."
+        ]
+      },
+      {
+        "id": "lessons",
+        "title": "Lessons Learned",
+        "paras": [
+          "Reusable engineering knowledge I carry forward from this:"
+        ],
+        "bullets": [
+          "An incident caused by an undocumented decision isn't fixed until the decision is written down. Otherwise you've fixed the symptom and left the cause free to resurface in a different shape.",
+          "A generic \"transaction failed\" error is a starting point, not a diagnosis. The real cause is often a mismatch one layer up — here, between how work was partitioned and how the data was actually contended.",
+          "Never let a failure disappear silently. A system that swallows an error and commits anyway is worse than one that fails loudly — visibility is a precondition for ever fixing the real cause.",
+          "Fix the exact scope of the contention, not the whole surface around it. Serializing per affected user solved the actual collision without slowing down everything else."
+        ]
+      },
+      {
+        "id": "evidence",
+        "title": "Evidence",
+        "bullets": [
+          "Wrote the post-mortem, the ADR, and the business-rules documentation for the domain, ahead of rebuilding the consumer.",
+          "Rebuilt the consumer in the team's current service and stack; activated in production.",
+          "Independently diagnosed a later production deadlock to a Kafka partition-key mismatch via log analysis, and replaced silent message loss with retry, a dead-letter queue, and per-user serialization.",
+          "Source (private): Jira incident record and its linked post-mortem, ADR, and follow-up tasks, Dynamox engineering tracker."
         ]
       }
     ]
@@ -1932,6 +1989,11 @@ export const capabilities: Capability[] = [
     "desc": "Proposal → implementation → adoption → deletion of the old path."
   },
   {
+    "id": "technical-leadership",
+    "name": "Technical Leadership",
+    "desc": "Standards adopted voluntarily; becoming the reference others consult."
+  },
+  {
     "id": "performance-engineering",
     "name": "Performance Engineering",
     "desc": "Making the common path fast, and hiding the latency that remains."
@@ -1957,9 +2019,9 @@ export const capabilities: Capability[] = [
     "desc": "Dense engineering data kept legible under time pressure."
   },
   {
-    "id": "technical-leadership",
-    "name": "Technical Leadership",
-    "desc": "Standards adopted voluntarily; becoming the reference others consult."
+    "id": "debugging",
+    "name": "Debugging",
+    "desc": "Root-causing under uncertainty — reproducing, isolating, and fixing without guessing."
   },
   {
     "id": "design-systems",
@@ -1987,24 +2049,9 @@ export const capabilities: Capability[] = [
     "desc": "Idempotency, reversibility, and designing for failure as the default."
   },
   {
-    "id": "component-architecture",
-    "name": "Component Architecture",
-    "desc": "Separating state from rendering; abstractions that get reused."
-  },
-  {
-    "id": "ai-engineering",
-    "name": "AI Engineering",
-    "desc": "AI compresses mechanical work; humans keep the judgment."
-  },
-  {
     "id": "observability",
     "name": "Observability",
     "desc": "Finding errors before customers do; alerts that stay actionable."
-  },
-  {
-    "id": "debugging",
-    "name": "Debugging",
-    "desc": "Root-causing under uncertainty — reproducing, isolating, and fixing without guessing."
   },
   {
     "id": "testing",
@@ -2062,14 +2109,6 @@ export const technologies: Technology[] = [
   {
     "name": "BigQuery",
     "usage": "The OLAP side of the analytics service decision."
-  },
-  {
-    "name": "Python",
-    "usage": "Data and AI tooling around Vertex AI workflows."
-  },
-  {
-    "name": "Vertex AI",
-    "usage": "Candidate generation for the human-in-the-loop route creation workflow."
   },
   {
     "name": "Kubernetes",
