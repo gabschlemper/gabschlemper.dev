@@ -2,10 +2,9 @@ import { Link } from "react-router-dom";
 import { cases } from "../data/knowledge-base";
 
 export default function Cases() {
-  // Featured first, otherwise source order.
-  const sorted = [...cases].sort(
-    (a, b) => Number(b.featured) - Number(a.featured),
-  );
+  // Source order: highest-seniority case studies first, per
+  // scripts/generate-portfolio.mjs in professional-knowledge-base. "Featured"
+  // (has a hand-drawn diagram) is shown as a badge only, not a sort key.
 
   return (
     <div className="screen">
@@ -17,7 +16,7 @@ export default function Cases() {
       </p>
 
       <div className="stack" style={{ gap: 12, marginTop: 28 }}>
-        {sorted.map((study) => (
+        {cases.map((study) => (
           <Link className="card-link" to={`/cases/${study.id}`} key={study.id}>
             <div
               className={`case-card${study.featured ? " case-card--featured" : ""}`}
