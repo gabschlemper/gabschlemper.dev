@@ -189,6 +189,10 @@ export const stats: Stat[] = [
   {
     "label": "Architecture Decisions",
     "value": "5+"
+  },
+  {
+    "label": "This Site's JS (gzip)",
+    "value": "~41 kB"
   }
 ]
 
@@ -221,7 +225,6 @@ export const companies: Company[] = [
       "Turned a customer-blocking production incident into a documented architecture decision — a post-mortem, an ADR, and a rebuilt consumer — then root-caused a later production deadlock to a messaging-partition mismatch and closed a silent-failure gap with retry and a dead-letter queue.",
       "Delivered a complex feature end to end, alone, across database, backend, and front end.",
       "Raised the team's engineering baseline in observability, security, and documentation, often on my own initiative.",
-      "Prototyped applied AI with a safety-first design — a human-in-the-loop agent for bulk route creation.",
       "Hardened backend containers and closed a 135-CVE dependency gap, remediating all 7 rated critical.",
       "Promoted from junior to mid-level in ~11 months, backed by evidence across all six competency areas."
     ],
@@ -267,8 +270,10 @@ export const companies: Company[] = [
       "prod-data-correction",
       "asset-tree-search",
       "error-observability",
-      "human-in-the-loop-ai-agent-for-bulk-route-creation",
-      "container-hardening"
+      "container-hardening",
+      "production-incident-role-bindings-consumer",
+      "code-review-technical-leadership",
+      "ai-orchestrated-feature-flag-removal"
     ],
     "lessons": [
       "Eventually-consistent derived data should have exactly one computation path. Multiple writers deriving the same value is the defect; consolidating the derivation is the fix.",
@@ -328,8 +333,7 @@ export const companies: Company[] = [
       "Developer Experience"
     ],
     "caseIds": [
-      "design-system",
-      "hierarchical-selector-component"
+      "design-system"
     ],
     "lessons": [
       "UI inconsistency is an engineering problem, not a cosmetic one. Duplicated, divergent components are a missing-abstraction problem; the fix is a shared foundation, not more careful styling."
