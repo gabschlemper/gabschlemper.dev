@@ -389,769 +389,6 @@ export const companies: Company[] = [
 
 export const cases: CaseStudy[] = [
   {
-    "id": "single-computation-path",
-    "featured": true,
-    "title": "Designing a single computation path for a cross-service metric",
-    "company": "Dynamox",
-    "category": "Distributed Systems",
-    "summary": "Two services independently calculated the same customer-facing metric, causing inconsistent data. I redesigned the architecture so only one service owned the calculation while every other service simply signaled stale data.",
-    "capabilities": [
-      "Distributed Systems",
-      "System Design",
-      "Technical Decision Making",
-      "Communication",
-      "Ownership"
-    ],
-    "technologies": [
-      "NestJS",
-      "PostgreSQL",
-      "Kafka"
-    ],
-    "impact": [
-      "Removed race conditions",
-      "Simplified architecture",
-      "Improved customer trust"
-    ],
-    "difficulty": "High",
-    "ownership": "End-to-end",
-    "customerFacing": "Yes",
-    "readingTime": "7 min",
-    "sections": [
-      {
-        "id": "context",
-        "title": "Context",
-        "paras": [
-          "Dynamox's platform derives a completion metric for industrial inspection routes: how much of a route has been inspected, per asset, per customer. The metric is customer-facing — it appears on dashboards operators use to plan work.",
-          "The underlying facts live in events. Inspections, edits and deletions flow through Kafka into multiple services, each maintaining its own projection of the data."
-        ]
-      },
-      {
-        "id": "problem",
-        "title": "Problem",
-        "paras": [
-          "Two services computed the metric independently, each from its own projection. Under normal conditions they agreed. Under retries, out-of-order delivery or partial failures, they diverged — and customers saw two different numbers for the same route depending on which screen they opened.",
-          "Each divergence became a support ticket, a manual reconciliation, and a small withdrawal from customer trust. The team had built a reconciliation job to patch differences, which treated the symptom and added a third component that could disagree."
-        ]
-      },
-      {
-        "id": "constraints",
-        "title": "Constraints",
-        "bullets": [
-          "At-least-once delivery: every consumer must tolerate duplicates and reordering.",
-          "No distributed transactions — services deploy and fail independently.",
-          "Zero downtime: the metric is in daily operational use.",
-          "Historical data had to be backfilled to a consistent state.",
-          "The two computing services were owned by different people; any fix had to survive team boundaries."
-        ]
-      },
-      {
-        "id": "alternatives",
-        "title": "Alternatives Considered",
-        "bullets": [
-          "Keep both computations, improve the reconciliation job. Rejected: reconciliation of two independent computations is unbounded work — every new edge case reappears twice.",
-          "Extract the calculation into a shared library. Rejected: identical code over non-identical projections still diverges. The bug was in the data, not the formula.",
-          "Compute on read at the API gateway. Rejected: pushed latency onto every dashboard load and still required a consistent source projection.",
-          "Single owner service; all others emit staleness signals. Chosen."
-        ]
-      },
-      {
-        "id": "decision",
-        "title": "Decision",
-        "paras": [
-          "Exactly one service owns the metric. It is the only code path in the company allowed to compute it.",
-          "Every other service that touches underlying data stops computing anything. Instead it emits a lightweight 'stale' signal — 'route X may have changed'. The owner recomputes the metric from the source of truth, idempotently, whenever a signal arrives.",
-          "This is where a personal principle crystallized: eventually consistent derived data should have exactly one computation path. And its corollary: if a value can always be recomputed from source, favor recomputation over synchronization."
-        ],
-        "diagram": {
-          "width": 800,
-          "height": 400,
-          "nodes": [
-            {
-              "id": "kafka",
-              "lines": [
-                "Kafka: inspection · edit · delete events"
-              ],
-              "x": 200,
-              "y": 16,
-              "w": 400,
-              "h": 40
-            },
-            {
-              "id": "svcA",
-              "lines": [
-                "Service A",
-                "(own projection)"
-              ],
-              "x": 60,
-              "y": 110,
-              "w": 220,
-              "h": 54
-            },
-            {
-              "id": "svcB",
-              "lines": [
-                "Service B",
-                "(own projection)"
-              ],
-              "x": 520,
-              "y": 110,
-              "w": 220,
-              "h": 54
-            },
-            {
-              "id": "owner",
-              "lines": [
-                "Metric Owner Service"
-              ],
-              "sub": "idempotent recompute · single computation path",
-              "x": 205,
-              "y": 220,
-              "w": 390,
-              "h": 64,
-              "variant": "accent"
-            },
-            {
-              "id": "dashboards",
-              "lines": [
-                "Dashboards"
-              ],
-              "sub": "customer-facing",
-              "x": 290,
-              "y": 330,
-              "w": 220,
-              "h": 44
-            },
-            {
-              "id": "removed",
-              "lines": [
-                "✕ removed:",
-                "2nd computation on B",
-                "+ reconciliation job"
-              ],
-              "x": 615,
-              "y": 220,
-              "w": 175,
-              "h": 64,
-              "variant": "removed"
-            }
-          ],
-          "edges": [
-            {
-              "from": "kafka",
-              "to": "svcA"
-            },
-            {
-              "from": "kafka",
-              "to": "svcB"
-            },
-            {
-              "from": "svcA",
-              "to": "owner",
-              "label": "stale signal"
-            },
-            {
-              "from": "svcB",
-              "to": "owner",
-              "label": "stale signal"
-            },
-            {
-              "from": "owner",
-              "to": "dashboards",
-              "label": "recomputed value"
-            }
-          ]
-        }
-      },
-      {
-        "id": "tradeoffs",
-        "title": "Trade-offs",
-        "bullets": [
-          "Recomputation costs more than incremental updates. Accepted: the computation is cheap relative to the cost of divergence, and signals are debounced.",
-          "A staleness window exists between signal and recomputation. Accepted: seconds of staleness with guaranteed convergence beats instant values that can be permanently wrong.",
-          "The owner service becomes a critical path. Mitigated: idempotent consumers, dead-letter queue, and alerting on signal lag."
-        ]
-      },
-      {
-        "id": "implementation",
-        "title": "Implementation",
-        "paras": [
-          "Staleness signals travel over a dedicated Kafka topic keyed by route, so recomputations for the same route serialize naturally. The owner consumes with idempotent handlers — recomputing twice is safe by construction, so retries need no special handling.",
-          "A backfill script recomputed every historical metric from source, migrating the system to a consistent baseline before the new path went live. The old computation in the second service was deleted, not disabled — leaving it dormant invited resurrection."
-        ]
-      },
-      {
-        "id": "impact",
-        "title": "Impact",
-        "bullets": [
-          "Inconsistency tickets for the metric dropped to zero after rollout.",
-          "The reconciliation job was deleted — an entire class of maintenance removed.",
-          "Race conditions became structurally impossible rather than merely unlikely.",
-          "The pattern was reused for other derived data; I became the team's reference for cross-service synchronization."
-        ]
-      },
-      {
-        "id": "lessons",
-        "title": "Lessons Learned",
-        "paras": [
-          "Consistency debates end when ownership is explicit. Most of the design work was not technical — it was getting agreement on the sentence 'only this service computes this value'.",
-          "Deleting code is part of the architecture. The migration wasn't done until the second computation path physically ceased to exist."
-        ]
-      },
-      {
-        "id": "evidence",
-        "title": "Evidence",
-        "paras": [
-          "This document is the primary evidence for the capabilities it claims: Distributed Systems (event-driven consistency design), Architecture (ownership boundaries), Ownership (proposal through backfill through deletion), Communication (the decision survived because it was written down and agreed across two service owners)."
-        ]
-      }
-    ]
-  },
-  {
-    "id": "ai-orchestrated-feature-flag-removal",
-    "featured": false,
-    "title": "Designing the safety guarantees for an AI-orchestrated cleanup, not just automating the grind",
-    "company": "Dynamox",
-    "category": "Architecture",
-    "summary": "Designed and built a Claude Code skill that safely orchestrates parallel agents to remove expired feature flags across a shared frontend and two backend services, closing a 35-task cleanup epic (25+ flags plus obsolete product-tour infrastructure, ~3,100 lines removed in one commit) — with disjoint-file-set batching so agents can't collide, diff-against-baseline validation instead of absolute pass/fail, and an enforced two-repository deploy order so infrastructure changes can never precede the code that depends on them.",
-    "capabilities": [
-      "System Design",
-      "Technical Decision Making",
-      "Ownership",
-      "Technical Leadership"
-    ],
-    "technologies": [
-      "claude-code",
-      "TypeScript",
-      "React"
-    ],
-    "impact": [
-      "Closed a 35-task cleanup epic spanning a shared frontend and two backend services, removing 25+ expired feature flags and obsolete product-tour infrastructure — one commit alone removed roughly 3,100 lines of dead code.",
-      "Produced a reusable tool, not a one-off script: the same skill applies to the next flag-cleanup epic in any of the three repositories, encoding conventions that used to live only in memory.",
-      "Removed the failure modes that make this kind of cleanup dangerous by hand — misclassifying a flag, agents colliding on a shared file, or getting the two-repository deploy order backward — by designing them out of the tool rather than depending on whoever runs it remembering all three under time pressure.",
-      "Qualitative: a simpler, more legible codebase as a direct result of the dead-code removal; no isolated before/after build-time metric was captured for this change alone."
-    ],
-    "difficulty": "High",
-    "ownership": "End-to-end",
-    "customerFacing": "No",
-    "readingTime": "2 min",
-    "sections": [
-      {
-        "id": "context",
-        "title": "Context",
-        "paras": [
-          "This is my clearest evidence of treating AI agents as a workforce that needs real systems-design thinking, not just a faster way to type code. The interesting engineering here isn't \"I used AI to remove some flags\" — it's recognizing that running several agents concurrently on a shared codebase is a concurrency problem (agents can collide on the same file), that generic tooling output is noisy in a large, imperfect codebase (a raw typecheck or dead-code report drowns the real signal), and that one specific decision in this workflow can silently change what ships to production and therefore must stay a human's call. Encoding all three into a reusable tool, instead of doing the task once by hand and moving on, is the kind of leverage-building that scales past any single cleanup."
-        ]
-      },
-      {
-        "id": "problem",
-        "title": "Problem",
-        "paras": [
-          "Feature flags and old product tours had accumulated across a shared frontend and two backend services, tracked as 35 individual removal tasks in one epic. The three services didn't share a convention for where a flag's value actually lives or how code reads it: the frontend keeps values in environment files with several code patterns for reading them (direct access, a typed helper, and local re-export indirections that had to be traced); one backend reads a typed environment service gated by a decorator; the other keeps its flag values in a separate infrastructure repository entirely, deployed independently from the service code that reads them.",
-          "That last point is the sharpest edge: removing a flag's value from the infrastructure repo before the corresponding code change has deployed can silently disable a feature that's still live in production, with no error to catch it."
-        ]
-      },
-      {
-        "id": "constraints",
-        "title": "Constraints",
-        "bullets": [
-          "No single mechanical rule covered all three repos. Each had a different storage convention and different code patterns for reading a flag, so a tool that worked for one repo's shape would silently miss cases in another.",
-          "The flag's real production value decides what's safe to automate. A flag that's `true` in production means the old code path is genuinely dead and safe to delete automatically; a flag that's `false` might mean a feature the team still intends to ship — collapsing that distinction automatically risks deleting code nobody had abandoned.",
-          "Parallelizing the removal introduces a new failure mode. Multiple agents editing a shared, large codebase at once can collide on the same file and corrupt each other's work if nothing coordinates who touches what.",
-          "Standard safety checks are noisy at this scale. A monorepo with pre-existing typecheck errors and dead-code false positives makes an absolute pass/fail reading useless — it either hides a real regression in the noise or flags phantom ones.",
-          "The two-repository case has an ordering invariant that's easy to get backward under time pressure, and getting it backward has a production consequence, not just a failed build."
-        ]
-      },
-      {
-        "id": "decision",
-        "title": "Decision",
-        "paras": [
-          "I treated the parallel agents as a workforce that needed the same safety design any concurrent system does, and treated the one production-affecting decision as something the tool should surface, not resolve on its own."
-        ],
-        "bullets": [
-          "Encoded each repo's real storage and reading conventions explicitly, so classification is deterministic per repository instead of re-derived by hand each time.",
-          "Made the flag's real production value drive the decision. `true` in production inlines to `true` and deletes the dead path automatically; `false` in production stops and asks, recommending the safe default (keep production behavior) rather than guessing silently — because that one branch can change what ships.",
-          "Batched agents by disjoint file sets, computed from the overlap between the files each flag touches, so agents assigned to the same batch never write to the same file; flags that shared a file were serialized instead of parallelized.",
-          "Validated by diffing against a pre-change baseline — typecheck error counts and a dead-code report, run once on the unmodified code and once after — instead of reading either tool's raw output, so only regressions the removal actually introduced show up.",
-          "Made the two-repository deploy order an explicit, enforced step, not a note in a wiki page: the service's own change ships and deploys first; the infrastructure change that removes the now-unused variable is marked as dependent on that deploy and never allowed to precede it.",
-          "Required an explicit confirmation gate before committing or opening a PR, with a checklist of affected screens or endpoints — derived from the files actually touched — for a human to verify manually before merge."
-        ]
-      },
-      {
-        "id": "tradeoffs",
-        "title": "Trade-offs",
-        "bullets": [
-          "Disjoint-file-set batching over parallelizing by default. Computing file overlap before assigning work costs a planning step, but letting agents share a file without it risks a silently broken merge — worth the extra step once dozens of tasks are running concurrently.",
-          "Diffing against a baseline over trusting a tool's raw output. Running each safety check twice costs time, but an absolute reading in a large, imperfect codebase either buries a real regression in pre-existing noise or reports phantom ones — neither is usable.",
-          "Asking before inlining a flag that's `false` in production, over always deleting the path that never shipped. A slower, human-confirmed step here is the right cost, because automating it wrong means silently killing a feature the team hadn't abandoned.",
-          "Enforcing the deploy order in the tool over documenting it and trusting reviewers. A rule that only lives in a person's memory doesn't survive turnover or a rushed release; encoding it means it can't be skipped by accident."
-        ]
-      },
-      {
-        "id": "impact",
-        "title": "Impact",
-        "bullets": [
-          "Closed a 35-task cleanup epic spanning a shared frontend and two backend services, removing 25+ expired feature flags and obsolete product-tour infrastructure — one commit alone removed roughly 3,100 lines of dead code.",
-          "Produced a reusable tool, not a one-off script: the same skill applies to the next flag-cleanup epic in any of the three repositories, encoding conventions that used to live only in memory.",
-          "Removed the failure modes that make this kind of cleanup dangerous by hand — misclassifying a flag, agents colliding on a shared file, or getting the two-repository deploy order backward — by designing them out of the tool rather than depending on whoever runs it remembering all three under time pressure.",
-          "Qualitative: a simpler, more legible codebase as a direct result of the dead-code removal; no isolated before/after build-time metric was captured for this change alone."
-        ]
-      },
-      {
-        "id": "lessons",
-        "title": "Lessons Learned",
-        "paras": [
-          "Reusable engineering knowledge I carry forward from this:"
-        ],
-        "bullets": [
-          "Parallel AI agents need the same safety design as any other concurrent workers. Isolate their work by disjoint file ownership, or they will corrupt each other's changes exactly like any other race condition.",
-          "Validate against a baseline, not an absolute reading, in any codebase old enough to have pre-existing noise. Otherwise the signal you actually care about is either buried or drowned by false positives.",
-          "Encode an invariant in the tool; don't just document it. A rule that depends on a person remembering it under pressure will eventually be skipped — a tool that enforces it can't be.",
-          "Automate everything except the one decision that can silently change production behavior. That single branch deserves a human, even inside an otherwise fully automated pipeline."
-        ]
-      },
-      {
-        "id": "evidence",
-        "title": "Evidence",
-        "bullets": [
-          "Closed Jira epic with 35 subtasks across a shared frontend and two backend services; 25+ feature flags and obsolete product-tour infrastructure removed, including one commit that removed roughly 3,100 lines of dead code.",
-          "Built a reusable Claude Code skill encoding the classification, parallel-safety, and validation rules for all three repositories' conventions.",
-          "Part of a broader, sustained practice of building reliable tooling on top of AI coding agents: a from-scratch MCP server exposing SonarCloud's API for quality-gate review inside the same workflow, and further tools automating bug-investigation-to-shipped-fix (with git/Jira archaeology and PR creation), team-scoped production-error triage, and post-incident latency analysis.",
-          "Source (private): Dynamox engineering tracker (Jira epic and subtasks) and personal tooling repository."
-        ]
-      }
-    ]
-  },
-  {
-    "id": "asset-tree-search",
-    "featured": false,
-    "title": "Delivering a large asset tree end to end, from recursive SQL to progressive prefetch",
-    "company": "Dynamox",
-    "category": "Performance",
-    "summary": "Delivered search and fast navigation over very large asset trees end to end — recursive SQL on the backend, and a search UX with in-memory caching and progressive background prefetch on the frontend — eliminating the repeated loading that made the most-used flow slow.",
-    "capabilities": [
-      "Performance Engineering",
-      "Frontend Engineering",
-      "Backend Engineering",
-      "Product Thinking",
-      "Ownership",
-      "UX"
-    ],
-    "technologies": [
-      "PostgreSQL",
-      "NestJS",
-      "React"
-    ],
-    "impact": [
-      "Delivered search and fast navigation over large asset trees end to end — database, backend, and frontend — in the module's most-used flow.",
-      "Eliminated the repeated loading that made browsing large trees slow, via caching and progressive prefetch.",
-      "Added asset search where there was none, with matches shown in context.",
-      "Qualitative: a clear improvement to perceived performance and UX in a high-traffic flow; no hard before/after metric was captured. <!-- TODO: add timing numbers if available -->"
-    ],
-    "difficulty": "High",
-    "ownership": "End-to-end",
-    "customerFacing": "Yes",
-    "readingTime": "2 min",
-    "sections": [
-      {
-        "id": "context",
-        "title": "Context",
-        "paras": [
-          "This is my strongest evidence of full-stack ownership and performance thinking. Because I owned the database, the backend, and the frontend, I could put each part of the solution at the layer where it belonged — traversal in the database, latency-hiding in the client — instead of forcing one layer to compensate for another.",
-          "It also shows a product-level UX decision made as an engineering trade-off: choosing to reveal search matches by expanding the tree rather than filtering it changed both what the user sees and how data has to load."
-        ]
-      },
-      {
-        "id": "problem",
-        "title": "Problem",
-        "paras": [
-          "When building or editing an inspection route, users navigate a hierarchy of assets that can be very large. They needed to see asset descriptions and to search assets by name — but the tree loaded slowly, and there was no search. In the module's most-used flow, that meant repeated waiting and no way to jump to a known asset."
-        ]
-      },
-      {
-        "id": "constraints",
-        "title": "Constraints",
-        "bullets": [
-          "The data is deeply hierarchical and large. Finding matches and showing them in context means traversing a big tree — the naive approach is a cascade of queries per level.",
-          "Search over a tree has a UX fork with data consequences. Do you filter the tree down to matches, or reveal matches in place? The choice changes what the user understands and what data you must load.",
-          "Perceived performance is the real target. Even a fast backend feels slow if the client blocks on every expansion; the latency had to be hidden, not just reduced.",
-          "I owned all three layers, so every trade-off between doing work in SQL, in the API, or in the client was mine to get right."
-        ]
-      },
-      {
-        "id": "decision",
-        "title": "Decision",
-        "paras": [
-          "I put each responsibility at the layer suited to it."
-        ],
-        "bullets": [
-          "Traversal in the database, via recursive SQL. A recursive query finds matching assets and walks up to their ancestors in one pass, so the server returns matches already in their tree context instead of the client stitching together many requests. I deduplicated matches and computed \"has children\" cheaply so nodes render correctly without extra round-trips.",
-          "Search that reveals rather than filters. On the frontend I debounced the query and chose to expand the nodes of the matches in place — with navigation between results — rather than collapse the tree to matches only. This keeps each result legible in its real hierarchy.",
-          "An in-memory cache per search term, so repeating or refining a search doesn't refetch what's already known.",
-          "Progressive, level-by-level prefetch in the background, so the next levels are already loading before the user expands them — hiding latency on the common path.",
-          "Documented the use cases (including alternative flows for the different actors) and rolled out behind a feature flag, staging before production."
-        ]
-      },
-      {
-        "id": "tradeoffs",
-        "title": "Trade-offs",
-        "bullets": [
-          "A recursive query over many per-level queries. One recursive traversal returns matches with their ancestors in a single pass, avoiding a chatty cascade — at the cost of a more complex query to own and reason about.",
-          "Expanding matches in place over filtering the tree. Revealing results in their real hierarchy preserves context and orientation, where a filtered list would be simpler but strip the structure users rely on. I accepted more involved loading logic to keep the result meaningful.",
-          "Progressive background prefetch over on-demand loading. Prefetching hides latency on the most common path at the cost of doing some fetching the user might not ultimately need — a good trade in the module's busiest flow.",
-          "A per-term in-memory cache over refetching. Caching trades a little memory and cache bookkeeping for the elimination of repeated loading during a search session."
-        ]
-      },
-      {
-        "id": "impact",
-        "title": "Impact",
-        "bullets": [
-          "Delivered search and fast navigation over large asset trees end to end — database, backend, and frontend — in the module's most-used flow.",
-          "Eliminated the repeated loading that made browsing large trees slow, via caching and progressive prefetch.",
-          "Added asset search where there was none, with matches shown in context.",
-          "Qualitative: a clear improvement to perceived performance and UX in a high-traffic flow; no hard before/after metric was captured. <!-- TODO: add timing numbers if available -->"
-        ]
-      },
-      {
-        "id": "lessons",
-        "title": "Lessons Learned",
-        "paras": [
-          "Reusable engineering knowledge I carry forward from this:"
-        ],
-        "bullets": [
-          "Push hierarchy traversal into the database. A recursive query that returns matches with their ancestors beats a per-level request cascade the client has to orchestrate.",
-          "A search UX choice is an engineering decision. \"Reveal in place\" vs. \"filter down\" changes both comprehension and the shape of the data you load — decide it deliberately.",
-          "Hide latency, don't just reduce it. Progressive prefetch and per-term caching make the common path feel instant even when some work remains.",
-          "Owning every layer lets you solve each problem where it belongs — the biggest advantage of true full-stack ownership."
-        ]
-      },
-      {
-        "id": "evidence",
-        "title": "Evidence",
-        "bullets": [
-          "Delivered solo across database (recursive SQL), backend, and frontend.",
-          "Feature shipped to production behind a feature flag after staging.",
-          "Documented use cases including alternative actor flows.",
-          "Source (private): consolidated career knowledge base."
-        ]
-      }
-    ]
-  },
-  {
-    "id": "code-review-technical-leadership",
-    "featured": false,
-    "title": "Choosing the right altitude to fix a bug found in review, not just the fastest patch",
-    "company": "Dynamox",
-    "category": "Collaboration",
-    "summary": "In code review, caught a null-safety bug that would have crashed three production components, and fixed the defect class — not the three instances — by proposing a shared data-layer helper to the PR's author instead of patching each render site myself; one of 100+ reviews I did that semester.",
-    "capabilities": [
-      "Technical Leadership",
-      "Communication",
-      "Debugging"
-    ],
-    "technologies": [
-      "React",
-      "TypeScript"
-    ],
-    "impact": [
-      "Prevented a crash in three production components before it shipped.",
-      "Removed the underlying defect class, not just the three known instances, via a shared data-layer helper any future consumer now goes through.",
-      "Kept the fix owned by its original author, reinforcing the pattern for them rather than substituting my judgment for theirs.",
-      "Part of a review practice recognized in performance feedback for the clarity of its questions and documentation — over 100 reviews in a single half-year, across front end, back end, and tests."
-    ],
-    "difficulty": "Medium",
-    "ownership": "Contributed",
-    "customerFacing": "Yes",
-    "readingTime": "2 min",
-    "sections": [
-      {
-        "id": "context",
-        "title": "Context",
-        "paras": [
-          "Most of my case studies are about work I owned end to end; this one is evidence of a different, equally important capability — raising the quality bar on someone else's work without taking it over. Code review is where a lot of real engineering judgment is invisible: catching a defect that isn't obviously wrong, deciding to fix the general case instead of the instance, and choosing to suggest rather than rewrite so the author keeps ownership and the lesson. This is part of a sustained practice — over 100 reviews across front end, back end, and tests in a single half, alongside pair programming on critical work — not a one-off catch."
-        ]
-      },
-      {
-        "id": "problem",
-        "title": "Problem",
-        "paras": [
-          "A teammate's pull request rendered a list of items after filtering it, but a nearby piece of logic in the same component still referred to the length of the original, unfiltered array. Both lines were locally correct — neither was wrong on its own — but they encoded an assumption that the two values would always agree. They wouldn't: the moment the filter actually removed an item, the two derived values would diverge, and three components shared this exact pattern."
-        ]
-      },
-      {
-        "id": "constraints",
-        "title": "Constraints",
-        "bullets": [
-          "The bug was invisible line by line. Nothing in the diff was individually wrong; the defect only exists in the *relationship* between two values derived from the same source — exactly the kind of bug a fast, diff-focused review misses.",
-          "The fast fix was tempting and insufficient. Patching the three known call sites would have made the visible symptom disappear without removing the underlying defect class — the next component built the same way would reintroduce it.",
-          "It wasn't my code. Proposing a deeper structural change to someone else's pull request risks either being ignored (too soft) or taking over their work (too heavy) — getting the balance right is itself the skill."
-        ]
-      },
-      {
-        "id": "decision",
-        "title": "Decision",
-        "paras": [
-          "I recognized the shape of the bug before deciding what to do about it: two values derived from the same source, read independently, with no guarantee they'd stay in sync — the same kind of problem I've solved architecturally elsewhere by giving a derived value a single computation path."
-        ],
-        "bullets": [
-          "Traced the pattern to all three affected components, not just the one in the diff, so the fix could address the actual defect class.",
-          "Proposed a shared helper at the data layer — one place that derives the value both pieces of logic need, so nothing downstream can read two different answers from the same source again.",
-          "Suggested it to the author instead of implementing it myself. Leaving the change in their hands cost an extra review round, but kept their ownership of the PR intact and taught the pattern rather than silently overriding their work."
-        ]
-      },
-      {
-        "id": "tradeoffs",
-        "title": "Trade-offs",
-        "bullets": [
-          "A shared data-layer helper over patching the three render sites. Fixing all three instances is faster; giving them one shared source removes the defect class for any future consumer too — worth the extra design step for a pattern that had already repeated three times.",
-          "Suggesting the fix over implementing it myself. Writing the fix directly would have been quicker and guaranteed my preferred outcome, but it would have taken the PR away from its author. Proposing it and letting them apply it cost a review cycle and produced a teammate who understood the pattern, not just a merged fix.",
-          "Reviewing the invariant over reviewing the diff. Reasoning about what the two derived values were supposed to guarantee together — rather than checking each line in isolation — is slower per review but is the only way this class of bug gets caught before production."
-        ]
-      },
-      {
-        "id": "impact",
-        "title": "Impact",
-        "bullets": [
-          "Prevented a crash in three production components before it shipped.",
-          "Removed the underlying defect class, not just the three known instances, via a shared data-layer helper any future consumer now goes through.",
-          "Kept the fix owned by its original author, reinforcing the pattern for them rather than substituting my judgment for theirs.",
-          "Part of a review practice recognized in performance feedback for the clarity of its questions and documentation — over 100 reviews in a single half-year, across front end, back end, and tests."
-        ]
-      },
-      {
-        "id": "lessons",
-        "title": "Lessons Learned",
-        "paras": [
-          "Reusable engineering knowledge I carry forward from this:"
-        ],
-        "bullets": [
-          "A value with two independent readers is a bug waiting for the day they diverge. The same principle that governs cross-service data consistency applies just as much inside a single component.",
-          "In review, fix the class when you can see it, not just the instance in front of you. Three repeats of the same pattern is a signal that patching the visible one will leave the other two to fail later.",
-          "Suggest, don't take over. A review that fixes the pattern and hands the implementation back teaches it; a review that silently rewrites the PR doesn't.",
-          "Review what the code assumes, not just what it changed. The bug was only visible when reasoning about the invariant the two lines were supposed to share."
-        ]
-      },
-      {
-        "id": "evidence",
-        "title": "Evidence",
-        "bullets": [
-          "Caught and redirected a null-safety divergence bug across three components before release, via a proposed shared abstraction rather than a direct rewrite.",
-          "Part of a sustained review practice: 100+ code reviews in a single half (up from 18 the cycle before), across front end, back end, and tests, plus pair programming on critical deliveries.",
-          "Recognized in performance feedback for the clarity of review questions and PR documentation.",
-          "Source (private): consolidated career knowledge base and performance-review evidence."
-        ]
-      }
-    ]
-  },
-  {
-    "id": "design-system",
-    "featured": true,
-    "title": "Introducing a Design System where none existed",
-    "company": "AQTech",
-    "category": "Frontend Engineering",
-    "summary": "Identified the absence of frontend standards, proposed a Design System, built it from scratch and taught the team how to adopt it.",
-    "capabilities": [
-      "Ownership",
-      "Frontend Engineering",
-      "System Design",
-      "Technical Leadership",
-      "Product Thinking",
-      "Communication",
-      "Design Systems",
-      "Accessibility",
-      "Developer Experience"
-    ],
-    "technologies": [
-      "Vue",
-      "TypeScript",
-      "Vuetify"
-    ],
-    "impact": [
-      "Standardized frontend development",
-      "Reduced duplicated components",
-      "Became frontend reference"
-    ],
-    "difficulty": "Medium",
-    "ownership": "Initiated & led",
-    "customerFacing": "Indirect",
-    "readingTime": "6 min",
-    "sections": [
-      {
-        "id": "context",
-        "title": "Context",
-        "paras": [
-          "AQTech's frontend had grown feature by feature. Each developer solved UI problems locally: three date pickers, four button variants, inconsistent spacing, no shared vocabulary between design and code.",
-          "I was an intern. Nobody asked for a Design System — the cost was invisible because it was paid in small increments on every feature."
-        ]
-      },
-      {
-        "id": "problem",
-        "title": "Problem",
-        "paras": [
-          "Duplication was the visible symptom; the real problem was decision fatigue. Every feature required re-deciding paddings, colors, error states and component APIs. Reviews argued about pixels instead of logic. Onboarding meant absorbing folklore."
-        ]
-      },
-      {
-        "id": "constraints",
-        "title": "Constraints",
-        "bullets": [
-          "No dedicated time — the system had to be built alongside feature work.",
-          "No designer ownership: the source of truth had to live in code.",
-          "Vuetify was already in the stack; the system had to wrap it, not fight it.",
-          "As an intern, I had no authority to mandate anything. Adoption had to be voluntary."
-        ]
-      },
-      {
-        "id": "alternatives",
-        "title": "Alternatives Considered",
-        "bullets": [
-          "Adopt Vuetify defaults everywhere. Rejected: defaults didn't encode our domain patterns (dense engineering data, asset hierarchies) — that gap was where the duplication grew.",
-          "A written style guide without code. Rejected: documentation that requires discipline loses to deadlines.",
-          "A component library wrapping Vuetify with our tokens, patterns and docs. Chosen."
-        ]
-      },
-      {
-        "id": "decision",
-        "title": "Decision",
-        "paras": [
-          "Build the Design System as the path of least resistance: importing the system component had to be strictly less work than writing a local one.",
-          "Every component shipped with usage docs and copy-pasteable examples. I migrated the highest-traffic screens myself first, so the system proved itself before anyone was asked to adopt it."
-        ],
-        "diagram": {
-          "width": 760,
-          "height": 260,
-          "nodes": [
-            {
-              "id": "screenA",
-              "lines": [
-                "Screen: Asset list"
-              ],
-              "x": 40,
-              "y": 16,
-              "w": 170,
-              "h": 44
-            },
-            {
-              "id": "screenB",
-              "lines": [
-                "Screen: Sensor detail"
-              ],
-              "x": 225,
-              "y": 16,
-              "w": 170,
-              "h": 44
-            },
-            {
-              "id": "screenC",
-              "lines": [
-                "Screen: Route editor"
-              ],
-              "x": 410,
-              "y": 16,
-              "w": 170,
-              "h": 44
-            },
-            {
-              "id": "removed",
-              "lines": [
-                "✕ phased out:",
-                "local one-off",
-                "components"
-              ],
-              "x": 600,
-              "y": 16,
-              "w": 150,
-              "h": 70,
-              "variant": "removed"
-            },
-            {
-              "id": "ds",
-              "lines": [
-                "Design System"
-              ],
-              "sub": "tokens · patterns · a11y defaults · docs",
-              "x": 180,
-              "y": 100,
-              "w": 400,
-              "h": 64,
-              "variant": "accent"
-            },
-            {
-              "id": "vuetify",
-              "lines": [
-                "Vuetify (base library)"
-              ],
-              "x": 280,
-              "y": 190,
-              "w": 200,
-              "h": 44
-            }
-          ],
-          "edges": [
-            {
-              "from": "vuetify",
-              "to": "ds",
-              "label": "wraps"
-            },
-            {
-              "from": "ds",
-              "to": "screenA"
-            },
-            {
-              "from": "ds",
-              "to": "screenB"
-            },
-            {
-              "from": "ds",
-              "to": "screenC"
-            }
-          ]
-        }
-      },
-      {
-        "id": "tradeoffs",
-        "title": "Trade-offs",
-        "bullets": [
-          "Wrapping Vuetify meant inheriting its constraints and upgrade cycle. Accepted for velocity.",
-          "Building alongside feature work meant slow, incremental coverage. Accepted — it forced the system to grow from real needs instead of speculation.",
-          "Voluntary adoption is slower than mandate. Accepted — and it's why the standards survived after I left."
-        ]
-      },
-      {
-        "id": "implementation",
-        "title": "Implementation",
-        "paras": [
-          "TypeScript component library on Vue 3 wrapping Vuetify, paired with a Figma component library kept in sync with the code: design tokens, form patterns, data-density presets and accessibility defaults baked in. Documentation lived beside the code and every component page answered 'when do I use this instead of X'.",
-          "Adoption strategy: migrate loud screens first, pair with each developer on their first use, and treat every 'the system can't do X' as a bug in the system, not the developer."
-        ]
-      },
-      {
-        "id": "impact",
-        "title": "Impact",
-        "bullets": [
-          "Frontend development standardized; duplicated components stopped appearing in review.",
-          "New features started from composition rather than construction.",
-          "I became the team's frontend reference — the standards remained after I left.",
-          "The experience produced a durable principle: a Design System succeeds only when adoption becomes the easiest path."
-        ]
-      },
-      {
-        "id": "lessons",
-        "title": "Lessons Learned",
-        "paras": [
-          "Authority is not a prerequisite for standards — evidence is. Migrating real screens before asking for adoption converted skeptics better than any argument.",
-          "The best engineering standards are adopted voluntarily; the system must out-compete the alternative on effort, not on principle."
-        ]
-      },
-      {
-        "id": "evidence",
-        "title": "Evidence",
-        "paras": [
-          "Capabilities claimed and demonstrated: Design Systems (built one from zero), Technical Leadership (adoption without authority), Developer Experience (adoption-as-product mindset), Frontend Engineering (the components themselves), Accessibility (defaults baked into components, not retrofitted per screen)."
-        ]
-      }
-    ]
-  },
-  {
     "id": "analytics-service",
     "featured": false,
     "title": "Founding an analytics service by moving reporting off the transactional database",
@@ -1272,335 +509,6 @@ export const cases: CaseStudy[] = [
           "Revised the decision between two versions after identifying a latency risk the first version had underweighted.",
           "Curated analytical tables and infrastructure-as-code load routines.",
           "Source (private): consolidated career knowledge base; internal architecture decision record."
-        ]
-      }
-    ]
-  },
-  {
-    "id": "container-hardening",
-    "featured": false,
-    "title": "Hardening containers and closing a 135-CVE dependency gap",
-    "company": "Dynamox",
-    "category": "Security",
-    "summary": "Rebuilt backend services on hardened, non-root container images and cleared a full dependency vulnerability scan — 135 CVEs flagged, 7 rated critical, all remediated.",
-    "capabilities": [
-      "Security",
-      "Reliability",
-      "Backend Engineering"
-    ],
-    "technologies": [
-      "Docker",
-      "Kubernetes"
-    ],
-    "impact": [
-      "Cleared the 135-CVE dependency scan, with all 7 critical vulnerabilities remediated.",
-      "Containers run as non-root by default across the hardened services.",
-      "Security hardening became a standing part of how backend services ship, not an audit-triggered scramble — one of the six areas cited in my promotion to mid-level."
-    ],
-    "difficulty": "Medium",
-    "ownership": "End-to-end",
-    "customerFacing": "No",
-    "readingTime": "2 min",
-    "sections": [
-      {
-        "id": "context",
-        "title": "Context",
-        "paras": [
-          "This is my evidence for security as an engineering practice, not a one-off fire drill. Security was one of the six competency areas in my promotion dossier, and this is the concrete work behind that: I didn't wait for an audit to force the issue — I closed the gap and made hardening the default for how backend services ship.",
-          "It's the case I point to whenever an interviewer asks whether I've worked on security specifically, rather than picking it up as a side effect of other work."
-        ]
-      },
-      {
-        "id": "problem",
-        "title": "Problem",
-        "paras": [
-          "Backend services ran in containers on Kubernetes (GKE) without a formal hardening or CVE-remediation practice. Vulnerability exposure in base images and dependencies is easy to defer: it doesn't fail a build, a test, or a deploy — it just accumulates until an audit or an incident forces attention."
-        ]
-      },
-      {
-        "id": "constraints",
-        "title": "Constraints",
-        "bullets": [
-          "The exposure was spread across two services and their full dependency trees, not a single fixable line — 135 CVEs flagged in the scan, of varying severity.",
-          "Non-root containerization touches the whole runtime, not just the Dockerfile: file permissions, process ownership, and anything that assumed root have to be re-verified.",
-          "Remediating a CVE isn't always a version bump — some require reworking how a dependency is used, or replacing it, without regressing behavior.",
-          "Prioritization mattered. With 135 flagged, treating all of them as equally urgent would have meant treating none of them as urgent."
-        ]
-      },
-      {
-        "id": "decision",
-        "title": "Decision",
-        "bullets": [
-          "Rebuilt service images on hardened, non-root Docker bases, so containers no longer ran as root by default.",
-          "Ran a full dependency vulnerability scan across both services, surfacing 135 CVEs in total.",
-          "Prioritized by severity first — remediated the 7 rated critical across the two services before working down the rest.",
-          "Made hardening a standing practice, not a one-time cleanup, so new dependencies and images are checked going forward rather than accumulating silently again."
-        ]
-      },
-      {
-        "id": "tradeoffs",
-        "title": "Trade-offs",
-        "bullets": [
-          "Non-root images over root (the default). Non-root containers reduce blast radius if a container is compromised, at the cost of re-verifying every place that assumed root access. I accepted the migration cost for the security guarantee.",
-          "Remediating by severity over chronological/alphabetical order. Working the 7 critical CVEs first meant the highest-risk exposure closed fastest, even though it meant leaving lower-severity items open longer."
-        ]
-      },
-      {
-        "id": "impact",
-        "title": "Impact",
-        "bullets": [
-          "Cleared the 135-CVE dependency scan, with all 7 critical vulnerabilities remediated.",
-          "Containers run as non-root by default across the hardened services.",
-          "Security hardening became a standing part of how backend services ship, not an audit-triggered scramble — one of the six areas cited in my promotion to mid-level."
-        ]
-      },
-      {
-        "id": "lessons",
-        "title": "Lessons Learned",
-        "paras": [
-          "Reusable engineering knowledge I carry forward from this:"
-        ],
-        "bullets": [
-          "Vulnerability exposure accumulates silently. Nothing in a normal build/test/deploy cycle forces attention to it — it needs its own standing practice, not just a response to an audit.",
-          "Prioritize remediation by severity, not by volume. With well over a hundred flagged items, working the highest-risk ones first is what makes the list tractable.",
-          "Non-root by default is a runtime decision, not just a Dockerfile line. It has to be verified across the whole service, not just declared."
-        ]
-      },
-      {
-        "id": "evidence",
-        "title": "Evidence",
-        "bullets": [
-          "Cleared a 135-CVE dependency scan with all 7 critical vulnerabilities remediated across two services.",
-          "Rebuilt service images on hardened, non-root Docker bases.",
-          "Cited as one of six competency areas (security) in my promotion dossier (see companies/dynamox.md).",
-          "Source (private): consolidated career knowledge base."
-        ]
-      }
-    ]
-  },
-  {
-    "id": "error-observability",
-    "featured": false,
-    "title": "Bringing error observability to a team that had none",
-    "company": "Dynamox",
-    "category": "Leadership",
-    "summary": "Gave a team that had no error monitoring a structured observability practice — a shared reporter and request-time-tagged API interceptor plus dashboards and a triage workflow — turning production bugs from something reported by support into something the team can see and prioritize.",
-    "capabilities": [
-      "Ownership",
-      "Frontend Engineering",
-      "Product Thinking",
-      "Technical Leadership",
-      "Observability"
-    ],
-    "technologies": [
-      "React",
-      "Sentry",
-      "TypeScript"
-    ],
-    "impact": [
-      "The team went from no error monitoring to a structured observability practice — able to answer \"which service or feature is failing most?\" and to review open issues by priority.",
-      "Production bugs became visible proactively instead of arriving only through support.",
-      "Errors are attributable to feature and endpoint, thanks to request-time context tagging, and the setup is the base for post-deploy alerting.",
-      "Qualitative: faster detection of production problems; no hard mean-time-to-detect number was captured. <!-- TODO: add MTTD or issue-volume numbers if available -->"
-    ],
-    "difficulty": "Medium",
-    "ownership": "Led",
-    "customerFacing": "No",
-    "readingTime": "2 min",
-    "sections": [
-      {
-        "id": "context",
-        "title": "Context",
-        "paras": [
-          "This is evidence that I spot and close gaps nobody assigned me — the same initiative that defined my earliest growth, now applied at team scale. Nobody asked for observability; I noticed we were the only team flying blind and made the case to fix it.",
-          "It also shows frontend systems thinking: the core of the solution is a shared, reusable instrumentation layer with a deliberate tagging design, not a scattering of one-off error logs — plus the product sense to build dashboards around how the team actually triages."
-        ]
-      },
-      {
-        "id": "problem",
-        "title": "Problem",
-        "paras": [
-          "The frontend was a shared codebase split across several teams' areas. Every other team's area had error monitoring; mine had none. The consequence was concrete: we learned about production bugs when a support ticket came in, not when the error happened. We had no way to see which parts of our area were failing, how often, or whether a release had made things worse — so triage was reactive and anecdotal."
-        ]
-      },
-      {
-        "id": "constraints",
-        "title": "Constraints",
-        "bullets": [
-          "Nobody owned the problem. It was a structural gap, not a ticket — someone had to notice it and decide it was worth solving.",
-          "Error attribution is the hard part. Catching errors is easy; making each error carry enough context to say *which feature and which API call* produced it — and preserving the original failing route — is where the design lives.",
-          "Instrumentation must be shared, not sprinkled. Ad-hoc error logging across dozens of routes would have been noise; the value is in one consistent, reusable layer.",
-          "Observability is only useful if it drives action. A dashboard nobody triages is decoration; the practice had to include a workflow."
-        ]
-      },
-      {
-        "id": "decision",
-        "title": "Decision",
-        "paras": [
-          "I treated it as introducing a practice, not installing a tool."
-        ],
-        "bullets": [
-          "Diagnosed and made the case. I identified that our area was the only one without monitoring and proposed the initiative off my own diagnosis.",
-          "Built a shared error reporter wired into the critical asynchronous flows, so errors are captured consistently instead of per-screen.",
-          "Added a shared API interceptor that tags at request time. Each error carries context tags — team, feature, and the specific API service and endpoint — and I captured them at the moment of the request so the tag reflects the route that actually failed, rather than whatever context existed when the error surfaced. I made it additive so it never overwrites existing tags.",
-          "Built dashboards with thresholds, organized around how the team would actually use them, and mapped our area's routes to filters so errors could be sliced by feature.",
-          "Defined the triage workflow — how an error becomes a tracked ticket — so the monitoring turns into action, and set the base for post-deploy alerting."
-        ]
-      },
-      {
-        "id": "tradeoffs",
-        "title": "Trade-offs",
-        "bullets": [
-          "Tagging at request time over tagging on the response/error. Capturing context when the request is made preserves the true failing endpoint for correct attribution; reading it later would sometimes mis-attribute the error. Accepted cost: a little more care in the interceptor.",
-          "A shared instrumentation layer over per-screen error logging. One reusable reporter and interceptor is more design up front than scattered `catch` blocks, but it's the difference between a signal and noise.",
-          "Additive tagging over overwriting. Never clobbering existing tags keeps the shared codebase's other context intact, at the cost of being disciplined about how tags are set.",
-          "Dashboards by usage persona over a generic default. Building views around how the team triages takes more thought than an out-of-the-box dashboard but makes the data answer the questions people actually ask."
-        ]
-      },
-      {
-        "id": "impact",
-        "title": "Impact",
-        "bullets": [
-          "The team went from no error monitoring to a structured observability practice — able to answer \"which service or feature is failing most?\" and to review open issues by priority.",
-          "Production bugs became visible proactively instead of arriving only through support.",
-          "Errors are attributable to feature and endpoint, thanks to request-time context tagging, and the setup is the base for post-deploy alerting.",
-          "Qualitative: faster detection of production problems; no hard mean-time-to-detect number was captured. <!-- TODO: add MTTD or issue-volume numbers if available -->"
-        ]
-      },
-      {
-        "id": "lessons",
-        "title": "Lessons Learned",
-        "paras": [
-          "Reusable engineering knowledge I carry forward from this:"
-        ],
-        "bullets": [
-          "You can't fix what you can't see. Observability is a precondition for reliability, not a nice-to-have you add later.",
-          "Attribute errors where the context is truthful. Tag at the point (request time) that preserves what actually failed, or your dashboards will mislead you.",
-          "Instrument once, shared. A reusable reporter and interceptor beat scattered logging — consistency is what turns error data into signal.",
-          "Observability is a workflow, not a tool. Without a triage path from error to ticket, the dashboards don't change anything.",
-          "Noticing the unassigned gap is the ownership. The initiative to see the problem was worth as much as the code that solved it."
-        ]
-      },
-      {
-        "id": "evidence",
-        "title": "Evidence",
-        "bullets": [
-          "Proposed and led the initiative off my own diagnosis (our area was the only one without monitoring).",
-          "Built a shared reporter and a request-time-tagging API interceptor, dashboards with thresholds, and an error-to-ticket triage workflow.",
-          "Source (private): consolidated career knowledge base."
-        ]
-      }
-    ]
-  },
-  {
-    "id": "flaky-e2e",
-    "featured": false,
-    "title": "Making a flaky end-to-end suite deterministic without hiding failures",
-    "company": "Dynamox",
-    "category": "Debugging",
-    "summary": "Turned a non-deterministic end-to-end suite (25–37 failures varying per run) into 302 tests passing with zero failures, without skipping tests or weakening assertions — and, in review, empirically proved that three of four proposed production changes were unnecessary.",
-    "capabilities": [
-      "Debugging",
-      "Technical Leadership",
-      "Ownership",
-      "Communication",
-      "Testing"
-    ],
-    "technologies": [
-      "NestJS",
-      "Vitest",
-      "PostgreSQL"
-    ],
-    "impact": [
-      "302 tests passing, zero failures, deterministic behavior — from a suite that produced 25–37 varying failures per run.",
-      "Backend CI became trustworthy again, so a red run once more means a real problem.",
-      "Protected production code and business rules from being altered to appease a flaky test, by disproving three of four proposed changes in review.",
-      "Qualitative: regressions are once again caught by the suite instead of hidden by it."
-    ],
-    "difficulty": "High",
-    "ownership": "End-to-end",
-    "customerFacing": "No",
-    "readingTime": "2 min",
-    "sections": [
-      {
-        "id": "context",
-        "title": "Context",
-        "paras": [
-          "This is my strongest evidence of methodological rigor and of technical leadership in code review. Anyone can make a flaky suite green by loosening it; the engineering is in refusing to. The constraints I set — no skips, no weaker asserts, no bigger timeouts — are what forced every fix to be a real root cause.",
-          "It also captures a moment I'm proud of: rather than accept production changes that had been made to calm the tests, I proved empirically that most of them weren't needed and protected the production code from being changed to satisfy a test artifact. That is the kind of judgment I want recruiters to see."
-        ]
-      },
-      {
-        "id": "problem",
-        "title": "Problem",
-        "paras": [
-          "The service's end-to-end suite was non-deterministic: a given run might produce anywhere from 25 to 37 failures, and a different set each time. Because the result was unreliable, CI couldn't be trusted — a red run might mean a real regression or nothing at all, so real regressions could hide in the noise. The suite exercised real dependencies (a real auth provider, a database, a local message broker, and an external sandbox API), any of which could contribute to the instability."
-        ]
-      },
-      {
-        "id": "constraints",
-        "title": "Constraints",
-        "bullets": [
-          "The failure was statistical, not reproducible on demand. You cannot fix what you can't reliably observe; the first job was to make the flakiness measurable.",
-          "A flaky suite is a broken measurement instrument. Every \"fix\" is itself measured by the same unreliable suite, so I had to validate changes across many runs, not one.",
-          "The easy fixes were all the wrong ones. Skipping the offending tests, relaxing assertions, or bumping timeouts would have turned the suite green while destroying its value. I ruled those out up front.",
-          "Some noise came from real dependencies, so root causes ranged from test setup to production code to environment configuration."
-        ]
-      },
-      {
-        "id": "decision",
-        "title": "Decision",
-        "paras": [
-          "I treated it as a diagnosis problem with a strict protocol."
-        ],
-        "bullets": [
-          "Reproduce and characterize statistically. Run the suite many times to measure which tests failed and how often, turning \"it's flaky\" into a ranked list of concrete offenders.",
-          "Categorize by root cause, not by symptom. The causes turned out to be varied: a divergent database schema, an auth bypass returning success where it should have returned forbidden, invalid test credentials, missing seed data, hardcoded IDs, and an accidental field spread in a patch handler.",
-          "Fix each cause at the source, incrementally, re-running to confirm each fix reduced failures without introducing new ones.",
-          "Validate over multiple runs, not one green run — determinism is a property you demonstrate statistically.",
-          "Documented the runtime environment variables the suite depended on, so its behavior stopped being folklore."
-        ]
-      },
-      {
-        "id": "tradeoffs",
-        "title": "Trade-offs",
-        "bullets": [
-          "Root-cause fixes over masking (skip / weaken / inflate). Masking is minutes of work and destroys the suite's reason to exist; root-causing is slower but leaves a suite you can trust. I chose to constrain myself out of every shortcut.",
-          "Empirically validating a peer's proposed production changes over accepting them. Testing each change cost time and a potentially awkward review conversation, but changing production code to satisfy a flaky test would have been the tail wagging the dog. I preferred to revert changes I could prove were unnecessary.",
-          "Fixing the environment/setup over trusting the suite's assumptions. Documenting env vars and correcting seed/schema drift is unglamorous but removes whole categories of intermittent failure."
-        ]
-      },
-      {
-        "id": "impact",
-        "title": "Impact",
-        "bullets": [
-          "302 tests passing, zero failures, deterministic behavior — from a suite that produced 25–37 varying failures per run.",
-          "Backend CI became trustworthy again, so a red run once more means a real problem.",
-          "Protected production code and business rules from being altered to appease a flaky test, by disproving three of four proposed changes in review.",
-          "Qualitative: regressions are once again caught by the suite instead of hidden by it."
-        ]
-      },
-      {
-        "id": "lessons",
-        "title": "Lessons Learned",
-        "paras": [
-          "Reusable engineering knowledge I carry forward from this:"
-        ],
-        "bullets": [
-          "A flaky suite is a measurement instrument you must first make trustworthy. Until it is, every result — including your own fixes — is unreliable; characterize before you change.",
-          "Fix the root cause; never weaken the test. Skips, relaxed asserts, and inflated timeouts convert a signal into silence.",
-          "Never change production code to make a test pass until you've proven the code, not the test, is wrong — and you can prove it empirically.",
-          "Determinism is demonstrated statistically. One green run proves nothing about a suite that was flaky; many do."
-        ]
-      },
-      {
-        "id": "evidence",
-        "title": "Evidence",
-        "bullets": [
-          "From 25–37 varying failures per run to 302 tests passing with zero failures.",
-          "Self-imposed constraints: no skipped tests, no weakened assertions, no inflated timeouts.",
-          "In review, empirically disproved and reverted three of four proposed production changes.",
-          "Source (private): consolidated career knowledge base."
         ]
       }
     ]
@@ -1844,9 +752,672 @@ export const cases: CaseStudy[] = [
     ]
   },
   {
+    "id": "asset-tree-search",
+    "featured": false,
+    "title": "Delivering a large asset tree end to end, from recursive SQL to progressive prefetch",
+    "company": "Dynamox",
+    "category": "Performance",
+    "summary": "Delivered search and fast navigation over very large asset trees end to end — recursive SQL on the backend, and a search UX with in-memory caching and progressive background prefetch on the frontend — eliminating the repeated loading that made the most-used flow slow.",
+    "capabilities": [
+      "Performance Engineering",
+      "Frontend Engineering",
+      "Backend Engineering",
+      "Product Thinking",
+      "Ownership",
+      "UX"
+    ],
+    "technologies": [
+      "PostgreSQL",
+      "NestJS",
+      "React"
+    ],
+    "impact": [
+      "Delivered search and fast navigation over large asset trees end to end — database, backend, and frontend — in the module's most-used flow.",
+      "Eliminated the repeated loading that made browsing large trees slow, via caching and progressive prefetch.",
+      "Added asset search where there was none, with matches shown in context.",
+      "Qualitative: a clear improvement to perceived performance and UX in a high-traffic flow; no hard before/after metric was captured. <!-- TODO: add timing numbers if available -->"
+    ],
+    "difficulty": "High",
+    "ownership": "End-to-end",
+    "customerFacing": "Yes",
+    "readingTime": "2 min",
+    "sections": [
+      {
+        "id": "context",
+        "title": "Context",
+        "paras": [
+          "This is my strongest evidence of full-stack ownership and performance thinking. Because I owned the database, the backend, and the frontend, I could put each part of the solution at the layer where it belonged — traversal in the database, latency-hiding in the client — instead of forcing one layer to compensate for another.",
+          "It also shows a product-level UX decision made as an engineering trade-off: choosing to reveal search matches by expanding the tree rather than filtering it changed both what the user sees and how data has to load."
+        ]
+      },
+      {
+        "id": "problem",
+        "title": "Problem",
+        "paras": [
+          "When building or editing an inspection route, users navigate a hierarchy of assets that can be very large. They needed to see asset descriptions and to search assets by name — but the tree loaded slowly, and there was no search. In the module's most-used flow, that meant repeated waiting and no way to jump to a known asset."
+        ]
+      },
+      {
+        "id": "constraints",
+        "title": "Constraints",
+        "bullets": [
+          "The data is deeply hierarchical and large. Finding matches and showing them in context means traversing a big tree — the naive approach is a cascade of queries per level.",
+          "Search over a tree has a UX fork with data consequences. Do you filter the tree down to matches, or reveal matches in place? The choice changes what the user understands and what data you must load.",
+          "Perceived performance is the real target. Even a fast backend feels slow if the client blocks on every expansion; the latency had to be hidden, not just reduced.",
+          "I owned all three layers, so every trade-off between doing work in SQL, in the API, or in the client was mine to get right."
+        ]
+      },
+      {
+        "id": "decision",
+        "title": "Decision",
+        "paras": [
+          "I put each responsibility at the layer suited to it."
+        ],
+        "bullets": [
+          "Traversal in the database, via recursive SQL. A recursive query finds matching assets and walks up to their ancestors in one pass, so the server returns matches already in their tree context instead of the client stitching together many requests. I deduplicated matches and computed \"has children\" cheaply so nodes render correctly without extra round-trips.",
+          "Search that reveals rather than filters. On the frontend I debounced the query and chose to expand the nodes of the matches in place — with navigation between results — rather than collapse the tree to matches only. This keeps each result legible in its real hierarchy.",
+          "An in-memory cache per search term, so repeating or refining a search doesn't refetch what's already known.",
+          "Progressive, level-by-level prefetch in the background, so the next levels are already loading before the user expands them — hiding latency on the common path.",
+          "Documented the use cases (including alternative flows for the different actors) and rolled out behind a feature flag, staging before production."
+        ]
+      },
+      {
+        "id": "tradeoffs",
+        "title": "Trade-offs",
+        "bullets": [
+          "A recursive query over many per-level queries. One recursive traversal returns matches with their ancestors in a single pass, avoiding a chatty cascade — at the cost of a more complex query to own and reason about.",
+          "Expanding matches in place over filtering the tree. Revealing results in their real hierarchy preserves context and orientation, where a filtered list would be simpler but strip the structure users rely on. I accepted more involved loading logic to keep the result meaningful.",
+          "Progressive background prefetch over on-demand loading. Prefetching hides latency on the most common path at the cost of doing some fetching the user might not ultimately need — a good trade in the module's busiest flow.",
+          "A per-term in-memory cache over refetching. Caching trades a little memory and cache bookkeeping for the elimination of repeated loading during a search session."
+        ]
+      },
+      {
+        "id": "impact",
+        "title": "Impact",
+        "bullets": [
+          "Delivered search and fast navigation over large asset trees end to end — database, backend, and frontend — in the module's most-used flow.",
+          "Eliminated the repeated loading that made browsing large trees slow, via caching and progressive prefetch.",
+          "Added asset search where there was none, with matches shown in context.",
+          "Qualitative: a clear improvement to perceived performance and UX in a high-traffic flow; no hard before/after metric was captured. <!-- TODO: add timing numbers if available -->"
+        ]
+      },
+      {
+        "id": "lessons",
+        "title": "Lessons Learned",
+        "paras": [
+          "Reusable engineering knowledge I carry forward from this:"
+        ],
+        "bullets": [
+          "Push hierarchy traversal into the database. A recursive query that returns matches with their ancestors beats a per-level request cascade the client has to orchestrate.",
+          "A search UX choice is an engineering decision. \"Reveal in place\" vs. \"filter down\" changes both comprehension and the shape of the data you load — decide it deliberately.",
+          "Hide latency, don't just reduce it. Progressive prefetch and per-term caching make the common path feel instant even when some work remains.",
+          "Owning every layer lets you solve each problem where it belongs — the biggest advantage of true full-stack ownership."
+        ]
+      },
+      {
+        "id": "evidence",
+        "title": "Evidence",
+        "bullets": [
+          "Delivered solo across database (recursive SQL), backend, and frontend.",
+          "Feature shipped to production behind a feature flag after staging.",
+          "Documented use cases including alternative actor flows.",
+          "Source (private): consolidated career knowledge base."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "single-computation-path",
+    "featured": true,
+    "title": "Designing a single computation path for a cross-service metric",
+    "company": "Dynamox",
+    "category": "Distributed Systems",
+    "summary": "Two services independently calculated the same customer-facing metric, causing inconsistent data. I redesigned the architecture so only one service owned the calculation while every other service simply signaled stale data.",
+    "capabilities": [
+      "Distributed Systems",
+      "System Design",
+      "Technical Decision Making",
+      "Communication",
+      "Ownership"
+    ],
+    "technologies": [
+      "NestJS",
+      "PostgreSQL",
+      "Kafka"
+    ],
+    "impact": [
+      "Removed race conditions",
+      "Simplified architecture",
+      "Improved customer trust"
+    ],
+    "difficulty": "High",
+    "ownership": "End-to-end",
+    "customerFacing": "Yes",
+    "readingTime": "7 min",
+    "sections": [
+      {
+        "id": "context",
+        "title": "Context",
+        "paras": [
+          "Dynamox's platform derives a completion metric for industrial inspection routes: how much of a route has been inspected, per asset, per customer. The metric is customer-facing — it appears on dashboards operators use to plan work.",
+          "The underlying facts live in events. Inspections, edits and deletions flow through Kafka into multiple services, each maintaining its own projection of the data."
+        ]
+      },
+      {
+        "id": "problem",
+        "title": "Problem",
+        "paras": [
+          "Two services computed the metric independently, each from its own projection. Under normal conditions they agreed. Under retries, out-of-order delivery or partial failures, they diverged — and customers saw two different numbers for the same route depending on which screen they opened.",
+          "Each divergence became a support ticket, a manual reconciliation, and a small withdrawal from customer trust. The team had built a reconciliation job to patch differences, which treated the symptom and added a third component that could disagree."
+        ]
+      },
+      {
+        "id": "constraints",
+        "title": "Constraints",
+        "bullets": [
+          "At-least-once delivery: every consumer must tolerate duplicates and reordering.",
+          "No distributed transactions — services deploy and fail independently.",
+          "Zero downtime: the metric is in daily operational use.",
+          "Historical data had to be backfilled to a consistent state.",
+          "The two computing services were owned by different people; any fix had to survive team boundaries."
+        ]
+      },
+      {
+        "id": "alternatives",
+        "title": "Alternatives Considered",
+        "bullets": [
+          "Keep both computations, improve the reconciliation job. Rejected: reconciliation of two independent computations is unbounded work — every new edge case reappears twice.",
+          "Extract the calculation into a shared library. Rejected: identical code over non-identical projections still diverges. The bug was in the data, not the formula.",
+          "Compute on read at the API gateway. Rejected: pushed latency onto every dashboard load and still required a consistent source projection.",
+          "Single owner service; all others emit staleness signals. Chosen."
+        ]
+      },
+      {
+        "id": "decision",
+        "title": "Decision",
+        "paras": [
+          "Exactly one service owns the metric. It is the only code path in the company allowed to compute it.",
+          "Every other service that touches underlying data stops computing anything. Instead it emits a lightweight 'stale' signal — 'route X may have changed'. The owner recomputes the metric from the source of truth, idempotently, whenever a signal arrives.",
+          "This is where a personal principle crystallized: eventually consistent derived data should have exactly one computation path. And its corollary: if a value can always be recomputed from source, favor recomputation over synchronization."
+        ],
+        "diagram": {
+          "width": 800,
+          "height": 400,
+          "nodes": [
+            {
+              "id": "kafka",
+              "lines": [
+                "Kafka: inspection · edit · delete events"
+              ],
+              "x": 200,
+              "y": 16,
+              "w": 400,
+              "h": 40
+            },
+            {
+              "id": "svcA",
+              "lines": [
+                "Service A",
+                "(own projection)"
+              ],
+              "x": 60,
+              "y": 110,
+              "w": 220,
+              "h": 54
+            },
+            {
+              "id": "svcB",
+              "lines": [
+                "Service B",
+                "(own projection)"
+              ],
+              "x": 520,
+              "y": 110,
+              "w": 220,
+              "h": 54
+            },
+            {
+              "id": "owner",
+              "lines": [
+                "Metric Owner Service"
+              ],
+              "sub": "idempotent recompute · single computation path",
+              "x": 205,
+              "y": 220,
+              "w": 390,
+              "h": 64,
+              "variant": "accent"
+            },
+            {
+              "id": "dashboards",
+              "lines": [
+                "Dashboards"
+              ],
+              "sub": "customer-facing",
+              "x": 290,
+              "y": 330,
+              "w": 220,
+              "h": 44
+            },
+            {
+              "id": "removed",
+              "lines": [
+                "✕ removed:",
+                "2nd computation on B",
+                "+ reconciliation job"
+              ],
+              "x": 615,
+              "y": 220,
+              "w": 175,
+              "h": 64,
+              "variant": "removed"
+            }
+          ],
+          "edges": [
+            {
+              "from": "kafka",
+              "to": "svcA"
+            },
+            {
+              "from": "kafka",
+              "to": "svcB"
+            },
+            {
+              "from": "svcA",
+              "to": "owner",
+              "label": "stale signal"
+            },
+            {
+              "from": "svcB",
+              "to": "owner",
+              "label": "stale signal"
+            },
+            {
+              "from": "owner",
+              "to": "dashboards",
+              "label": "recomputed value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "tradeoffs",
+        "title": "Trade-offs",
+        "bullets": [
+          "Recomputation costs more than incremental updates. Accepted: the computation is cheap relative to the cost of divergence, and signals are debounced.",
+          "A staleness window exists between signal and recomputation. Accepted: seconds of staleness with guaranteed convergence beats instant values that can be permanently wrong.",
+          "The owner service becomes a critical path. Mitigated: idempotent consumers, dead-letter queue, and alerting on signal lag."
+        ]
+      },
+      {
+        "id": "implementation",
+        "title": "Implementation",
+        "paras": [
+          "Staleness signals travel over a dedicated Kafka topic keyed by route, so recomputations for the same route serialize naturally. The owner consumes with idempotent handlers — recomputing twice is safe by construction, so retries need no special handling.",
+          "A backfill script recomputed every historical metric from source, migrating the system to a consistent baseline before the new path went live. The old computation in the second service was deleted, not disabled — leaving it dormant invited resurrection."
+        ]
+      },
+      {
+        "id": "impact",
+        "title": "Impact",
+        "bullets": [
+          "Inconsistency tickets for the metric dropped to zero after rollout.",
+          "The reconciliation job was deleted — an entire class of maintenance removed.",
+          "Race conditions became structurally impossible rather than merely unlikely.",
+          "The pattern was reused for other derived data; I became the team's reference for cross-service synchronization."
+        ]
+      },
+      {
+        "id": "lessons",
+        "title": "Lessons Learned",
+        "paras": [
+          "Consistency debates end when ownership is explicit. Most of the design work was not technical — it was getting agreement on the sentence 'only this service computes this value'.",
+          "Deleting code is part of the architecture. The migration wasn't done until the second computation path physically ceased to exist."
+        ]
+      },
+      {
+        "id": "evidence",
+        "title": "Evidence",
+        "paras": [
+          "This document is the primary evidence for the capabilities it claims: Distributed Systems (event-driven consistency design), Architecture (ownership boundaries), Ownership (proposal through backfill through deletion), Communication (the decision survived because it was written down and agreed across two service owners)."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "container-hardening",
+    "featured": false,
+    "title": "Hardening containers and closing a 135-CVE dependency gap",
+    "company": "Dynamox",
+    "category": "Security",
+    "summary": "Rebuilt backend services on hardened, non-root container images and cleared a full dependency vulnerability scan — 135 CVEs flagged, 7 rated critical, all remediated.",
+    "capabilities": [
+      "Security",
+      "Reliability",
+      "Backend Engineering"
+    ],
+    "technologies": [
+      "Docker",
+      "Kubernetes"
+    ],
+    "impact": [
+      "Cleared the 135-CVE dependency scan, with all 7 critical vulnerabilities remediated.",
+      "Containers run as non-root by default across the hardened services.",
+      "Security hardening became a standing part of how backend services ship, not an audit-triggered scramble — one of the six areas cited in my promotion to mid-level."
+    ],
+    "difficulty": "Medium",
+    "ownership": "End-to-end",
+    "customerFacing": "No",
+    "readingTime": "2 min",
+    "sections": [
+      {
+        "id": "context",
+        "title": "Context",
+        "paras": [
+          "This is my evidence for security as an engineering practice, not a one-off fire drill. Security was one of the six competency areas in my promotion dossier, and this is the concrete work behind that: I didn't wait for an audit to force the issue — I closed the gap and made hardening the default for how backend services ship.",
+          "It's the case I point to whenever an interviewer asks whether I've worked on security specifically, rather than picking it up as a side effect of other work."
+        ]
+      },
+      {
+        "id": "problem",
+        "title": "Problem",
+        "paras": [
+          "Backend services ran in containers on Kubernetes (GKE) without a formal hardening or CVE-remediation practice. Vulnerability exposure in base images and dependencies is easy to defer: it doesn't fail a build, a test, or a deploy — it just accumulates until an audit or an incident forces attention."
+        ]
+      },
+      {
+        "id": "constraints",
+        "title": "Constraints",
+        "bullets": [
+          "The exposure was spread across two services and their full dependency trees, not a single fixable line — 135 CVEs flagged in the scan, of varying severity.",
+          "Non-root containerization touches the whole runtime, not just the Dockerfile: file permissions, process ownership, and anything that assumed root have to be re-verified.",
+          "Remediating a CVE isn't always a version bump — some require reworking how a dependency is used, or replacing it, without regressing behavior.",
+          "Prioritization mattered. With 135 flagged, treating all of them as equally urgent would have meant treating none of them as urgent."
+        ]
+      },
+      {
+        "id": "decision",
+        "title": "Decision",
+        "bullets": [
+          "Rebuilt service images on hardened, non-root Docker bases, so containers no longer ran as root by default.",
+          "Ran a full dependency vulnerability scan across both services, surfacing 135 CVEs in total.",
+          "Prioritized by severity first — remediated the 7 rated critical across the two services before working down the rest.",
+          "Made hardening a standing practice, not a one-time cleanup, so new dependencies and images are checked going forward rather than accumulating silently again."
+        ]
+      },
+      {
+        "id": "tradeoffs",
+        "title": "Trade-offs",
+        "bullets": [
+          "Non-root images over root (the default). Non-root containers reduce blast radius if a container is compromised, at the cost of re-verifying every place that assumed root access. I accepted the migration cost for the security guarantee.",
+          "Remediating by severity over chronological/alphabetical order. Working the 7 critical CVEs first meant the highest-risk exposure closed fastest, even though it meant leaving lower-severity items open longer."
+        ]
+      },
+      {
+        "id": "impact",
+        "title": "Impact",
+        "bullets": [
+          "Cleared the 135-CVE dependency scan, with all 7 critical vulnerabilities remediated.",
+          "Containers run as non-root by default across the hardened services.",
+          "Security hardening became a standing part of how backend services ship, not an audit-triggered scramble — one of the six areas cited in my promotion to mid-level."
+        ]
+      },
+      {
+        "id": "lessons",
+        "title": "Lessons Learned",
+        "paras": [
+          "Reusable engineering knowledge I carry forward from this:"
+        ],
+        "bullets": [
+          "Vulnerability exposure accumulates silently. Nothing in a normal build/test/deploy cycle forces attention to it — it needs its own standing practice, not just a response to an audit.",
+          "Prioritize remediation by severity, not by volume. With well over a hundred flagged items, working the highest-risk ones first is what makes the list tractable.",
+          "Non-root by default is a runtime decision, not just a Dockerfile line. It has to be verified across the whole service, not just declared."
+        ]
+      },
+      {
+        "id": "evidence",
+        "title": "Evidence",
+        "bullets": [
+          "Cleared a 135-CVE dependency scan with all 7 critical vulnerabilities remediated across two services.",
+          "Rebuilt service images on hardened, non-root Docker bases.",
+          "Cited as one of six competency areas (security) in my promotion dossier (see companies/dynamox.md).",
+          "Source (private): consolidated career knowledge base."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "flaky-e2e",
+    "featured": false,
+    "title": "Making a flaky end-to-end suite deterministic without hiding failures",
+    "company": "Dynamox",
+    "category": "Debugging",
+    "summary": "Turned a non-deterministic end-to-end suite (25–37 failures varying per run) into 302 tests passing with zero failures, without skipping tests or weakening assertions — and, in review, empirically proved that three of four proposed production changes were unnecessary.",
+    "capabilities": [
+      "Debugging",
+      "Technical Leadership",
+      "Ownership",
+      "Communication",
+      "Testing"
+    ],
+    "technologies": [
+      "NestJS",
+      "Vitest",
+      "PostgreSQL"
+    ],
+    "impact": [
+      "302 tests passing, zero failures, deterministic behavior — from a suite that produced 25–37 varying failures per run.",
+      "Backend CI became trustworthy again, so a red run once more means a real problem.",
+      "Protected production code and business rules from being altered to appease a flaky test, by disproving three of four proposed changes in review.",
+      "Qualitative: regressions are once again caught by the suite instead of hidden by it."
+    ],
+    "difficulty": "High",
+    "ownership": "End-to-end",
+    "customerFacing": "No",
+    "readingTime": "2 min",
+    "sections": [
+      {
+        "id": "context",
+        "title": "Context",
+        "paras": [
+          "This is my strongest evidence of methodological rigor and of technical leadership in code review. Anyone can make a flaky suite green by loosening it; the engineering is in refusing to. The constraints I set — no skips, no weaker asserts, no bigger timeouts — are what forced every fix to be a real root cause.",
+          "It also captures a moment I'm proud of: rather than accept production changes that had been made to calm the tests, I proved empirically that most of them weren't needed and protected the production code from being changed to satisfy a test artifact. That is the kind of judgment I want recruiters to see."
+        ]
+      },
+      {
+        "id": "problem",
+        "title": "Problem",
+        "paras": [
+          "The service's end-to-end suite was non-deterministic: a given run might produce anywhere from 25 to 37 failures, and a different set each time. Because the result was unreliable, CI couldn't be trusted — a red run might mean a real regression or nothing at all, so real regressions could hide in the noise. The suite exercised real dependencies (a real auth provider, a database, a local message broker, and an external sandbox API), any of which could contribute to the instability."
+        ]
+      },
+      {
+        "id": "constraints",
+        "title": "Constraints",
+        "bullets": [
+          "The failure was statistical, not reproducible on demand. You cannot fix what you can't reliably observe; the first job was to make the flakiness measurable.",
+          "A flaky suite is a broken measurement instrument. Every \"fix\" is itself measured by the same unreliable suite, so I had to validate changes across many runs, not one.",
+          "The easy fixes were all the wrong ones. Skipping the offending tests, relaxing assertions, or bumping timeouts would have turned the suite green while destroying its value. I ruled those out up front.",
+          "Some noise came from real dependencies, so root causes ranged from test setup to production code to environment configuration."
+        ]
+      },
+      {
+        "id": "decision",
+        "title": "Decision",
+        "paras": [
+          "I treated it as a diagnosis problem with a strict protocol."
+        ],
+        "bullets": [
+          "Reproduce and characterize statistically. Run the suite many times to measure which tests failed and how often, turning \"it's flaky\" into a ranked list of concrete offenders.",
+          "Categorize by root cause, not by symptom. The causes turned out to be varied: a divergent database schema, an auth bypass returning success where it should have returned forbidden, invalid test credentials, missing seed data, hardcoded IDs, and an accidental field spread in a patch handler.",
+          "Fix each cause at the source, incrementally, re-running to confirm each fix reduced failures without introducing new ones.",
+          "Validate over multiple runs, not one green run — determinism is a property you demonstrate statistically.",
+          "Documented the runtime environment variables the suite depended on, so its behavior stopped being folklore."
+        ]
+      },
+      {
+        "id": "tradeoffs",
+        "title": "Trade-offs",
+        "bullets": [
+          "Root-cause fixes over masking (skip / weaken / inflate). Masking is minutes of work and destroys the suite's reason to exist; root-causing is slower but leaves a suite you can trust. I chose to constrain myself out of every shortcut.",
+          "Empirically validating a peer's proposed production changes over accepting them. Testing each change cost time and a potentially awkward review conversation, but changing production code to satisfy a flaky test would have been the tail wagging the dog. I preferred to revert changes I could prove were unnecessary.",
+          "Fixing the environment/setup over trusting the suite's assumptions. Documenting env vars and correcting seed/schema drift is unglamorous but removes whole categories of intermittent failure."
+        ]
+      },
+      {
+        "id": "impact",
+        "title": "Impact",
+        "bullets": [
+          "302 tests passing, zero failures, deterministic behavior — from a suite that produced 25–37 varying failures per run.",
+          "Backend CI became trustworthy again, so a red run once more means a real problem.",
+          "Protected production code and business rules from being altered to appease a flaky test, by disproving three of four proposed changes in review.",
+          "Qualitative: regressions are once again caught by the suite instead of hidden by it."
+        ]
+      },
+      {
+        "id": "lessons",
+        "title": "Lessons Learned",
+        "paras": [
+          "Reusable engineering knowledge I carry forward from this:"
+        ],
+        "bullets": [
+          "A flaky suite is a measurement instrument you must first make trustworthy. Until it is, every result — including your own fixes — is unreliable; characterize before you change.",
+          "Fix the root cause; never weaken the test. Skips, relaxed asserts, and inflated timeouts convert a signal into silence.",
+          "Never change production code to make a test pass until you've proven the code, not the test, is wrong — and you can prove it empirically.",
+          "Determinism is demonstrated statistically. One green run proves nothing about a suite that was flaky; many do."
+        ]
+      },
+      {
+        "id": "evidence",
+        "title": "Evidence",
+        "bullets": [
+          "From 25–37 varying failures per run to 302 tests passing with zero failures.",
+          "Self-imposed constraints: no skipped tests, no weakened assertions, no inflated timeouts.",
+          "In review, empirically disproved and reverted three of four proposed production changes.",
+          "Source (private): consolidated career knowledge base."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ai-orchestrated-feature-flag-removal",
+    "featured": false,
+    "title": "Safely Orchestrating AI Agents to Remove 25+ Stale Feature Flags",
+    "company": "Dynamox",
+    "category": "Architecture",
+    "summary": "Designed and built a Claude Code skill that safely orchestrates parallel agents to remove expired feature flags across a shared frontend and two backend services, closing a 35-task cleanup epic (25+ flags plus obsolete product-tour infrastructure, ~3,100 lines removed in one commit) — with disjoint-file-set batching so agents can't collide, diff-against-baseline validation instead of absolute pass/fail, and an enforced two-repository deploy order so infrastructure changes can never precede the code that depends on them.",
+    "capabilities": [
+      "System Design",
+      "Technical Decision Making",
+      "Ownership",
+      "Technical Leadership"
+    ],
+    "technologies": [
+      "claude-code",
+      "TypeScript",
+      "React"
+    ],
+    "impact": [
+      "Closed a 35-task cleanup epic spanning a shared frontend and two backend services, removing 25+ expired feature flags and obsolete product-tour infrastructure — one commit alone removed roughly 3,100 lines of dead code.",
+      "Produced a reusable tool, not a one-off script: the same skill applies to the next flag-cleanup epic in any of the three repositories, encoding conventions that used to live only in memory.",
+      "Removed the failure modes that make this kind of cleanup dangerous by hand — misclassifying a flag, agents colliding on a shared file, or getting the two-repository deploy order backward — by designing them out of the tool rather than depending on whoever runs it remembering all three under time pressure.",
+      "Qualitative: a simpler, more legible codebase as a direct result of the dead-code removal; no isolated before/after build-time metric was captured for this change alone."
+    ],
+    "difficulty": "High",
+    "ownership": "End-to-end",
+    "customerFacing": "No",
+    "readingTime": "2 min",
+    "sections": [
+      {
+        "id": "context",
+        "title": "Context",
+        "paras": [
+          "This is my clearest evidence of treating AI agents as a workforce that needs real systems-design thinking, not just a faster way to type code. The interesting engineering here isn't \"I used AI to remove some flags\" — it's recognizing that running several agents concurrently on a shared codebase is a concurrency problem (agents can collide on the same file), that generic tooling output is noisy in a large, imperfect codebase (a raw typecheck or dead-code report drowns the real signal), and that one specific decision in this workflow can silently change what ships to production and therefore must stay a human's call. Encoding all three into a reusable tool, instead of doing the task once by hand and moving on, is the kind of leverage-building that scales past any single cleanup."
+        ]
+      },
+      {
+        "id": "problem",
+        "title": "Problem",
+        "paras": [
+          "Feature flags and old product tours had accumulated across a shared frontend and two backend services, tracked as 35 individual removal tasks in one epic. The three services didn't share a convention for where a flag's value actually lives or how code reads it: the frontend keeps values in environment files with several code patterns for reading them (direct access, a typed helper, and local re-export indirections that had to be traced); one backend reads a typed environment service gated by a decorator; the other keeps its flag values in a separate infrastructure repository entirely, deployed independently from the service code that reads them.",
+          "That last point is the sharpest edge: removing a flag's value from the infrastructure repo before the corresponding code change has deployed can silently disable a feature that's still live in production, with no error to catch it."
+        ]
+      },
+      {
+        "id": "constraints",
+        "title": "Constraints",
+        "bullets": [
+          "No single mechanical rule covered all three repos. Each had a different storage convention and different code patterns for reading a flag, so a tool that worked for one repo's shape would silently miss cases in another.",
+          "The flag's real production value decides what's safe to automate. A flag that's `true` in production means the old code path is genuinely dead and safe to delete automatically; a flag that's `false` might mean a feature the team still intends to ship — collapsing that distinction automatically risks deleting code nobody had abandoned.",
+          "Parallelizing the removal introduces a new failure mode. Multiple agents editing a shared, large codebase at once can collide on the same file and corrupt each other's work if nothing coordinates who touches what.",
+          "Standard safety checks are noisy at this scale. A monorepo with pre-existing typecheck errors and dead-code false positives makes an absolute pass/fail reading useless — it either hides a real regression in the noise or flags phantom ones.",
+          "The two-repository case has an ordering invariant that's easy to get backward under time pressure, and getting it backward has a production consequence, not just a failed build."
+        ]
+      },
+      {
+        "id": "decision",
+        "title": "Decision",
+        "paras": [
+          "I treated the parallel agents as a workforce that needed the same safety design any concurrent system does, and treated the one production-affecting decision as something the tool should surface, not resolve on its own."
+        ],
+        "bullets": [
+          "Encoded each repo's real storage and reading conventions explicitly, so classification is deterministic per repository instead of re-derived by hand each time.",
+          "Made the flag's real production value drive the decision. `true` in production inlines to `true` and deletes the dead path automatically; `false` in production stops and asks, recommending the safe default (keep production behavior) rather than guessing silently — because that one branch can change what ships.",
+          "Batched agents by disjoint file sets, computed from the overlap between the files each flag touches, so agents assigned to the same batch never write to the same file; flags that shared a file were serialized instead of parallelized.",
+          "Validated by diffing against a pre-change baseline — typecheck error counts and a dead-code report, run once on the unmodified code and once after — instead of reading either tool's raw output, so only regressions the removal actually introduced show up.",
+          "Made the two-repository deploy order an explicit, enforced step, not a note in a wiki page: the service's own change ships and deploys first; the infrastructure change that removes the now-unused variable is marked as dependent on that deploy and never allowed to precede it.",
+          "Required an explicit confirmation gate before committing or opening a PR, with a checklist of affected screens or endpoints — derived from the files actually touched — for a human to verify manually before merge."
+        ]
+      },
+      {
+        "id": "tradeoffs",
+        "title": "Trade-offs",
+        "bullets": [
+          "Disjoint-file-set batching over parallelizing by default. Computing file overlap before assigning work costs a planning step, but letting agents share a file without it risks a silently broken merge — worth the extra step once dozens of tasks are running concurrently.",
+          "Diffing against a baseline over trusting a tool's raw output. Running each safety check twice costs time, but an absolute reading in a large, imperfect codebase either buries a real regression in pre-existing noise or reports phantom ones — neither is usable.",
+          "Asking before inlining a flag that's `false` in production, over always deleting the path that never shipped. A slower, human-confirmed step here is the right cost, because automating it wrong means silently killing a feature the team hadn't abandoned.",
+          "Enforcing the deploy order in the tool over documenting it and trusting reviewers. A rule that only lives in a person's memory doesn't survive turnover or a rushed release; encoding it means it can't be skipped by accident."
+        ]
+      },
+      {
+        "id": "impact",
+        "title": "Impact",
+        "bullets": [
+          "Closed a 35-task cleanup epic spanning a shared frontend and two backend services, removing 25+ expired feature flags and obsolete product-tour infrastructure — one commit alone removed roughly 3,100 lines of dead code.",
+          "Produced a reusable tool, not a one-off script: the same skill applies to the next flag-cleanup epic in any of the three repositories, encoding conventions that used to live only in memory.",
+          "Removed the failure modes that make this kind of cleanup dangerous by hand — misclassifying a flag, agents colliding on a shared file, or getting the two-repository deploy order backward — by designing them out of the tool rather than depending on whoever runs it remembering all three under time pressure.",
+          "Qualitative: a simpler, more legible codebase as a direct result of the dead-code removal; no isolated before/after build-time metric was captured for this change alone."
+        ]
+      },
+      {
+        "id": "lessons",
+        "title": "Lessons Learned",
+        "paras": [
+          "Reusable engineering knowledge I carry forward from this:"
+        ],
+        "bullets": [
+          "Parallel AI agents need the same safety design as any other concurrent workers. Isolate their work by disjoint file ownership, or they will corrupt each other's changes exactly like any other race condition.",
+          "Validate against a baseline, not an absolute reading, in any codebase old enough to have pre-existing noise. Otherwise the signal you actually care about is either buried or drowned by false positives.",
+          "Encode an invariant in the tool; don't just document it. A rule that depends on a person remembering it under pressure will eventually be skipped — a tool that enforces it can't be.",
+          "Automate everything except the one decision that can silently change production behavior. That single branch deserves a human, even inside an otherwise fully automated pipeline."
+        ]
+      },
+      {
+        "id": "evidence",
+        "title": "Evidence",
+        "bullets": [
+          "Closed Jira epic with 35 subtasks across a shared frontend and two backend services; 25+ feature flags and obsolete product-tour infrastructure removed, including one commit that removed roughly 3,100 lines of dead code.",
+          "Built a reusable Claude Code skill encoding the classification, parallel-safety, and validation rules for all three repositories' conventions.",
+          "Part of a broader, sustained practice of building reliable tooling on top of AI coding agents: a from-scratch MCP server exposing SonarCloud's API for quality-gate review inside the same workflow, and further tools automating bug-investigation-to-shipped-fix (with git/Jira archaeology and PR creation), team-scoped production-error triage, and post-incident latency analysis.",
+          "Source (private): Dynamox engineering tracker (Jira epic and subtasks) and personal tooling repository."
+        ]
+      }
+    ]
+  },
+  {
     "id": "workspace-sync",
     "featured": false,
-    "title": "Synchronizing an organizational-node edit atomically across services",
+    "title": "Synchronizing a Cross-Service Data Edit Atomically",
     "company": "Dynamox",
     "category": "Distributed Systems",
     "summary": "Made an edit to an organizational node in the asset hierarchy propagate consistently across denormalized copies in seven tables and two services, via a single atomic transaction with post-commit events — the work that made me the team's reference for cross-service synchronization.",
@@ -1959,15 +1530,439 @@ export const cases: CaseStudy[] = [
         ]
       }
     ]
+  },
+  {
+    "id": "design-system",
+    "featured": true,
+    "title": "Introducing a Design System where none existed",
+    "company": "AQTech",
+    "category": "Frontend Engineering",
+    "summary": "Identified the absence of frontend standards, proposed a Design System, built it from scratch and taught the team how to adopt it.",
+    "capabilities": [
+      "Ownership",
+      "Frontend Engineering",
+      "System Design",
+      "Technical Leadership",
+      "Product Thinking",
+      "Communication",
+      "Design Systems",
+      "Accessibility",
+      "Developer Experience"
+    ],
+    "technologies": [
+      "Vue",
+      "TypeScript",
+      "Vuetify"
+    ],
+    "impact": [
+      "Standardized frontend development",
+      "Reduced duplicated components",
+      "Became frontend reference"
+    ],
+    "difficulty": "Medium",
+    "ownership": "Initiated & led",
+    "customerFacing": "Indirect",
+    "readingTime": "6 min",
+    "sections": [
+      {
+        "id": "context",
+        "title": "Context",
+        "paras": [
+          "AQTech's frontend had grown feature by feature. Each developer solved UI problems locally: three date pickers, four button variants, inconsistent spacing, no shared vocabulary between design and code.",
+          "I was an intern. Nobody asked for a Design System — the cost was invisible because it was paid in small increments on every feature."
+        ]
+      },
+      {
+        "id": "problem",
+        "title": "Problem",
+        "paras": [
+          "Duplication was the visible symptom; the real problem was decision fatigue. Every feature required re-deciding paddings, colors, error states and component APIs. Reviews argued about pixels instead of logic. Onboarding meant absorbing folklore."
+        ]
+      },
+      {
+        "id": "constraints",
+        "title": "Constraints",
+        "bullets": [
+          "No dedicated time — the system had to be built alongside feature work.",
+          "No designer ownership: the source of truth had to live in code.",
+          "Vuetify was already in the stack; the system had to wrap it, not fight it.",
+          "As an intern, I had no authority to mandate anything. Adoption had to be voluntary."
+        ]
+      },
+      {
+        "id": "alternatives",
+        "title": "Alternatives Considered",
+        "bullets": [
+          "Adopt Vuetify defaults everywhere. Rejected: defaults didn't encode our domain patterns (dense engineering data, asset hierarchies) — that gap was where the duplication grew.",
+          "A written style guide without code. Rejected: documentation that requires discipline loses to deadlines.",
+          "A component library wrapping Vuetify with our tokens, patterns and docs. Chosen."
+        ]
+      },
+      {
+        "id": "decision",
+        "title": "Decision",
+        "paras": [
+          "Build the Design System as the path of least resistance: importing the system component had to be strictly less work than writing a local one.",
+          "Every component shipped with usage docs and copy-pasteable examples. I migrated the highest-traffic screens myself first, so the system proved itself before anyone was asked to adopt it."
+        ],
+        "diagram": {
+          "width": 760,
+          "height": 260,
+          "nodes": [
+            {
+              "id": "screenA",
+              "lines": [
+                "Screen: Asset list"
+              ],
+              "x": 40,
+              "y": 16,
+              "w": 170,
+              "h": 44
+            },
+            {
+              "id": "screenB",
+              "lines": [
+                "Screen: Sensor detail"
+              ],
+              "x": 225,
+              "y": 16,
+              "w": 170,
+              "h": 44
+            },
+            {
+              "id": "screenC",
+              "lines": [
+                "Screen: Route editor"
+              ],
+              "x": 410,
+              "y": 16,
+              "w": 170,
+              "h": 44
+            },
+            {
+              "id": "removed",
+              "lines": [
+                "✕ phased out:",
+                "local one-off",
+                "components"
+              ],
+              "x": 600,
+              "y": 16,
+              "w": 150,
+              "h": 70,
+              "variant": "removed"
+            },
+            {
+              "id": "ds",
+              "lines": [
+                "Design System"
+              ],
+              "sub": "tokens · patterns · a11y defaults · docs",
+              "x": 180,
+              "y": 100,
+              "w": 400,
+              "h": 64,
+              "variant": "accent"
+            },
+            {
+              "id": "vuetify",
+              "lines": [
+                "Vuetify (base library)"
+              ],
+              "x": 280,
+              "y": 190,
+              "w": 200,
+              "h": 44
+            }
+          ],
+          "edges": [
+            {
+              "from": "vuetify",
+              "to": "ds",
+              "label": "wraps"
+            },
+            {
+              "from": "ds",
+              "to": "screenA"
+            },
+            {
+              "from": "ds",
+              "to": "screenB"
+            },
+            {
+              "from": "ds",
+              "to": "screenC"
+            }
+          ]
+        }
+      },
+      {
+        "id": "tradeoffs",
+        "title": "Trade-offs",
+        "bullets": [
+          "Wrapping Vuetify meant inheriting its constraints and upgrade cycle. Accepted for velocity.",
+          "Building alongside feature work meant slow, incremental coverage. Accepted — it forced the system to grow from real needs instead of speculation.",
+          "Voluntary adoption is slower than mandate. Accepted — and it's why the standards survived after I left."
+        ]
+      },
+      {
+        "id": "implementation",
+        "title": "Implementation",
+        "paras": [
+          "TypeScript component library on Vue 3 wrapping Vuetify, paired with a Figma component library kept in sync with the code: design tokens, form patterns, data-density presets and accessibility defaults baked in. Documentation lived beside the code and every component page answered 'when do I use this instead of X'.",
+          "Adoption strategy: migrate loud screens first, pair with each developer on their first use, and treat every 'the system can't do X' as a bug in the system, not the developer."
+        ]
+      },
+      {
+        "id": "impact",
+        "title": "Impact",
+        "bullets": [
+          "Frontend development standardized; duplicated components stopped appearing in review.",
+          "New features started from composition rather than construction.",
+          "I became the team's frontend reference — the standards remained after I left.",
+          "The experience produced a durable principle: a Design System succeeds only when adoption becomes the easiest path."
+        ]
+      },
+      {
+        "id": "lessons",
+        "title": "Lessons Learned",
+        "paras": [
+          "Authority is not a prerequisite for standards — evidence is. Migrating real screens before asking for adoption converted skeptics better than any argument.",
+          "The best engineering standards are adopted voluntarily; the system must out-compete the alternative on effort, not on principle."
+        ]
+      },
+      {
+        "id": "evidence",
+        "title": "Evidence",
+        "paras": [
+          "Capabilities claimed and demonstrated: Design Systems (built one from zero), Technical Leadership (adoption without authority), Developer Experience (adoption-as-product mindset), Frontend Engineering (the components themselves), Accessibility (defaults baked into components, not retrofitted per screen)."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "error-observability",
+    "featured": false,
+    "title": "Bringing error observability to a team that had none",
+    "company": "Dynamox",
+    "category": "Leadership",
+    "summary": "Gave a team that had no error monitoring a structured observability practice — a shared reporter and request-time-tagged API interceptor plus dashboards and a triage workflow — turning production bugs from something reported by support into something the team can see and prioritize.",
+    "capabilities": [
+      "Ownership",
+      "Frontend Engineering",
+      "Product Thinking",
+      "Technical Leadership",
+      "Observability"
+    ],
+    "technologies": [
+      "React",
+      "Sentry",
+      "TypeScript"
+    ],
+    "impact": [
+      "The team went from no error monitoring to a structured observability practice — able to answer \"which service or feature is failing most?\" and to review open issues by priority.",
+      "Production bugs became visible proactively instead of arriving only through support.",
+      "Errors are attributable to feature and endpoint, thanks to request-time context tagging, and the setup is the base for post-deploy alerting.",
+      "Qualitative: faster detection of production problems; no hard mean-time-to-detect number was captured. <!-- TODO: add MTTD or issue-volume numbers if available -->"
+    ],
+    "difficulty": "Medium",
+    "ownership": "Led",
+    "customerFacing": "No",
+    "readingTime": "2 min",
+    "sections": [
+      {
+        "id": "context",
+        "title": "Context",
+        "paras": [
+          "This is evidence that I spot and close gaps nobody assigned me — the same initiative that defined my earliest growth, now applied at team scale. Nobody asked for observability; I noticed we were the only team flying blind and made the case to fix it.",
+          "It also shows frontend systems thinking: the core of the solution is a shared, reusable instrumentation layer with a deliberate tagging design, not a scattering of one-off error logs — plus the product sense to build dashboards around how the team actually triages."
+        ]
+      },
+      {
+        "id": "problem",
+        "title": "Problem",
+        "paras": [
+          "The frontend was a shared codebase split across several teams' areas. Every other team's area had error monitoring; mine had none. The consequence was concrete: we learned about production bugs when a support ticket came in, not when the error happened. We had no way to see which parts of our area were failing, how often, or whether a release had made things worse — so triage was reactive and anecdotal."
+        ]
+      },
+      {
+        "id": "constraints",
+        "title": "Constraints",
+        "bullets": [
+          "Nobody owned the problem. It was a structural gap, not a ticket — someone had to notice it and decide it was worth solving.",
+          "Error attribution is the hard part. Catching errors is easy; making each error carry enough context to say *which feature and which API call* produced it — and preserving the original failing route — is where the design lives.",
+          "Instrumentation must be shared, not sprinkled. Ad-hoc error logging across dozens of routes would have been noise; the value is in one consistent, reusable layer.",
+          "Observability is only useful if it drives action. A dashboard nobody triages is decoration; the practice had to include a workflow."
+        ]
+      },
+      {
+        "id": "decision",
+        "title": "Decision",
+        "paras": [
+          "I treated it as introducing a practice, not installing a tool."
+        ],
+        "bullets": [
+          "Diagnosed and made the case. I identified that our area was the only one without monitoring and proposed the initiative off my own diagnosis.",
+          "Built a shared error reporter wired into the critical asynchronous flows, so errors are captured consistently instead of per-screen.",
+          "Added a shared API interceptor that tags at request time. Each error carries context tags — team, feature, and the specific API service and endpoint — and I captured them at the moment of the request so the tag reflects the route that actually failed, rather than whatever context existed when the error surfaced. I made it additive so it never overwrites existing tags.",
+          "Built dashboards with thresholds, organized around how the team would actually use them, and mapped our area's routes to filters so errors could be sliced by feature.",
+          "Defined the triage workflow — how an error becomes a tracked ticket — so the monitoring turns into action, and set the base for post-deploy alerting."
+        ]
+      },
+      {
+        "id": "tradeoffs",
+        "title": "Trade-offs",
+        "bullets": [
+          "Tagging at request time over tagging on the response/error. Capturing context when the request is made preserves the true failing endpoint for correct attribution; reading it later would sometimes mis-attribute the error. Accepted cost: a little more care in the interceptor.",
+          "A shared instrumentation layer over per-screen error logging. One reusable reporter and interceptor is more design up front than scattered `catch` blocks, but it's the difference between a signal and noise.",
+          "Additive tagging over overwriting. Never clobbering existing tags keeps the shared codebase's other context intact, at the cost of being disciplined about how tags are set.",
+          "Dashboards by usage persona over a generic default. Building views around how the team triages takes more thought than an out-of-the-box dashboard but makes the data answer the questions people actually ask."
+        ]
+      },
+      {
+        "id": "impact",
+        "title": "Impact",
+        "bullets": [
+          "The team went from no error monitoring to a structured observability practice — able to answer \"which service or feature is failing most?\" and to review open issues by priority.",
+          "Production bugs became visible proactively instead of arriving only through support.",
+          "Errors are attributable to feature and endpoint, thanks to request-time context tagging, and the setup is the base for post-deploy alerting.",
+          "Qualitative: faster detection of production problems; no hard mean-time-to-detect number was captured. <!-- TODO: add MTTD or issue-volume numbers if available -->"
+        ]
+      },
+      {
+        "id": "lessons",
+        "title": "Lessons Learned",
+        "paras": [
+          "Reusable engineering knowledge I carry forward from this:"
+        ],
+        "bullets": [
+          "You can't fix what you can't see. Observability is a precondition for reliability, not a nice-to-have you add later.",
+          "Attribute errors where the context is truthful. Tag at the point (request time) that preserves what actually failed, or your dashboards will mislead you.",
+          "Instrument once, shared. A reusable reporter and interceptor beat scattered logging — consistency is what turns error data into signal.",
+          "Observability is a workflow, not a tool. Without a triage path from error to ticket, the dashboards don't change anything.",
+          "Noticing the unassigned gap is the ownership. The initiative to see the problem was worth as much as the code that solved it."
+        ]
+      },
+      {
+        "id": "evidence",
+        "title": "Evidence",
+        "bullets": [
+          "Proposed and led the initiative off my own diagnosis (our area was the only one without monitoring).",
+          "Built a shared reporter and a request-time-tagging API interceptor, dashboards with thresholds, and an error-to-ticket triage workflow.",
+          "Source (private): consolidated career knowledge base."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "code-review-technical-leadership",
+    "featured": false,
+    "title": "Catching and Fixing a Null-Safety Bug in Code Review",
+    "company": "Dynamox",
+    "category": "Collaboration",
+    "summary": "In code review, caught a null-safety bug that would have crashed three production components, and fixed the defect class — not the three instances — by proposing a shared data-layer helper to the PR's author instead of patching each render site myself; one of 100+ reviews I did that semester.",
+    "capabilities": [
+      "Technical Leadership",
+      "Communication",
+      "Debugging"
+    ],
+    "technologies": [
+      "React",
+      "TypeScript"
+    ],
+    "impact": [
+      "Prevented a crash in three production components before it shipped.",
+      "Removed the underlying defect class, not just the three known instances, via a shared data-layer helper any future consumer now goes through.",
+      "Kept the fix owned by its original author, reinforcing the pattern for them rather than substituting my judgment for theirs.",
+      "Part of a review practice recognized in performance feedback for the clarity of its questions and documentation — over 100 reviews in a single half-year, across front end, back end, and tests."
+    ],
+    "difficulty": "Medium",
+    "ownership": "Contributed",
+    "customerFacing": "Yes",
+    "readingTime": "2 min",
+    "sections": [
+      {
+        "id": "context",
+        "title": "Context",
+        "paras": [
+          "Most of my case studies are about work I owned end to end; this one is evidence of a different, equally important capability — raising the quality bar on someone else's work without taking it over. Code review is where a lot of real engineering judgment is invisible: catching a defect that isn't obviously wrong, deciding to fix the general case instead of the instance, and choosing to suggest rather than rewrite so the author keeps ownership and the lesson. This is part of a sustained practice — over 100 reviews across front end, back end, and tests in a single half, alongside pair programming on critical work — not a one-off catch."
+        ]
+      },
+      {
+        "id": "problem",
+        "title": "Problem",
+        "paras": [
+          "A teammate's pull request rendered a list of items after filtering it, but a nearby piece of logic in the same component still referred to the length of the original, unfiltered array. Both lines were locally correct — neither was wrong on its own — but they encoded an assumption that the two values would always agree. They wouldn't: the moment the filter actually removed an item, the two derived values would diverge, and three components shared this exact pattern."
+        ]
+      },
+      {
+        "id": "constraints",
+        "title": "Constraints",
+        "bullets": [
+          "The bug was invisible line by line. Nothing in the diff was individually wrong; the defect only exists in the *relationship* between two values derived from the same source — exactly the kind of bug a fast, diff-focused review misses.",
+          "The fast fix was tempting and insufficient. Patching the three known call sites would have made the visible symptom disappear without removing the underlying defect class — the next component built the same way would reintroduce it.",
+          "It wasn't my code. Proposing a deeper structural change to someone else's pull request risks either being ignored (too soft) or taking over their work (too heavy) — getting the balance right is itself the skill."
+        ]
+      },
+      {
+        "id": "decision",
+        "title": "Decision",
+        "paras": [
+          "I recognized the shape of the bug before deciding what to do about it: two values derived from the same source, read independently, with no guarantee they'd stay in sync — the same kind of problem I've solved architecturally elsewhere by giving a derived value a single computation path."
+        ],
+        "bullets": [
+          "Traced the pattern to all three affected components, not just the one in the diff, so the fix could address the actual defect class.",
+          "Proposed a shared helper at the data layer — one place that derives the value both pieces of logic need, so nothing downstream can read two different answers from the same source again.",
+          "Suggested it to the author instead of implementing it myself. Leaving the change in their hands cost an extra review round, but kept their ownership of the PR intact and taught the pattern rather than silently overriding their work."
+        ]
+      },
+      {
+        "id": "tradeoffs",
+        "title": "Trade-offs",
+        "bullets": [
+          "A shared data-layer helper over patching the three render sites. Fixing all three instances is faster; giving them one shared source removes the defect class for any future consumer too — worth the extra design step for a pattern that had already repeated three times.",
+          "Suggesting the fix over implementing it myself. Writing the fix directly would have been quicker and guaranteed my preferred outcome, but it would have taken the PR away from its author. Proposing it and letting them apply it cost a review cycle and produced a teammate who understood the pattern, not just a merged fix.",
+          "Reviewing the invariant over reviewing the diff. Reasoning about what the two derived values were supposed to guarantee together — rather than checking each line in isolation — is slower per review but is the only way this class of bug gets caught before production."
+        ]
+      },
+      {
+        "id": "impact",
+        "title": "Impact",
+        "bullets": [
+          "Prevented a crash in three production components before it shipped.",
+          "Removed the underlying defect class, not just the three known instances, via a shared data-layer helper any future consumer now goes through.",
+          "Kept the fix owned by its original author, reinforcing the pattern for them rather than substituting my judgment for theirs.",
+          "Part of a review practice recognized in performance feedback for the clarity of its questions and documentation — over 100 reviews in a single half-year, across front end, back end, and tests."
+        ]
+      },
+      {
+        "id": "lessons",
+        "title": "Lessons Learned",
+        "paras": [
+          "Reusable engineering knowledge I carry forward from this:"
+        ],
+        "bullets": [
+          "A value with two independent readers is a bug waiting for the day they diverge. The same principle that governs cross-service data consistency applies just as much inside a single component.",
+          "In review, fix the class when you can see it, not just the instance in front of you. Three repeats of the same pattern is a signal that patching the visible one will leave the other two to fail later.",
+          "Suggest, don't take over. A review that fixes the pattern and hands the implementation back teaches it; a review that silently rewrites the PR doesn't.",
+          "Review what the code assumes, not just what it changed. The bug was only visible when reasoning about the invariant the two lines were supposed to share."
+        ]
+      },
+      {
+        "id": "evidence",
+        "title": "Evidence",
+        "bullets": [
+          "Caught and redirected a null-safety divergence bug across three components before release, via a proposed shared abstraction rather than a direct rewrite.",
+          "Part of a sustained review practice: 100+ code reviews in a single half (up from 18 the cycle before), across front end, back end, and tests, plus pair programming on critical deliveries.",
+          "Recognized in performance feedback for the clarity of review questions and PR documentation.",
+          "Source (private): consolidated career knowledge base and performance-review evidence."
+        ]
+      }
+    ]
   }
 ]
 
 export const capabilities: Capability[] = [
-  {
-    "id": "distributed-systems",
-    "name": "Distributed Systems",
-    "desc": "Designing systems where independent services stay consistent about shared facts."
-  },
   {
     "id": "system-design",
     "name": "System Design",
@@ -1979,19 +1974,39 @@ export const capabilities: Capability[] = [
     "desc": "Weighing alternatives explicitly — choosing the option that ages well, not the one that ships fastest."
   },
   {
-    "id": "communication",
-    "name": "Communication",
-    "desc": "Decisions written down with alternatives; documents that end debates."
-  },
-  {
     "id": "ownership",
     "name": "Ownership",
     "desc": "Proposal → implementation → adoption → deletion of the old path."
   },
   {
-    "id": "technical-leadership",
-    "name": "Technical Leadership",
-    "desc": "Standards adopted voluntarily; becoming the reference others consult."
+    "id": "backend-engineering",
+    "name": "Backend Engineering",
+    "desc": "Services, APIs, event consumers and the data they own."
+  },
+  {
+    "id": "security",
+    "name": "Security",
+    "desc": "Hardening containers, remediating CVEs, keeping dependency risk visible."
+  },
+  {
+    "id": "incident-response",
+    "name": "Incident Response",
+    "desc": "Diagnosing production issues under pressure and closing the loop with a post-mortem."
+  },
+  {
+    "id": "communication",
+    "name": "Communication",
+    "desc": "Decisions written down with alternatives; documents that end debates."
+  },
+  {
+    "id": "debugging",
+    "name": "Debugging",
+    "desc": "Root-causing under uncertainty — reproducing, isolating, and fixing without guessing."
+  },
+  {
+    "id": "reliability",
+    "name": "Reliability",
+    "desc": "Idempotency, reversibility, and designing for failure as the default."
   },
   {
     "id": "performance-engineering",
@@ -2004,11 +2019,6 @@ export const capabilities: Capability[] = [
     "desc": "Production interfaces: architecture, performance, accessibility."
   },
   {
-    "id": "backend-engineering",
-    "name": "Backend Engineering",
-    "desc": "Services, APIs, event consumers and the data they own."
-  },
-  {
     "id": "product-thinking",
     "name": "Product Thinking",
     "desc": "Engineering choices evaluated by their effect on the user's workflow."
@@ -2019,9 +2029,19 @@ export const capabilities: Capability[] = [
     "desc": "Dense engineering data kept legible under time pressure."
   },
   {
-    "id": "debugging",
-    "name": "Debugging",
-    "desc": "Root-causing under uncertainty — reproducing, isolating, and fixing without guessing."
+    "id": "distributed-systems",
+    "name": "Distributed Systems",
+    "desc": "Designing systems where independent services stay consistent about shared facts."
+  },
+  {
+    "id": "technical-leadership",
+    "name": "Technical Leadership",
+    "desc": "Standards adopted voluntarily; becoming the reference others consult."
+  },
+  {
+    "id": "testing",
+    "name": "Testing",
+    "desc": "Suites that stay trustworthy — a red build must mean something."
   },
   {
     "id": "design-systems",
@@ -2039,29 +2059,9 @@ export const capabilities: Capability[] = [
     "desc": "Making the correct path the easiest path for other engineers."
   },
   {
-    "id": "security",
-    "name": "Security",
-    "desc": "Hardening containers, remediating CVEs, keeping dependency risk visible."
-  },
-  {
-    "id": "reliability",
-    "name": "Reliability",
-    "desc": "Idempotency, reversibility, and designing for failure as the default."
-  },
-  {
     "id": "observability",
     "name": "Observability",
     "desc": "Finding errors before customers do; alerts that stay actionable."
-  },
-  {
-    "id": "testing",
-    "name": "Testing",
-    "desc": "Suites that stay trustworthy — a red build must mean something."
-  },
-  {
-    "id": "incident-response",
-    "name": "Incident Response",
-    "desc": "Diagnosing production issues under pressure and closing the loop with a post-mortem."
   }
 ]
 
