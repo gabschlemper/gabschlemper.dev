@@ -1,11 +1,13 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { buildEvidenceMap } from "../lib/evidenceMap";
+import { useReveal } from "../lib/useReveal";
 
 export default function EvidenceMapPage() {
   const navigate = useNavigate();
   const [focus, setFocus] = useState<string | null>(null);
   const map = useMemo(() => buildEvidenceMap(), []);
+  const { ref, visible } = useReveal<HTMLDivElement>();
 
   const active = focus ? map.neighbours(focus) : null;
 
@@ -19,7 +21,7 @@ export default function EvidenceMapPage() {
         claim. Click any node to open its document.
       </p>
 
-      <div className="map-frame">
+      <div className="map-frame" ref={ref} data-reveal={visible ? "in" : "out"}>
         <div className="map-stage" style={{ height: map.height }}>
           <svg
             className="map-svg"
@@ -34,6 +36,7 @@ export default function EvidenceMapPage() {
                   className="map-edge"
                   key={`${edge.a}->${edge.b}`}
                   d={edge.d}
+                  pathLength={1}
                   fill="none"
                   stroke={hot ? "var(--accent)" : "var(--text3)"}
                   strokeWidth={hot ? 1.4 : 1.1}

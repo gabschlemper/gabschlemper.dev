@@ -1,4 +1,5 @@
 import type { CaseDiagramSpec, DiagramNode } from "../data/knowledge-base";
+import { useReveal } from "../lib/useReveal";
 
 function nodeLabelClass(variant?: DiagramNode["variant"]): string {
   if (variant === "accent") return "diagram-node-label accent";
@@ -8,9 +9,14 @@ function nodeLabelClass(variant?: DiagramNode["variant"]): string {
 
 export default function CaseDiagram({ spec }: { spec: CaseDiagramSpec }) {
   const byId = new Map(spec.nodes.map((node) => [node.id, node]));
+  const { ref, visible } = useReveal<HTMLDivElement>();
 
   return (
-    <div className="diagram-frame">
+    <div
+      className="diagram-frame"
+      ref={ref}
+      data-reveal={visible ? "in" : "out"}
+    >
       <svg
         viewBox={`0 0 ${spec.width} ${spec.height}`}
         className="diagram-svg"
@@ -44,11 +50,15 @@ export default function CaseDiagram({ spec }: { spec: CaseDiagramSpec }) {
           return (
             <g key={`${edge.from}->${edge.to}`}>
               <path
+                className="diagram-edge-path"
                 d={d}
                 fill="none"
                 stroke="var(--text3)"
                 strokeWidth={1.2}
                 markerEnd="url(#diagram-arrow)"
+                // Normalized length: the draw-in animation dashes every curve
+                // with the same values regardless of its real arc length.
+                pathLength={1}
               />
               {edge.label && (
                 <text
@@ -70,7 +80,7 @@ export default function CaseDiagram({ spec }: { spec: CaseDiagramSpec }) {
           const blockHeight = (node.lines.length - 1) * lineHeight;
           const startY = node.y + node.h / 2 - blockHeight / 2 + (node.sub ? -6 : 4);
           return (
-            <g key={node.id}>
+            <g key={node.id} className="diagram-node">
               <rect
                 x={node.x}
                 y={node.y}

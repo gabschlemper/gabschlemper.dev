@@ -58,6 +58,18 @@
 
     <meta name="theme-color" content="#161412" />
 
+    <!--
+      Motion gate. Scroll-reveal animations start from opacity:0, which would
+      strand content permanently if JS never runs. Every pre-reveal rule is
+      scoped to html[data-js="1"], so the prerendered HTML that crawlers and
+      no-JS readers receive stays fully visible. Inline and synchronous on
+      purpose: it must land before the first paint, or revealed content would
+      flash in and back out.
+    -->
+    <script>
+      document.documentElement.dataset.js = "1";
+    </script>
+
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",

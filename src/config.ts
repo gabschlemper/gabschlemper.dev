@@ -14,7 +14,12 @@ export const config = {
   /** Show the "open to opportunities" badge. */
   openToWork: true,
 
-  /** Shown near the top of the home screen — the fact recruiters filter on first. */
+  /**
+   * Currently unrendered: CodeIntro states the same facts as `based`, `work`
+   * and the sponsorship comment. Kept because it is the fact recruiters filter
+   * on first, and it still reads well as a single line if the home screen ever
+   * wants it back (the .availability-line style is still in index.css).
+   */
   availability:
     "Based in Bray, Ireland (EU) · Italian citizenship, no sponsorship needed in Europe · remote or on-site",
 

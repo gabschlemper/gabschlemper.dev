@@ -1,5 +1,8 @@
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
+import CodeIntro from "../components/CodeIntro";
+import CountUp from "../components/CountUp";
+import Reveal from "../components/Reveal";
 import { config, contactLinks } from "../config";
 import { cases, companies, profile, stats } from "../data/knowledge-base";
 
@@ -8,46 +11,63 @@ export default function Home() {
   const links = contactLinks();
 
   return (
-    <div className="screen screen--wide">
-      <div className="eyebrow">index / readme</div>
-      <h1 className="display display--hero">{profile.name}</h1>
+    <div className="screen screen--wide screen--pin-hero">
+      {/*
+        The tall outer section is what the reader scrolls through; the stage
+        inside it sticks to the viewport for that whole distance, so the code
+        stays put while its lines sharpen, and the page only moves on once the
+        function is finished. Both the extra height and the stickiness live in
+        index.css behind @supports and a viewport-height check — without those,
+        this collapses to ordinary flow and nothing is pinned.
 
-      <div className="hero-tags">
-        <span className="hero-role">software engineer</span>
-        <span className="hero-sub">distributed systems · frontend · Dynamox</span>
-        {config.openToWork && (
-          <span className="badge-open">open to opportunities</span>
-        )}
-      </div>
+        This section must be the first thing in the scroll flow and start at
+        offset 0. Sticky only engages once an element's top reaches the viewport
+        top, so anything above it — screen padding, the eyebrow — is scrolled
+        away before the pin takes hold, which is the one thing the pin exists to
+        prevent. Hence the eyebrow living inside the stage and .screen--pin-hero
+        dropping its top padding while pinned.
 
-      {links.length > 0 && (
-        <div className="contact-row">
-          {links.map((link) => (
-            <a
-              key={link.label}
-              className="contact-link"
-              href={link.href}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {link.label}
-            </a>
-          ))}
+        The badge and contact row sit inside the stage rather than after it:
+        pinned for a screenful of scroll, anything below the stage is
+        unreachable, and the CV must never be.
+      */}
+      <section className="code-pin">
+        <div className="code-pin-stage">
+          <div className="eyebrow">index / readme</div>
+
+          {/* Carries the h1 and the role/location/sponsorship facts, so the old
+              hero-tags and availability-line would only have repeated them. */}
+          <CodeIntro />
+
+          <div className="code-pin-foot">
+            {config.openToWork && (
+              <span className="badge-open">open to opportunities</span>
+            )}
+
+            {/* Buttons rather than identifiers folded into the code: source
+                styling does not read as clickable. */}
+            {links.map((link) => (
+              <a
+                key={link.label}
+                className="contact-link"
+                href={link.href}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
         </div>
-      )}
+      </section>
 
-      {config.availability && (
-        <p className="availability-line">{config.availability}</p>
-      )}
-
-      <p className="hero-oneliner">{profile.oneLiner}</p>
       <p className="hero-evidence">
         Every experience in this repository answers one question:{" "}
         <strong>“What evidence does this give about the engineer I am?”</strong>
       </p>
 
       <div className="section-label">career journey</div>
-      <div className="journey-strip">
+      <Reveal className="journey-strip">
         {companies.map((company, i) => (
           <Fragment key={company.id}>
             {i > 0 && <div className="journey-arrow">←</div>}
@@ -60,7 +80,7 @@ export default function Home() {
             </Link>
           </Fragment>
         ))}
-      </div>
+      </Reveal>
 
       <div className="section-head">
         <div className="eyebrow">highlighted case studies</div>
@@ -68,7 +88,7 @@ export default function Home() {
           all {cases.length} →
         </Link>
       </div>
-      <div className="stack" style={{ gap: 12, marginTop: 16 }}>
+      <Reveal className="stack" style={{ gap: 12, marginTop: 16 }}>
         {featured.map((study) => (
           <Link className="card-link" to={`/cases/${study.id}`} key={study.id}>
             <div className="featured-card">
@@ -85,19 +105,23 @@ export default function Home() {
             </div>
           </Link>
         ))}
-      </div>
+      </Reveal>
 
       {config.showStats && (
         <>
           <div className="section-label">repository statistics</div>
-          <div className="stats-grid">
-            {stats.map((stat) => (
-              <div className="stat" key={stat.label}>
-                <div className="stat-value">{stat.value}</div>
-                <div className="stat-label">{stat.label}</div>
-              </div>
-            ))}
-          </div>
+          <Reveal className="stats-grid">
+            {(visible) =>
+              stats.map((stat) => (
+                <div className="stat" key={stat.label}>
+                  <div className="stat-value">
+                    <CountUp value={stat.value} run={visible} />
+                  </div>
+                  <div className="stat-label">{stat.label}</div>
+                </div>
+              ))
+            }
+          </Reveal>
         </>
       )}
 

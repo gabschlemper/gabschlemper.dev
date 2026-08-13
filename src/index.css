@@ -90,6 +90,12 @@ a:hover {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+    /* Collapsing duration alone is not enough: the staggered reveals below
+       carry an animation-delay, and a kept delay still makes content pop in
+       over ~0.4s for a reader who asked for no motion. Zeroing both lands
+       every element on its final state in the first frame. */
+    animation-delay: 0s !important;
+    transition-delay: 0s !important;
   }
 }
 
@@ -1766,5 +1772,455 @@ a:hover {
 
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Motion layer
+
+   One rule governs everything below: entrances are expressed as `animation`,
+   never as a base `opacity: 0` plus a transition. The global reduced-motion
+   block near the top of this file collapses animation-duration to 0.01ms with
+   `both` fill, which lands every element on its final state instantly — so
+   honouring the preference costs nothing extra here.
+
+   Pre-reveal hidden states are scoped to html[data-js="1"] (see index.html):
+   without JS, nothing hides in the first place.
+   --------------------------------------------------------------------------- */
+
+:root {
+  /* Decelerating ease — quick departure, soft landing. */
+  --ease-reveal: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --reveal-step: 55ms;
+}
+
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(9px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes drawLine {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes caretBlink {
+  0%,
+  48% {
+    opacity: 1;
+  }
+  49%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* --- Scroll reveal ------------------------------------------------------- */
+
+html[data-js="1"] [data-reveal="out"][data-reveal-mode="children"] > *,
+html[data-js="1"] [data-reveal="out"][data-reveal-mode="self"] {
+  opacity: 0;
+}
+
+html[data-js="1"] [data-reveal="in"][data-reveal-mode="children"] > *,
+html[data-js="1"] [data-reveal="in"][data-reveal-mode="self"] {
+  animation: revealUp 0.46s var(--ease-reveal) both;
+}
+
+/* Stagger by DOM position. Capped at the 8th child: past that the wait reads
+   as lag rather than rhythm, and long lists would leave the tail blank.
+   Scoped to browsers without scroll-driven timelines — where one exists, the
+   block further down scrubs each child against its own position instead, and a
+   time-based delay would fight it. */
+@supports not (animation-timeline: view()) {
+html[data-js="1"] [data-reveal="in"][data-reveal-mode="children"] > *:nth-child(2) {
+  animation-delay: var(--reveal-step);
+}
+html[data-js="1"] [data-reveal="in"][data-reveal-mode="children"] > *:nth-child(3) {
+  animation-delay: calc(2 * var(--reveal-step));
+}
+html[data-js="1"] [data-reveal="in"][data-reveal-mode="children"] > *:nth-child(4) {
+  animation-delay: calc(3 * var(--reveal-step));
+}
+html[data-js="1"] [data-reveal="in"][data-reveal-mode="children"] > *:nth-child(5) {
+  animation-delay: calc(4 * var(--reveal-step));
+}
+html[data-js="1"] [data-reveal="in"][data-reveal-mode="children"] > *:nth-child(6) {
+  animation-delay: calc(5 * var(--reveal-step));
+}
+html[data-js="1"] [data-reveal="in"][data-reveal-mode="children"] > *:nth-child(7) {
+  animation-delay: calc(6 * var(--reveal-step));
+}
+html[data-js="1"] [data-reveal="in"][data-reveal-mode="children"] > *:nth-child(n + 8) {
+  animation-delay: calc(7 * var(--reveal-step));
+}
+}
+
+/* --- Route entrance ----------------------------------------------------- */
+
+/* Each page renders its own .screen, so a route change remounts the node and
+   replays this. The two leading elements arrive just behind the container,
+   which reads as the document settling rather than a slide. */
+.screen {
+  animation: revealUp 0.34s var(--ease-reveal) both;
+}
+
+/* Second selector: on the home screen the eyebrow sits inside the pinned
+   stage rather than directly under .screen. */
+html[data-js="1"] .screen > .eyebrow,
+html[data-js="1"] .code-pin-stage > .eyebrow {
+  animation: revealUp 0.4s var(--ease-reveal) 0.05s both;
+}
+
+html[data-js="1"] .screen > .display {
+  animation: revealUp 0.44s var(--ease-reveal) 0.1s both;
+}
+
+/* --- Terminal caret ----------------------------------------------------- */
+
+/* Empty content string: a decorative block, never announced by a screen
+   reader, and no extra element in the heading's accessible name. */
+.display--hero::after {
+  content: "";
+  display: inline-block;
+  width: 0.34em;
+  height: 0.9em;
+  margin-left: 0.16em;
+  vertical-align: -0.09em;
+  background: var(--accent);
+  animation: caretBlink 1.15s step-end infinite;
+}
+
+/* --- Case diagram draw-in ----------------------------------------------- */
+
+/* Edges use pathLength="1", so dash units are fractions of the path and one
+   dasharray value works for every curve regardless of its real length. */
+html[data-js="1"] .diagram-frame[data-reveal] .diagram-edge-path {
+  stroke-dasharray: 1;
+}
+
+html[data-js="1"] .diagram-frame[data-reveal="out"] .diagram-edge-path {
+  stroke-dashoffset: 1;
+}
+
+html[data-js="1"] .diagram-frame[data-reveal="in"] .diagram-edge-path {
+  animation: drawLine 0.6s var(--ease-reveal) both;
+}
+
+html[data-js="1"] .diagram-frame[data-reveal="out"] .diagram-node,
+html[data-js="1"] .diagram-frame[data-reveal="out"] .diagram-edge-label {
+  opacity: 0;
+}
+
+/* Nodes land after their incoming edge has been drawn. */
+html[data-js="1"] .diagram-frame[data-reveal="in"] .diagram-node {
+  animation: fadeIn 0.4s var(--ease-reveal) 0.34s both;
+}
+
+html[data-js="1"] .diagram-frame[data-reveal="in"] .diagram-edge-label {
+  animation: fadeIn 0.4s var(--ease-reveal) 0.5s both;
+}
+
+/* --- Evidence map edges ------------------------------------------------- */
+
+/* The whole graph draws at once rather than edge-by-edge: 60-odd staggered
+   edges would take seconds to resolve, and the shape is the point, not the
+   order. Node buttons are plain DOM, so they reveal via the group rules. */
+html[data-js="1"] .map-frame[data-reveal] .map-edge {
+  stroke-dasharray: 1;
+}
+
+html[data-js="1"] .map-frame[data-reveal="out"] .map-edge {
+  stroke-dashoffset: 1;
+}
+
+html[data-js="1"] .map-frame[data-reveal="in"] .map-edge {
+  animation: drawLine 0.9s var(--ease-reveal) both;
+}
+
+/* ---------------------------------------------------------------------------
+   Scroll-linked motion
+
+   Progress is tied to scroll position rather than fired once on entry, so
+   scrolling back up runs everything in reverse — the behaviour anime.js gets
+   from onScroll({ sync: true }), done by the platform for no bytes.
+
+   Support as of mid-2026: Chrome/Edge 115+, Safari 26+; Firefox still has it
+   behind layout.css.scroll-driven-animations.enabled. The @supports guard is
+   what makes that acceptable — Firefox keeps the IntersectionObserver reveals
+   above, which are a complete experience on their own, not a degraded one.
+   --------------------------------------------------------------------------- */
+
+@keyframes scrubIn {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The code intro's tail lines start as ghosts rather than fully hidden: the
+   space is reserved either way, and a blank gap under the hero reads as broken
+   while faint code reads as "there is more of this below". */
+@keyframes codeLineSharpen {
+  from {
+    opacity: 0.09;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  /* Takes over from the observer-driven reveal: matched on [data-reveal] in
+     any state, so the observer's in/out flip no longer gates anything here.
+     Each child carries its own view() timeline, which means the stagger comes
+     free from their real positions instead of from hardcoded delays. */
+  html[data-js="1"] [data-reveal][data-reveal-mode="children"] > *,
+  html[data-js="1"] [data-reveal][data-reveal-mode="self"] {
+    animation: scrubIn linear both;
+    animation-timeline: view();
+    /* Resolves over the first quarter of its pass through the viewport, so an
+       element is settled well before the reader reaches it. */
+    animation-range: entry 6% cover 24%;
+  }
+
+  /* FLOW schedule — the fallback when the stage is not pinned (viewport too
+     short or too narrow, see the pin query below). Lines sharpen against
+     absolute page scroll, because in flow the whole intro usually sits above
+     the fold and a view() timeline would already have resolved every line
+     before the reader scrolled at all.
+
+     No html[data-js="1"] gate on any of this, unlike the observer-driven
+     reveals above: scroll-driven CSS animations need no JavaScript, so a
+     no-JS reader gets the real thing rather than a fallback. */
+  .code-line[data-tail] {
+    animation: codeLineSharpen linear both;
+    animation-timeline: scroll(root);
+    animation-range: var(--flow-from) var(--flow-to);
+  }
+
+  /* PIN — the stage sticks to the viewport while the reader scrolls the tall
+     section around it, so the code holds still and fills in, and the page only
+     continues once the function is done.
+
+     Gated on room to work: the stage must hold the whole block plus the contact
+     row inside one viewport, or sticky would crop the function mid-line. Narrow
+     screens are excluded outright — the block wraps to ~850px there, and
+     pinning a phone is unpleasant even when it fits. */
+  @media (min-height: 740px) and (min-width: 700px) and
+    (prefers-reduced-motion: no-preference) {
+    /* The pin has to engage at scroll offset 0. Sticky does nothing until the
+       element's top reaches the viewport top, so this padding would otherwise
+       be ~64px of page movement before the code starts revealing.
+
+       The motion preference is part of the query rather than undone further
+       down: unsetting this padding afterwards would mean hardcoding a value to
+       restore, and .screen's padding is 64px wide / 40px narrow. Never turning
+       the pin on keeps one source of truth for both. */
+    .screen--pin-hero {
+      padding-top: 0;
+    }
+
+    .code-pin {
+      /* One viewport of that height is the stage; the surplus is the distance
+         spent pinned. 195vh therefore buys ~95vh of reveal scrolling. */
+      height: 195vh;
+      view-timeline-name: --code-pin;
+      view-timeline-axis: block;
+    }
+
+    .code-pin-stage {
+      position: sticky;
+      top: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+      padding: 14px 0;
+    }
+
+    /* Mildly denser while pinned. The stage must fit the eyebrow, every code
+       line and the contact row inside the shortest viewport this query admits,
+       or sticky crops the end of the function — so this is load-bearing rather
+       than cosmetic, and the headroom needs re-checking whenever lines are
+       added. At 19 lines and 23px the stage needs 613px, leaving ~127px spare
+       at the 740px floor — enough to absorb a line wrapping on a narrow
+       window. */
+    .code-pin-stage .code-intro-body {
+      line-height: 23px;
+    }
+
+    .code-pin-stage .code-line {
+      min-height: 23px;
+    }
+
+    .code-line[data-tail] {
+      animation-timeline: --code-pin;
+      /* "contain" is precisely the window in which the section covers the whole
+         scrollport — which is exactly as long as the stage stays stuck. */
+      animation-range: contain var(--pin-from) contain var(--pin-to);
+    }
+  }
+}
+
+.code-pin-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.code-pin-stage .code-pin-foot {
+  margin-top: 0;
+}
+
+/* Reduced motion opts out of the whole mechanism, not just the fade. Pinning is
+   itself motion — the page refusing to move for a screenful of scrolling — and
+   scroll-linked opacity has no position at which "settled" is guaranteed, so a
+   reader who asked for no motion would be stuck with ghosted code in a section
+   that will not scroll. Ordinary flow, every line legible. */
+@media (prefers-reduced-motion: reduce) {
+  /* The pin itself never switches on under this preference — the query above
+     excludes it — so all that is left to neutralise is the flow schedule's
+     ghosting. Scroll-linked opacity has no position at which "settled" is
+     guaranteed, and a reader who asked for no motion should not have to scroll
+     to make text legible. */
+  .code-line[data-tail] {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Code intro (home)
+   --------------------------------------------------------------------------- */
+
+.code-intro {
+  margin-top: 22px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  overflow: hidden;
+}
+
+.code-intro-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 9px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+}
+
+.code-intro-file {
+  color: var(--text2);
+}
+
+.code-intro-lang {
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.code-intro-body {
+  padding: 18px 0;
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  /* Fixed line box: the tail lines reserve their space before they sharpen, so
+     nothing reflows as the reader scrolls. */
+  line-height: 25px;
+}
+
+.code-line {
+  padding-left: calc(20px + var(--indent, 0) * 22px);
+  padding-right: 20px;
+  /* Long strings wrap under their own indent rather than forcing the panel to
+     scroll sideways on a narrow screen. */
+  text-indent: 0;
+  white-space: normal;
+  word-break: break-word;
+  /* Empty lines still need to occupy a line box. */
+  min-height: 25px;
+}
+
+.code-body {
+  color: var(--text2);
+}
+
+.tok-kw {
+  color: var(--accent);
+}
+
+.tok-str {
+  color: var(--text);
+}
+
+.tok-punc {
+  color: var(--text3);
+}
+
+.tok-id {
+  color: var(--text);
+}
+
+.tok-com {
+  color: var(--text3);
+  font-style: italic;
+}
+
+/* The name keeps h1 semantics but sheds the block layout and display face —
+   a 45px Special Elite heading mid-expression would break the illusion that
+   this is a source file. Larger and heavier than the code around it instead. */
+.code-name {
+  display: inline;
+  margin: 0;
+  font-family: inherit;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.code-caret {
+  display: inline-block;
+  width: 0.5em;
+  height: 0.95em;
+  margin-left: 0.3em;
+  vertical-align: -0.13em;
+  background: var(--accent);
+  animation: caretBlink 1.15s step-end infinite;
+}
+
+@media (max-width: 560px) {
+  .code-intro-body {
+    font-size: 12px;
+  }
+
+  .code-line {
+    padding-left: calc(14px + var(--indent, 0) * 14px);
+    padding-right: 14px;
   }
 }
