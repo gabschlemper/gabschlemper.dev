@@ -114,30 +114,6 @@ export default function CodeIntro() {
       indent: 1,
       content: (<><K>const</K> role <P>=</P> <S>&quot;Software Engineer&quot;</S></>),
     },
-
-    // Everything below starts hidden.
-    {
-      indent: 1,
-      hidden: true,
-      // IANA zone rather than a UTC offset: Ireland is UTC+0 in winter and UTC+1
-      // in summer, so any hardcoded offset is wrong half the year.
-      content: (
-        <>
-          <K>const</K> based <P>=</P> <S>&quot;Bray, Ireland&quot;</S>{" "}
-          <C>// Europe/Dublin</C>
-        </>
-      ),
-    },
-    {
-      indent: 1,
-      hidden: true,
-      content: (
-        <>
-          <K>const</K> citizenship <P>=</P> <S>&quot;Italian&quot;</S>{" "}
-          <C>// full EU work rights</C>
-        </>
-      ),
-    },
     {
       indent: 1,
       hidden: true,
