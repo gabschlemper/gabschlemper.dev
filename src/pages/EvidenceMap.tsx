@@ -17,9 +17,11 @@ export default function EvidenceMapPage() {
       <h1 className="display">Evidence Map</h1>
       <p className="lede" style={{ maxWidth: 680 }}>
         Capabilities connect to the case studies that prove them, the companies
-        where they happened, and the technologies involved. Hover to trace a
-        claim. Click any node to open its document.
+        where they happened, and the technologies involved. Tap or hover a node
+        to trace a claim; open it to read the document.
       </p>
+
+      <div className="map-hint">the graph is wider than the screen — drag it sideways →</div>
 
       <div className="map-frame" ref={ref} data-reveal={visible ? "in" : "out"}>
         <div className="map-stage" style={{ height: map.height }}>

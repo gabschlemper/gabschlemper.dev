@@ -186,7 +186,10 @@ export default function CaseDetail() {
             </button>
           </div>
 
-          <div>
+          {/* Single-column below 1040px puts this after the whole article,
+              where a jump-to-section list is 200 lines too late to be useful —
+              the reading-progress bar covers that job on mobile instead. */}
+          <div className="case-toc">
             <div className="toc-label">on this page</div>
             <div className="toc">
               {study.sections.map((section) => (

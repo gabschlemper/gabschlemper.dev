@@ -14,8 +14,16 @@ function readStored(): Theme | null {
   }
 }
 
+/* The theme lives on a data attribute rather than prefers-color-scheme, so
+   mobile browser chrome has nothing to follow on its own — this keeps the
+   address bar from staying dark behind a light page. */
+const CHROME: Record<Theme, string> = { dark: "#161412", light: "#faf9f6" };
+
 function apply(theme: Theme) {
   document.documentElement.dataset.theme = theme;
+  document
+    .querySelector('meta[name="theme-color"]')
+    ?.setAttribute("content", CHROME[theme]);
 }
 
 export function useTheme() {

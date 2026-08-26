@@ -105,6 +105,8 @@ a:hover {
 
 .app {
   min-height: 100vh;
+  /* Mobile browser chrome makes 100vh taller than what is actually on screen. */
+  min-height: 100dvh;
   background: var(--bg);
   display: flex;
   transition: background 0.25s;
@@ -168,6 +170,30 @@ a:hover {
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+/* Wraps the brand on desktop; becomes the whole 56px bar on mobile. */
+.sidebar-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Everything the collapsed bar hides behind the menu toggle. On desktop this
+   is just the rest of the column, so it has to carry the flex growth that
+   .sidebar-foot's `margin-top: auto` used to resolve against. */
+.sidebar-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1 0 auto;
+}
+
+/* Mobile-only controls. Hidden here rather than shown in the media query so
+   that the desktop column never has to un-style them. */
+.sidebar-bar-actions,
+.sidebar-scrim {
+  display: none;
 }
 
 .sidebar-brand {
@@ -1495,6 +1521,20 @@ a:hover {
   margin-top: 28px;
   padding: 12px;
   overflow-x: auto;
+  /* The stage is a fixed 1080px, so on a phone this pane is always mid-scroll.
+     Without containment, swiping past either end hands the gesture to the
+     browser's back/forward navigation. */
+  overscroll-behavior-x: contain;
+}
+
+/* Nothing about a clipped diagram says "draggable". Shown only where the stage
+   cannot fit — see the responsive block. */
+.map-hint {
+  display: none;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 20px;
 }
 
 .map-stage {
@@ -1573,7 +1613,28 @@ a:hover {
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
 }
 
+.palette-head {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid var(--border);
+}
+
+.palette-close {
+  display: none;
+  align-items: center;
+  padding: 0 18px;
+  border: none;
+  border-left: 1px solid var(--border);
+  background: none;
+  color: var(--text3);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  cursor: pointer;
+}
+
 .palette-input {
+  flex: 1;
+  min-width: 0;
   border: none;
   outline: none;
   background: transparent;
@@ -1581,10 +1642,10 @@ a:hover {
   padding: 16px 20px;
   font-family: var(--font-mono);
   font-size: 14px;
-  border-bottom: 1px solid var(--border);
 }
 
 .palette-results {
+  overscroll-behavior: contain;
   overflow-y: auto;
   padding: 8px;
 }
@@ -1694,32 +1755,126 @@ a:hover {
   }
 }
 
+/* --- Phone / small tablet ------------------------------------------------
+   The column collapses into a 56px bar pinned to the top of the viewport.
+   It used to be reordered below .main instead, which meant the only way to
+   reach navigation or search from a long case study was to scroll past the
+   whole document — and the search trigger it landed on was labelled with a
+   keyboard shortcut no phone can press. A bar this short costs the content
+   almost nothing and is reachable from any scroll position.
+   ------------------------------------------------------------------------ */
+
 @media (max-width: 900px) {
   .app {
     flex-direction: column;
   }
 
-  /* Visual order only: content (name, headline) reads before the nav on
-     mobile, even though the sidebar stays first in DOM/tab order so
-     keyboard and screen-reader users still meet navigation first — the
-     skip-link exists for exactly this trade-off. */
-  .main {
-    order: 1;
+  .sidebar {
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: auto;
+    /* The open panel is absolutely positioned and has to escape the bar; the
+       desktop column's `overflow-y: auto` would clip it to 56px. */
+    overflow: visible;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 0 16px;
+    gap: 0;
   }
 
-  .sidebar {
-    order: 2;
-    width: 100%;
-    position: static;
-    height: auto;
-    border-right: none;
-    border-top: 1px solid var(--border);
+  .sidebar-bar {
+    min-height: 56px;
+    justify-content: space-between;
+  }
+
+  .sidebar-brand {
+    padding: 0;
+    /* Truncates rather than pushing the controls off the bar on a 320px screen. */
+    min-width: 0;
+    flex: 1;
+  }
+
+  .sidebar-brand-title {
+    font-size: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* The subtitle costs a second line in a bar that has one. */
+  .sidebar-brand-sub {
+    display: none;
+  }
+
+  .sidebar-bar-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .bar-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* 44px: the smallest target a thumb hits reliably. */
+    min-height: 44px;
+    padding: 0 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--card);
+    color: var(--text2);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  /* Overlays the page rather than pushing it down — a menu that reflows the
+     article underneath loses the reader's place. */
+  .sidebar-panel {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 16px 20px;
+    gap: 16px;
+    max-height: calc(100dvh - 56px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+  }
+
+  .sidebar[data-open="true"] .sidebar-panel {
+    display: flex;
+  }
+
+  .sidebar-scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: rgba(0, 0, 0, 0.45);
+    animation: fadeIn 0.15s;
+  }
+
+  /* The bar already carries a search control; this one only exists to show a
+     shortcut that does not apply here. */
+  .sidebar-panel .search-trigger {
+    display: none;
   }
 
   .nav {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 12px 28px;
+    gap: 14px;
+  }
+
+  .nav-link {
+    padding: 11px 10px;
+    font-size: 15.5px;
   }
 
   .sidebar-foot {
@@ -1732,7 +1887,10 @@ a:hover {
 
   .theme-toggle {
     width: auto;
-    gap: 10px;
+    gap: 12px;
+    min-height: 44px;
+    align-items: center;
+    padding: 0 14px;
   }
 
   .screen,
@@ -1759,6 +1917,106 @@ a:hover {
   .journey-arrow {
     display: none;
   }
+
+  /* --- Touch targets ----------------------------------------------------
+     Everything below is the same control at a size a finger can land on.
+     None of these change on desktop, where a cursor is precise. */
+
+  .contact-link {
+    padding: 11px 16px;
+    font-size: 12.5px;
+  }
+
+  .tag {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  .copy-link {
+    padding: 13px 10px;
+    font-size: 12px;
+  }
+
+  .section-more {
+    padding: 6px 0 6px 12px;
+  }
+
+  .case-fact-link,
+  .principle-case {
+    padding: 4px 0;
+  }
+
+  /* Stranded at the foot of the article once the grid is single-column. */
+  .case-toc {
+    display: none;
+  }
+
+  .map-hint {
+    display: block;
+  }
+
+  /* The hint takes over the frame's top margin. */
+  .map-frame {
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 700px) {
+  /* A centred 620px card with a 60vh cap is a desktop shape: once the on-screen
+     keyboard claims half the viewport, the results it is filtering are pushed
+     out of sight. Full height, anchored to the top, keeps query and results
+     together above the keyboard. */
+  .palette-overlay {
+    padding-top: 0;
+  }
+
+  .palette {
+    width: 100%;
+    max-width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    border: none;
+    border-radius: 0;
+  }
+
+  .palette-close {
+    display: inline-flex;
+  }
+
+  .palette-input {
+    padding: 18px 16px;
+    /* Under 16px, iOS Safari zooms the page in on focus and leaves it there. */
+    font-size: 16px;
+  }
+
+  /* The desktop row is three fixed-width columns on one line; at 360px the
+     title alone overruns it. Stacked, each result reads in full. */
+  .palette-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    padding: 12px;
+    min-height: 56px;
+  }
+
+  .palette-kind {
+    width: auto;
+  }
+
+  .palette-title {
+    max-width: 100%;
+    flex-shrink: 1;
+    white-space: normal;
+  }
+
+  .palette-sub {
+    white-space: normal;
+  }
+
+  /* ↑↓ / ↵ / esc — none of which exist on a touch device. */
+  .palette-foot {
+    display: none;
+  }
 }
 
 @media (max-width: 560px) {
@@ -1770,8 +2028,40 @@ a:hover {
     font-size: 27px;
   }
 
+  .screen,
+  .screen--wide,
+  .screen--case,
+  .screen--map {
+    padding: 32px 20px 64px;
+  }
+
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Three columns of mono metadata do not survive 360px; the row wraps and the
+     `push` margin on the last item stops meaning anything. */
+  .card-meta,
+  .mini-meta {
+    flex-wrap: wrap;
+    gap: 6px 12px;
+  }
+
+  .card-meta .push {
+    margin-left: 0;
+  }
+
+  .fact-grid {
+    grid-template-columns: repeat(2, auto);
+    gap: 10px 24px;
+  }
+
+  .featured-card {
+    padding: 18px;
+  }
+
+  .section-head {
+    margin-top: 44px;
   }
 }
 
@@ -2107,6 +2397,20 @@ html[data-js="1"] .map-frame[data-reveal="in"] .map-edge {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+}
+
+/* Same argument, different trigger. Below 700px the pin never engages (see its
+   query above) and the lines fall back to the FLOW schedule, which only finishes
+   at 95vh of page scroll — by which point the block has left a phone screen
+   entirely, so the reader scrolls past half-legible text and never sees it
+   resolve. The intro carries the role, location and sponsorship facts; on the
+   first screen of a phone those have to be readable, not earned. */
+@media (max-width: 700px) {
+  .code-line[data-tail] {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
 }
 

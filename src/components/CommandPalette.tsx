@@ -51,17 +51,31 @@ export default function CommandPalette({ onClose, onNavigate }: Props) {
         aria-modal="true"
         aria-label="Search documents"
       >
-        <input
-          ref={inputRef}
-          className="palette-input"
-          value={query}
-          onChange={(event) => {
-            setQuery(event.target.value);
-            setSelected(0);
-          }}
-          placeholder="search companies, case studies, capabilities, principles…"
-          aria-label="Search query"
-        />
+        <div className="palette-head">
+          <input
+            ref={inputRef}
+            className="palette-input"
+            value={query}
+            onChange={(event) => {
+              setQuery(event.target.value);
+              setSelected(0);
+            }}
+            placeholder="search companies, cases, capabilities…"
+            aria-label="Search query"
+          />
+
+          {/* Narrow screens open this as a full-height sheet, which leaves no
+              overlay to tap and no Escape key — so the way out has to be on
+              screen. Hidden above 700px, where both exist. */}
+          <button
+            type="button"
+            className="palette-close"
+            onClick={onClose}
+            aria-label="Close search"
+          >
+            close
+          </button>
+        </div>
 
         <div className="palette-results">
           {results.map((result, i) => (
