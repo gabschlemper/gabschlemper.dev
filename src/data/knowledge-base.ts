@@ -417,10 +417,10 @@ export const cases: CaseStudy[] = [
       "Redis"
     ],
     "impact": [
-      "Founded the reporting service (founding author) with analytical reads separated from the transactional database — the structural fix for the indicator timeouts.",
+      "Founded the reporting service (founding author) with analytical reads separated from the transactional database, which is the structural fix for the indicator timeouts.",
       "Delivered the base service integrated with the analytical warehouse, with a curated, cost-aware, tenant-isolated data model and infrastructure-as-code load routines.",
-      "Made the architecture decision reviewable and cross-functional by framing it as an explicit matrix with a written comparison, a security/privacy review, and a preliminary recommendation — reviewed and signed off by seven stakeholders across engineering and the platform team, not decided in isolation.",
-      "Caught and closed a latency risk before it shipped, by revising my own first-pass recommendation once I identified that the analytical warehouse wasn't inherently low-latency — turning a potential post-launch incident into a design requirement instead.",
+      "Made the architecture decision reviewable and cross-functional by framing it as an explicit matrix with a written comparison, a security/privacy review, and a preliminary recommendation, reviewed and signed off by seven stakeholders across engineering and the platform team rather than decided in isolation.",
+      "Caught and closed a latency risk before it shipped, by revising my own first-pass recommendation once I identified that the analytical warehouse wasn't inherently low-latency, turning a potential post-launch incident into a design requirement instead.",
       "Qualitative: analytical architecture in rollout to eliminate the timeouts; end-state indicator latency not yet captured as a before/after number. <!-- TODO: add latency numbers once available -->"
     ],
     "difficulty": "High",
@@ -432,27 +432,27 @@ export const cases: CaseStudy[] = [
         "id": "context",
         "title": "Context",
         "paras": [
-          "This is my strongest evidence of strategic, data-architecture-level system design and of greenfield ownership. Most of my work extends existing systems; here I started one, which meant making foundational choices — runtime, release process, data model, cost model, tenant isolation — that are expensive to reverse later.",
-          "It shows I can hold a decision at the altitude of *where a class of workload belongs* (transactional store vs. analytical warehouse) rather than at the altitude of a single query; that I decompose a conflated decision into independent axes instead of comparing bundled options; and that I revise my own prior analysis when I find a real gap in it, instead of defending the first version. It's also my clearest evidence that I fold security and privacy into an architecture decision as a first-class input — not a checklist applied afterward — and that the decision itself was reviewed and signed off by stakeholders across engineering and the platform team, not made in isolation."
+          "This is my strongest evidence of strategic, data-architecture-level system design and of greenfield ownership. Most of my work extends existing systems; here I started one, which meant making foundational choices about runtime, release process, data model, cost model, and tenant isolation that are expensive to reverse later.",
+          "It shows I can hold a decision at the altitude of *where a class of workload belongs* (transactional store vs. analytical warehouse) rather than at the altitude of a single query; that I decompose a conflated decision into independent axes instead of comparing bundled options; and that I revise my own prior analysis when I find a real gap in it, instead of defending the first version. It's also my clearest evidence that I fold security and privacy into an architecture decision as a first-class input rather than a checklist applied afterward, and that the decision itself was reviewed and signed off by stakeholders across engineering and the platform team, not made in isolation."
         ]
       },
       {
         "id": "problem",
         "title": "Problem",
         "paras": [
-          "A set of customer-facing indicators aggregated large volumes of inspection data. Those aggregations ran as heavy analytical queries — several joins plus runtime calculations (aggregations, percentages, counts) — directly against the transactional database that also served live application traffic. As data grew, the indicators started timing out: the schema had been designed for transactional access, not for analytical reads, and the analytical load competed with the transactional workload it shared a store with. Optimizing individual queries was treating the symptom; the workload was in the wrong place, and a related reporting feature was about to need the same aggregations, which would only add to the contention."
+          "A set of customer-facing indicators aggregated large volumes of inspection data. Those aggregations ran as heavy analytical queries, several joins plus runtime calculations (aggregations, percentages, counts), directly against the transactional database that also served live application traffic. As data grew, the indicators started timing out: the schema had been designed for transactional access, not for analytical reads, and the analytical load competed with the transactional workload it shared a store with. Optimizing individual queries was treating the symptom; the workload was in the wrong place, and a related reporting feature was about to need the same aggregations, which would only add to the contention."
         ]
       },
       {
         "id": "constraints",
         "title": "Constraints",
         "bullets": [
-          "The decision had two conflated axes. An earlier pass at this decision compared only two bundled alternatives, each changing *both* which service owns the reporting logic *and* which database backs it — which made it hard to tell which axis was actually driving each trade-off.",
-          "The obvious fix under-weighted a real risk. The analytical warehouse under consideration is not, by nature, a low-latency store — every query has a floor of hundreds of milliseconds to seconds. Serving a synchronous, customer-facing screen straight from it risked trading timeouts for slowness instead of fixing them.",
+          "The decision had two conflated axes. An earlier pass at this decision compared only two bundled alternatives, each changing *both* which service owns the reporting logic *and* which database backs it, which made it hard to tell which axis was actually driving each trade-off.",
+          "The obvious fix under-weighted a real risk. The analytical warehouse under consideration is not, by nature, a low-latency store, since every query has a floor of hundreds of milliseconds to seconds. Serving a synchronous, customer-facing screen straight from it risked trading timeouts for slowness instead of fixing them.",
           "Founding a service means irreversible-ish choices. Runtime, project structure, release tooling, and the data model are cheap to pick and expensive to change once code and data accumulate.",
-          "The trade-off space was wide and cross-functional. Load isolation, deploy isolation, operational complexity, eventual consistency, multi-tenancy, cost, and vendor lock-in all interacted — and the decision had to be legible enough for stakeholders across engineering and the platform team to review and sign off on it.",
-          "Cost is a first-class constraint in analytics. An analytical warehouse bills by data scanned, so an unfiltered query is both a cost problem and — at the extreme — an availability problem.",
-          "The data crosses a privacy boundary. The analytical copy would carry multi-tenant operational data, including fields that can identify the person who performed an inspection — a data-protection question baked into the architecture, not bolted on after."
+          "The trade-off space was wide and cross-functional. Load isolation, deploy isolation, operational complexity, eventual consistency, multi-tenancy, cost, and vendor lock-in all interacted, and the decision had to be legible enough for stakeholders across engineering and the platform team to review and sign off on it.",
+          "Cost is a first-class constraint in analytics. An analytical warehouse bills by data scanned, so an unfiltered query is both a cost problem and, at the extreme, an availability problem.",
+          "The data crosses a privacy boundary. The analytical copy would carry multi-tenant operational data, including fields that can identify the person who performed an inspection, making data protection an architecture question rather than something bolted on after."
         ]
       },
       {
@@ -462,11 +462,11 @@ export const cases: CaseStudy[] = [
           "I started from the trade-off, corrected my own analysis when it had a gap, then de-risked the build."
         ],
         "bullets": [
-          "Decomposed the decision into an explicit 2×2 matrix — which service owns the reporting logic (the existing transactional service vs. a new one) crossed with which database backs it (a tuned relational store vs. an analytical warehouse) — instead of comparing bundled alternatives. Isolating the two axes made each trade-off legible on its own: workload isolation turned out to depend almost entirely on the service axis, while analytical fit and cost depended almost entirely on the database axis.",
+          "Decomposed the decision into an explicit 2×2 matrix. Which service owns the reporting logic (the existing transactional service vs. a new one) crossed with which database backs it (a tuned relational store vs. an analytical warehouse), instead of comparing bundled alternatives. Isolating the two axes made each trade-off legible on its own: workload isolation turned out to depend almost entirely on the service axis, while analytical fit and cost depended almost entirely on the database axis.",
           "Went back and corrected my own earlier recommendation. After the first pass, I identified that the analytical warehouse I was recommending is not a low-latency store by nature, and that serving a synchronous, customer-facing screen directly from it could trade one kind of timeout for a different kind of slowness. I revised the decision to require an explicit serving layer rather than querying the warehouse on every request.",
-          "Negotiated an explicit ownership boundary with the platform team. Their existing ingestion pipeline already moved operational events into the analytical warehouse; I scoped the new service to own only the aggregation layer, the API, and the cache on top of it — with one well-defined layer of cleaned tables as the contract between the two domains — rather than duplicating ingestion, retry, and dead-lettering the platform team had already built.",
-          "Ran a full security and privacy risk review as part of the same decision — confidentiality (least-privilege access and per-tenant authorization on every read), integrity (deduplicating events that can arrive more than once or out of order), availability (an unfiltered query becomes a cost and availability risk in a scan-billed warehouse), and privacy (fields that can identify the person who performed an inspection) — with a concrete mitigation for each, backed by comparative research on stacks and a market benchmark for the rest of the decision.",
-          "Built a walking skeleton — the thinnest end-to-end version of the service (a lean runtime, project scaffolding, containerization, and a working connection to the analytical warehouse) — to prove the shape before investing in features. I'm the founding author of the repository.",
+          "Negotiated an explicit ownership boundary with the platform team. Their existing ingestion pipeline already moved operational events into the analytical warehouse; I scoped the new service to own only the aggregation layer, the API, and the cache on top of it, with one well-defined layer of cleaned tables as the contract between the two domains, rather than duplicating ingestion, retry, and dead-lettering the platform team had already built.",
+          "Ran a full security and privacy risk review as part of the same decision, covering confidentiality (least-privilege access and per-tenant authorization on every read), integrity (deduplicating events that can arrive more than once or out of order), availability (an unfiltered query becomes a cost and availability risk in a scan-billed warehouse), and privacy (fields that can identify the person who performed an inspection), with a concrete mitigation for each, backed by comparative research on stacks and a market benchmark for the rest of the decision.",
+          "Built a walking skeleton, the thinnest end-to-end version of the service (a lean runtime, project scaffolding, containerization, and a working connection to the analytical warehouse), to prove the shape before investing in features. I'm the founding author of the repository.",
           "Modeled curated analytical tables for cost and tenant isolation, including a daily snapshot and a most-recent view, partitioned by date and clustered with the tenant identifier first so common queries scan less data and one tenant's query can't see another's rows.",
           "Created the dataset, tables, and load routines as infrastructure-as-code, including the consistency and daily-incremental logic, so the data layer is reproducible rather than hand-built."
         ]
@@ -475,21 +475,21 @@ export const cases: CaseStudy[] = [
         "id": "tradeoffs",
         "title": "Trade-offs",
         "bullets": [
-          "Separating analytical reads from OLTP over tuning the transactional queries. Moving the workload removes the root cause — resource contention on a store built for transactions — where tuning only postpones it. Accepted cost: a second data store and a pipeline to keep it current.",
-          "A materialized serving layer with a cache in front of it, over querying the warehouse directly on every request. Costs an extra moving part — scheduled materialization and cache invalidation — but is what actually fixes a synchronous, customer-facing screen; querying a scan-billed warehouse live on every request would have re-created the latency problem in a new place.",
+          "Separating analytical reads from OLTP over tuning the transactional queries. Moving the workload removes the root cause, resource contention on a store built for transactions, where tuning only postpones it. Accepted cost: a second data store and a pipeline to keep it current.",
+          "A materialized serving layer with a cache in front of it, over querying the warehouse directly on every request. Costs an extra moving part, scheduled materialization and cache invalidation, but is what actually fixes a synchronous, customer-facing screen; querying a scan-billed warehouse live on every request would have re-created the latency problem in a new place.",
           "A hard cost ceiling that fails a query closed, over trusting every query to be written efficiently. A query missing its required filters is rejected before it runs, rather than allowed to scan (and bill for) an entire table. Costs an occasional rejected query; buys a bounded, predictable bill instead of a silent cost or availability incident.",
-          "Owning only the aggregation layer over owning ingestion end-to-end. The rejected alternative would have rebuilt the messaging consumers, retry, and dead-lettering the platform team's pipeline already provided. The extra operational surface — and the historical-data migration that came with it — wasn't worth the marginal control it bought.",
-          "Eventual consistency for reporting over strict freshness. Reporting can tolerate briefly stale data, so a read model refreshed on a schedule is acceptable — and far cheaper — than keeping an analytical copy strictly in lock-step."
+          "Owning only the aggregation layer over owning ingestion end-to-end. The rejected alternative would have rebuilt the messaging consumers, retry, and dead-lettering the platform team's pipeline already provided. The extra operational surface, and the historical-data migration that came with it, wasn't worth the marginal control it bought.",
+          "Eventual consistency for reporting over strict freshness. Reporting can tolerate briefly stale data, so a read model refreshed on a schedule is acceptable, and far cheaper, than keeping an analytical copy strictly in lock-step."
         ]
       },
       {
         "id": "impact",
         "title": "Impact",
         "bullets": [
-          "Founded the reporting service (founding author) with analytical reads separated from the transactional database — the structural fix for the indicator timeouts.",
+          "Founded the reporting service (founding author) with analytical reads separated from the transactional database, which is the structural fix for the indicator timeouts.",
           "Delivered the base service integrated with the analytical warehouse, with a curated, cost-aware, tenant-isolated data model and infrastructure-as-code load routines.",
-          "Made the architecture decision reviewable and cross-functional by framing it as an explicit matrix with a written comparison, a security/privacy review, and a preliminary recommendation — reviewed and signed off by seven stakeholders across engineering and the platform team, not decided in isolation.",
-          "Caught and closed a latency risk before it shipped, by revising my own first-pass recommendation once I identified that the analytical warehouse wasn't inherently low-latency — turning a potential post-launch incident into a design requirement instead.",
+          "Made the architecture decision reviewable and cross-functional by framing it as an explicit matrix with a written comparison, a security/privacy review, and a preliminary recommendation, reviewed and signed off by seven stakeholders across engineering and the platform team rather than decided in isolation.",
+          "Caught and closed a latency risk before it shipped, by revising my own first-pass recommendation once I identified that the analytical warehouse wasn't inherently low-latency, turning a potential post-launch incident into a design requirement instead.",
           "Qualitative: analytical architecture in rollout to eliminate the timeouts; end-state indicator latency not yet captured as a before/after number. <!-- TODO: add latency numbers once available -->"
         ]
       },
@@ -500,11 +500,11 @@ export const cases: CaseStudy[] = [
           "Reusable engineering knowledge I carry forward from this:"
         ],
         "bullets": [
-          "Decompose a conflated decision into independent axes before comparing alternatives. Bundling two choices into one \"either/or\" option makes it look like a single trade-off when it's really two — and you can end up trading away something that didn't need to be on the table.",
-          "Revisit your own decision when you find a real gap in it. Catching that a synchronous, customer-facing read path can't tolerate a store's natural latency floor — and fixing the recommendation before it shipped — was worth more than defending the first version.",
-          "Security and privacy analysis belongs inside the architecture decision, not after it. A data model decision already determines your tenant-isolation boundary, your access boundary, and your cost-based availability risk — reviewing those separately, later, is reviewing them too late to change cheaply.",
+          "Decompose a conflated decision into independent axes before comparing alternatives. Bundling two choices into one \"either/or\" option makes it look like a single trade-off when it's really two, and you can end up trading away something that didn't need to be on the table.",
+          "Revisit your own decision when you find a real gap in it. Catching that a synchronous, customer-facing read path can't tolerate a store's natural latency floor, and fixing the recommendation before it shipped, was worth more than defending the first version.",
+          "Security and privacy analysis belongs inside the architecture decision, not after it. A data model decision already determines your tenant-isolation boundary, your access boundary, and your cost-based availability risk, so reviewing those separately, later, is reviewing them too late to change cheaply.",
           "Analytical load does not belong on your transactional store. When heavy aggregations and live traffic share a database, the fix is usually to separate the workload, not to tune the query.",
-          "In an analytical warehouse, the data model is a cost decision — and an unbounded query is an availability risk, not just a slow one. Clustering, curated tables, and a hard cost ceiling per query are what keep a scan-billed store both affordable and predictable."
+          "In an analytical warehouse, the data model is a cost decision, and an unbounded query is an availability risk rather than just a slow one. Clustering, curated tables, and a hard cost ceiling per query are what keep a scan-billed store both affordable and predictable."
         ]
       },
       {
@@ -512,13 +512,13 @@ export const cases: CaseStudy[] = [
         "title": "Evidence",
         "bullets": [
           "Founding author of the service repository; built the walking skeleton and data layer.",
-          "Authored a written architecture decision comparing four alternatives across an explicit service × database matrix, with a dedicated security/privacy risk analysis and cost guardrails as part of the recommendation — reviewed and approved by seven stakeholders across engineering and the platform team.",
+          "Authored a written architecture decision comparing four alternatives across an explicit service × database matrix, with a dedicated security/privacy risk analysis and cost guardrails as part of the recommendation, reviewed and approved by seven stakeholders across engineering and the platform team.",
           "Revised the decision between two versions after identifying a latency risk the first version had underweighted.",
           "Curated analytical tables and infrastructure-as-code load routines.",
-          "Verified build-out against the tracker (2026-07): the staging dataset, then two curated tables — a 24-hour delta staging table and a clustered daily current-state table — loaded incrementally by a daily `MERGE` plus a wider-range routine as a safety net for late-arriving messages; a table-valued function as the single entry point the service calls, so query shape stays in versioned infrastructure rather than string-built SQL; scheduled queries for incremental refresh; warehouse permissions for the team; then the same stack in production. Every piece delivered as infrastructure-as-code, staging first.",
-          "Verified performance and cost work: load tests run against production queries parameterized by two real tenant contexts (2026-06-26 → 2026-07-17), and a separate clustering investigation to reduce scanned bytes — both before the service went wide.",
-          "Verified product surface (2026-07 → 2026-08): the anomaly-management page, an adherence chart tab, a recurring-alerts table with its data contract agreed front-to-back before either side was built, the endpoint behind it, and an accumulated-alerts view still in progress — each shipped behind a feature flag, several with a mocked contract landing before the real endpoint.",
-          "Source (private): consolidated career knowledge base; internal architecture decision record; Jira epics and subtasks in the inspection domain, 2026-03 → 2026-08."
+          "Verified build-out against the tracker (2026-07): the staging dataset, then two curated tables (a 24-hour delta staging table and a clustered daily current-state table) loaded incrementally by a daily `MERGE` plus a wider-range routine as a safety net for late-arriving messages; a table-valued function as the single entry point the service calls, so query shape stays in versioned infrastructure rather than string-built SQL; scheduled queries for incremental refresh; warehouse permissions for the team; then the same stack in production. Every piece delivered as infrastructure-as-code, staging first.",
+          "Verified performance and cost work: load tests run against production queries parameterized by two real tenant contexts (2026-06-26 to 2026-07-17), and a separate clustering investigation to reduce scanned bytes, both before the service went wide.",
+          "Verified product surface (2026-07 to 2026-08): the anomaly-management page, an adherence chart tab, a recurring-alerts table with its data contract agreed front-to-back before either side was built, the endpoint behind it, and an accumulated-alerts view still in progress, each shipped behind a feature flag, several with a mocked contract landing before the real endpoint.",
+          "Source (private): consolidated career knowledge base; internal architecture decision record; Jira epics and subtasks in the inspection domain, 2026-03 to 2026-08."
         ]
       }
     ]
@@ -545,7 +545,7 @@ export const cases: CaseStudy[] = [
       "Resolved the customer-blocking incident and documented the missing architecture decision so the same gap can't reopen silently.",
       "Gave the domain a properly workspace-aware consumer in the team's current service, where none had existed before.",
       "Eliminated the production deadlock at its root cause (partition-key mismatch), not by papering over the symptom.",
-      "Replaced silent message loss with a recoverable failure path — retry for transient errors, a dead-letter queue for permanent ones — closing a gap where failures had previously disappeared without a trace.",
+      "Replaced silent message loss with a recoverable failure path, with retry for transient errors and a dead-letter queue for permanent ones, closing a gap where failures had previously disappeared without a trace.",
       "Qualitative: higher confidence in the reliability of a permissions-critical consumer; no incident of the same kind recurred after the fix."
     ],
     "difficulty": "High",
@@ -557,15 +557,15 @@ export const cases: CaseStudy[] = [
         "id": "context",
         "title": "Context",
         "paras": [
-          "This is my clearest evidence of incident response that fixes the class of bug, not the instance — and of staying with a problem across two acts: the initial incident, and the subtler failure mode that only appeared once the fix was in production. Both times, I resisted the fastest available patch in favor of understanding why the system had been wrong in the first place, and left the answer documented so the next person wouldn't have to rediscover it.",
-          "It also shows an operational maturity that goes beyond \"fixed the bug\": diagnosing a production deadlock from logs, tracing it to a specific mismatch between a messaging system's partitioning and the data's actual contention pattern, is systems-level reasoning under pressure — the kind of debugging that separates \"restarted the pod\" from actually understanding the failure."
+          "This is my clearest evidence of incident response that fixes the class of bug rather than the instance, and of staying with a problem across two acts: the initial incident, and the subtler failure mode that only appeared once the fix was in production. Both times, I resisted the fastest available patch in favor of understanding why the system had been wrong in the first place, and left the answer documented so the next person wouldn't have to rediscover it.",
+          "It also shows an operational maturity that goes beyond \"fixed the bug\": diagnosing a production deadlock from logs, tracing it to a specific mismatch between a messaging system's partitioning and the data's actual contention pattern, is systems-level reasoning under pressure, the kind of debugging that separates \"restarted the pod\" from actually understanding the failure."
         ]
       },
       {
         "id": "problem",
         "title": "Problem",
         "paras": [
-          "A customer was stuck on a permanent \"sync error\" screen and could not complete their work — a hard block, not a cosmetic bug. The proximate cause traced to how a permissions-management consumer handled an edit: a decision about whether that consumer's logic should be scoped to a workspace had never been made explicit anywhere, so a change that assumed the wrong scope went out uncaught. The underlying consumer for this domain also only existed in the team's legacy service; the newer service had no equivalent, which was part of why the gap had never surfaced before.",
+          "A customer was stuck on a permanent \"sync error\" screen and could not complete their work, a hard block rather than a cosmetic bug. The proximate cause traced to how a permissions-management consumer handled an edit: a decision about whether that consumer's logic should be scoped to a workspace had never been made explicit anywhere, so a change that assumed the wrong scope went out uncaught. The underlying consumer for this domain also only existed in the team's legacy service; the newer service had no equivalent, which was part of why the gap had never surfaced before.",
           "Months after the rebuild shipped, a second, unrelated-looking problem appeared: the new consumer started throwing database deadlocks in production."
         ]
       },
@@ -573,10 +573,10 @@ export const cases: CaseStudy[] = [
         "id": "constraints",
         "title": "Constraints",
         "bullets": [
-          "The real defect wasn't in the code path that failed — it was in a decision that was never written down. Patching the immediate scope bug would have left the same class of mistake possible on the next change, because nothing recorded *why* the consumer needed to behave the way it should.",
+          "The real defect wasn't in the code path that failed. It was in a decision that was never written down. Patching the immediate scope bug would have left the same class of mistake possible on the next change, because nothing recorded *why* the consumer needed to behave the way it should.",
           "The user's own words made the stakes concrete. They were blocked mid-task and frustrated; there was no ambiguity about whether this mattered.",
           "The deadlock was intermittent and non-obvious. A generic \"transaction failed\" error gives no hint by itself that the actual cause is a mismatch between how work is distributed (partitioning) and how the underlying data is actually contended.",
-          "The existing failure handling made the deadlock worse than it looked. Failed messages were being silently swallowed and their offset committed anyway — so before it could even be fixed properly, the failure mode itself had to change from \"disappears without a trace\" to \"visible and recoverable.\""
+          "The existing failure handling made the deadlock worse than it looked. Failed messages were being silently swallowed and their offset committed anyway, so before it could even be fixed properly, the failure mode itself had to change from \"disappears without a trace\" to \"visible and recoverable.\""
         ]
       },
       {
@@ -587,18 +587,18 @@ export const cases: CaseStudy[] = [
         ],
         "bullets": [
           "Wrote the post-mortem first. Before rebuilding anything, I documented what happened and why, so the incident had an owned record rather than just a fixed ticket.",
-          "Made the missing decision explicit in an ADR — why the consumer needs to respect workspace scope, how it should handle deletions, how to protect record accountability, and how edge cases should behave — instead of encoding the fix only in code where the next person would have to reverse-engineer the reasoning.",
-          "Documented the business rules separately, because they had been scattered across application code with no central reference — which was itself part of why the original gap went unnoticed.",
+          "Made the missing decision explicit in an ADR. It covers why the consumer needs to respect workspace scope, how it should handle deletions, how to protect record accountability, and how edge cases should behave, instead of encoding the fix only in code where the next person would have to reverse-engineer the reasoning.",
+          "Documented the business rules separately, because they had been scattered across application code with no central reference, which was itself part of why the original gap went unnoticed.",
           "Rebuilt the consumer properly in the team's current service and stack, rather than patching the legacy implementation, since the domain didn't have an equivalent there yet.",
-          "Months later, diagnosed the deadlock from production logs, not guesswork. I searched for the specific error signature, found repeated bursts, and confirmed the mechanism: the topic was partitioned by the identifier of the change itself, not by the user it affected — so multiple messages about the *same* user could land on different partitions and be processed concurrently, colliding when they updated the same row.",
-          "Fixed the mechanism, not just the symptom. I serialized updates per affected user so concurrent messages about the same person can no longer race each other, and replaced the silent failure path with retry for transient errors and a dead-letter queue for permanent ones — so a failure is now visible and recoverable instead of invisible."
+          "Months later, diagnosed the deadlock from production logs, not guesswork. I searched for the specific error signature, found repeated bursts, and confirmed the mechanism: the topic was partitioned by the identifier of the change itself, not by the user it affected, so multiple messages about the *same* user could land on different partitions and be processed concurrently, colliding when they updated the same row.",
+          "Fixed the mechanism, not just the symptom. I serialized updates per affected user so concurrent messages about the same person can no longer race each other, and replaced the silent failure path with retry for transient errors and a dead-letter queue for permanent ones, so a failure is now visible and recoverable instead of invisible."
         ]
       },
       {
         "id": "tradeoffs",
         "title": "Trade-offs",
         "bullets": [
-          "Writing a post-mortem, an ADR, and business-rules documentation over shipping a direct fix. Documentation took real time the fastest patch wouldn't have, but the original gap existed *because* the decision was never written down — repeating that mistake would have cost more later than it saved now.",
+          "Writing a post-mortem, an ADR, and business-rules documentation over shipping a direct fix. Documentation took real time the fastest patch wouldn't have, but the original gap existed *because* the decision was never written down, and repeating that mistake would have cost more later than it saved now.",
           "Rebuilding the consumer in the current stack over patching the legacy one. A patch would have been faster, but it would have kept the domain split across two services with no single source of truth, and left the newer service without behavior it needed.",
           "Diagnosing the deadlock's root cause over adding a retry and calling it fixed. A blind retry would have masked the collision without removing it; tracing the mismatch to the partition key made the fix address the actual contention instead of hiding it.",
           "Serializing per user over widening the transaction or the retry budget. Narrowing the fix to exactly the colliding scope (same user, concurrent messages) avoided a broader, vaguer slowdown that a more defensive fix would have introduced everywhere."
@@ -611,7 +611,7 @@ export const cases: CaseStudy[] = [
           "Resolved the customer-blocking incident and documented the missing architecture decision so the same gap can't reopen silently.",
           "Gave the domain a properly workspace-aware consumer in the team's current service, where none had existed before.",
           "Eliminated the production deadlock at its root cause (partition-key mismatch), not by papering over the symptom.",
-          "Replaced silent message loss with a recoverable failure path — retry for transient errors, a dead-letter queue for permanent ones — closing a gap where failures had previously disappeared without a trace.",
+          "Replaced silent message loss with a recoverable failure path, with retry for transient errors and a dead-letter queue for permanent ones, closing a gap where failures had previously disappeared without a trace.",
           "Qualitative: higher confidence in the reliability of a permissions-critical consumer; no incident of the same kind recurred after the fix."
         ]
       },
@@ -623,8 +623,8 @@ export const cases: CaseStudy[] = [
         ],
         "bullets": [
           "An incident caused by an undocumented decision isn't fixed until the decision is written down. Otherwise you've fixed the symptom and left the cause free to resurface in a different shape.",
-          "A generic \"transaction failed\" error is a starting point, not a diagnosis. The real cause is often a mismatch one layer up — here, between how work was partitioned and how the data was actually contended.",
-          "Never let a failure disappear silently. A system that swallows an error and commits anyway is worse than one that fails loudly — visibility is a precondition for ever fixing the real cause.",
+          "A generic \"transaction failed\" error is a starting point, not a diagnosis. The real cause is often a mismatch one layer up, here between how work was partitioned and how the data was actually contended.",
+          "Never let a failure disappear silently. A system that swallows an error and commits anyway is worse than one that fails loudly, because you have to be able to see a failure before you can fix its cause.",
           "Fix the exact scope of the contention, not the whole surface around it. Serializing per affected user solved the actual collision without slowing down everything else."
         ]
       },
@@ -635,9 +635,9 @@ export const cases: CaseStudy[] = [
           "Wrote the post-mortem, the ADR, and the business-rules documentation for the domain, ahead of rebuilding the consumer.",
           "Rebuilt the consumer in the team's current service and stack; activated in production.",
           "Independently diagnosed a later production deadlock to a Kafka partition-key mismatch via log analysis, and replaced silent message loss with retry, a dead-letter queue, and per-user serialization.",
-          "Verified against the tracker. The incident is dated 2026-01-13, and the response was decomposed the same week: the post-mortem (2026-01-13 → 2026-01-19), the domain business-rules document (→ 2026-01-29) and the ADR (2026-01-19 → 2026-01-28) were all tracked tasks that *preceded* the rebuild, not write-ups produced afterwards.",
-          "Verified rebuild: base service and messaging integration (2026-01-21 → 2026-01-26), the create and delete use cases (→ 2026-02-17), a bulk soft-delete endpoint for the affected relations, a feature flag in staging (2026-02-17), production activation (2026-03-16) with a production error investigated and closed the same day, and a separate task to repair the users the original bug had already corrupted (2026-01-16 → 2026-02-20).",
-          "Verified follow-up, months later: a data-contract validation exception (2026-06-29), the transaction deadlock (2026-06-30 → 2026-07-01, four pull requests), a user-lifecycle inconsistency between upsert and role deletion (2026-07-07), and handling for the case where all of a user's roles are deleted at once.",
+          "Verified against the tracker. The incident is dated 2026-01-13, and the response was decomposed the same week: the post-mortem (2026-01-13 to 2026-01-19), the domain business-rules document (closed 2026-01-29) and the ADR (2026-01-19 to 2026-01-28) were all tracked tasks that *preceded* the rebuild, not write-ups produced afterwards.",
+          "Verified rebuild: base service and messaging integration (2026-01-21 to 2026-01-26), the create and delete use cases (closed 2026-02-17), a bulk soft-delete endpoint for the affected relations, a feature flag in staging (2026-02-17), production activation (2026-03-16) with a production error investigated and closed the same day, and a separate task to repair the users the original bug had already corrupted (2026-01-16 to 2026-02-20).",
+          "Verified follow-up, months later: a data-contract validation exception (2026-06-29), the transaction deadlock (2026-06-30 to 2026-07-01, four pull requests), a user-lifecycle inconsistency between upsert and role deletion (2026-07-07), and handling for the case where all of a user's roles are deleted at once.",
           "Source (private): Jira incident record and its linked post-mortem, ADR, and follow-up tasks, Dynamox engineering tracker; the corresponding pull requests."
         ]
       }
@@ -680,7 +680,7 @@ export const cases: CaseStudy[] = [
         "id": "context",
         "title": "Context",
         "paras": [
-          "This is my clearest evidence of two senior behaviours in one arc. First, deciding on measurements rather than instinct: the fix wasn't \"the query feels slow\", it was \"this query is at 69% of a hard ceiling on a table that grows with every customer we sign, and here are the bytes\". Second, treating my own shipped change as something to be audited. Nobody reported either bug. I went looking, found that my migration had left most of production stale, wrote up the root cause and the accepted residual risk in public tickets with my name on them, and fixed it. The capability I'd point to is not the SQL — it's being willing to be the person who finds your own residue."
+          "This is my clearest evidence of two senior behaviours in one arc. First, deciding on measurements rather than instinct: the fix wasn't \"the query feels slow\", it was \"this query is at 69% of a hard ceiling on a table that grows with every customer we sign, and here are the bytes\". Second, treating my own shipped change as something to be audited. Nobody reported either bug. I went looking, found that my migration had left most of production stale, wrote up the root cause and the accepted residual risk in public tickets with my name on them, and fixed it. The capability I'd point to is not the SQL. It's being willing to be the person who finds your own residue."
         ]
       },
       {
@@ -688,21 +688,21 @@ export const cases: CaseStudy[] = [
         "title": "Problem",
         "paras": [
           "A reporting service serves an anomaly-management view: for every pending inspection alert, the asset and the chain of organizational folders above it, so an operator can locate the equipment in a plant.",
-          "That chain was assembled per request. The service issued an extra warehouse query that joined alert rows to a reference table of organizational nodes by path prefix. The reference table is clustered on its identifier, not on path — so a prefix join has no pruning available to it and reads the table end to end. Measured in production, that one query scanned 658.8 MB per cache miss, while the main query for the same endpoint scanned 53 MB. The bytes barely moved between a one-path request and a twenty-path batch, because the cost was the full scan, not the batch.",
-          "The platform caps each warehouse job at 953.7 MiB. So a single supporting query was consuming 69% of the ceiling — on a reference table already at 962 MB and 2.67M rows that grows every time a customer creates a workspace. At roughly 45% more growth the endpoint stops being slow and starts returning a hard quota error. What was holding the line was a 15-minute in-memory LRU cache I had added earlier in the same epic: a mitigation, not a fix, since every miss still paid the 658.8 MB."
+          "That chain was assembled per request. The service issued an extra warehouse query that joined alert rows to a reference table of organizational nodes by path prefix. The reference table is clustered on its identifier, not on path, so a prefix join has no pruning available to it and reads the table end to end. Measured in production, that one query scanned 658.8 MB per cache miss, while the main query for the same endpoint scanned 53 MB. The bytes barely moved between a one-path request and a twenty-path batch, because the cost was the full scan, not the batch.",
+          "The platform caps each warehouse job at 953.7 MiB. So a single supporting query was consuming 69% of the ceiling, on a reference table already at 962 MB and 2.67M rows that grows every time a customer creates a workspace. At roughly 45% more growth the endpoint stops being slow and starts returning a hard quota error. What was holding the line was a 15-minute in-memory LRU cache I had added earlier in the same epic: a mitigation, not a fix, since every miss still paid the 658.8 MB."
         ]
       },
       {
         "id": "constraints",
         "title": "Constraints",
         "paras": [
-          "The hard part wasn't the query — it was seeing the failure mode correctly and sequencing the fix."
+          "The hard part wasn't the query. It was seeing the failure mode correctly and sequencing the fix."
         ],
         "bullets": [
-          "The symptom lied. Latency looked like a caching problem. The real risk was a *quota cliff*: not a gradual slowdown, but a hard failure at a threshold set by a table growing on customer signups, i.e. fastest exactly when the business is doing well.",
-          "Seven writers, one schema. The column had to be added to the table schema, the table function's declared return type, the incremental load, the daily merge, the backfill, the consistency check, and a migration script — miss one and rows land incomplete, silently.",
+          "The symptom lied. Latency looked like a caching problem. The real risk was a *quota cliff*: not a gradual slowdown, but a hard failure at a threshold set by a table growing on customer signups, so it arrives fastest exactly when the business is doing well.",
+          "Seven writers, one schema. The column had to be added to the table schema, the table function's declared return type, the incremental load, the daily merge, the backfill, the consistency check, and a migration script. Miss one and rows land incomplete, silently.",
           "The ordering was load-bearing. If the service started reading the new column before the backfill had run in production, every breadcrumb in the product would go blank. That constraint is what turned this into a staged migration rather than a pull request.",
-          "The safety net could not see the failure. The pipeline's consistency check compares the raw event against the curated row — but it reads the path from *the same event field* the pipeline reads. When that field was absent, both sides were NULL and the check reported perfect agreement. A divergence checker structurally cannot detect absence."
+          "The safety net could not see the failure. The pipeline's consistency check compares the raw event against the curated row, but it reads the path from *the same event field* the pipeline reads. When that field was absent, both sides were NULL and the check reported perfect agreement. A divergence checker structurally cannot detect absence."
         ]
       },
       {
@@ -710,12 +710,12 @@ export const cases: CaseStudy[] = [
         "title": "Decision",
         "paras": [
           "I measured before proposing anything. Real query executions with cluster pruning in both staging and production: bytes for the supporting query, bytes for the main query, the size and row count of the reference table, the number of warehouse jobs per cold request, and cold latency. Those numbers are what made the argument, and they are what told me which lever mattered.",
-          "I asked where the work was already being done. The pipeline's incremental load already joined the same alert rows against the same reference table to compute four fixed depth columns. So materializing the full chain wasn't new work — it was one more aggregation inside a join that already ran. That reframing is what made the change cheap rather than a trade of request cost for pipeline cost.",
-          "I wrote the migration as four ordered steps with their own acceptance criteria — schema and pipeline in staging, then production, then the service, then an optional cleanup — with the dependency stated explicitly: the service must not read the column until production rows are populated. I also flagged, in writing, that the existing depth columns filtered nothing by node type while the new chain had to exclude machine-level nodes, so it was a new aggregation and not a reuse of the old one.",
-          "Then I audited my own change. While modelling the next feature I checked whether any alert would fall outside a workspace scope — and found 70,684 of 88,995 pending alerts (79%) with an empty location chain. The backfill script existed, handled the new column, and had simply never been executed in production.",
+          "I asked where the work was already being done. The pipeline's incremental load already joined the same alert rows against the same reference table to compute four fixed depth columns. So materializing the full chain wasn't new work; it was one more aggregation inside a join that already ran. That reframing is what made the change cheap rather than a trade of request cost for pipeline cost.",
+          "I wrote the migration as four ordered steps with their own acceptance criteria: schema and pipeline in staging, then production, then the service, then an optional cleanup, with the dependency stated explicitly: the service must not read the column until production rows are populated. I also flagged, in writing, that the existing depth columns filtered nothing by node type while the new chain had to exclude machine-level nodes, so it was a new aggregation and not a reuse of the old one.",
+          "Then I audited my own change. While modelling the next feature I checked whether any alert would fall outside a workspace scope, and found 70,684 of 88,995 pending alerts (79%) with an empty location chain. The backfill script existed, handled the new column, and had simply never been executed in production.",
           "I proved it was a temporal gap, not a data fault, before touching anything: 61,385 rows had the old depth column populated and the new chain empty. Both come from the same join, in the same expression. If the join had failed, both would be empty. Those rows passed the join at a time when the new column did not yet exist. A second signal agreed: 733 paths had rows in *both* states, the empty ones stopping on the day of the migration and the populated ones continuing.",
-          "I repaired with a targeted, idempotent statement rather than a reload. The obvious move — truncate and re-run the backfill over a ten-year window — was more blast radius than the problem justified. Instead I wrote an `UPDATE` restricted to rows with an empty chain, and reused the pipeline's own logic with one change: resolving ancestors by enumerating path prefixes and joining on equality, instead of the prefix-match join the pipeline uses, which took over four minutes here. I validated the two forms produced identical output on 500 sampled paths (500/500) before running it. The empty-chain predicate appears in both the target and the filter deliberately, so the statement is idempotent and cannot overwrite a good value. 61,203 rows repaired.",
-          "The residue was the real find. 9,299 rows did not move — and all of them had a NULL path, from a period before the event producer started sending the field. The table function filters scope with `path = workspace OR STARTS_WITH(path, workspace || '/')`. With a NULL path both comparisons evaluate to NULL, `NULL OR NULL` is NULL, and `WHERE NULL` drops the row. These alerts weren't showing up without a location. They weren't showing up at all — 10.4% of pending alerts, including 5,469 at the highest severity band, across 1,588 checklists, 91% of them inside a single tenant. Staging was proportionally worse at 31.9%. No customer had reported it, because the product's answer to \"how many pending alerts do I have?\" was simply and quietly wrong.",
+          "I repaired with a targeted, idempotent statement rather than a reload. The obvious move, truncate and re-run the backfill over a ten-year window, was more blast radius than the problem justified. Instead I wrote an `UPDATE` restricted to rows with an empty chain, and reused the pipeline's own logic with one change: resolving ancestors by enumerating path prefixes and joining on equality, instead of the prefix-match join the pipeline uses, which took over four minutes here. I validated the two forms produced identical output on 500 sampled paths (500/500) before running it. The empty-chain predicate appears in both the target and the filter deliberately, so the statement is idempotent and cannot overwrite a good value. 61,203 rows repaired.",
+          "The residue was the real find. 9,299 rows did not move, and all of them had a NULL path, from a period before the event producer started sending the field. The table function filters scope with `path = workspace OR STARTS_WITH(path, workspace || '/')`. With a NULL path both comparisons evaluate to NULL, `NULL OR NULL` is NULL, and `WHERE NULL` drops the row. These alerts weren't showing up without a location. They weren't showing up at all: 10.4% of pending alerts, including 5,469 at the highest severity band, across 1,588 checklists, 91% of them inside a single tenant. Staging was proportionally worse at 31.9%. No customer had reported it, because the product's answer to \"how many pending alerts do I have?\" was simply and quietly wrong.",
           "I recovered those paths from a materialized source keyed by checklist, and validated before executing rather than after: a 1:1 join check (2,167,356 rows to 2,167,356 distinct ids), zero NULL paths in the source, byte-identical formatting on samples, 99.57% agreement (32,846 of 32,988) on the subset where both values existed, and a full rehearsal in staging that fixed 139 of 139 with zero residue."
         ]
       },
@@ -723,24 +723,24 @@ export const cases: CaseStudy[] = [
         "id": "tradeoffs",
         "title": "Trade-offs",
         "bullets": [
-          "Materializing the chain in the pipeline over raising the per-job byte ceiling — raising the cap converts a hard, visible failure into a silent, growing cost. I wrote it down as an acceptable stopgap if the work slipped, explicitly not as the solution.",
-          "Materializing over keeping the request-time cache and tuning it — the cache was real mitigation and I had built it, but every miss still paid the full scan. Keeping it meant keeping the TTL, LRU and negative-caching logic that existed *only* because of this one query. Removing the cause let me delete all of it.",
-          "A targeted idempotent `UPDATE` over truncate-and-reload from the backfill script — the reload was the sanctioned path and would have been simpler to justify. I chose the narrower statement because it touches only broken rows, is safe to re-run, and cannot clobber a correct value; the cost is that I had to prove my rewritten ancestor resolution was equivalent to the pipeline's.",
-          "Prefix enumeration with an equality join over the pipeline's prefix-match join — faster by orders of magnitude at repair scale, at the price of a second implementation of the same rule. I paid that price down with a 500-sample equivalence check rather than an argument.",
-          "Recovering paths from the current materialized source over leaving 9,299 alerts invisible — the source holds a checklist's *current* location, while the report held its location *at answer time*. On the comparable base, 143 rows (0.43%) disagreed, 14 of them under a different root: checklists that had been moved. Extrapolated to the recovered set, that is roughly 7 moved internally and possibly 1 across roots — and because those rows had no path at all, there is no way to identify which. I took visible-and-possibly-stale over invisible, and wrote the residual risk into the ticket so that the next person to be asked \"why is this old alert filed there?\" has the answer.",
-          "No snapshot before the repair over a defensive copy — a conscious call, not an oversight. The statements were idempotent, narrow, rehearsed in staging, and the warehouse's 7-day time travel was the fallback. I recorded that the decision was made and why, because the pre-repair numbers in the ticket are now the only record of the prior state."
+          "Materializing the chain in the pipeline over raising the per-job byte ceiling. Raising the cap converts a hard, visible failure into a silent, growing cost. I wrote it down as an acceptable stopgap if the work slipped, explicitly not as the solution.",
+          "Materializing over keeping the request-time cache and tuning it. The cache was real mitigation and I had built it, but every miss still paid the full scan. Keeping it meant keeping the TTL, LRU and negative-caching logic that existed *only* because of this one query. Removing the cause let me delete all of it.",
+          "A targeted idempotent `UPDATE` over truncate-and-reload from the backfill script. The reload was the sanctioned path and would have been simpler to justify. I chose the narrower statement because it touches only broken rows, is safe to re-run, and cannot clobber a correct value; the cost is that I had to prove my rewritten ancestor resolution was equivalent to the pipeline's.",
+          "Prefix enumeration with an equality join over the pipeline's prefix-match join. Faster by orders of magnitude at repair scale, at the price of a second implementation of the same rule. I paid that price down with a 500-sample equivalence check rather than an argument.",
+          "Recovering paths from the current materialized source over leaving 9,299 alerts invisible. The source holds a checklist's *current* location, while the report held its location *at answer time*. On the comparable base, 143 rows (0.43%) disagreed, 14 of them under a different root: checklists that had been moved. Extrapolated to the recovered set, that is roughly 7 moved internally and possibly 1 across roots, and because those rows had no path at all, there is no way to identify which. I took visible-and-possibly-stale over invisible, and wrote the residual risk into the ticket so that the next person to be asked \"why is this old alert filed there?\" has the answer.",
+          "No snapshot before the repair over a defensive copy. A conscious call, not an oversight. The statements were idempotent, narrow, rehearsed in staging, and the warehouse's 7-day time travel was the fallback. I recorded that the decision was made and why, because the pre-repair numbers in the ticket are now the only record of the prior state."
         ]
       },
       {
         "id": "impact",
         "title": "Impact",
         "bullets": [
-          "Removed 658.8 MB of scanned bytes per cache miss and with it the quota cliff — the endpoint no longer sits at 69% of a hard ceiling on a table that grows with customer count.",
+          "Removed 658.8 MB of scanned bytes per cache miss and with it the quota cliff. The endpoint no longer sits at 69% of a hard ceiling on a table that grows with customer count.",
           "Cold latency 3.4s → ~0.8s (~77%), by cutting warehouse jobs per cold request from 3 to 2.",
-          "Deleted the location cache entirely, along with its TTL, LRU and negative-caching logic — the code existed only to compensate for the query that no longer runs. The breadcrumb also stopped being capped at four levels: chains now run 1 to 10 deep.",
-          "Repaired 70,502 production rows — 61,203 with a stale empty chain, 9,299 that were being dropped from the product altogether. Verified end state: 89,067 pending alerts, zero missing a path, zero with an empty chain.",
+          "Deleted the location cache entirely, along with its TTL, LRU and negative-caching logic, since the code existed only to compensate for the query that no longer runs. The breadcrumb also stopped being capped at four levels: chains now run 1 to 10 deep.",
+          "Repaired 70,502 production rows: 61,203 with a stale empty chain, 9,299 that were being dropped from the product altogether. Verified end state: 89,067 pending alerts, zero missing a path, zero with an empty chain.",
           "Recovered 9,299 alerts (10.4% of pending alerts) into the product, including 5,469 at the highest severity band, in a report customers use to prioritize maintenance. Counters and listings had been understating the real backlog.",
-          "Unblocked the feature that found the bug — an accumulated-alerts view scoped by workspace would have seen only 20% of the data.",
+          "Unblocked the feature that found the bug. An accumulated-alerts view scoped by workspace would have seen only 20% of the data.",
           "Filed the prevention work honestly as *to do*, not as done: a pipeline fallback when the event field is absent, a completeness assertion in the consistency check, and a decision on whether the table function should exclude NULL paths explicitly and count them rather than let them vanish."
         ]
       },
@@ -748,12 +748,12 @@ export const cases: CaseStudy[] = [
         "id": "lessons",
         "title": "Lessons Learned",
         "bullets": [
-          "A quota is a cliff, not a slope. Byte-billing limits and similar caps don't degrade — they fail hard at a threshold. When the driver of that threshold is a table that grows with business success, \"it's fine today\" is not a measurement, it's a countdown.",
-          "Measure the lever, not the suspicion. Two plausible optimizations were on the table. Measurement said one was 69% of the ceiling and the other was 18% of a query that wasn't the problem. Writing \"not the lever — revisit if the base grows 10x\" into the out-of-scope section is part of the deliverable.",
+          "A quota is a cliff, not a slope. Byte-billing limits and similar caps don't degrade, they fail hard at a threshold. When the driver of that threshold is a table that grows with business success, \"it's fine today\" is not a measurement, it's a countdown.",
+          "Measure the lever, not the suspicion. Two plausible optimizations were on the table. Measurement said one was 69% of the ceiling and the other was 18% of a query that wasn't the problem. Writing \"not the lever, revisit if the base grows 10x\" into the out-of-scope section is part of the deliverable.",
           "A divergence checker cannot detect absence. If your validation reads the same source as the thing it validates, NULL agrees with NULL and the check passes. Integrity checks need at least one *completeness* invariant, asserted independently.",
-          "NULL-dropping filters fail closed and silently. `WHERE prefix_match(NULL, x)` doesn't return an unlocated row — it returns no row. A record that disappears is far worse than one that renders incomplete, and nothing in the system will tell you.",
+          "NULL-dropping filters fail closed and silently. `WHERE prefix_match(NULL, x)` doesn't return an unlocated row, it returns no row. A record that disappears is far worse than one that renders incomplete, and nothing in the system will tell you.",
           "Adding a derived column to a pipeline is a migration, not an edit. Historical rows don't rebuild themselves. \"Run the backfill\" belongs in the acceptance criteria of the PR that adds the column, not in someone's memory.",
-          "Prefer the idempotent narrow write to the sanctioned wide one — when you can prove equivalence. Restating the guard in both the target and the filter is what makes a repair safe to re-run at 3am.",
+          "Prefer the idempotent narrow write to the sanctioned wide one when you can prove equivalence. Restating the guard in both the target and the filter is what makes a repair safe to re-run at 3am.",
           "Publishing the residual risk is part of shipping the fix. I could not identify which recovered alerts might show a stale location. Saying so, with the measured rate, converts an unknown liability into a documented one."
         ]
       },
@@ -762,7 +762,7 @@ export const cases: CaseStudy[] = [
         "title": "Evidence",
         "bullets": [
           "Owned end to end and alone: measurement, the written decision with its rejected alternatives, a four-step staged rollout across two environments with per-step acceptance criteria, the service-side change, and the two forensic repairs.",
-          "Measurements taken as real executions with cluster pruning in both staging and production, recorded in the ticket alongside the ceiling they were compared against — including the counter-measurement that killed the alternative optimization.",
+          "Measurements taken as real executions with cluster pruning in both staging and production, recorded in the ticket alongside the ceiling they were compared against, including the counter-measurement that killed the alternative optimization.",
           "Both defects were found by me during modelling of the next feature, not reported by a customer or by monitoring; both were written up as public root-cause tickets with reproduction queries, the applied fix, the accepted residual risk, and prevention items.",
           "Every repair rehearsed in staging before production, with the pre-flight validation table (join cardinality, source completeness, format equality, agreement rate) recorded before execution rather than after.",
           "Source (private): Jira epic and root-cause tickets in the inspection domain (2026-08), plus the corresponding infrastructure-as-code and service pull requests."
@@ -805,7 +805,7 @@ export const cases: CaseStudy[] = [
         "id": "context",
         "title": "Context",
         "paras": [
-          "This is my strongest evidence of operational maturity and ownership of data integrity. A production data fix is one of the higher-stakes things an engineer does: it's a write to live customer data with no undo unless you build one. Treating it with the rigor of a feature — reversible, auditable, previewable — rather than a hurried script is the distinction I want this to show.",
+          "This is my strongest evidence of operational maturity and ownership of data integrity. A production data fix is one of the higher-stakes things an engineer does: it's a write to live customer data with no undo unless you build one. Treating it with the rigor of a feature, meaning reversible, auditable, and previewable, rather than as a hurried script, is the distinction I want this to show.",
           "It also shows I optimize for the team, not just the incident: I turned each fix into reusable tooling, so a one-off correction became a capability others could apply safely."
         ]
       },
@@ -826,10 +826,10 @@ export const cases: CaseStudy[] = [
         "id": "constraints",
         "title": "Constraints",
         "bullets": [
-          "Writing to live production data has no natural undo. If a correction is wrong, you've now corrupted data twice — reversibility has to be engineered in, not assumed.",
+          "Writing to live production data has no natural undo. If a correction is wrong, you've now corrupted data twice, so reversibility has to be engineered in rather than assumed.",
           "No maintenance window. The system stayed live, so corrections had to be safe to run against a moving target and considerate of load.",
-          "Downstream consumers had already ingested the bad data. Fixing the source record isn't enough if event-driven consumers still hold the old value — they have to be reconverged.",
-          "Some corrections were subtle. A timezone fix has to be daylight-saving-aware; de-duplication has to pick the right survivor; large backfills have to be paced so they don't overwhelm the system."
+          "Downstream consumers had already ingested the bad data. Fixing the source record isn't enough if event-driven consumers still hold the old value. They have to be reconverged.",
+          "Some corrections were subtle. A timezone fix has to be daylight-saving-aware, de-duplication has to pick the right survivor, and large backfills have to be paced so they don't overwhelm the system."
         ]
       },
       {
@@ -840,10 +840,10 @@ export const cases: CaseStudy[] = [
         ],
         "bullets": [
           "Dry-run by default. Every command first reports exactly what it *would* change, so the effect is reviewed before anything is written.",
-          "A rollback file written before any write. Each command records the prior state to a file up front, and a dedicated rollback command can restore it — so every correction is reversible.",
+          "A rollback file written before any write. Each command records the prior state to a file up front, and a dedicated rollback command can restore it, so every correction is reversible.",
           "Batch auditing. Corrections run in audited batches, leaving a trail of what changed and when.",
           "Enriched event re-publishing. After fixing a source record, the command republishes the corresponding events so event-driven consumers reconverge on the corrected data rather than keeping the old value.",
-          "Correctness in the specifics. The timezone fix was daylight-saving-aware; de-duplication chose survivors deterministically; a large backfill used cursor pagination and paced micro-batches with bounded concurrency so it didn't overwhelm the system.",
+          "Correctness in the specifics. The timezone fix was daylight-saving-aware, de-duplication chose survivors deterministically, and a large backfill used cursor pagination and paced micro-batches with bounded concurrency so it didn't overwhelm the system.",
           "Ran them against production carefully, diagnosing the containerized-environment quirks of executing inside live pods."
         ]
       },
@@ -852,7 +852,7 @@ export const cases: CaseStudy[] = [
         "title": "Trade-offs",
         "bullets": [
           "Dry-run and rollback file over a direct fix. Building preview and undo into every command costs real up-front effort, but a production data write without an undo is a bet I'm not willing to make. Accepted cost: each command is more work than a raw query.",
-          "Republishing events over fixing only the source rows. Re-emitting events adds a step and some load, but without it the downstream consumers stay wrong — the fix would be only half done.",
+          "Republishing events over fixing only the source rows. Re-emitting events adds a step and some load, but without it the downstream consumers stay wrong and the fix is only half done.",
           "Reusable commands over one-off scripts. Generalizing into a \"correction command\" pattern cost more than a script for the one case, and paid back immediately as the same safety scaffolding was reused for the next correction.",
           "Paced batches over a single bulk write. Cursor pagination and micro-batches are slower than one big statement but keep a live system healthy during a large backfill."
         ]
@@ -886,8 +886,8 @@ export const cases: CaseStudy[] = [
         "bullets": [
           "~33k records corrected in production without a maintenance window; audit trail and rollback available.",
           "Correction-command pattern (dry-run, rollback file, event re-publishing) reused across several team commands.",
-          "Verified against the tracker — five distinct correction commands, not one: routes left with more than one accountable user (2025-10-15), routes corrupted by an integration test against a partner system (2025-12-03 → 12-08), replaying affected routes through the new partial-update path (2026-01), users corrupted by a consumer bug (2026-01-16 → 2026-02-20), and duplicated cycles removed (2026-03-19 → 03-25). That spread across four months and four distinct data faults is what makes it a *pattern* rather than a one-off script.",
-          "Source: Jira tasks in the inspection domain, 2025-10 → 2026-03, and the corresponding pull requests; record counts and the rollback/dry-run details from the consolidated career knowledge base (private)."
+          "Verified against the tracker, five distinct correction commands rather than one: routes left with more than one accountable user (2025-10-15), routes corrupted by an integration test against a partner system (2025-12-03 to 12-08), replaying affected routes through the new partial-update path (2026-01), users corrupted by a consumer bug (2026-01-16 to 2026-02-20), and duplicated cycles removed (2026-03-19 to 03-25). That spread across four months and four distinct data faults is what makes it a *pattern* rather than a one-off script.",
+          "Source: Jira tasks in the inspection domain, 2025-10 to 2026-03, and the corresponding pull requests; record counts and the rollback/dry-run details from the consolidated career knowledge base (private)."
         ]
       }
     ]
@@ -913,7 +913,7 @@ export const cases: CaseStudy[] = [
       "React"
     ],
     "impact": [
-      "Delivered search and fast navigation over large asset trees end to end — database, backend, and frontend — in the module's most-used flow.",
+      "Delivered search and fast navigation over large asset trees end to end across database, backend, and frontend, in the module's most-used flow.",
       "Eliminated the repeated loading that made browsing large trees slow, via caching and progressive prefetch.",
       "Added asset search where there was none, with matches shown in context.",
       "Qualitative: a clear improvement to perceived performance and UX in a high-traffic flow; no hard before/after metric was captured. <!-- TODO: add timing numbers if available -->"
@@ -927,7 +927,7 @@ export const cases: CaseStudy[] = [
         "id": "context",
         "title": "Context",
         "paras": [
-          "This is my strongest evidence of full-stack ownership and performance thinking. Because I owned the database, the backend, and the frontend, I could put each part of the solution at the layer where it belonged — traversal in the database, latency-hiding in the client — instead of forcing one layer to compensate for another.",
+          "This is my strongest evidence of full-stack ownership and performance thinking. Because I owned the database, the backend, and the frontend, I could put each part of the solution at the layer where it belonged, traversal in the database and latency-hiding in the client, instead of forcing one layer to compensate for another.",
           "It also shows a product-level UX decision made as an engineering trade-off: choosing to reveal search matches by expanding the tree rather than filtering it changed both what the user sees and how data has to load."
         ]
       },
@@ -935,16 +935,16 @@ export const cases: CaseStudy[] = [
         "id": "problem",
         "title": "Problem",
         "paras": [
-          "When building or editing an inspection route, users navigate a hierarchy of assets that can be very large. They needed to see asset descriptions and to search assets by name — but the tree loaded slowly, and there was no search. In the module's most-used flow, that meant repeated waiting and no way to jump to a known asset."
+          "When building or editing an inspection route, users navigate a hierarchy of assets that can be very large. They needed to see asset descriptions and to search assets by name, but the tree loaded slowly and there was no search. In the module's most-used flow, that meant repeated waiting and no way to jump to a known asset."
         ]
       },
       {
         "id": "constraints",
         "title": "Constraints",
         "bullets": [
-          "The data is deeply hierarchical and large. Finding matches and showing them in context means traversing a big tree — the naive approach is a cascade of queries per level.",
+          "The data is deeply hierarchical and large. Finding matches and showing them in context means traversing a big tree, and the naive approach is a cascade of queries per level.",
           "Search over a tree has a UX fork with data consequences. Do you filter the tree down to matches, or reveal matches in place? The choice changes what the user understands and what data you must load.",
-          "Perceived performance is the real target. Even a fast backend feels slow if the client blocks on every expansion; the latency had to be hidden, not just reduced.",
+          "Perceived performance is the real target. Even a fast backend feels slow if the client blocks on every expansion, so the latency had to be hidden, not just reduced.",
           "I owned all three layers, so every trade-off between doing work in SQL, in the API, or in the client was mine to get right."
         ]
       },
@@ -956,9 +956,9 @@ export const cases: CaseStudy[] = [
         ],
         "bullets": [
           "Traversal in the database, via recursive SQL. A recursive query finds matching assets and walks up to their ancestors in one pass, so the server returns matches already in their tree context instead of the client stitching together many requests. I deduplicated matches and computed \"has children\" cheaply so nodes render correctly without extra round-trips.",
-          "Search that reveals rather than filters. On the frontend I debounced the query and chose to expand the nodes of the matches in place — with navigation between results — rather than collapse the tree to matches only. This keeps each result legible in its real hierarchy.",
+          "Search that reveals rather than filters. On the frontend I debounced the query and chose to expand the nodes of the matches in place, with navigation between results, rather than collapse the tree to matches only. This keeps each result legible in its real hierarchy.",
           "An in-memory cache per search term, so repeating or refining a search doesn't refetch what's already known.",
-          "Progressive, level-by-level prefetch in the background, so the next levels are already loading before the user expands them — hiding latency on the common path.",
+          "Progressive, level-by-level prefetch in the background, so the next levels are already loading before the user expands them, which hides latency on the common path.",
           "Documented the use cases (including alternative flows for the different actors) and rolled out behind a feature flag, staging before production."
         ]
       },
@@ -966,9 +966,9 @@ export const cases: CaseStudy[] = [
         "id": "tradeoffs",
         "title": "Trade-offs",
         "bullets": [
-          "A recursive query over many per-level queries. One recursive traversal returns matches with their ancestors in a single pass, avoiding a chatty cascade — at the cost of a more complex query to own and reason about.",
+          "A recursive query over many per-level queries. One recursive traversal returns matches with their ancestors in a single pass, avoiding a chatty cascade, at the cost of a more complex query to own and reason about.",
           "Expanding matches in place over filtering the tree. Revealing results in their real hierarchy preserves context and orientation, where a filtered list would be simpler but strip the structure users rely on. I accepted more involved loading logic to keep the result meaningful.",
-          "Progressive background prefetch over on-demand loading. Prefetching hides latency on the most common path at the cost of doing some fetching the user might not ultimately need — a good trade in the module's busiest flow.",
+          "Progressive background prefetch over on-demand loading. Prefetching hides latency on the most common path at the cost of doing some fetching the user might not ultimately need, a good trade in the module's busiest flow.",
           "A per-term in-memory cache over refetching. Caching trades a little memory and cache bookkeeping for the elimination of repeated loading during a search session."
         ]
       },
@@ -976,7 +976,7 @@ export const cases: CaseStudy[] = [
         "id": "impact",
         "title": "Impact",
         "bullets": [
-          "Delivered search and fast navigation over large asset trees end to end — database, backend, and frontend — in the module's most-used flow.",
+          "Delivered search and fast navigation over large asset trees end to end across database, backend, and frontend, in the module's most-used flow.",
           "Eliminated the repeated loading that made browsing large trees slow, via caching and progressive prefetch.",
           "Added asset search where there was none, with matches shown in context.",
           "Qualitative: a clear improvement to perceived performance and UX in a high-traffic flow; no hard before/after metric was captured. <!-- TODO: add timing numbers if available -->"
@@ -990,9 +990,9 @@ export const cases: CaseStudy[] = [
         ],
         "bullets": [
           "Push hierarchy traversal into the database. A recursive query that returns matches with their ancestors beats a per-level request cascade the client has to orchestrate.",
-          "A search UX choice is an engineering decision. \"Reveal in place\" vs. \"filter down\" changes both comprehension and the shape of the data you load — decide it deliberately.",
+          "A search UX choice is an engineering decision. \"Reveal in place\" vs. \"filter down\" changes both comprehension and the shape of the data you load, so decide it deliberately.",
           "Hide latency, don't just reduce it. Progressive prefetch and per-term caching make the common path feel instant even when some work remains.",
-          "Owning every layer lets you solve each problem where it belongs — the biggest advantage of true full-stack ownership."
+          "Owning every layer lets you solve each problem where it belongs. That is the biggest advantage of true full-stack ownership."
         ]
       },
       {
@@ -1002,11 +1002,11 @@ export const cases: CaseStudy[] = [
           "Delivered solo across database (recursive SQL), backend, and frontend.",
           "Feature shipped to production behind a feature flag after staging.",
           "Documented use cases including alternative actor flows.",
-          "Verified against the tracker (2026-05-19 → 2026-06-17): two items — the endpoint that exposes an asset's description to the route forms, and the recursive traversal itself. The recorded before/after is N×3 sequential queries replaced by 3 total: one recursive CTE for all descendant nodes, then one batched query each for measurement points and checklists, with the tree assembled in memory in O(n) via an id→node map.",
+          "Verified against the tracker (2026-05-19 to 2026-06-17): two items, the endpoint that exposes an asset's description to the route forms, and the recursive traversal itself. The recorded before/after is N×3 sequential queries replaced by 3 total: one recursive CTE for all descendant nodes, then one batched query each for measurement points and checklists, with the tree assembled in memory in O(n) via an id→node map.",
           "Verified architectural work, not just a query: the tree-assembly rules (grouping a single leaf as a direct node versus N leaves under a grouper, the ordering rule, and `hasChildren` computed from the assembled children rather than a database subquery) were extracted out of the repository adapter into a domain-layer assembler, restoring the hexagonal boundary the previous code had crossed. A sentinel root node removed the need for separate arrays for root versus nested children.",
           "Verified bug found and root-caused in the same pass: leaf machines with no child nodes but with direct measurement points returned nothing recursively, because an early return on \"no descendant rows\" discarded them before the leaf query ran. Fixed by including the root's own id in the leaf lookup.",
           "Verified frontend work: eliminated a double fetch on add (a one-level expand immediately followed by a recursive one), cached the recursive result into the client tree so a later expand costs nothing, and switched the saga from latest-wins to per-action handling so adding two machines quickly no longer cancels the first. All of it gated by a feature flag, with the legacy path untouched when the flag is off.",
-          "Source (private): Jira items in the inspection domain, 2026-05 → 2026-06; consolidated career knowledge base."
+          "Source (private): Jira items in the inspection domain, 2026-05 to 2026-06; consolidated career knowledge base."
         ]
       }
     ]
@@ -1044,7 +1044,7 @@ export const cases: CaseStudy[] = [
         "id": "context",
         "title": "Context",
         "paras": [
-          "Dynamox's platform derives a completion metric for industrial inspection routes: how much of a route has been inspected, per asset, per customer. The metric is customer-facing — it appears on dashboards operators use to plan work.",
+          "Dynamox's platform derives a completion metric for industrial inspection routes: how much of a route has been inspected, per asset, per customer. The metric is customer-facing, appearing on dashboards operators use to plan work.",
           "The underlying facts live in events. Inspections, edits and deletions flow through Kafka into multiple services, each maintaining its own projection of the data."
         ]
       },
@@ -1052,7 +1052,7 @@ export const cases: CaseStudy[] = [
         "id": "problem",
         "title": "Problem",
         "paras": [
-          "Two services computed the metric independently, each from its own projection. Under normal conditions they agreed. Under retries, out-of-order delivery or partial failures, they diverged — and customers saw two different numbers for the same route depending on which screen they opened.",
+          "Two services computed the metric independently, each from its own projection. Under normal conditions they agreed. Under retries, out-of-order delivery or partial failures, they diverged, and customers saw two different numbers for the same route depending on which screen they opened.",
           "Each divergence became a support ticket, a manual reconciliation, and a small withdrawal from customer trust. The team had built a reconciliation job to patch differences, which treated the symptom and added a third component that could disagree."
         ]
       },
@@ -1061,7 +1061,7 @@ export const cases: CaseStudy[] = [
         "title": "Constraints",
         "bullets": [
           "At-least-once delivery: every consumer must tolerate duplicates and reordering.",
-          "No distributed transactions — services deploy and fail independently.",
+          "No distributed transactions, since services deploy and fail independently.",
           "Zero downtime: the metric is in daily operational use.",
           "Historical data had to be backfilled to a consistent state.",
           "The two computing services were owned by different people; any fix had to survive team boundaries."
@@ -1071,7 +1071,7 @@ export const cases: CaseStudy[] = [
         "id": "alternatives",
         "title": "Alternatives Considered",
         "bullets": [
-          "Keep both computations, improve the reconciliation job. Rejected: reconciliation of two independent computations is unbounded work — every new edge case reappears twice.",
+          "Keep both computations, improve the reconciliation job. Rejected: reconciling two independent computations is unbounded work, because every new edge case reappears twice.",
           "Extract the calculation into a shared library. Rejected: identical code over non-identical projections still diverges. The bug was in the data, not the formula.",
           "Compute on read at the API gateway. Rejected: pushed latency onto every dashboard load and still required a consistent source projection.",
           "Single owner service; all others emit staleness signals. Chosen."
@@ -1082,7 +1082,7 @@ export const cases: CaseStudy[] = [
         "title": "Decision",
         "paras": [
           "Exactly one service owns the metric. It is the only code path in the company allowed to compute it.",
-          "Every other service that touches underlying data stops computing anything. Instead it emits a lightweight 'stale' signal — 'route X may have changed'. The owner recomputes the metric from the source of truth, idempotently, whenever a signal arrives.",
+          "Every other service that touches underlying data stops computing anything. Instead it emits a lightweight 'stale' signal: 'route X may have changed'. The owner recomputes the metric from the source of truth, idempotently, whenever a signal arrives.",
           "This is where a personal principle crystallized: eventually consistent derived data should have exactly one computation path. And its corollary: if a value can always be recomputed from source, favor recomputation over synchronization."
         ],
         "diagram": {
@@ -1198,8 +1198,8 @@ export const cases: CaseStudy[] = [
         "id": "implementation",
         "title": "Implementation",
         "paras": [
-          "Staleness signals travel over a dedicated Kafka topic keyed by route, so recomputations for the same route serialize naturally. The owner consumes with idempotent handlers — recomputing twice is safe by construction, so retries need no special handling.",
-          "A backfill script recomputed every historical metric from source, migrating the system to a consistent baseline before the new path went live. The old computation in the second service was deleted, not disabled — leaving it dormant invited resurrection."
+          "Staleness signals travel over a dedicated Kafka topic keyed by route, so recomputations for the same route serialize naturally. The owner consumes with idempotent handlers, so recomputing twice is safe by construction and retries need no special handling.",
+          "A backfill script recomputed every historical metric from source, migrating the system to a consistent baseline before the new path went live. The old computation in the second service was deleted rather than disabled, because leaving it dormant invited resurrection."
         ]
       },
       {
@@ -1207,7 +1207,7 @@ export const cases: CaseStudy[] = [
         "title": "Impact",
         "bullets": [
           "Inconsistency tickets for the metric dropped to zero after rollout.",
-          "The reconciliation job was deleted — an entire class of maintenance removed.",
+          "The reconciliation job was deleted, removing an entire class of maintenance.",
           "Race conditions became structurally impossible rather than merely unlikely.",
           "The pattern was reused for other derived data; I became the team's reference for cross-service synchronization."
         ]
@@ -1216,7 +1216,7 @@ export const cases: CaseStudy[] = [
         "id": "lessons",
         "title": "Lessons Learned",
         "paras": [
-          "Consistency debates end when ownership is explicit. Most of the design work was not technical — it was getting agreement on the sentence 'only this service computes this value'.",
+          "Consistency debates end when ownership is explicit. Most of the design work was getting agreement on the sentence 'only this service computes this value', not writing code.",
           "Deleting code is part of the architecture. The migration wasn't done until the second computation path physically ceased to exist."
         ]
       },
@@ -1248,9 +1248,9 @@ export const cases: CaseStudy[] = [
       "React"
     ],
     "impact": [
-      "Closed a 35-task cleanup epic spanning a shared frontend and two backend services, removing 25+ expired feature flags and obsolete product-tour infrastructure — one commit alone removed roughly 3,100 lines of dead code.",
+      "Closed a 35-task cleanup epic spanning a shared frontend and two backend services, removing 25+ expired feature flags and obsolete product-tour infrastructure. One commit alone removed roughly 3,100 lines of dead code.",
       "Produced a reusable tool, not a one-off script: the same skill applies to the next flag-cleanup epic in any of the three repositories, encoding conventions that used to live only in memory.",
-      "Removed the failure modes that make this kind of cleanup dangerous by hand — misclassifying a flag, agents colliding on a shared file, or getting the two-repository deploy order backward — by designing them out of the tool rather than depending on whoever runs it remembering all three under time pressure.",
+      "Removed the failure modes that make this kind of cleanup dangerous by hand, namely misclassifying a flag, agents colliding on a shared file, or getting the two-repository deploy order backward, by designing them out of the tool rather than depending on whoever runs it remembering all three under time pressure.",
       "Qualitative: a simpler, more legible codebase as a direct result of the dead-code removal; no isolated before/after build-time metric was captured for this change alone."
     ],
     "difficulty": "High",
@@ -1262,7 +1262,7 @@ export const cases: CaseStudy[] = [
         "id": "context",
         "title": "Context",
         "paras": [
-          "This is my clearest evidence of treating AI agents as a workforce that needs real systems-design thinking, not just a faster way to type code. The interesting engineering here isn't \"I used AI to remove some flags\" — it's recognizing that running several agents concurrently on a shared codebase is a concurrency problem (agents can collide on the same file), that generic tooling output is noisy in a large, imperfect codebase (a raw typecheck or dead-code report drowns the real signal), and that one specific decision in this workflow can silently change what ships to production and therefore must stay a human's call. Encoding all three into a reusable tool, instead of doing the task once by hand and moving on, is the kind of leverage-building that scales past any single cleanup."
+          "This is my clearest evidence of treating AI agents as a workforce that needs real systems-design thinking rather than just a faster way to type code. The interesting engineering here isn't \"I used AI to remove some flags\". It's recognizing that running several agents concurrently on a shared codebase is a concurrency problem (agents can collide on the same file), that generic tooling output is noisy in a large, imperfect codebase (a raw typecheck or dead-code report drowns the real signal), and that one specific decision in this workflow can silently change what ships to production and therefore must stay a human's call. Encoding all three into a reusable tool, instead of doing the task once by hand and moving on, is the kind of leverage-building that scales past any single cleanup."
         ]
       },
       {
@@ -1278,9 +1278,9 @@ export const cases: CaseStudy[] = [
         "title": "Constraints",
         "bullets": [
           "No single mechanical rule covered all three repos. Each had a different storage convention and different code patterns for reading a flag, so a tool that worked for one repo's shape would silently miss cases in another.",
-          "The flag's real production value decides what's safe to automate. A flag that's `true` in production means the old code path is genuinely dead and safe to delete automatically; a flag that's `false` might mean a feature the team still intends to ship — collapsing that distinction automatically risks deleting code nobody had abandoned.",
+          "The flag's real production value decides what's safe to automate. A flag that's `true` in production means the old code path is genuinely dead and safe to delete automatically. A flag that's `false` might mean a feature the team still intends to ship, and collapsing that distinction automatically risks deleting code nobody had abandoned.",
           "Parallelizing the removal introduces a new failure mode. Multiple agents editing a shared, large codebase at once can collide on the same file and corrupt each other's work if nothing coordinates who touches what.",
-          "Standard safety checks are noisy at this scale. A monorepo with pre-existing typecheck errors and dead-code false positives makes an absolute pass/fail reading useless — it either hides a real regression in the noise or flags phantom ones.",
+          "Standard safety checks are noisy at this scale. A monorepo with pre-existing typecheck errors and dead-code false positives makes an absolute pass/fail reading useless: it either hides a real regression in the noise or flags phantom ones.",
           "The two-repository case has an ordering invariant that's easy to get backward under time pressure, and getting it backward has a production consequence, not just a failed build."
         ]
       },
@@ -1292,19 +1292,19 @@ export const cases: CaseStudy[] = [
         ],
         "bullets": [
           "Encoded each repo's real storage and reading conventions explicitly, so classification is deterministic per repository instead of re-derived by hand each time.",
-          "Made the flag's real production value drive the decision. `true` in production inlines to `true` and deletes the dead path automatically; `false` in production stops and asks, recommending the safe default (keep production behavior) rather than guessing silently — because that one branch can change what ships.",
+          "Made the flag's real production value drive the decision. `true` in production inlines to `true` and deletes the dead path automatically; `false` in production stops and asks, recommending the safe default (keep production behavior) rather than guessing silently, because that one branch can change what ships.",
           "Batched agents by disjoint file sets, computed from the overlap between the files each flag touches, so agents assigned to the same batch never write to the same file; flags that shared a file were serialized instead of parallelized.",
-          "Validated by diffing against a pre-change baseline — typecheck error counts and a dead-code report, run once on the unmodified code and once after — instead of reading either tool's raw output, so only regressions the removal actually introduced show up.",
+          "Validated by diffing against a pre-change baseline, meaning typecheck error counts and a dead-code report run once on the unmodified code and once after, instead of reading either tool's raw output, so only regressions the removal actually introduced show up.",
           "Made the two-repository deploy order an explicit, enforced step, not a note in a wiki page: the service's own change ships and deploys first; the infrastructure change that removes the now-unused variable is marked as dependent on that deploy and never allowed to precede it.",
-          "Required an explicit confirmation gate before committing or opening a PR, with a checklist of affected screens or endpoints — derived from the files actually touched — for a human to verify manually before merge."
+          "Required an explicit confirmation gate before committing or opening a PR, with a checklist of affected screens or endpoints derived from the files actually touched, for a human to verify manually before merge."
         ]
       },
       {
         "id": "tradeoffs",
         "title": "Trade-offs",
         "bullets": [
-          "Disjoint-file-set batching over parallelizing by default. Computing file overlap before assigning work costs a planning step, but letting agents share a file without it risks a silently broken merge — worth the extra step once dozens of tasks are running concurrently.",
-          "Diffing against a baseline over trusting a tool's raw output. Running each safety check twice costs time, but an absolute reading in a large, imperfect codebase either buries a real regression in pre-existing noise or reports phantom ones — neither is usable.",
+          "Disjoint-file-set batching over parallelizing by default. Computing file overlap before assigning work costs a planning step, but letting agents share a file without it risks a silently broken merge, which is worth the extra step once dozens of tasks are running concurrently.",
+          "Diffing against a baseline over trusting a tool's raw output. Running each safety check twice costs time, but an absolute reading in a large, imperfect codebase either buries a real regression in pre-existing noise or reports phantom ones, and neither is usable.",
           "Asking before inlining a flag that's `false` in production, over always deleting the path that never shipped. A slower, human-confirmed step here is the right cost, because automating it wrong means silently killing a feature the team hadn't abandoned.",
           "Enforcing the deploy order in the tool over documenting it and trusting reviewers. A rule that only lives in a person's memory doesn't survive turnover or a rushed release; encoding it means it can't be skipped by accident."
         ]
@@ -1313,9 +1313,9 @@ export const cases: CaseStudy[] = [
         "id": "impact",
         "title": "Impact",
         "bullets": [
-          "Closed a 35-task cleanup epic spanning a shared frontend and two backend services, removing 25+ expired feature flags and obsolete product-tour infrastructure — one commit alone removed roughly 3,100 lines of dead code.",
+          "Closed a 35-task cleanup epic spanning a shared frontend and two backend services, removing 25+ expired feature flags and obsolete product-tour infrastructure. One commit alone removed roughly 3,100 lines of dead code.",
           "Produced a reusable tool, not a one-off script: the same skill applies to the next flag-cleanup epic in any of the three repositories, encoding conventions that used to live only in memory.",
-          "Removed the failure modes that make this kind of cleanup dangerous by hand — misclassifying a flag, agents colliding on a shared file, or getting the two-repository deploy order backward — by designing them out of the tool rather than depending on whoever runs it remembering all three under time pressure.",
+          "Removed the failure modes that make this kind of cleanup dangerous by hand, namely misclassifying a flag, agents colliding on a shared file, or getting the two-repository deploy order backward, by designing them out of the tool rather than depending on whoever runs it remembering all three under time pressure.",
           "Qualitative: a simpler, more legible codebase as a direct result of the dead-code removal; no isolated before/after build-time metric was captured for this change alone."
         ]
       },
@@ -1328,7 +1328,7 @@ export const cases: CaseStudy[] = [
         "bullets": [
           "Parallel AI agents need the same safety design as any other concurrent workers. Isolate their work by disjoint file ownership, or they will corrupt each other's changes exactly like any other race condition.",
           "Validate against a baseline, not an absolute reading, in any codebase old enough to have pre-existing noise. Otherwise the signal you actually care about is either buried or drowned by false positives.",
-          "Encode an invariant in the tool; don't just document it. A rule that depends on a person remembering it under pressure will eventually be skipped — a tool that enforces it can't be.",
+          "Encode an invariant in the tool; don't just document it. A rule that depends on a person remembering it under pressure will eventually be skipped; a tool that enforces it can't be.",
           "Automate everything except the one decision that can silently change production behavior. That single branch deserves a human, even inside an otherwise fully automated pipeline."
         ]
       },
@@ -1336,7 +1336,7 @@ export const cases: CaseStudy[] = [
         "id": "evidence",
         "title": "Evidence",
         "bullets": [
-          "Verified against the tracker: a story carrying 36 subtasks (27 of them assigned to me) under a sanitization epic, spanning a shared frontend and two backend services. Composition: 24 feature flags, 3 expired product tours, and the removal of a legacy dashboard page — all closed 2026-07-17 → 2026-07-23, including one commit that removed roughly 3,100 lines of dead code.",
+          "Verified against the tracker: a story carrying 36 subtasks (27 of them assigned to me) under a sanitization epic, spanning a shared frontend and two backend services. Composition: 24 feature flags, 3 expired product tours, and the removal of a legacy dashboard page, all closed 2026-07-17 to 2026-07-23, including one commit that removed roughly 3,100 lines of dead code.",
           "Built a reusable Claude Code skill encoding the classification, parallel-safety, and validation rules for all three repositories' conventions.",
           "Part of a broader, sustained practice of building reliable tooling on top of AI coding agents: a from-scratch MCP server exposing SonarCloud's API for quality-gate review inside the same workflow, and further tools automating bug-investigation-to-shipped-fix (with git/Jira archaeology and PR creation), team-scoped production-error triage, and post-incident latency analysis.",
           "Source (private): Dynamox engineering tracker (Jira epic and subtasks) and personal tooling repository."
@@ -1364,7 +1364,7 @@ export const cases: CaseStudy[] = [
       "PostgreSQL"
     ],
     "impact": [
-      "302 tests passing, zero failures, deterministic behavior with the consumer running — from a suite that produced 25–37 varying failures per run. The 8 skips in the final count were pre-existing and left as they were; I added none.",
+      "302 tests passing, zero failures, deterministic behavior with the consumer running, from a suite that produced 25 to 37 varying failures per run. The 8 skips in the final count were pre-existing and left as they were; I added none.",
       "Backend CI became trustworthy again, so a red run once more means a real problem.",
       "Protected production code and business rules from being altered to appease a flaky test, by disproving three of four proposed changes in review.",
       "Qualitative: regressions are once again caught by the suite instead of hidden by it."
@@ -1378,7 +1378,7 @@ export const cases: CaseStudy[] = [
         "id": "context",
         "title": "Context",
         "paras": [
-          "This is my strongest evidence of methodological rigor and of technical leadership in code review. Anyone can make a flaky suite green by loosening it; the engineering is in refusing to. The constraints I set — no new skips, no weaker asserts, no bigger timeouts — are what forced every fix to be a real root cause.",
+          "This is my strongest evidence of methodological rigor and of technical leadership in code review. Anyone can make a flaky suite green by loosening it; the engineering is in refusing to. The constraints I set (no new skips, no weaker asserts, no bigger timeouts) are what forced every fix to be a real root cause.",
           "It also captures a moment I'm proud of: rather than accept production changes that had been made to calm the tests, I proved empirically that most of them weren't needed and protected the production code from being changed to satisfy a test artifact. That is the kind of judgment I want recruiters to see."
         ]
       },
@@ -1386,7 +1386,7 @@ export const cases: CaseStudy[] = [
         "id": "problem",
         "title": "Problem",
         "paras": [
-          "The service's end-to-end suite was non-deterministic: a given run might produce anywhere from 25 to 37 failures, and a different set each time. Because the result was unreliable, CI couldn't be trusted — a red run might mean a real regression or nothing at all, so real regressions could hide in the noise. The suite exercised real dependencies (a real auth provider, a database, a local message broker, and an external sandbox API), any of which could contribute to the instability."
+          "The service's end-to-end suite was non-deterministic: a given run might produce anywhere from 25 to 37 failures, and a different set each time. Because the result was unreliable, CI couldn't be trusted. A red run might mean a real regression or nothing at all, so real regressions could hide in the noise. The suite exercised real dependencies (a real auth provider, a database, a local message broker, and an external sandbox API), any of which could contribute to the instability."
         ]
       },
       {
@@ -1409,7 +1409,7 @@ export const cases: CaseStudy[] = [
           "Reproduce and characterize statistically. Run the suite many times to measure which tests failed and how often, turning \"it's flaky\" into a ranked list of concrete offenders.",
           "Categorize by root cause, not by symptom. The causes turned out to be varied: a divergent database schema, an auth bypass returning success where it should have returned forbidden, invalid test credentials, missing seed data, hardcoded IDs, and an accidental field spread in a patch handler.",
           "Fix each cause at the source, incrementally, re-running to confirm each fix reduced failures without introducing new ones.",
-          "Validate over multiple runs, not one green run — determinism is a property you demonstrate statistically.",
+          "Validate over multiple runs rather than one green run, since determinism is a property you demonstrate statistically.",
           "Documented the runtime environment variables the suite depended on, so its behavior stopped being folklore."
         ]
       },
@@ -1426,7 +1426,7 @@ export const cases: CaseStudy[] = [
         "id": "impact",
         "title": "Impact",
         "bullets": [
-          "302 tests passing, zero failures, deterministic behavior with the consumer running — from a suite that produced 25–37 varying failures per run. The 8 skips in the final count were pre-existing and left as they were; I added none.",
+          "302 tests passing, zero failures, deterministic behavior with the consumer running, from a suite that produced 25 to 37 varying failures per run. The 8 skips in the final count were pre-existing and left as they were; I added none.",
           "Backend CI became trustworthy again, so a red run once more means a real problem.",
           "Protected production code and business rules from being altered to appease a flaky test, by disproving three of four proposed changes in review.",
           "Qualitative: regressions are once again caught by the suite instead of hidden by it."
@@ -1439,9 +1439,9 @@ export const cases: CaseStudy[] = [
           "Reusable engineering knowledge I carry forward from this:"
         ],
         "bullets": [
-          "A flaky suite is a measurement instrument you must first make trustworthy. Until it is, every result — including your own fixes — is unreliable; characterize before you change.",
+          "A flaky suite is a measurement instrument you must first make trustworthy. Until it is, every result, including your own fixes, is unreliable. Characterize before you change.",
           "Fix the root cause; never weaken the test. Skips, relaxed asserts, and inflated timeouts convert a signal into silence.",
-          "Never change production code to make a test pass until you've proven the code, not the test, is wrong — and you can prove it empirically.",
+          "Never change production code to make a test pass until you've proven the code, not the test, is wrong, and you can prove it empirically.",
           "Determinism is demonstrated statistically. One green run proves nothing about a suite that was flaky; many do."
         ]
       },
@@ -1449,10 +1449,10 @@ export const cases: CaseStudy[] = [
         "id": "evidence",
         "title": "Evidence",
         "bullets": [
-          "From 25–37 varying failures per run to 302 passed, 8 skipped, 0 failed with the consumer active — the acceptance criterion written into the ticket before the work, and the number it closed on.",
+          "From 25 to 37 varying failures per run to 302 passed, 8 skipped, 0 failed with the consumer active, which was the acceptance criterion written into the ticket before the work and the number it closed on.",
           "Self-imposed constraints: no *new* skips, no weakened assertions, no inflated timeouts. The 8 skips were already there; I did not add to them or claim them away.",
-          "Verified against the tracker (2026-06-02 → 2026-06-23): the recorded root causes are test setup/data plus one genuine race in a cancellation test (a 404-vs-202 flake where the operation left its pending state before the cancel ran). De-flaked by seeding the operation directly into its pending state through the repository, bypassing the message broker, which made the test deterministic instead of merely retried.",
-          "Verified: three of four proposed production changes reverted as unnecessary — an auth-guard status remap, an ordering clause inside a subquery for the active cycle, and a filter in the location-options path — with the location-options tests rewritten to assert the behaviour that already existed. The one change kept was a lateral join resolving a version identifier in the cycle listing: reverting it would have reintroduced a known customer-reported bug, so it was kept, documented, and tracked in its own ticket rather than smuggled in with test fixes.",
+          "Verified against the tracker (2026-06-02 to 2026-06-23): the recorded root causes are test setup/data plus one genuine race in a cancellation test (a 404-vs-202 flake where the operation left its pending state before the cancel ran). De-flaked by seeding the operation directly into its pending state through the repository, bypassing the message broker, which made the test deterministic instead of merely retried.",
+          "Verified: three of four proposed production changes reverted as unnecessary: an auth-guard status remap, an ordering clause inside a subquery for the active cycle, and a filter in the location-options path, with the location-options tests rewritten to assert the behaviour that already existed. The one change kept was a lateral join resolving a version identifier in the cycle listing: reverting it would have reintroduced a known customer-reported bug, so it was kept, documented, and tracked in its own ticket rather than smuggled in with test fixes.",
           "Delivered as a single pull request in the backend service, the most-discussed of the epic (25 review comments).",
           "Source (private): Jira ticket in the inspection domain, 2026-06; consolidated career knowledge base."
         ]
@@ -1480,8 +1480,8 @@ export const cases: CaseStudy[] = [
     "impact": [
       "First pass (2025): 135 CVEs flagged across two services, all 7 rated critical remediated; runtimes switched to a non-root user; base image modernized.",
       "Latest pass (2026-08): dependency audit 69 → 16 findings; OS-level CVEs with no upstream fix 160 → 0; final image 1.64 GB → 463 MB (−72%); four criticals removed outright by purging one unused base package.",
-      "Six advisories consciously left open with written, exploitability-based justification — the part of the work that keeps the report trustworthy.",
-      "Security hardening became a standing part of how backend services ship — four consecutive quarterly \"vulnerability reduction\" epics from 2025Q3 onward, one of the six areas cited in my promotion to mid-level, and by the last pass automated with a purpose-built AI skill.",
+      "Six advisories consciously left open with written, exploitability-based justification, which is the part of the work that keeps the report trustworthy.",
+      "Security hardening became a standing part of how backend services ship, across four consecutive quarterly \"vulnerability reduction\" epics from 2025Q3 onward, one of the six areas cited in my promotion to mid-level, and by the last pass automated with a purpose-built AI skill.",
       "One self-inflicted staging outage, root-caused and fixed the same day; nothing reached production."
     ],
     "difficulty": "Medium",
@@ -1493,14 +1493,14 @@ export const cases: CaseStudy[] = [
         "id": "context",
         "title": "Context",
         "paras": [
-          "This is my evidence for security as an engineering practice, not a fire drill. Security was one of the six competency areas in my promotion dossier, and this is the concrete work behind it — but the part I'd actually defend in an interview is what happened *after* the promotion: the same practice ran for four more quarters, and the last pass is where the judgment shows. Not every advisory deserves an upgrade, not every CVE is reachable in your code, and a base image that eliminates 160 unfixable vulnerabilities can still take your service down if you don't check what your entrypoint depends on."
+          "This is my evidence for security as an engineering practice rather than a fire drill. Security was one of the six competency areas in my promotion dossier, and this is the concrete work behind it, but the part I'd actually defend in an interview is what happened *after* the promotion: the same practice ran for four more quarters, and the last pass is where the judgment shows. Not every advisory deserves an upgrade, not every CVE is reachable in your code, and a base image that eliminates 160 unfixable vulnerabilities can still take your service down if you don't check what your entrypoint depends on."
         ]
       },
       {
         "id": "problem",
         "title": "Problem",
         "paras": [
-          "Backend services ran in containers on Kubernetes without a formal hardening or CVE-remediation practice. Vulnerability exposure in base images and dependencies is the easiest kind of debt to defer: it doesn't fail a build, a test, or a deploy — it just accumulates until an audit or an incident forces attention.",
+          "Backend services ran in containers on Kubernetes without a formal hardening or CVE-remediation practice. Vulnerability exposure in base images and dependencies is the easiest kind of debt to defer: it doesn't fail a build, a test, or a deploy, it just accumulates until an audit or an incident forces attention.",
           "Concretely, at the start: images ran as root by default, the container-scan output had never been triaged, and no one owned the recurring work."
         ]
       },
@@ -1508,37 +1508,37 @@ export const cases: CaseStudy[] = [
         "id": "constraints",
         "title": "Constraints",
         "bullets": [
-          "The exposure was spread across two services and their full dependency trees, not a single fixable line — 135 CVEs flagged in the first scan, of varying severity, and 69 audit findings still open a year later once the toolchain had moved on.",
+          "The exposure was spread across two services and their full dependency trees, not a single fixable line: 135 CVEs flagged in the first scan, of varying severity, and 69 audit findings still open a year later once the toolchain had moved on.",
           "Non-root containerization touches the whole runtime, not just the Dockerfile: file permissions, process ownership, and anything that assumed root has to be re-verified.",
           "Remediating a CVE often isn't a version bump. Some advisories have no fix in the major version you're pinned to; some are fixed only in a framework line you can't move to; some sit in operating-system packages the distribution has never patched. Chasing the number is not the same as reducing risk.",
           "Prioritization mattered. With 135 flagged, treating all of them as equally urgent would have meant treating none of them as urgent.",
-          "A base image is a runtime contract. Swapping the distribution changes which binaries exist — and the things that break are not in your code, they're in the deploy manifest."
+          "A base image is a runtime contract. Swapping the distribution changes which binaries exist, and the things that break are not in your code, they're in the deploy manifest."
         ]
       },
       {
         "id": "decision",
         "title": "Decision",
         "paras": [
-          "2025 — establish the floor. I mapped the container-scanner output for both services into tracked work rather than leaving it as a report, switched the runtime to a non-root user, moved to a slimmer base, and worked the critical findings first — a cluster of Kerberos library CVEs, a Berkeley DB CVE, a form-data advisory in both services, a test runner advisory. Seven critical, all closed. Then I turned it into a recurring quarterly epic (\"vulnerability reduction\") rather than a finished task, which is the only reason the practice survived past the audit that prompted it.",
-          "2026 — attack the causes, not the count. By the last pass the interesting findings weren't application dependencies at all:"
+          "2025, establish the floor. I mapped the container-scanner output for both services into tracked work rather than leaving it as a report, switched the runtime to a non-root user, moved to a slimmer base, and worked the critical findings first: a cluster of Kerberos library CVEs, a Berkeley DB CVE, a form-data advisory in both services, a test runner advisory. Seven critical, all closed. Then I turned it into a recurring quarterly epic (\"vulnerability reduction\") rather than a finished task, which is the only reason the practice survived past the audit that prompted it.",
+          "2026, attack the causes, not the count. By the last pass the interesting findings weren't application dependencies at all:"
         ],
         "bullets": [
           "Transitive dependencies got pinned, not upgraded. Package-manager overrides fixed the reachable production dependencies without a breaking change, and separately pinned a batch of toolchain packages that never reach the runtime.",
-          "The operating system was the real problem. The Debian-slim base carried 160 OS-level CVEs with no upstream fix available — unactionable by definition. Moving to an Alpine base took that to zero, because every remaining advisory had a fix. I also purged a base package that carried four criticals Debian had never patched.",
+          "The operating system was the real problem. The Debian-slim base carried 160 OS-level CVEs with no upstream fix available, unactionable by definition. Moving to an Alpine base took that to zero, because every remaining advisory had a fix. I also purged a base package that carried four criticals Debian had never patched.",
           "The image was carrying its own build. Docker layers are cumulative, so devDependencies and a recursive ownership change stayed in the image even after being pruned. Splitting the Dockerfile into build and runtime stages took the final image from 1.64 GB to 463 MB.",
-          "I wrote down what I was not fixing, and why. Four toolchain packages had no fix in the pinned major and an upgrade would have been disproportionate. Two framework packages had fixes only in a major line the service can't move to — and the vulnerable code path is the SSE/TCP transport, while this service only ever uses the Kafka transport, so the path is never exercised. That reasoning is in the pull request, as accepted risk with a stated justification, not omitted to make a number look better."
+          "I wrote down what I was not fixing, and why. Four toolchain packages had no fix in the pinned major and an upgrade would have been disproportionate. Two framework packages had fixes only in a major line the service can't move to, and the vulnerable code path is the SSE/TCP transport, while this service only ever uses the Kafka transport, so the path is never exercised. That reasoning is in the pull request, as accepted risk with a stated justification, not omitted to make a number look better."
         ]
       },
       {
         "id": "tradeoffs",
         "title": "Trade-offs",
         "bullets": [
-          "Alpine over Debian-slim — chosen because it moved 160 *unfixable* OS CVEs to zero, which is a real risk reduction rather than a lower number. Accepted cost: a different libc, which meant verifying the database client's native engine and, as it turned out, a missing shell in the deploy path.",
-          "Pinning transitive dependencies via overrides over upgrading the direct dependents — no breaking changes and immediate coverage, at the cost of a lockfile that now encodes decisions someone has to revisit.",
-          "Documented accepted risk over chasing a clean report — leaving six advisories open with written justification (no fix in the pinned major; vulnerable transport never used) is more honest and more useful than an upgrade that destabilizes the service to make a dashboard green.",
-          "Non-root images over root (the default) — smaller blast radius if a container is compromised, at the cost of re-verifying everything that assumed root.",
-          "Remediating by severity over volume — the 7 criticals first, even though it left lower-severity items open longer.",
-          "A recurring quarterly epic over a one-time cleanup — more process overhead, but it's the difference between a practice and an anecdote. Four quarters later it's still running, most recently executed with an AI skill built for the purpose."
+          "Alpine over Debian-slim, chosen because it moved 160 *unfixable* OS CVEs to zero, which is a real risk reduction rather than a lower number. Accepted cost: a different libc, which meant verifying the database client's native engine and, as it turned out, a missing shell in the deploy path.",
+          "Pinning transitive dependencies via overrides over upgrading the direct dependents, giving no breaking changes and immediate coverage, at the cost of a lockfile that now encodes decisions someone has to revisit.",
+          "Documented accepted risk over chasing a clean report. Leaving six advisories open with written justification (no fix in the pinned major; vulnerable transport never used) is more honest and more useful than an upgrade that destabilizes the service to make a dashboard green.",
+          "Non-root images over root (the default), for a smaller blast radius if a container is compromised, at the cost of re-verifying everything that assumed root.",
+          "Remediating by severity over volume, taking the 7 criticals first even though it left lower-severity items open longer.",
+          "A recurring quarterly epic over a one-time cleanup. More process overhead, but it's the difference between a practice and an anecdote. Four quarters later it's still running, most recently executed with an AI skill built for the purpose."
         ]
       },
       {
@@ -1547,8 +1547,8 @@ export const cases: CaseStudy[] = [
         "bullets": [
           "First pass (2025): 135 CVEs flagged across two services, all 7 rated critical remediated; runtimes switched to a non-root user; base image modernized.",
           "Latest pass (2026-08): dependency audit 69 → 16 findings; OS-level CVEs with no upstream fix 160 → 0; final image 1.64 GB → 463 MB (−72%); four criticals removed outright by purging one unused base package.",
-          "Six advisories consciously left open with written, exploitability-based justification — the part of the work that keeps the report trustworthy.",
-          "Security hardening became a standing part of how backend services ship — four consecutive quarterly \"vulnerability reduction\" epics from 2025Q3 onward, one of the six areas cited in my promotion to mid-level, and by the last pass automated with a purpose-built AI skill.",
+          "Six advisories consciously left open with written, exploitability-based justification, which is the part of the work that keeps the report trustworthy.",
+          "Security hardening became a standing part of how backend services ship, across four consecutive quarterly \"vulnerability reduction\" epics from 2025Q3 onward, one of the six areas cited in my promotion to mid-level, and by the last pass automated with a purpose-built AI skill.",
           "One self-inflicted staging outage, root-caused and fixed the same day; nothing reached production."
         ]
       },
@@ -1559,11 +1559,11 @@ export const cases: CaseStudy[] = [
           "Reusable engineering knowledge I carry forward from this:"
         ],
         "bullets": [
-          "Vulnerability exposure accumulates silently. Nothing in a normal build/test/deploy cycle forces attention to it — it needs its own standing practice with a recurring slot, not a response to an audit.",
+          "Vulnerability exposure accumulates silently. Nothing in a normal build/test/deploy cycle forces attention to it, so it needs its own standing practice with a recurring slot rather than a response to an audit.",
           "A CVE with no upstream fix is not a task, it's a base-image decision. 160 unactionable advisories aren't a backlog to work through; they're a signal that the distribution is the problem.",
-          "Argue exploitability, not version numbers. \"Fixed only in the next major, and the vulnerable transport is never used in this service\" is a stronger position than a disruptive upgrade — but only if you write it down where a reviewer can challenge it.",
+          "Argue exploitability, not version numbers. \"Fixed only in the next major, and the vulnerable transport is never used in this service\" is a stronger position than a disruptive upgrade, but only if you write it down where a reviewer can challenge it.",
           "Docker layers are cumulative, so pruning inside one layer prunes nothing. Multi-stage is how you actually remove build-time weight from what you ship.",
-          "A base image is a runtime contract. What breaks when you swap it lives in the deploy manifest, not in your code — and it only breaks when a rollout replaces the pods, which is the worst possible moment to find out.",
+          "A base image is a runtime contract. What breaks when you swap it lives in the deploy manifest, not in your code, and it only breaks when a rollout replaces the pods, which is the worst possible moment to find out.",
           "Non-root by default is a runtime decision, not a Dockerfile line. It has to be verified across the whole service, not just declared."
         ]
       },
@@ -1571,13 +1571,13 @@ export const cases: CaseStudy[] = [
         "id": "evidence",
         "title": "Evidence",
         "bullets": [
-          "2025 pass: container-scanner findings mapped into tracked work for both services; non-root runtime; the 7 critical CVEs closed as individually tracked items (Kerberos library cluster, Berkeley DB, form-data in both services, test runner) — all with merged pull requests.",
+          "2025 pass: container-scanner findings mapped into tracked work for both services; non-root runtime; the 7 critical CVEs closed as individually tracked items (Kerberos library cluster, Berkeley DB, form-data in both services, test runner), all with merged pull requests.",
           "2026-08 pass, verified from the pull request itself: audit 69 → 16; OS CVEs with no fix 160 → 0; image 1.64 GB → 463 MB; before/after scanner output attached; validated with a full build and lint, 1,870 unit tests at zero failures, the e2e suite at 328/330, a real container build, and a live API boot inside the new image.",
-          "Accepted risk documented in the pull request, not omitted — six advisories with written justification, including the reachability argument for the two framework packages.",
+          "Accepted risk documented in the pull request, not omitted: six advisories with written justification, including the reachability argument for the two framework packages.",
           "Regression owned: the Alpine swap crash-looped three staging deployments because the Kubernetes entrypoints invoke `bash`; root-caused from the pod events and fixed in a follow-up the same day, with the concurrently released change explicitly ruled out.",
           "Practice, not project: four consecutive quarterly \"vulnerability reduction\" epics from 2025Q3 onward, the most recent (2026-08) executed by running a purpose-built AI skill against the service.",
           "Cited as one of six competency areas (security) in my promotion dossier (see companies/dynamox.md).",
-          "Source (private): Jira epics and tasks in the inspection domain, 2025-07 → 2026-08; the corresponding pull requests in both backend service repositories; consolidated career knowledge base."
+          "Source (private): Jira epics and tasks in the inspection domain, 2025-07 to 2026-08; the corresponding pull requests in both backend service repositories; consolidated career knowledge base."
         ]
       }
     ]
@@ -1604,7 +1604,7 @@ export const cases: CaseStudy[] = [
       "Prisma"
     ],
     "impact": [
-      "Made organizational-node edits propagate consistently across the seven-table, two-service surface — no more contradictory data from a partial update.",
+      "Made organizational-node edits propagate consistently across the seven-table, two-service surface, with no more contradictory data from a partial update.",
       "Became the team's reference for cross-service data synchronization (recognized in a performance review), and this work anchored a run of related synchronization epics.",
       "Removed a domain leak and a latent DI bug in the follow-up refactor, leaving the code more maintainable than the feature alone required.",
       "Qualitative: higher trust in customer-facing hierarchy data; no hard before/after number was captured."
@@ -1618,7 +1618,7 @@ export const cases: CaseStudy[] = [
         "id": "context",
         "title": "Context",
         "paras": [
-          "This is the experience that established me as the go-to person for cross-service data consistency on my team — a reputation I then carried across several related pieces of work. It is strong evidence that I can hold a consistency boundary in my head across services that don't share a transaction, decompose a large epic into tracked, reviewable work, and reason about event ordering rather than just \"make the write happen\".",
+          "This is the experience that established me as the go-to person for cross-service data consistency on my team, a reputation I then carried across several related pieces of work. It is strong evidence that I can hold a consistency boundary in my head across services that don't share a transaction, decompose a large epic into tracked, reviewable work, and reason about event ordering rather than just \"make the write happen\".",
           "It also taught me to see a bloated use case as a design smell: the follow-up refactor, where I pulled apart an oversized use case and uncovered a real dependency-injection bug, is part of why this changed how I think about domain boundaries."
         ]
       },
@@ -1626,15 +1626,15 @@ export const cases: CaseStudy[] = [
         "id": "problem",
         "title": "Problem",
         "paras": [
-          "The product lets users reorganize their asset hierarchy — rename an organizational node, edit its description, or move it to a different position in the tree. For performance, data about that node was denormalized: copies and derived references lived across roughly seven tables, split between two independently deployed backend services.",
-          "A single user edit therefore had to fan out into many coordinated writes across a service boundary. If only some of those writes landed, the product would display inconsistent data — a node named one thing here and another there, or attached to the wrong branch of the tree. There was no shared transaction spanning the two services to lean on."
+          "The product lets users reorganize their asset hierarchy: rename an organizational node, edit its description, or move it to a different position in the tree. For performance, data about that node was denormalized, with copies and derived references living across roughly seven tables, split between two independently deployed backend services.",
+          "A single user edit therefore had to fan out into many coordinated writes across a service boundary. If only some of those writes landed, the product would display inconsistent data: a node named one thing here and another there, or attached to the wrong branch of the tree. There was no shared transaction spanning the two services to lean on."
         ]
       },
       {
         "id": "constraints",
         "title": "Constraints",
         "bullets": [
-          "The consistency boundary crossed a service boundary. Two services, deployed and scaled independently, had to agree on the result of one edit — with no distributed transaction available.",
+          "The consistency boundary crossed a service boundary. Two services, deployed and scaled independently, had to agree on the result of one edit, with no distributed transaction available.",
           "Two distinct flows, different blast radius. A simple field edit (name/description) is contained; moving a node to a new path in the tree cascades into route context, teams, checklists and categories that reference it. The move case is where partial failure hurts most.",
           "Events could arrive stale or out of order. Because propagation was event-driven, a later edit's event could be overtaken by an earlier one, silently reverting the data.",
           "It was a large epic, not a single change. The work had to be decomposed into independently reviewable pieces without losing the end-to-end consistency guarantee."
@@ -1644,14 +1644,14 @@ export const cases: CaseStudy[] = [
         "id": "decision",
         "title": "Decision",
         "paras": [
-          "I decomposed the epic into a sequence of tracked subtasks and treated the consistency guarantee — not the individual writes — as the thing I was actually building."
+          "I decomposed the epic into a sequence of tracked subtasks and treated the consistency guarantee, rather than the individual writes, as the thing I was actually building."
         ],
         "bullets": [
           "Made each edit one atomic transaction. All the writes for a single edit succeed or fail together, so the denormalized copies can never be left half-updated. The two flows (simple edit vs. path move) shared this boundary but differed in scope, with the move flow recomputing the affected route context.",
-          "Published events only after the transaction committed. Nothing downstream is told the edit happened until it durably has — so a rollback can't leak an event for a change that didn't stick.",
+          "Published events only after the transaction committed. Nothing downstream is told the edit happened until it durably has, so a rollback can't leak an event for a change that didn't stick.",
           "Discarded stale events on the consuming side. Consumers compare the edit's timestamp against what they already hold and drop anything older, so out-of-order delivery can't revert newer data.",
           "Shipped behind a feature flag per environment so the new path could be rolled out and rolled back safely.",
-          "Refactored afterward, not before. Once it worked, I broke apart an oversized use case (it had grown to over a thousand lines and many dependencies — a domain leak) and, in doing so, found and fixed a real dependency-injection bug (a missing provider)."
+          "Refactored afterward, not before. Once it worked, I broke apart an oversized use case (it had grown to over a thousand lines and many dependencies, a domain leak) and, in doing so, found and fixed a real dependency-injection bug (a missing provider)."
         ]
       },
       {
@@ -1668,7 +1668,7 @@ export const cases: CaseStudy[] = [
         "id": "impact",
         "title": "Impact",
         "bullets": [
-          "Made organizational-node edits propagate consistently across the seven-table, two-service surface — no more contradictory data from a partial update.",
+          "Made organizational-node edits propagate consistently across the seven-table, two-service surface, with no more contradictory data from a partial update.",
           "Became the team's reference for cross-service data synchronization (recognized in a performance review), and this work anchored a run of related synchronization epics.",
           "Removed a domain leak and a latent DI bug in the follow-up refactor, leaving the code more maintainable than the feature alone required.",
           "Qualitative: higher trust in customer-facing hierarchy data; no hard before/after number was captured."
@@ -1681,7 +1681,7 @@ export const cases: CaseStudy[] = [
           "Reusable engineering knowledge I carry forward from this:"
         ],
         "bullets": [
-          "Denormalized data needs one atomic write boundary. If a single logical edit maps to many physical writes, they must succeed or fail together — anything less will eventually show the user a contradiction.",
+          "Denormalized data needs one atomic write boundary. If a single logical edit maps to many physical writes, they must succeed or fail together. Anything less will eventually show the user a contradiction.",
           "Publish events only after the transaction commits. Otherwise a rollback leaks a message about something that never happened, and downstream consumers diverge.",
           "Assume events arrive stale and out of order. A cheap timestamp comparison on the consumer is what keeps late deliveries from reverting newer state.",
           "A use case that keeps growing is a domain boundary asking to be drawn. Size and dependency count are design signals, not just cleanliness issues."
@@ -1694,12 +1694,12 @@ export const cases: CaseStudy[] = [
           "Owned end to end: epic decomposition into tracked subtasks, implementation of both flows, and rollout behind a feature flag.",
           "Follow-up refactor split an oversized use case and fixed a latent dependency-injection bug it had been hiding.",
           "Cited as the basis for becoming the team's cross-service-synchronization reference (performance review).",
-          "Verified against the tracker (2026-03 → 2026-06): the story was opened 2026-03-12 and resolved 2026-06-12, with nine implementation subtasks executed 2026-04-22 → 2026-05-19 — decomposed one-per-table plus one for the simple-edit path and one for recomputing route context.",
-          "Verified surface: the seven denormalized tables named in the requirement are the organizational-node table, its route-scoped copy, checklists, routes, categories, teams and quizzes — with a downstream event published for checklists specifically.",
+          "Verified against the tracker (2026-03 to 2026-06): the story was opened 2026-03-12 and resolved 2026-06-12, with nine implementation subtasks executed 2026-04-22 to 2026-05-19, decomposed one-per-table plus one for the simple-edit path and one for recomputing route context.",
+          "Verified surface: the seven denormalized tables named in the requirement are the organizational-node table, its route-scoped copy, checklists, routes, categories, teams and quizzes, with a downstream event published for checklists specifically.",
           "Verified guarantees, as written into the acceptance criteria before implementation: a single atomic transaction with rollback on error; idempotency by discarding events whose update timestamp is not newer than the stored one; audit records carrying old and new values for both the edit and the move case; and a gradual rollout behind a pre-existing feature flag that until then was wired to nothing.",
           "Verified follow-up: a refactor task (2026-06) split the oversized use case for create/update/delete, and a separate consumer fix stopped a machine move from removing measurement points from a route by discriminating on parent id.",
           "Behaviour documented as BDD scenarios in a dedicated task, per the ADR's own documentation requirement.",
-          "Source (private): Jira story and subtasks in the inspection domain, 2026-03 → 2026-06; consolidated career knowledge base."
+          "Source (private): Jira story and subtasks in the inspection domain, 2026-03 to 2026-06; consolidated career knowledge base."
         ]
       }
     ]
@@ -1740,7 +1740,7 @@ export const cases: CaseStudy[] = [
         "id": "context",
         "title": "Context",
         "paras": [
-          "This is the case I'd use to show that I can change *scope* by changing *design*, without it being a negotiation. I didn't argue the feature was too big or ask for less. I moved where one rule is applied, and most of the original scope stopped being necessary as a consequence — which is a much better conversation to have with product than \"can we cut this\".",
+          "This is the case I'd use to show that I can change *scope* by changing *design*, without it being a negotiation. I didn't argue the feature was too big or ask for less. I moved where one rule is applied, and most of the original scope stopped being necessary as a consequence, which is a much better conversation to have with product than \"can we cut this\".",
           "It's also the clearest instance of an earlier decision of mine paying off. A month before this, I had consolidated a cross-service metric onto a single computation path fed by a recalculation queue and a worker. That decision is exactly why \"the counters come for free\" is a true statement here rather than a hopeful one. Architecture compounds, and this is the first time I watched my own compound."
         ]
       },
@@ -1748,11 +1748,11 @@ export const cases: CaseStudy[] = [
         "id": "problem",
         "title": "Problem",
         "paras": [
-          "A customer contract introduced a new operational status on assets in the shared asset tree: *hibernated* — equipment intentionally out of service for a while, which should stop producing operational noise across the whole platform. Every product had to react: alerts, notification emails, the spot viewer, hour meters, analysis plans, spot comparison — and inspection routes.",
+          "A customer contract introduced a new operational status on assets in the shared asset tree: *hibernated*, meaning equipment intentionally out of service for a while, which should stop producing operational noise across the whole platform. Every product had to react: alerts, notification emails, the spot viewer, hour meters, analysis plans, spot comparison, and inspection routes.",
           "The inspection use case, as first written, kept the hibernated asset inside its routes and made every consumer compensate:"
         ],
         "bullets": [
-          "the *Items in Route* column in route management subtracts hibernated assets and their child items — subsets, components, checklists and measurement points;",
+          "the *Items in Route* column in route management subtracts hibernated assets and their child items, meaning subsets, components, checklists and measurement points;",
           "the asset tree flags hibernated assets;",
           "selection of a hibernated asset is blocked;",
           "on the edit screen, a hibernated asset that was already linked stays linked, the planner cannot remove it, and it will not appear in the app;",
@@ -1765,9 +1765,9 @@ export const cases: CaseStudy[] = [
         "id": "constraints",
         "title": "Constraints",
         "bullets": [
-          "The specification wasn't wrong, it was placed wrong. Every rule in it described real, desirable behaviour. There was nothing to reject — which is precisely why \"this is too much scope\" would have gone nowhere.",
+          "The specification wasn't wrong, it was placed wrong. Every rule in it described real, desirable behaviour. There was nothing to reject, which is precisely why \"this is too much scope\" would have gone nowhere.",
           "The rule would have leaked across a service and team boundary. Route counters, adherence and the app payload are produced by different services from the one that owns the asset tree and its status. Read-time exclusion means the hibernation state has to be available, and correctly joined, at every one of those points.",
-          "The number of read paths only grows. Any future surface that counts route items — a new indicator, a new export, a new screen — inherits the obligation to remember the rule. The cost isn't the eight; it's that eight is not the final number.",
+          "The number of read paths only grows. Any future surface that counts route items, a new indicator, a new export, a new screen, inherits the obligation to remember the rule. The cost isn't the eight; it's that eight is not the final number.",
           "Removal sounds lossy. \"Just take it out of the route\" is only safe if the planner doesn't lose information, the asset comes back to the right place, and history doesn't move. If any of those fails, read-time exclusion is the correct design after all.",
           "The state is not owned by this domain. Inspection consumes hibernation from the asset tree and must never write it, so whatever the design was, it had to be driven by an event rather than a local flag."
         ]
@@ -1777,23 +1777,23 @@ export const cases: CaseStudy[] = [
         "title": "Decision",
         "paras": [
           "I asked what the state actually means to this domain. Hibernated doesn't mean \"count this differently\". For inspection routes it means *this asset is not part of the work right now*. Route membership already has a representation for that. So the question wasn't \"where do we subtract?\" but \"why is it still in the route?\"",
-          "I moved the rule to the write boundary. When the asset-tree event says an asset is hibernated, the backend removes that item and its descendants from route scope. When the asset is reactivated, it goes back — to its original route, with the children that were actually in it, at its previous position where that still exists. Hibernation is applied once, where the state change arrives.",
+          "I moved the rule to the write boundary. When the asset-tree event says an asset is hibernated, the backend removes that item and its descendants from route scope. When the asset is reactivated, it goes back to its original route, with the children that were actually in it, at its previous position where that still exists. Hibernation is applied once, where the state change arrives.",
           "Then I checked what that makes unnecessary. All of it, on the read side. Counters and indicators are computed over the route's live items, so they are naturally correct with *no special calculation to disregard hibernated assets*. The app receives the route's items, so it never sees a hibernated one. Reports and print total what's there. The adherence calculation needs no hibernation concept. That's the whole point: not \"cheaper to build\", but *nothing to build*.",
-          "I kept the two things that genuinely belong on the read side — the visual flag in the asset tree and the block on selecting a hibernated asset — because those are about the planner's choice at authoring time, not about arithmetic.",
+          "I kept the two things that genuinely belong on the read side, the visual flag in the asset tree and the block on selecting a hibernated asset, because those are about the planner's choice at authoring time, not about arithmetic.",
           "And I paid the one real cost the design creates. Silent removal would confuse the planner: assets disappear from a route with no explanation. So the design adds one message on the edit screen that names each asset removed by hibernation and states that it will return automatically when reactivated. One informational surface replaces eight arithmetic ones, and the planner ends up better informed than under the original design, where the asset was present but inert.",
           "The refined use case became the scope. Both slices now state, in writing, that the use-case pages are the source of truth and that the roadmap item \"records the initial scope and does not reflect the changes agreed during refinement.\" The whole basic flow plus both alternative flows fit into a single slice: four stories for dynamic scope management, three for automatic restoration.",
-          "A later spike confirmed the load-bearing assumption in code, which is the part I'd most want a reviewer to check rather than take on trust. It found that the soft-delete-of-item-and-descendants mechanism already runs in production — it is what happens when an asset is deleted from the tree — and does not create a new route version; that route counters and the active cycle's adherence are already recomputed from live items by the recalculation queue and worker, so they \"come for free\"; that closed cycles are immune, because recalculation touches only the active cycle and aggregate adherence reads a consolidated per-cycle value; that no new table is needed, since the route-item table already carries soft-delete, ordering and parent columns; and that checklist answers are matched by checklist and cycle rather than by route item, so they survive the round trip."
+          "A later spike confirmed the load-bearing assumption in code, which is the part I'd most want a reviewer to check rather than take on trust. It found that the soft-delete-of-item-and-descendants mechanism already runs in production, since it is what happens when an asset is deleted from the tree, and does not create a new route version; that route counters and the active cycle's adherence are already recomputed from live items by the recalculation queue and worker, so they \"come for free\"; that closed cycles are immune, because recalculation touches only the active cycle and aggregate adherence reads a consolidated per-cycle value; that no new table is needed, since the route-item table already carries soft-delete, ordering and parent columns; and that checklist answers are matched by checklist and cycle rather than by route item, so they survive the round trip."
         ]
       },
       {
         "id": "tradeoffs",
         "title": "Trade-offs",
         "bullets": [
-          "Removing from scope over excluding at read time — one rule at one boundary instead of a rule at every consumer, and every future consumer correct by default. The cost accepted: the planner sees assets vanish from a route, which had to be answered with an explicit message rather than left implicit.",
-          "Restoring automatically over asking the planner to re-add — reactivation is not a planning decision, so making a human redo it would be busywork and would drift. Cost: the system now needs to remember position and original membership, and to decide what to do when the route has since shrunk or been reordered.",
-          "One informational message over keeping the asset visible but inert — the original design's \"linked, unremovable, invisible in the app\" item would have kept the asset on screen, but it introduces a state nothing else in the system has, and it silently lies to every counter until each one is taught otherwise.",
-          "Driving it from the asset-tree event over a local hibernation flag in the inspection domain — inspection must not own this state. Cost: the behaviour is eventually consistent, so the design commits only to reflecting the change within an acceptable synchronization interval, not instantly.",
-          "This shape is right for a *scope*, and I would not generalize it. Sibling squads handling the same platform state for hour meters, analysis plans and spot comparison went the read-time route, and for at least one of them that is correct: comparing a spot's data before and during hibernation *is* the product, so the hibernated asset cannot be removed from the thing being read. Removal is available to me because a route is a scope of work — reconstructible, and meaningless once the work isn't happening. A history is not. The lesson isn't \"always remove\"; it's \"check whether the thing you're filtering is a scope or a record.\""
+          "Removing from scope over excluding at read time. One rule at one boundary instead of a rule at every consumer, and every future consumer correct by default. The cost accepted: the planner sees assets vanish from a route, which had to be answered with an explicit message rather than left implicit.",
+          "Restoring automatically over asking the planner to re-add. Reactivation is not a planning decision, so making a human redo it would be busywork and would drift. Cost: the system now needs to remember position and original membership, and to decide what to do when the route has since shrunk or been reordered.",
+          "One informational message over keeping the asset visible but inert. The original design's \"linked, unremovable, invisible in the app\" item would have kept the asset on screen, but it introduces a state nothing else in the system has, and it silently lies to every counter until each one is taught otherwise.",
+          "Driving it from the asset-tree event over a local hibernation flag in the inspection domain. Inspection must not own this state. Cost: the behaviour is eventually consistent, so the design commits only to reflecting the change within an acceptable synchronization interval, not instantly.",
+          "This shape is right for a *scope*, and I would not generalize it. Sibling squads handling the same platform state for hour meters, analysis plans and spot comparison went the read-time route, and for at least one of them that is correct: comparing a spot's data before and during hibernation *is* the product, so the hibernated asset cannot be removed from the thing being read. Removal is available to me because a route is a scope of work, reconstructible and meaningless once the work isn't happening. A history is not. The lesson isn't \"always remove\"; it's \"check whether the thing you're filtering is a scope or a record.\""
         ]
       },
       {
@@ -1804,11 +1804,11 @@ export const cases: CaseStudy[] = [
           "What *is* verifiable:"
         ],
         "bullets": [
-          "The refined design replaced the roadmap item as the epic's source of truth — both slices say so explicitly, and the use-case pages carry the removal-based flow, including the line that counters reflect operational assets \"with no special calculation to disregard hibernated ones\".",
+          "The refined design replaced the roadmap item as the epic's source of truth. Both slices say so explicitly, and the use-case pages carry the removal-based flow, including the line that counters reflect operational assets \"with no special calculation to disregard hibernated ones\".",
           "Roughly eight read-path rules collapsed to one write-side rule, two UI guards and one message. Reports, printed reports, the app payload and the adherence calculation are untouched by the feature.",
-          "No new route version, no new table, no history rewrite — confirmed in code by the spike, reusing a mechanism already in production.",
-          "The whole use case fits one slice per flow — four stories for dynamic scope management, three for automatic restoration — rather than a change spread across every surface that counts route items.",
-          "The design surfaced two real problems rather than hiding them, both now tracked ahead of implementation: there is currently no discriminator between \"removed because hibernated\", \"removed by the planner\", \"asset deleted from the tree\" and \"left over from an older route version\" — all the same state, so automatic restoration could resurrect an item removed for a different reason; and a pre-existing silent data-loss path gets amplified, where an answer collected for an item that has left scope is accepted and confirmed to the inspector, then discarded asynchronously into an error log. That second one already happens today whenever an item leaves scope; hibernation multiplies its frequency, and the naive symmetric fix would convert silent loss into a failure in the inspector's hands, so both ends have to be decided together."
+          "No new route version, no new table, no history rewrite, confirmed in code by the spike, reusing a mechanism already in production.",
+          "The whole use case fits one slice per flow, four stories for dynamic scope management and three for automatic restoration, rather than a change spread across every surface that counts route items.",
+          "The design surfaced two real problems rather than hiding them, both now tracked ahead of implementation. First, there is currently no discriminator between \"removed because hibernated\", \"removed by the planner\", \"asset deleted from the tree\" and \"left over from an older route version\", all the same state, so automatic restoration could resurrect an item removed for a different reason. Second, a pre-existing silent data-loss path gets amplified, where an answer collected for an item that has left scope is accepted and confirmed to the inspector, then discarded asynchronously into an error log. That second one already happens today whenever an item leaves scope; hibernation multiplies its frequency, and the naive symmetric fix would convert silent loss into a failure in the inspector's hands, so both ends have to be decided together."
         ]
       },
       {
@@ -1816,9 +1816,9 @@ export const cases: CaseStudy[] = [
         "title": "Lessons Learned",
         "bullets": [
           "Ask where a new state should be applied before asking how each consumer should handle it. \"Every read path subtracts X\" is almost always a sign that X belongs at the write boundary. One application point beats N compensations, and it makes future consumers correct without them knowing the rule exists.",
-          "The best way to cut scope is to make it unnecessary, not to negotiate it away. Nothing in the original specification was wrong, so arguing about size would have failed. Changing where one rule lives deleted most of it as a side effect — and that is a design conversation, not a prioritization fight.",
+          "The best way to cut scope is to make it unnecessary, not to negotiate it away. Nothing in the original specification was wrong, so arguing about size would have failed. Changing where one rule lives deleted most of it as a side effect, and that is a design conversation, not a prioritization fight.",
           "Check whether the thing you're filtering is a scope or a record. A scope of work can be reduced and rebuilt; a history cannot. Removal is only available on the first, which is why the same platform state deserved a different shape in a sibling product.",
-          "Silent correctness needs an explicit explanation. Making the data right is not the whole job — if a user's route quietly changes shape, \"correct\" reads as \"broken\". One message that names what happened and promises the reversal is the price of the simpler design, and it's cheap.",
+          "Silent correctness needs an explicit explanation. Making the data right is not the whole job. If a user's route quietly changes shape, \"correct\" reads as \"broken\". One message that names what happened and promises the reversal is the price of the simpler design, and it's cheap.",
           "Architecture compounds, and you can feel it. \"Counters and adherence come for free\" is only true because of a single-computation-path decision made a month earlier. The return on that decision showed up as scope I didn't have to write.",
           "Design your own proposal's failure modes into the plan. The discriminator gap and the amplified answer-loss path are both consequences of my design. Naming them in the refinement, before implementation, is what separates a proposal from a pitch."
         ]
@@ -1827,12 +1827,12 @@ export const cases: CaseStudy[] = [
         "id": "evidence",
         "title": "Evidence",
         "bullets": [
-          "Verified: the refined scope superseded the original. Both slices of the epic (opened 2026-07-16 and 2026-08-20) state that the use-case and design-acceptance pages are the source of truth and that the roadmap item — opened 2026-07-06 by product — \"records the initial scope and does not reflect the changes agreed during refinement.\"",
+          "Verified: the refined scope superseded the original. Both slices of the epic (opened 2026-07-16 and 2026-08-20) state that the use-case and design-acceptance pages are the source of truth and that the roadmap item, opened 2026-07-06 by product, \"records the initial scope and does not reflect the changes agreed during refinement.\"",
           "Verified: the published use case is the removal-based design. Its basic flow opens with hibernated assets already excluded from routes by the backend and counters that reflect operational assets \"with no special calculation to disregard hibernated ones\"; its alternative flow is the informational message plus automatic return on reactivation. The stories decomposed from it match one-to-one.",
           "Verified in code by the team's spike (2026-08-21): the soft-delete-with-descendants path already runs in production without versioning the route; counters and active-cycle adherence already recompute from live items via the recalculation queue and worker; closed cycles are unaffected; no new table is required; checklist answers are keyed by checklist and cycle, not by route item. The spike also produced the two open problems listed under Impact.",
-          "Verified as a genuinely cross-product initiative, which is what makes the placement question interesting: the same platform state has parallel reaction epics in the condition-monitoring, asset-tree and management-indicators squads, and the sibling roadmap item for hour meters, analysis plans and spot comparison specifies read-time exclusion — including \"exclude hibernated machines from the adherence and completion calculation\" — for products where removal is not available.",
+          "Verified as a genuinely cross-product initiative, which is what makes the placement question interesting: the same platform state has parallel reaction epics in the condition-monitoring, asset-tree and management-indicators squads, and the sibling roadmap item for hour meters, analysis plans and spot comparison specifies read-time exclusion, including \"exclude hibernated machines from the adherence and completion calculation\", for products where removal is not available.",
           "Not shipped. Development scheduled for 2026-08-31; slices in backlog, spike in review, as of 2026-08-28.",
-          "Attribution note (VERIFY): the refinement is mine, but the shared artifacts are team-owned — the epics and stories were written by the squad's product manager and tech lead, and the use-case page's last editor in the wiki is a product colleague. If this case study is used in a hiring conversation, anchor the contribution to a concrete trail (a refinement meeting note, a comment, or a message thread) rather than to page authorship.",
+          "Attribution note (VERIFY): the refinement is mine, but the shared artifacts are team-owned. The epics and stories were written by the squad's product manager and tech lead, and the use-case page's last editor in the wiki is a product colleague. If this case study is used in a hiring conversation, anchor the contribution to a concrete trail (a refinement meeting note, a comment, or a message thread) rather than to page authorship.",
           "Source (private): Jira roadmap item, the two use-case slices and their stories, the implementation spike, and the internal product-documentation wiki pages for the use case and its design acceptance criteria."
         ]
       }
@@ -1876,7 +1876,7 @@ export const cases: CaseStudy[] = [
         "title": "Context",
         "paras": [
           "AQTech's frontend had grown feature by feature. Each developer solved UI problems locally: three date pickers, four button variants, inconsistent spacing, no shared vocabulary between design and code.",
-          "I was an intern. Nobody asked for a Design System — the cost was invisible because it was paid in small increments on every feature."
+          "I was an intern. Nobody asked for a Design System, because the cost was invisible: it was paid in small increments on every feature."
         ]
       },
       {
@@ -1890,7 +1890,7 @@ export const cases: CaseStudy[] = [
         "id": "constraints",
         "title": "Constraints",
         "bullets": [
-          "No dedicated time — the system had to be built alongside feature work.",
+          "No dedicated time, so the system had to be built alongside feature work.",
           "No designer ownership: the source of truth had to live in code.",
           "Vuetify was already in the stack; the system had to wrap it, not fight it.",
           "As an intern, I had no authority to mandate anything. Adoption had to be voluntary."
@@ -1900,7 +1900,7 @@ export const cases: CaseStudy[] = [
         "id": "alternatives",
         "title": "Alternatives Considered",
         "bullets": [
-          "Adopt Vuetify defaults everywhere. Rejected: defaults didn't encode our domain patterns (dense engineering data, asset hierarchies) — that gap was where the duplication grew.",
+          "Adopt Vuetify defaults everywhere. Rejected: defaults didn't encode our domain patterns (dense engineering data, asset hierarchies), and that gap was where the duplication grew.",
           "A written style guide without code. Rejected: documentation that requires discipline loses to deadlines.",
           "A component library wrapping Vuetify with our tokens, patterns and docs. Chosen."
         ]
@@ -2008,8 +2008,8 @@ export const cases: CaseStudy[] = [
         "title": "Trade-offs",
         "bullets": [
           "Wrapping Vuetify meant inheriting its constraints and upgrade cycle. Accepted for velocity.",
-          "Building alongside feature work meant slow, incremental coverage. Accepted — it forced the system to grow from real needs instead of speculation.",
-          "Voluntary adoption is slower than mandate. Accepted — and it's why the standards survived after I left."
+          "Building alongside feature work meant slow, incremental coverage. Accepted, because it forced the system to grow from real needs instead of speculation.",
+          "Voluntary adoption is slower than mandate. Accepted, and it's why the standards survived after I left."
         ]
       },
       {
@@ -2026,7 +2026,7 @@ export const cases: CaseStudy[] = [
         "bullets": [
           "Frontend development standardized; duplicated components stopped appearing in review.",
           "New features started from composition rather than construction.",
-          "I became the team's frontend reference — the standards remained after I left.",
+          "I became the team's frontend reference, and the standards remained after I left.",
           "The experience produced a durable principle: a Design System succeeds only when adoption becomes the easiest path."
         ]
       },
@@ -2034,7 +2034,7 @@ export const cases: CaseStudy[] = [
         "id": "lessons",
         "title": "Lessons Learned",
         "paras": [
-          "Authority is not a prerequisite for standards — evidence is. Migrating real screens before asking for adoption converted skeptics better than any argument.",
+          "Authority is not a prerequisite for standards; evidence is. Migrating real screens before asking for adoption converted skeptics better than any argument.",
           "The best engineering standards are adopted voluntarily; the system must out-compete the alternative on effort, not on principle."
         ]
       },
@@ -2067,7 +2067,7 @@ export const cases: CaseStudy[] = [
       "TypeScript"
     ],
     "impact": [
-      "The team went from no error monitoring to a structured observability practice — able to answer \"which service or feature is failing most?\" and to review open issues by priority.",
+      "The team went from no error monitoring to a structured observability practice, able to answer \"which service or feature is failing most?\" and to review open issues by priority.",
       "Production bugs became visible proactively instead of arriving only through support.",
       "Errors are attributable to feature and endpoint, thanks to request-time context tagging, and the setup is the base for post-deploy alerting.",
       "Qualitative: faster detection of production problems; no hard mean-time-to-detect number was captured. <!-- TODO: add MTTD or issue-volume numbers if available -->"
@@ -2081,25 +2081,25 @@ export const cases: CaseStudy[] = [
         "id": "context",
         "title": "Context",
         "paras": [
-          "This is evidence that I spot and close gaps nobody assigned me — the same initiative that defined my earliest growth, now applied at team scale. Nobody asked for observability; I noticed we were the only team flying blind and made the case to fix it.",
-          "It also shows frontend systems thinking: the core of the solution is a shared, reusable instrumentation layer with a deliberate tagging design, not a scattering of one-off error logs — plus the product sense to build dashboards around how the team actually triages."
+          "This is evidence that I spot and close gaps nobody assigned me, the same initiative that defined my earliest growth, now applied at team scale. Nobody asked for observability. I noticed we were the only team flying blind and made the case to fix it.",
+          "It also shows frontend systems thinking. The core of the solution is a shared, reusable instrumentation layer with a deliberate tagging design rather than a scattering of one-off error logs, plus the product sense to build dashboards around how the team actually triages."
         ]
       },
       {
         "id": "problem",
         "title": "Problem",
         "paras": [
-          "The frontend was a shared codebase split across several teams' areas. Every other team's area had error monitoring; mine had none. The consequence was concrete: we learned about production bugs when a support ticket came in, not when the error happened. We had no way to see which parts of our area were failing, how often, or whether a release had made things worse — so triage was reactive and anecdotal."
+          "The frontend was a shared codebase split across several teams' areas. Every other team's area had error monitoring; mine had none. The consequence was concrete: we learned about production bugs when a support ticket came in, not when the error happened. We had no way to see which parts of our area were failing, how often, or whether a release had made things worse, so triage was reactive and anecdotal."
         ]
       },
       {
         "id": "constraints",
         "title": "Constraints",
         "bullets": [
-          "Nobody owned the problem. It was a structural gap, not a ticket — someone had to notice it and decide it was worth solving.",
-          "Error attribution is the hard part. Catching errors is easy; making each error carry enough context to say *which feature and which API call* produced it — and preserving the original failing route — is where the design lives.",
-          "Instrumentation must be shared, not sprinkled. Ad-hoc error logging across dozens of routes would have been noise; the value is in one consistent, reusable layer.",
-          "Observability is only useful if it drives action. A dashboard nobody triages is decoration; the practice had to include a workflow."
+          "Nobody owned the problem. It was a structural gap, not a ticket. Someone had to notice it and decide it was worth solving.",
+          "Error attribution is the hard part. Catching errors is easy. Making each error carry enough context to say *which feature and which API call* produced it, while preserving the original failing route, is where the design lives.",
+          "Instrumentation must be shared, not sprinkled. Ad-hoc error logging across dozens of routes would have produced noise. The value is in one consistent, reusable layer.",
+          "Observability is only useful if it drives action. A dashboard nobody triages changes nothing, so the practice had to include a workflow."
         ]
       },
       {
@@ -2111,9 +2111,9 @@ export const cases: CaseStudy[] = [
         "bullets": [
           "Diagnosed and made the case. I identified that our area was the only one without monitoring and proposed the initiative off my own diagnosis.",
           "Built a shared error reporter wired into the critical asynchronous flows, so errors are captured consistently instead of per-screen.",
-          "Added a shared API interceptor that tags at request time. Each error carries context tags — team, feature, and the specific API service and endpoint — and I captured them at the moment of the request so the tag reflects the route that actually failed, rather than whatever context existed when the error surfaced. I made it additive so it never overwrites existing tags.",
+          "Added a shared API interceptor that tags at request time. Each error carries context tags for team, feature, and the specific API service and endpoint. I captured them at the moment of the request so the tag reflects the route that actually failed, rather than whatever context existed when the error surfaced. I made it additive so it never overwrites existing tags.",
           "Built dashboards with thresholds, organized around how the team would actually use them, and mapped our area's routes to filters so errors could be sliced by feature.",
-          "Defined the triage workflow — how an error becomes a tracked ticket — so the monitoring turns into action, and set the base for post-deploy alerting."
+          "Defined the triage workflow, meaning how an error becomes a tracked ticket, so the monitoring turns into action, and set the base for post-deploy alerting."
         ]
       },
       {
@@ -2121,16 +2121,16 @@ export const cases: CaseStudy[] = [
         "title": "Trade-offs",
         "bullets": [
           "Tagging at request time over tagging on the response/error. Capturing context when the request is made preserves the true failing endpoint for correct attribution; reading it later would sometimes mis-attribute the error. Accepted cost: a little more care in the interceptor.",
-          "A shared instrumentation layer over per-screen error logging. One reusable reporter and interceptor is more design up front than scattered `catch` blocks, but it's the difference between a signal and noise.",
+          "A shared instrumentation layer over per-screen error logging. One reusable reporter and interceptor is more design up front than scattered `catch` blocks, but scattered blocks would not have produced anything a team could act on.",
           "Additive tagging over overwriting. Never clobbering existing tags keeps the shared codebase's other context intact, at the cost of being disciplined about how tags are set.",
-          "Dashboards by usage persona over a generic default. Building views around how the team triages takes more thought than an out-of-the-box dashboard but makes the data answer the questions people actually ask."
+          "Dashboards by usage persona over a generic default. Building views around how the team triages takes more thought than an out-of-the-box dashboard, but the data then answers the questions people actually ask."
         ]
       },
       {
         "id": "impact",
         "title": "Impact",
         "bullets": [
-          "The team went from no error monitoring to a structured observability practice — able to answer \"which service or feature is failing most?\" and to review open issues by priority.",
+          "The team went from no error monitoring to a structured observability practice, able to answer \"which service or feature is failing most?\" and to review open issues by priority.",
           "Production bugs became visible proactively instead of arriving only through support.",
           "Errors are attributable to feature and endpoint, thanks to request-time context tagging, and the setup is the base for post-deploy alerting.",
           "Qualitative: faster detection of production problems; no hard mean-time-to-detect number was captured. <!-- TODO: add MTTD or issue-volume numbers if available -->"
@@ -2143,11 +2143,11 @@ export const cases: CaseStudy[] = [
           "Reusable engineering knowledge I carry forward from this:"
         ],
         "bullets": [
-          "You can't fix what you can't see. Observability is a precondition for reliability, not a nice-to-have you add later.",
+          "Nobody can prioritize a bug they can't see. Observability comes before reliability work, not after it.",
           "Attribute errors where the context is truthful. Tag at the point (request time) that preserves what actually failed, or your dashboards will mislead you.",
-          "Instrument once, shared. A reusable reporter and interceptor beat scattered logging — consistency is what turns error data into signal.",
-          "Observability is a workflow, not a tool. Without a triage path from error to ticket, the dashboards don't change anything.",
-          "Noticing the unassigned gap is the ownership. The initiative to see the problem was worth as much as the code that solved it."
+          "Instrument once, shared. A reusable reporter and interceptor beat scattered logging, because consistency is what turns error data into something you can act on.",
+          "Observability needs a workflow. Without a triage path from error to ticket, the data never turns into a fix.",
+          "Noticing an unassigned gap is part of the work. The diagnosis was worth as much as the code that followed it."
         ]
       },
       {
@@ -2156,9 +2156,9 @@ export const cases: CaseStudy[] = [
         "bullets": [
           "Proposed and led the initiative off my own diagnosis (our area was the only one without monitoring).",
           "Built a shared reporter and a request-time-tagging API interceptor, dashboards with thresholds, and an error-to-ticket triage workflow.",
-          "Verified against the tracker (2026-05 → 2026-06): an epic I opened on 2026-05-25 and decomposed into five tasks — the shared reporter wired into the team's sagas (closed 2026-05-27), the team dashboard (2026-06-18), context tags on the critical pages (2026-06-22), automatic coverage via an HTTP-client interceptor, and user identification plus release tracking.",
-          "Verified honestly as unfinished: two of the five tasks are still open — release tracking never started, and the interceptor's coverage task remains in the backlog even though the interceptor itself shipped (a 27-comment pull request, merged 2026-06-08). The practice is real and in use; it is not complete.",
-          "Source (private): Jira epic in the inspection domain, 2026-05 → 2026-06; consolidated career knowledge base."
+          "Verified against the tracker (2026-05 to 2026-06): an epic I opened on 2026-05-25 and decomposed into five tasks: the shared reporter wired into the team's sagas (closed 2026-05-27), the team dashboard (2026-06-18), context tags on the critical pages (2026-06-22), automatic coverage via an HTTP-client interceptor, and user identification plus release tracking.",
+          "Verified honestly as unfinished: two of the five tasks are still open. Release tracking never started, and the interceptor's coverage task remains in the backlog even though the interceptor itself shipped (a 27-comment pull request, merged 2026-06-08). The practice is real and in use; it is not complete.",
+          "Source (private): Jira epic in the inspection domain, 2026-05 to 2026-06; consolidated career knowledge base."
         ]
       }
     ]
@@ -2183,7 +2183,7 @@ export const cases: CaseStudy[] = [
       "Prevented a crash in three production components before it shipped.",
       "Removed the underlying defect class, not just the three known instances, via a shared data-layer helper any future consumer now goes through.",
       "Kept the fix owned by its original author, reinforcing the pattern for them rather than substituting my judgment for theirs.",
-      "Part of a review practice recognized in performance feedback for the clarity of its questions and documentation — over 100 reviews in a single half-year, across front end, back end, and tests."
+      "Part of a review practice recognized in performance feedback for the clarity of its questions and documentation, with over 100 reviews in a single half-year across front end, back end, and tests."
     ],
     "difficulty": "Medium",
     "ownership": "Contributed",
@@ -2194,34 +2194,34 @@ export const cases: CaseStudy[] = [
         "id": "context",
         "title": "Context",
         "paras": [
-          "Most of my case studies are about work I owned end to end; this one is evidence of a different, equally important capability — raising the quality bar on someone else's work without taking it over. Code review is where a lot of real engineering judgment is invisible: catching a defect that isn't obviously wrong, deciding to fix the general case instead of the instance, and choosing to suggest rather than rewrite so the author keeps ownership and the lesson. This is part of a sustained practice — over 100 reviews across front end, back end, and tests in a single half, alongside pair programming on critical work — not a one-off catch."
+          "Most of my case studies are about work I owned end to end. This one is evidence of a different, equally important capability: raising the quality bar on someone else's work without taking it over. Code review is where a lot of real engineering judgment is invisible: catching a defect that isn't obviously wrong, deciding to fix the general case instead of the instance, and choosing to suggest rather than rewrite so the author keeps ownership and the lesson. This is part of a sustained practice, over 100 reviews across front end, back end, and tests in a single half, alongside pair programming on critical work, rather than a one-off catch."
         ]
       },
       {
         "id": "problem",
         "title": "Problem",
         "paras": [
-          "A teammate's pull request rendered a list of items after filtering it, but a nearby piece of logic in the same component still referred to the length of the original, unfiltered array. Both lines were locally correct — neither was wrong on its own — but they encoded an assumption that the two values would always agree. They wouldn't: the moment the filter actually removed an item, the two derived values would diverge, and three components shared this exact pattern."
+          "A teammate's pull request rendered a list of items after filtering it, but a nearby piece of logic in the same component still referred to the length of the original, unfiltered array. Both lines were locally correct, and neither was wrong on its own, but together they encoded an assumption that the two values would always agree. They wouldn't: the moment the filter actually removed an item, the two derived values would diverge, and three components shared this exact pattern."
         ]
       },
       {
         "id": "constraints",
         "title": "Constraints",
         "bullets": [
-          "The bug was invisible line by line. Nothing in the diff was individually wrong; the defect only exists in the *relationship* between two values derived from the same source — exactly the kind of bug a fast, diff-focused review misses.",
-          "The fast fix was tempting and insufficient. Patching the three known call sites would have made the visible symptom disappear without removing the underlying defect class — the next component built the same way would reintroduce it.",
-          "It wasn't my code. Proposing a deeper structural change to someone else's pull request risks either being ignored (too soft) or taking over their work (too heavy) — getting the balance right is itself the skill."
+          "The bug was invisible line by line. Nothing in the diff was individually wrong. The defect only exists in the *relationship* between two values derived from the same source, exactly the kind of bug a fast, diff-focused review misses.",
+          "The fast fix was tempting and insufficient. Patching the three known call sites would have made the visible symptom disappear without removing the underlying defect class, and the next component built the same way would reintroduce it.",
+          "It wasn't my code. Proposing a deeper structural change to someone else's pull request risks either being ignored (too soft) or taking over their work (too heavy). Getting the balance right is itself the skill."
         ]
       },
       {
         "id": "decision",
         "title": "Decision",
         "paras": [
-          "I recognized the shape of the bug before deciding what to do about it: two values derived from the same source, read independently, with no guarantee they'd stay in sync — the same kind of problem I've solved architecturally elsewhere by giving a derived value a single computation path."
+          "I recognized the shape of the bug before deciding what to do about it: two values derived from the same source, read independently, with no guarantee they'd stay in sync. It was the same kind of problem I've solved architecturally elsewhere by giving a derived value a single computation path."
         ],
         "bullets": [
           "Traced the pattern to all three affected components, not just the one in the diff, so the fix could address the actual defect class.",
-          "Proposed a shared helper at the data layer — one place that derives the value both pieces of logic need, so nothing downstream can read two different answers from the same source again.",
+          "Proposed a shared helper at the data layer, one place that derives the value both pieces of logic need, so nothing downstream can read two different answers from the same source again.",
           "Suggested it to the author instead of implementing it myself. Leaving the change in their hands cost an extra review round, but kept their ownership of the PR intact and taught the pattern rather than silently overriding their work."
         ]
       },
@@ -2229,9 +2229,9 @@ export const cases: CaseStudy[] = [
         "id": "tradeoffs",
         "title": "Trade-offs",
         "bullets": [
-          "A shared data-layer helper over patching the three render sites. Fixing all three instances is faster; giving them one shared source removes the defect class for any future consumer too — worth the extra design step for a pattern that had already repeated three times.",
+          "A shared data-layer helper over patching the three render sites. Fixing all three instances is faster; giving them one shared source removes the defect class for any future consumer too, which was worth the extra design step for a pattern that had already repeated three times.",
           "Suggesting the fix over implementing it myself. Writing the fix directly would have been quicker and guaranteed my preferred outcome, but it would have taken the PR away from its author. Proposing it and letting them apply it cost a review cycle and produced a teammate who understood the pattern, not just a merged fix.",
-          "Reviewing the invariant over reviewing the diff. Reasoning about what the two derived values were supposed to guarantee together — rather than checking each line in isolation — is slower per review but is the only way this class of bug gets caught before production."
+          "Reviewing the invariant over reviewing the diff. Reasoning about what the two derived values were supposed to guarantee together, rather than checking each line in isolation, is slower per review but is the only way this class of bug gets caught before production."
         ]
       },
       {
@@ -2241,7 +2241,7 @@ export const cases: CaseStudy[] = [
           "Prevented a crash in three production components before it shipped.",
           "Removed the underlying defect class, not just the three known instances, via a shared data-layer helper any future consumer now goes through.",
           "Kept the fix owned by its original author, reinforcing the pattern for them rather than substituting my judgment for theirs.",
-          "Part of a review practice recognized in performance feedback for the clarity of its questions and documentation — over 100 reviews in a single half-year, across front end, back end, and tests."
+          "Part of a review practice recognized in performance feedback for the clarity of its questions and documentation, with over 100 reviews in a single half-year across front end, back end, and tests."
         ]
       },
       {
@@ -2262,10 +2262,10 @@ export const cases: CaseStudy[] = [
         "title": "Evidence",
         "bullets": [
           "Caught and redirected a null-safety divergence bug across three components before release, via a proposed shared abstraction rather than a direct rewrite.",
-          "Part of a sustained review practice, measured from the source (Bitbucket, 2025-03 → 2026-08): 702 pull requests where I recorded an explicit review verdict — 692 approvals and 10 change requests — across four repositories (two backend services, the shared web application, and the infrastructure repository), out of 1,221 where I was assigned as a reviewer. Peak half: 310 verdicts in 2025-07 → 2025-12, which is where the \"100+ reviews in a semester\" figure in my performance review came from — the real number was three times that. For scale, I authored 360 pull requests over the same period (337 merged), so I reviewed roughly two of my teammates' changes for every one of my own.",
+          "Part of a sustained review practice, measured from the source (Bitbucket, 2025-03 to 2026-08): 702 pull requests where I recorded an explicit review verdict, 692 approvals and 10 change requests, across four repositories (two backend services, the shared web application, and the infrastructure repository), out of 1,221 where I was assigned as a reviewer. Peak half: 310 verdicts in 2025-07 to 2025-12, which is where the \"100+ reviews in a semester\" figure in my performance review came from. The real number was three times that. For scale, I authored 360 pull requests over the same period (337 merged), so I reviewed roughly two of my teammates' changes for every one of my own.",
           "Also across front end, back end, tests and infrastructure-as-code, plus pair programming on critical deliveries.",
-          "Recognized in performance feedback for the clarity of review questions and PR documentation, and for the volume — up from 18 reviews the cycle before.",
-          "Source: review counts computed directly from the Bitbucket API over the four repositories I contribute to (author and reviewer verdict per pull request), 2025-03 → 2026-08. Narrative and the anchor review: consolidated career knowledge base and performance-review evidence (private)."
+          "Recognized in performance feedback for the clarity of review questions and PR documentation, and for the volume, up from 18 reviews the cycle before.",
+          "Source: review counts computed directly from the Bitbucket API over the four repositories I contribute to (author and reviewer verdict per pull request), 2025-03 to 2026-08. Narrative and the anchor review: consolidated career knowledge base and performance-review evidence (private)."
         ]
       }
     ]
