@@ -548,6 +548,44 @@ a:hover {
    Home
    --------------------------------------------------------------------------- */
 
+.hero-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 208px;
+  gap: 24px;
+  align-items: start;
+}
+
+.hero-photo {
+  margin-top: 22px;
+  /* A print sitting slightly askew on the page, not a profile-picture circle. */
+  transform: rotate(1.4deg);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+.hero-photo-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* The file/lang pair in .code-intro-head is laid out for a full-width card;
+   at 190px the two ends collide, so this variant stacks them instead. */
+.hero-photo .code-intro-head {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 8px 10px;
+}
+
+.hero-photo .code-intro-file {
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+.hero-photo .code-intro-lang {
+  font-size: 9px;
+}
+
 .hero-tags {
   display: flex;
   align-items: center;
@@ -1115,11 +1153,43 @@ a:hover {
 }
 
 .case-lede {
-  font-size: 15px;
-  line-height: 1.7;
+  font-size: 17px;
+  line-height: 1.65;
   color: var(--text2);
   text-wrap: pretty;
   margin: 0 0 8px;
+}
+
+/* The outcome, surfaced before the ten-section write-up rather than buried in
+   section 8 of it — reuses the same impact facts the home page cards already
+   show, so nothing new is being claimed here. */
+.case-impact-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  margin-top: 18px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+.case-impact-label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.case-impact-chip {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text);
+  border: 1px solid var(--border2);
+  background: var(--card);
+  border-radius: 6px;
+  padding: 5px 12px;
+  max-width: 100%;
 }
 
 .case-section {
@@ -1145,8 +1215,41 @@ a:hover {
   color: var(--text);
 }
 
+/* The one section every write-up is building toward — pulled out of the
+   otherwise uniform run of sections so scanning the page lands on it. */
+.case-section--decision {
+  border-left: 2px solid var(--accent);
+  padding-left: 20px;
+}
+
+.case-section--decision .case-section-title {
+  color: var(--accent);
+}
+
+/* Constraints, alternatives, trade-offs, implementation, lessons and evidence
+   collapse behind a click — the full reasoning is one tap away, but a first
+   read isn't required to scroll past all of it to reach the outcome. */
+.case-section-toggle {
+  cursor: pointer;
+  list-style: none;
+}
+
+.case-section-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.case-section--collapsible[open] > .case-section-toggle {
+  margin-bottom: 4px;
+}
+
+.case-section-chev {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text3);
+}
+
 .case-para {
-  font-size: 14.5px;
+  font-size: 16.5px;
   line-height: 1.75;
   color: var(--text);
   margin: 14px 0 0;
@@ -1156,7 +1259,7 @@ a:hover {
 .case-bullet {
   display: flex;
   gap: 12px;
-  font-size: 14px;
+  font-size: 15.5px;
   line-height: 1.7;
   color: var(--text);
   margin-top: 12px;
@@ -1936,6 +2039,18 @@ a:hover {
   .grid-2 {
     grid-template-columns: 1fr;
     gap: 28px;
+  }
+
+  /* The photo trails the source file on a phone rather than squeezing beside
+     it — at this width a 190px column would leave the code with nowhere to
+     wrap. */
+  .hero-row {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-photo {
+    width: 150px;
+    margin-top: 18px;
   }
 
   .journey-strip {

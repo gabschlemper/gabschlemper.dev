@@ -12,30 +12,50 @@ export default function Home() {
 
   return (
     <div className="screen screen--wide">
-      <div className="eyebrow">index / readme</div>
+      <div className="hero-row">
+        <div className="hero-main">
+          <div className="eyebrow">index / readme</div>
 
-      {/* Carries the h1 and the role/location/sponsorship facts, so the old
-          hero-tags and availability-line would only have repeated them. */}
-      <CodeIntro />
+          {/* Carries the h1 and the role/location/sponsorship facts, so the old
+              hero-tags and availability-line would only have repeated them. */}
+          <CodeIntro />
 
-      <div className="code-pin-foot">
-        {config.openToWork && (
-          <span className="badge-open">open to opportunities</span>
-        )}
+          <div className="code-pin-foot">
+            {config.openToWork && (
+              <span className="badge-open">open to opportunities</span>
+            )}
 
-        {/* Buttons rather than identifiers folded into the code: source
-            styling does not read as clickable. */}
-        {links.map((link) => (
-          <a
-            key={link.label}
-            className="contact-link"
-            href={link.href}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {link.label}
-          </a>
-        ))}
+            {/* Buttons rather than identifiers folded into the code: source
+                styling does not read as clickable. */}
+            {links.map((link) => (
+              <a
+                key={link.label}
+                className="contact-link"
+                href={link.href}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* The one non-text file in the repository. Same card chrome as the
+            source file beside it — a photo is just another artifact here. */}
+        <div className="code-intro hero-photo">
+          <div className="code-intro-head">
+            <span className="code-intro-file">gabriela-schlemper.webp</span>
+            <span className="code-intro-lang">webp</span>
+          </div>
+          <img
+            className="hero-photo-img"
+            src="/images/profile-512.webp"
+            alt="Gabriela Schlemper"
+            width={512}
+            height={512}
+          />
+        </div>
       </div>
 
       <p className="hero-evidence">
@@ -89,12 +109,7 @@ export default function Home() {
 
       {config.showStats && (
         <>
-          <div className="section-head">
-            <div className="section-label" style={{ marginTop: 0 }}>
-              repository statistics
-            </div>
-            <span className="margin-note">counted by hand, no LLM involved</span>
-          </div>
+          <div className="section-label">repository statistics</div>
           <Reveal className="stats-grid">
             {(visible) =>
               stats.map((stat) => (

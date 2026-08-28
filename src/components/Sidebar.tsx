@@ -58,7 +58,7 @@ export default function Sidebar({ theme, onToggleTheme, onOpenPalette }: Props) 
           >
             <div className="sidebar-brand-title">Gabriela Schlemper</div>
             <div className="sidebar-brand-sub">
-              Engineering Knowledge Base · public docs
+              love building stuff.
             </div>
           </Link>
 

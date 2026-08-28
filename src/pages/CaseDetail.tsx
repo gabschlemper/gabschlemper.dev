@@ -5,6 +5,13 @@ import { capabilities, cases, companies } from "../data/knowledge-base";
 import { techSlug } from "../lib/slug";
 import NotFound from "./NotFound";
 
+/* Every case study has all eight of these; "alternatives" and "implementation"
+   only exist on the two deepest write-ups. Keeping context/problem/decision/
+   impact open by default gives a complete short story — problem, call,
+   outcome — without the reader scrolling through the reasoning first;
+   everything else stays one click away rather than gone. */
+const ALWAYS_OPEN = new Set(["context", "problem", "decision", "impact"]);
+
 export default function CaseDetail() {
   const { id } = useParams();
   const study = cases.find((entry) => entry.id === id);
@@ -56,6 +63,9 @@ export default function CaseDetail() {
   const scrollToSection = (sectionId: string) => {
     const el = document.getElementById(`sec-${sectionId}`);
     if (!el) return;
+    // Collapsed sections are <details> — jumping to one without opening it
+    // would land the reader on a heading with nothing underneath.
+    if (el instanceof HTMLDetailsElement) el.open = true;
     window.scrollTo({
       top: el.getBoundingClientRect().top + window.scrollY - 70,
       behavior: "smooth",
@@ -99,33 +109,74 @@ export default function CaseDetail() {
           <h1 className="display display--case">{study.title}</h1>
           <p className="case-lede">{study.summary}</p>
 
-          {study.sections.map((section, i) => (
-            <section
-              className="case-section"
-              id={`sec-${section.id}`}
-              data-sec={section.id}
-              key={section.id}
-            >
-              <div className="case-section-head">
-                <span className="case-section-num">
-                  {i < 9 ? `0${i + 1}` : String(i + 1)}
-                </span>
-                <h2 className="case-section-title">{section.title}</h2>
-              </div>
-              {section.paras?.map((para) => (
-                <p className="case-para" key={para}>
-                  {para}
-                </p>
-              ))}
-              {section.bullets?.map((bullet) => (
-                <div className="case-bullet" key={bullet}>
-                  <span className="marker">—</span>
-                  <span style={{ textWrap: "pretty" }}>{bullet}</span>
-                </div>
-              ))}
-              {section.diagram && <CaseDiagram spec={section.diagram} />}
-            </section>
-          ))}
+          <div className="case-impact-strip">
+            <span className="case-impact-label">impact</span>
+            {study.impact.map((line) => (
+              <span className="case-impact-chip" key={line}>
+                {line}
+              </span>
+            ))}
+          </div>
+
+          {study.sections.map((section, i) => {
+            const num = i < 9 ? `0${i + 1}` : String(i + 1);
+            const body = (
+              <>
+                {section.paras?.map((para) => (
+                  <p className="case-para" key={para}>
+                    {para}
+                  </p>
+                ))}
+                {section.bullets?.map((bullet) => (
+                  <div className="case-bullet" key={bullet}>
+                    <span className="marker">—</span>
+                    <span style={{ textWrap: "pretty" }}>{bullet}</span>
+                  </div>
+                ))}
+                {section.diagram && <CaseDiagram spec={section.diagram} />}
+              </>
+            );
+
+            const sectionClass =
+              section.id === "decision"
+                ? "case-section case-section--decision"
+                : "case-section";
+
+            if (ALWAYS_OPEN.has(section.id)) {
+              return (
+                <section
+                  className={sectionClass}
+                  id={`sec-${section.id}`}
+                  data-sec={section.id}
+                  key={section.id}
+                >
+                  <div className="case-section-head">
+                    <span className="case-section-num">{num}</span>
+                    <h2 className="case-section-title">{section.title}</h2>
+                  </div>
+                  {body}
+                </section>
+              );
+            }
+
+            return (
+              <details
+                className="case-section case-section--collapsible"
+                id={`sec-${section.id}`}
+                data-sec={section.id}
+                key={section.id}
+              >
+                <summary className="case-section-head case-section-toggle">
+                  <span className="case-section-num">{num}</span>
+                  <h2 className="case-section-title">{section.title}</h2>
+                  <span className="case-section-chev" aria-hidden="true">
+                    +
+                  </span>
+                </summary>
+                <div className="case-section-body">{body}</div>
+              </details>
+            );
+          })}
         </article>
 
         <aside className="case-aside">
