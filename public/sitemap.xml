@@ -85,6 +85,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://gabschlemper.dev/cases/materialized-hierarchy-and-backfill-residue</loc>
+    <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://gabschlemper.dev/cases/prod-data-correction</loc>
     <lastmod>2026-08-28</lastmod>
     <changefreq>monthly</changefreq>
@@ -103,7 +109,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://gabschlemper.dev/cases/container-hardening</loc>
+    <loc>https://gabschlemper.dev/cases/ai-orchestrated-feature-flag-removal</loc>
     <lastmod>2026-08-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -115,13 +121,19 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://gabschlemper.dev/cases/ai-orchestrated-feature-flag-removal</loc>
+    <loc>https://gabschlemper.dev/cases/container-hardening</loc>
     <lastmod>2026-08-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://gabschlemper.dev/cases/workspace-sync</loc>
+    <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gabschlemper.dev/cases/hibernation-scope-removal</loc>
     <lastmod>2026-08-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -187,6 +199,18 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://gabschlemper.dev/capabilities/performance-engineering</loc>
+    <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://gabschlemper.dev/capabilities/data-engineering</loc>
+    <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://gabschlemper.dev/capabilities/debugging</loc>
     <lastmod>2026-08-28</lastmod>
     <changefreq>monthly</changefreq>
@@ -194,12 +218,6 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/reliability</loc>
-    <lastmod>2026-08-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://gabschlemper.dev/capabilities/performance-engineering</loc>
     <lastmod>2026-08-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -313,6 +331,12 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://gabschlemper.dev/technologies/redis</loc>
+    <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://gabschlemper.dev/technologies/vuetify</loc>
     <lastmod>2026-08-28</lastmod>
     <changefreq>monthly</changefreq>
@@ -350,6 +374,12 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/technologies/vitest</loc>
+    <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://gabschlemper.dev/technologies/claude-code</loc>
     <lastmod>2026-08-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
