@@ -189,6 +189,10 @@ export const stats: Stat[] = [
   {
     "label": "Architecture Decisions",
     "value": "5+"
+  },
+  {
+    "label": "This Site's JS (gzip)",
+    "value": "~41 kB"
   }
 ]
 
