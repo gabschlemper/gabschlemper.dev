@@ -17,7 +17,7 @@ function readStored(): Theme | null {
 /* The theme lives on a data attribute rather than prefers-color-scheme, so
    mobile browser chrome has nothing to follow on its own — this keeps the
    address bar from staying dark behind a light page. */
-const CHROME: Record<Theme, string> = { dark: "#161412", light: "#faf9f6" };
+const CHROME: Record<Theme, string> = { dark: "#17140f", light: "#faf7f0" };
 
 function apply(theme: Theme) {
   document.documentElement.dataset.theme = theme;
@@ -32,15 +32,6 @@ export function useTheme() {
   useEffect(() => {
     apply(theme);
   }, [theme]);
-
-  useEffect(() => {
-    const root = document.documentElement;
-    root.style.setProperty("--accent", config.accent);
-    root.style.setProperty(
-      "--sel",
-      `color-mix(in srgb, ${config.accent} 18%, transparent)`,
-    );
-  }, []);
 
   const toggle = useCallback(() => {
     setTheme((current) => {

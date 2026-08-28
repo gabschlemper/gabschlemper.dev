@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { config } from "../config";
-import { numberedNavGroups } from "../lib/nav";
+import { navGroups } from "../lib/nav";
 import type { Theme } from "../lib/useTheme";
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function Sidebar({ theme, onToggleTheme, onOpenPalette }: Props) {
-  const groups = numberedNavGroups();
+  const groups = navGroups;
   const { pathname } = useLocation();
 
   /**
@@ -92,8 +92,7 @@ export default function Sidebar({ theme, onToggleTheme, onOpenPalette }: Props) 
                 <div className="nav-group-label">{group.label}</div>
                 {group.links.map((link) => (
                   <NavLink key={link.to} to={link.to} end className="nav-link">
-                    <span className="nav-link-num">{link.n}</span>
-                    <span>{link.label}</span>
+                    {link.label}
                   </NavLink>
                 ))}
               </div>

@@ -5,9 +5,6 @@ export const config = {
   /** Theme used on first visit, before any localStorage preference exists. */
   defaultTheme: "dark" as "dark" | "light",
 
-  /** Accent colour. The design ships alternates: #5EBF9B, #E0A65C, #C08FE8. */
-  accent: "#7DA3EE",
-
   /** Show the repository-statistics grid on the home screen. */
   showStats: true,
 

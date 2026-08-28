@@ -9,6 +9,9 @@ export default function Profile() {
         Not a biography — a technical identity. What follows is how I work,
         evidenced elsewhere in this repository.
       </p>
+      <span className="margin-note margin-note--block">
+        ↳ mostly opinions about who's allowed to own what
+      </span>
 
       {profile.about.map((para) => (
         <p className="prose" key={para}>
@@ -16,14 +19,14 @@ export default function Profile() {
         </p>
       ))}
 
-      <div className="section-label">01 / engineering philosophy</div>
+      <div className="section-label">engineering philosophy</div>
       {profile.philosophy.map((para) => (
         <p className="prose" key={para}>
           {para}
         </p>
       ))}
 
-      <div className="section-label">02 / career evolution</div>
+      <div className="section-label">career evolution</div>
       <div className="timeline">
         {profile.evolution.map((step) => (
           <div className="timeline-row" key={step.year + step.label}>
@@ -37,7 +40,7 @@ export default function Profile() {
         ))}
       </div>
 
-      <div className="section-label">03 / how i think</div>
+      <div className="section-label">how i think</div>
       <div className="think-list">
         {profile.howIThink.map((item) => (
           <div className="think-item" key={item}>
@@ -48,7 +51,7 @@ export default function Profile() {
 
       <div className="two-col">
         <div>
-          <div className="eyebrow">04 / strengths</div>
+          <div className="eyebrow">strengths</div>
           <ul className="dash-list">
             {profile.strengths.map((item) => (
               <li key={item}>
@@ -59,7 +62,7 @@ export default function Profile() {
           </ul>
         </div>
         <div>
-          <div className="eyebrow">05 / preferred problems</div>
+          <div className="eyebrow">preferred problems</div>
           <ul className="dash-list">
             {profile.preferredProblems.map((item) => (
               <li key={item}>
@@ -71,7 +74,7 @@ export default function Profile() {
         </div>
       </div>
 
-      <div className="section-label">06 / current interests</div>
+      <div className="section-label">currently into</div>
       <div className="chip-row">
         {profile.interests.map((interest) => (
           <span className="chip" key={interest}>

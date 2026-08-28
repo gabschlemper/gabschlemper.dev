@@ -34,18 +34,3 @@ export const navGroups: NavGroup[] = [
     ],
   },
 ];
-
-/** Sidebar links are numbered continuously across groups. */
-export function numberedNavGroups(): Array<{
-  label: string;
-  links: Array<NavLink & { n: string }>;
-}> {
-  let n = 0;
-  return navGroups.map((group) => ({
-    label: group.label,
-    links: group.links.map((link) => {
-      n += 1;
-      return { ...link, n: n < 10 ? `0${n}` : String(n) };
-    }),
-  }));
-}

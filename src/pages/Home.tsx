@@ -11,60 +11,40 @@ export default function Home() {
   const links = contactLinks();
 
   return (
-    <div className="screen screen--wide screen--pin-hero">
-      {/*
-        The tall outer section is what the reader scrolls through; the stage
-        inside it sticks to the viewport for that whole distance, so the code
-        stays put while its lines sharpen, and the page only moves on once the
-        function is finished. Both the extra height and the stickiness live in
-        index.css behind @supports and a viewport-height check — without those,
-        this collapses to ordinary flow and nothing is pinned.
+    <div className="screen screen--wide">
+      <div className="eyebrow">index / readme</div>
 
-        This section must be the first thing in the scroll flow and start at
-        offset 0. Sticky only engages once an element's top reaches the viewport
-        top, so anything above it — screen padding, the eyebrow — is scrolled
-        away before the pin takes hold, which is the one thing the pin exists to
-        prevent. Hence the eyebrow living inside the stage and .screen--pin-hero
-        dropping its top padding while pinned.
+      {/* Carries the h1 and the role/location/sponsorship facts, so the old
+          hero-tags and availability-line would only have repeated them. */}
+      <CodeIntro />
 
-        The badge and contact row sit inside the stage rather than after it:
-        pinned for a screenful of scroll, anything below the stage is
-        unreachable, and the CV must never be.
-      */}
-      <section className="code-pin">
-        <div className="code-pin-stage">
-          <div className="eyebrow">index / readme</div>
+      <div className="code-pin-foot">
+        {config.openToWork && (
+          <span className="badge-open">open to opportunities</span>
+        )}
 
-          {/* Carries the h1 and the role/location/sponsorship facts, so the old
-              hero-tags and availability-line would only have repeated them. */}
-          <CodeIntro />
-
-          <div className="code-pin-foot">
-            {config.openToWork && (
-              <span className="badge-open">open to opportunities</span>
-            )}
-
-            {/* Buttons rather than identifiers folded into the code: source
-                styling does not read as clickable. */}
-            {links.map((link) => (
-              <a
-                key={link.label}
-                className="contact-link"
-                href={link.href}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
+        {/* Buttons rather than identifiers folded into the code: source
+            styling does not read as clickable. */}
+        {links.map((link) => (
+          <a
+            key={link.label}
+            className="contact-link"
+            href={link.href}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
 
       <p className="hero-evidence">
         Every experience in this repository answers one question:{" "}
         <strong>“What evidence does this give about the engineer I am?”</strong>
       </p>
+      <span className="margin-note margin-note--block">
+        ↳ also: I will actually read your email
+      </span>
 
       <div className="section-label">career journey</div>
       <Reveal className="journey-strip">
@@ -109,7 +89,12 @@ export default function Home() {
 
       {config.showStats && (
         <>
-          <div className="section-label">repository statistics</div>
+          <div className="section-head">
+            <div className="section-label" style={{ marginTop: 0 }}>
+              repository statistics
+            </div>
+            <span className="margin-note">counted by hand, no LLM involved</span>
+          </div>
           <Reveal className="stats-grid">
             {(visible) =>
               stats.map((stat) => (
