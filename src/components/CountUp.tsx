@@ -22,6 +22,11 @@ function prefersReducedMotion(): boolean {
  * reduced-motion, and for anything that is not "digits with decoration" — so
  * the number in the static HTML is always the real one.
  */
+// The animation settles the last fraction of the count rather than climbing
+// from zero: a page whose whole thesis is evidence over assertion should
+// never have a reading flash a false "0" on first paint of a real capture.
+const SETTLE_FROM = 0.7;
+
 export default function CountUp({ value, run }: { value: string; run: boolean }) {
   const parsed = useMemo(() => parse(value), [value]);
   const [shown, setShown] = useState<number | null>(null);
@@ -30,6 +35,7 @@ export default function CountUp({ value, run }: { value: string; run: boolean })
     if (!run || !parsed || prefersReducedMotion()) return;
 
     const { target } = parsed;
+    const floor = Math.round(target * SETTLE_FROM);
     let frame = 0;
     let start: number | null = null;
 
@@ -38,11 +44,11 @@ export default function CountUp({ value, run }: { value: string; run: boolean })
       const t = Math.min(1, (now - start) / DURATION_MS);
       // easeOutCubic: fast arrival, soft landing — reads as settling, not sliding.
       const eased = 1 - Math.pow(1 - t, 3);
-      setShown(Math.round(target * eased));
+      setShown(Math.round(floor + (target - floor) * eased));
       if (t < 1) frame = requestAnimationFrame(tick);
     };
 
-    setShown(0);
+    setShown(floor);
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
   }, [run, parsed]);

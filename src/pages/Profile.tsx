@@ -3,8 +3,12 @@ import { profile } from "../data/knowledge-base";
 export default function Profile() {
   return (
     <div className="screen">
-      <div className="eyebrow">profile / technical identity</div>
-      <h1 className="display">Who I am</h1>
+      <h1 className="display" style={{ margin: "0 0 10px" }}>
+        Who I am
+      </h1>
+      <div className="docket">
+        <span>declaration — technical identity, not a biography</span>
+      </div>
       <p className="lede">
         Not a biography — a technical identity. What follows is how I work,
         evidenced elsewhere in this repository.

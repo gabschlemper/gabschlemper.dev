@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-02T00:00:00Z",
+  "title": "Design System: Gabriela Schlemper — The Filed Claim",
+  "extensions": {
+    "colorMeta": {
+      "ballpoint-blue": {
+        "role": "primary",
+        "displayName": "Ballpoint Blue",
+        "canonical": "#5b84d6",
+        "tonalRamp": ["#10192c", "#1a2c49", "#253f66", "#33578c", "#4570b3", "#5b84d6", "#86a6e3", "#b9c9ef"]
+      },
+      "desk-ground": {
+        "role": "neutral",
+        "displayName": "Desk Ground",
+        "canonical": "#100e0a",
+        "tonalRamp": ["#0a0908", "#100e0a", "#17140e", "#201c13", "#2c2718", "#423a24", "#8a7d5e", "#ece7d8"]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper (dark, lamp-lit)",
+        "canonical": "#1c1810",
+        "tonalRamp": ["#0f0c08", "#1c1810", "#242016", "#3a331f", "#52492c", "#8f8362", "#a89a78", "#efe9da"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#efe9da",
+        "tonalRamp": ["#8f8362", "#a89a78", "#c4b89a", "#d8cdb4", "#e3d9c3", "#efe9da", "#f5f0e5", "#faf7f0"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Cover Title", "purpose": "Home screen applicant name only, the system's single largest text." },
+      "headline": { "displayName": "Page Title", "purpose": "Standard detail-page heading (.display / .display--detail / .display--case)." },
+      "title": { "displayName": "Card / Section Title", "purpose": "Featured card, entry, and case-section headings." },
+      "body": { "displayName": "Reading Prose", "purpose": "Lede and prose columns, 620-640px measure." },
+      "label": { "displayName": "Mono Label", "purpose": "Eyebrows, dockets, nav groups, fact keys — always uppercase, always JetBrains Mono." }
+    },
+    "shadows": [
+      { "name": "document-lift", "value": "0 1px 0 rgba(0,0,0,0.35), 0 32px 64px -28px rgba(0,0,0,0.55), 0 0 0 1px var(--paper-border)", "purpose": "The paper document lifting off the dark desk; carried by every .screen variant, removed on mobile." },
+      { "name": "floating-overlay", "value": "0 24px 64px rgba(0,0,0,0.45)", "purpose": "Command palette only — the one element that floats above both desk and document." },
+      { "name": "print-shadow", "value": "0 10px 24px rgba(33,26,16,0.28)", "purpose": "Cover photo frame, paired with a 1.1deg rotation. One-off, not a general card treatment." },
+      { "name": "panel-overlay", "value": "0 18px 40px rgba(0,0,0,0.3)", "purpose": "Mobile sidebar dropped nav panel." }
+    ],
+    "motion": [
+      { "name": "ease-reveal", "value": "cubic-bezier(0.22, 0.61, 0.36, 1)", "purpose": "Decelerating ease used for every scroll-reveal and route entrance animation." },
+      { "name": "reveal-step", "value": "55ms", "purpose": "Per-child stagger delay for revealed groups, capped at the 8th child." },
+      { "name": "reveal-duration", "value": "0.46s", "purpose": "revealUp keyframe duration (translateY(9px) + opacity 0 -> resting state)." },
+      { "name": "route-entrance-duration", "value": "0.34s", "purpose": ".screen container entrance; eyebrow/breadcrumb and display/cover-title follow at +0.05s / +0.1s offsets." },
+      { "name": "countup-duration", "value": "750ms", "purpose": "CountUp settles the final ~30% of a stat value on scroll-into-view (SETTLE_FROM 0.7) via easeOutCubic; never climbs from zero." },
+      { "name": "diagram-draw", "value": "0.6s var(--ease-reveal)", "purpose": "drawLine keyframe for case-diagram and evidence-map SVG edges (stroke-dashoffset 1 -> 0, pathLength=1)." },
+      { "name": "reduced-motion-fallback", "value": "animation/transition duration and delay forced to 0.01ms under prefers-reduced-motion", "purpose": "Every reveal, stagger, and draw-in collapses to instant final state; prerendered HTML stays visible without JS via html[data-js=\"1\"] gating." }
+    ],
+    "breakpoints": [
+      { "name": "case-aside-collapse", "value": "1040px" },
+      { "name": "sidebar-to-topbar", "value": "900px" },
+      { "name": "palette-fullscreen", "value": "700px" },
+      { "name": "type-scale-down", "value": "560px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Claim Tag (solid)",
+      "kind": "chip",
+      "refersTo": "claim-tag",
+      "description": "Solid accent-red badge marking a claim number (independent or dependent).",
+      "html": "<span class=\"ds-claim-tag\">claim 1.1</span>",
+      "css": ".ds-claim-tag { display: inline-flex; align-items: center; gap: 5px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #f9eee1; background: #5b84d6; border-radius: 3px; padding: 2px 7px; }"
+    },
+    {
+      "name": "Claim Tag (outline)",
+      "kind": "chip",
+      "refersTo": "claim-tag-outline",
+      "description": "Outlined variant used for secondary/citing claim references (e.g. the journey strip on Home).",
+      "html": "<span class=\"ds-claim-tag-outline\">claim 2</span>",
+      "css": ".ds-claim-tag-outline { display: inline-flex; align-items: center; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #5b84d6; background: transparent; border: 1px solid #5b84d6; border-radius: 3px; padding: 1px 6px; }"
+    },
+    {
+      "name": "Card / Exhibit",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Base document card: cases, capabilities, technologies, timeline items all share this recipe.",
+      "html": "<a class=\"ds-card\" href=\"#\"><div class=\"ds-card-meta\"><span class=\"ds-claim-tag-outline\">claim 1.1</span><span>Dynamox</span></div><div class=\"ds-card-title\">Designing a single computation path</div><div class=\"ds-card-summary\">Two services independently calculated the same metric...</div></a>",
+      "css": ".ds-card { display: block; border: 1px solid #3a331f; background: #242016; border-radius: 3px; padding: 20px 24px; text-decoration: none; transition: all 0.18s; } .ds-card:hover { border-color: #52492c; transform: translateY(-2px); } .ds-card-meta { display: flex; gap: 14px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; color: #8f8362; margin-bottom: 8px; } .ds-card-title { font-family: 'Source Serif 4', Georgia, serif; font-size: 17.5px; font-weight: 700; color: #efe9da; margin-bottom: 8px; } .ds-card-summary { font-family: 'Source Serif 4', Georgia, serif; font-size: 13.5px; line-height: 1.65; color: #a89a78; }"
+    },
+    {
+      "name": "Readout (instrument stat)",
+      "kind": "custom",
+      "refersTo": "readout",
+      "description": "Repository counts as a calibrated instrument scale: ruled tick baseline + accent index mark, not a stat-card tile.",
+      "html": "<div class=\"ds-stats\"><div class=\"ds-stat\"><div class=\"ds-stat-value\">10</div><div class=\"ds-stat-label\">Case Studies</div></div></div>",
+      "css": ".ds-stats { position: relative; padding-top: 20px; } .ds-stats::before { content: ''; position: absolute; top: 12px; left: 0; right: 0; height: 8px; background-image: repeating-linear-gradient(to right, #52492c 0, #52492c 1px, transparent 1px, transparent 13px), linear-gradient(#52492c, #52492c); background-size: 100% 6px, 100% 1px; background-position: top, bottom; background-repeat: repeat-x, no-repeat; } .ds-stat { position: relative; padding: 20px 18px 2px; } .ds-stat::before { content: ''; position: absolute; top: 6px; left: 18px; width: 1px; height: 20px; background: #5b84d6; } .ds-stat-value { font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 700; font-size: 20px; color: #5b84d6; font-variant-numeric: tabular-nums; } .ds-stat-label { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10.5px; color: #8f8362; margin-top: 4px; letter-spacing: 0.05em; }"
+    },
+    {
+      "name": "Navigation Link",
+      "kind": "nav",
+      "refersTo": "nav-link-active",
+      "description": "Sidebar nav item, default and active (aria-current) state.",
+      "html": "<button class=\"ds-nav-link\">Profile</button><button class=\"ds-nav-link ds-nav-link--active\">Home</button>",
+      "css": ".ds-nav-link { display: block; padding: 7px 10px; border-radius: 3px; font-family: 'Source Serif 4', Georgia, serif; font-size: 14.5px; color: #a89a78; background: transparent; border: none; width: 100%; text-align: left; cursor: pointer; transition: all 0.12s; } .ds-nav-link:hover { color: #ece7d8; } .ds-nav-link--active { color: #efe9da; background: #5b84d6; }"
+    },
+    {
+      "name": "Search / Command Trigger",
+      "kind": "input",
+      "refersTo": "search-trigger",
+      "description": "Sidebar search trigger opening the command palette.",
+      "html": "<button class=\"ds-search-trigger\">search... <span class=\"ds-kbd\">⌘K</span></button>",
+      "css": ".ds-search-trigger { display: flex; align-items: center; justify-content: space-between; border: 1px solid #2c2718; background: #201c13; border-radius: 4px; padding: 8px 10px; color: #8a7d5e; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; width: 100%; cursor: pointer; transition: all 0.15s; } .ds-search-trigger:hover { border-color: #423a24; color: #a89a78; } .ds-kbd { border: 1px solid #2c2718; border-radius: 3px; padding: 1px 6px; font-size: 10px; }"
+    },
+    {
+      "name": "Stamp Mark",
+      "kind": "custom",
+      "refersTo": "stamp",
+      "description": "The system's one authored, hand-drawn mark: a two-ring checkmark SVG. Singular, Home cover only.",
+      "html": "<span class=\"ds-stamp\"><svg class=\"ds-stamp-mark\" viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9.2\" stroke-width=\"1.3\"/><circle cx=\"12\" cy=\"12\" r=\"5.8\" stroke-width=\"1\"/><path d=\"M7.4 12.4l2.8 2.8 6.4-6.6\" stroke-width=\"1.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>open to opportunities</span>",
+      "css": ".ds-stamp { display: inline-flex; align-items: center; gap: 7px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: #5b84d6; } .ds-stamp-mark { width: 20px; height: 20px; flex-shrink: 0; } .ds-stamp-mark circle, .ds-stamp-mark path { stroke: #5b84d6; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Filed Claim",
+    "overview": "The site is a patent filing, not a project grid or a motion-heavy dev-portfolio flex. A near-black desk (#100e0a) carries the site chrome as fixed desk furniture that never changes with the document open on it. Every route renders inside .screen, a single sheet of document paper that sits on that desk, lifted by a soft compound shadow rather than a hard drop-shadow or a light/dark contrast switch. The reading surface was deliberately revised mid-build from a lit cream/paper look to a dark, warm paper -- the desk stays the darkest, coolest surface in the room; the paper is one step lighter and warmer, so it still visibly reads as the lit thing, without the system reaching for daylight-white. The light theme (data-theme=\"light\") is a genuinely separate, bright variant reserved for the explicit toggle, not a blend of the two dark surfaces. Companies are independent claims, case studies are dependent claims, capabilities are claim elements, technologies are numbered cited references, expressed through small mono badges, inline citation numerals, and a foot-of-document reference list -- never through rewritten prose. One committed ink, ballpoint blue, carries every claim number, citation tie, status mark, and link; nothing else on the page is colored. The one authored physical touch is the stamp mark on the cover, deliberately singular -- the system does not multiply stamps, textures, or decorative flourishes elsewhere.",
+    "keyCharacteristics": [
+      "One committed accent (ballpoint blue) carries every structural signal -- claim numbers, citations, active nav, stat readouts -- and nothing else on the page is colored.",
+      "Two-family type system only: Source Serif 4 for reading, JetBrains Mono for every number and label. No third face.",
+      "The paper document visibly lifts off the dark desk via a compound ambient shadow, not a light/dark surface switch.",
+      "A recurring claim/citation vocabulary (claim-tag, citation-list, docket) stands in for a features list -- structure is argued, not decorated.",
+      "Counts render as a ruled instrument readout (ticked scale + index marks), never as soft stat-card tiles."
+    ],
+    "rules": [
+      { "name": "The One Ink Rule", "body": "Filing-stamp red is the only saturated color anywhere in the system. It marks structure (claim numbers, citations, active state, readouts) -- never decoration, never a second accent.", "section": "colors" },
+      { "name": "The Paper-Lifts-Off-Desk Rule", "body": "Depth between chrome and document is conveyed by token split (desk vs. paper, one step lighter/warmer) plus a compound ambient shadow on .screen -- never by a light/dark theme switch. Both surfaces stay dark and warm in the default theme; only the explicit light-theme toggle is genuinely bright.", "section": "colors" },
+      { "name": "The One-Family Rule", "body": "Source Serif 4 sets every size of reading prose in the system, from the 40px cover title to 13px card copy. No second serif, no sans, no system UI face is ever introduced for \"just this one heading.\"", "section": "typography" },
+      { "name": "The Docket-Not-Kicker Rule", "body": "Page-level headings get a .docket metadata line placed after the heading, never a small caption sitting above it. The one exception, .eyebrow standing in as a section's only heading, is deliberately weighted to match .section-label (700, 13.5px) rather than left as a lightweight caption.", "section": "typography" },
+      { "name": "The Soft-Shadow-Only Rule", "body": "Every shadow in the system is diffuse and ambient (large blur, negative spread, low opacity). No hard-offset or neobrutalist shadow exists anywhere in the build.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep ballpoint blue (#5b84d6 dark / #2c56a3 light) as the only saturated color; every structural signal draws from it, nothing else does.",
+      "Do set every size of reading prose in Source Serif 4 and every number/label/chrome element in JetBrains Mono; do not introduce a third face for emphasis.",
+      "Do use the 3px / 4px / 6px radius split by role (document exhibit / standalone control / floating overlay), not an arbitrary radius per component.",
+      "Do convey depth on .screen via the compound ambient \"document lift\" shadow, and remove it entirely at mobile widths where the screen goes edge-to-edge.",
+      "Do render repository counts as a ruled instrument readout (ticked baseline + index mark + tabular mono numerals), not as soft stat-card tiles.",
+      "Do give every page-level heading a .docket metadata line placed after it, in place of a kicker placed above it."
+    ],
+    "donts": [
+      "Don't introduce a hard-offset or neobrutalist drop-shadow anywhere; every shadow in this system is soft and ambient.",
+      "Don't treat --paper/--paper-card and --bg/--panel as interchangeable: the document surface is always one step lighter and warmer than the desk that holds it, never the same token, never inverted.",
+      "Don't multiply the stamp mark or any hand-authored texture into a general decorative device; it is a singular, one-time authored touch on the Home cover.",
+      "Don't use .eyebrow as a caption sitting above a separate, bigger heading (a kicker). Its only sanctioned use is standing in as a section's own heading, weighted to match .section-label.",
+      "Don't use a glyph icon font or system display face; icons that exist (the stamp mark) are hand-drawn inline SVG, and every face is Source Serif 4 or JetBrains Mono."
+    ]
+  }
+}

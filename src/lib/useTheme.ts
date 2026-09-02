@@ -17,7 +17,7 @@ function readStored(): Theme | null {
 /* The theme lives on a data attribute rather than prefers-color-scheme, so
    mobile browser chrome has nothing to follow on its own — this keeps the
    address bar from staying dark behind a light page. */
-const CHROME: Record<Theme, string> = { dark: "#17140f", light: "#faf7f0" };
+const CHROME: Record<Theme, string> = { dark: "#14120d", light: "#ded6bf" };
 
 function apply(theme: Theme) {
   document.documentElement.dataset.theme = theme;

@@ -59,6 +59,9 @@ export default function CaseDetail() {
   if (!study) return <NotFound />;
 
   const company = companies.find((entry) => entry.name === study.company);
+  const claimNum = company ? companies.indexOf(company) + 1 : null;
+  const depNum =
+    company && claimNum ? company.caseIds.indexOf(study.id) + 1 : null;
 
   const scrollToSection = (sectionId: string) => {
     const el = document.getElementById(`sec-${sectionId}`);
@@ -107,6 +110,18 @@ export default function CaseDetail() {
           </div>
 
           <h1 className="display display--case">{study.title}</h1>
+          {claimNum && depNum && company && (
+            <div className="docket" style={{ margin: "0 0 12px" }}>
+              <span className="claim-tag">
+                claim {claimNum}.{depNum}
+              </span>
+              <span className="claim-cite">
+                dependent — cites{" "}
+                <Link to={`/companies/${company.id}`}>claim {claimNum}</Link> (
+                {company.name})
+              </span>
+            </div>
+          )}
           <p className="case-lede">{study.summary}</p>
 
           <div className="case-impact-strip">
@@ -200,7 +215,7 @@ export default function CaseDetail() {
             </div>
 
             <div>
-              <div className="case-fact-key">capabilities</div>
+              <div className="case-fact-key">claim elements</div>
               <div className="tag-row">
                 {study.capabilities.map((name) => {
                   const capability = capabilities.find((c) => c.name === name);
@@ -222,12 +237,13 @@ export default function CaseDetail() {
             </div>
 
             <div>
-              <div className="case-fact-key">technologies</div>
-              <div className="tag-row">
-                {study.technologies.map((tech) => (
-                  <Link className="tag" to={`/technologies/${techSlug(tech)}`} key={tech}>
-                    {tech}
-                  </Link>
+              <div className="case-fact-key">references cited</div>
+              <div className="citation-list">
+                {study.technologies.map((tech, i) => (
+                  <div className="citation-item" key={tech}>
+                    <span className="citation-num">[{i + 1}]</span>
+                    <Link to={`/technologies/${techSlug(tech)}`}>{tech}</Link>
+                  </div>
                 ))}
               </div>
             </div>

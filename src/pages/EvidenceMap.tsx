@@ -13,8 +13,12 @@ export default function EvidenceMapPage() {
 
   return (
     <div className="screen screen--map">
-      <div className="eyebrow">evidence map / why each claim holds</div>
-      <h1 className="display">Evidence Map</h1>
+      <h1 className="display" style={{ margin: "0 0 10px" }}>
+        Evidence Map
+      </h1>
+      <div className="docket">
+        <span>citation network — why each claim holds</span>
+      </div>
       <p className="lede" style={{ maxWidth: 680 }}>
         Capabilities connect to the case studies that prove them, the companies
         where they happened, and the technologies involved. Tap or hover a node

@@ -12,10 +12,8 @@ export const config = {
   openToWork: true,
 
   /**
-   * Currently unrendered: CodeIntro states the same facts as `based`, `work`
-   * and the sponsorship comment. Kept because it is the fact recruiters filter
-   * on first, and it still reads well as a single line if the home screen ever
-   * wants it back (the .availability-line style is still in index.css).
+   * Rendered as the home screen's docket line, directly under the applicant's
+   * name — the fact recruiters filter on first.
    */
   availability:
     "Based in Bray, Ireland (EU) · Italian citizenship, no sponsorship needed in Europe · remote or on-site",

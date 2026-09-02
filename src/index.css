@@ -1,48 +1,77 @@
 /* ---------------------------------------------------------------------------
    Gabriela Schlemper — design tokens
 
-   The concept stays a documentation repo, not a landing page — but the surface
-   moved from "terminal" (blue-black, all-monospace) to "field notebook": warm
-   ink instead of blue-black, a serif built for actually reading paragraphs,
-   and one recurring device — handwritten margin notes in --voice — for the
-   places her own tone should interrupt the document. Chrome (nav, labels,
-   metadata) stays JetBrains Mono; that contrast between "the record" and
-   "the annotation" is the whole idea.
+   The concept stays a documentation repo, not a landing page — and the world
+   is now literal: the portfolio as a filed patent. Companies are independent
+   claims, case studies are dependent claims ("the system of claim N,
+   wherein…"), technologies are cited references. The desk is dark; every
+   document — the whole reading surface, .screen and everything in it — is a
+   dark, warm sheet one step lighter than the desk it sits on. One committed
+   ink, ballpoint blue — the convention for signing an original rather than a
+   photocopy — marks claim numbers, status, and citation ties; nothing else
+   on the page is colored. Chrome (nav, dockets, reference numerals) stays
+   JetBrains Mono; claim prose is set in Source Serif 4 throughout — one
+   family, weight and size do the hierarchy work, the way a real filing
+   would.
    --------------------------------------------------------------------------- */
 
 :root {
-  --bg: #17140f;
-  --panel: #1c1911;
-  --card: #221e15;
-  --border: #34301c;
-  --border2: #48412a;
-  --text: #f1ece0;
-  --text2: #ab9f89;
-  --text3: #8c8168; /* 4.7:1 on --bg — WCAG AA for the 10-11.5px labels that use it */
-  --accent: #e0a65c;
-  --accent-ink: #17140f; /* text drawn on top of a solid --accent fill */
-  --voice: #e0714b; /* the handwritten margin-note red */
-  --sel: rgba(224, 166, 92, 0.18);
+  /* Desk — sidebar, palette, gutters around the document. */
+  --bg: #100e0a;
+  --panel: #17140e;
+  --border: #2c2718;
+  --border2: #423a24;
+  --text: #ece7d8;
+  --text2: #a89a78;
+  --text3: #8a7d5e; /* ~4.6:1 on --bg — AA for the 10-11.5px labels that use it */
+  --card: #201c13;
 
-  --font-body: "Literata", Georgia, serif;
-  --font-display: "Special Elite", "Courier Prime", monospace;
-  --font-mono: "JetBrains Mono", monospace;
-  --font-voice: "Kalam", cursive;
+  /* One committed ink: ballpoint blue. Used for claim numbers, status,
+     citation ties and links — never decorative. */
+  --accent: #5b84d6;
+  --accent-ink: #f9eee1; /* text on a solid --accent fill */
+  --sel: rgba(91, 132, 214, 0.22);
+
+  /* The document — applied inside .screen (see "Document surface" below).
+     Dark by request: a filed sheet under a desk lamp still reads dark, one
+     step lighter and warmer than the desk it sits on, not a lit white page. */
+  --paper: #1c1810;
+  --paper-card: #242016;
+  --paper-border: #3a331f;
+  --paper-border2: #52492c;
+  --ink: #efe9da;
+  --ink2: #a89a78;
+  --ink3: #8f8362; /* ~4.9:1 on --paper — AA for small mono labels */
+
+  --font-body: "Source Serif 4", Georgia, serif;
+  --font-display: "Source Serif 4", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
 :root[data-theme="light"] {
-  --bg: #faf7f0;
-  --panel: #f2ede1;
-  --card: #fffdf8;
-  --border: #e6ddc9;
-  --border2: #d2c6a8;
-  --text: #201c12;
-  --text2: #6d6349;
-  --text3: #71674c; /* 4.7:1 on light --bg — WCAG AA for the 10-11.5px labels that use it */
-  --accent: #9a5b16;
-  --accent-ink: #fffdf8;
-  --voice: #a63f22;
-  --sel: rgba(154, 91, 22, 0.14);
+  /* Daylight desk: paper and desk sit closer in tone than the night-lamp
+     dark theme, but the desk stays the cooler, duller surface — the paper is
+     still visibly the lit thing. */
+  --bg: #ded6bf;
+  --panel: #d6cdb2;
+  --border: #c7bc9c;
+  --border2: #b3a67f;
+  --text: #241d11;
+  --text2: #5c5136;
+  --text3: #6b5f40; /* ~4.8:1 on --bg — AA for the 10-11.5px labels that use it */
+  --card: #e7e0c9;
+
+  --accent: #2c56a3;
+  --accent-ink: #fdf6ea;
+  --sel: rgba(44, 86, 163, 0.16);
+
+  --paper: #fbf6e9;
+  --paper-card: #f3ead2;
+  --paper-border: #e2d5ac;
+  --paper-border2: #cbb885;
+  --ink: #201a10;
+  --ink2: #55492e;
+  --ink3: #675b3c;
 }
 
 * {
@@ -72,6 +101,32 @@ a:hover {
 
 ::selection {
   background: var(--sel);
+}
+
+* {
+  caret-color: var(--accent);
+  scrollbar-color: var(--border2) transparent;
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--border2);
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text3);
 }
 
 @keyframes fadeUp {
@@ -143,6 +198,7 @@ a:hover {
 .main {
   flex: 1;
   min-width: 0;
+  background: var(--bg);
 }
 
 .skip-link {
@@ -153,7 +209,7 @@ a:hover {
   background: var(--card);
   color: var(--text);
   border: 1px solid var(--accent);
-  border-radius: 5px;
+  border-radius: 4px;
   padding: 10px 16px;
   font-family: var(--font-mono);
   font-size: 12px;
@@ -166,7 +222,8 @@ a:hover {
 }
 
 /* ---------------------------------------------------------------------------
-   Sidebar
+   Sidebar — desk furniture. Stays dark and stays put; it is not part of any
+   filed document.
    --------------------------------------------------------------------------- */
 
 .sidebar {
@@ -223,6 +280,7 @@ a:hover {
 
 .sidebar-brand-title {
   font-family: var(--font-display);
+  font-weight: 600;
   font-size: 17px;
   line-height: 1.3;
   color: var(--text);
@@ -242,7 +300,7 @@ a:hover {
   justify-content: space-between;
   border: 1px solid var(--border);
   background: var(--card);
-  border-radius: 6px;
+  border-radius: 4px;
   padding: 8px 10px;
   cursor: pointer;
   color: var(--text3);
@@ -259,7 +317,7 @@ a:hover {
 
 .kbd {
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: 3px;
   padding: 1px 6px;
   font-size: 10px;
 }
@@ -288,7 +346,7 @@ a:hover {
 .nav-link {
   display: block;
   padding: 7px 10px;
-  border-radius: 5px;
+  border-radius: 3px;
   cursor: pointer;
   font-size: 14.5px;
   transition: all 0.12s;
@@ -306,13 +364,13 @@ a:hover {
 }
 
 .nav-link[aria-current="page"] {
-  color: var(--text);
-  background: var(--card);
+  color: var(--ink);
+  background: var(--accent);
 }
 
 .theme-toggle {
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 4px;
   padding: 7px 10px;
   cursor: pointer;
   font-family: var(--font-mono);
@@ -349,29 +407,59 @@ a:hover {
 }
 
 /* ---------------------------------------------------------------------------
-   Screen scaffolding
+   Paper surface
+
+   Every document lives inside one of these. Setting --text/--text2/--text3/
+   --border/--border2/--card here, once, means every rule below that already
+   reads var(--text) etc. renders correctly on paper without being touched —
+   the cascade does the work.
    --------------------------------------------------------------------------- */
+
+.screen,
+.screen--wide,
+.screen--case,
+.screen--map {
+  --text: var(--ink);
+  --text2: var(--ink2);
+  --text3: var(--ink3);
+  --border: var(--paper-border);
+  --border2: var(--paper-border2);
+  --card: var(--paper-card);
+
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.35),
+    0 32px 64px -28px rgba(0, 0, 0, 0.55),
+    0 0 0 1px var(--paper-border);
+  margin: 36px auto 56px;
+}
 
 .screen {
   max-width: 820px;
-  margin: 0 auto;
-  padding: 64px 48px 96px;
+  padding: 60px 48px 88px;
   animation: fadeIn 0.3s;
 }
 
 .screen--wide {
   max-width: 880px;
+  padding: 60px 48px 88px;
+  animation: fadeIn 0.3s;
 }
 
 .screen--case {
   max-width: 1100px;
+  padding: 60px 48px 88px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 236px;
   gap: 52px;
+  animation: fadeIn 0.3s;
 }
 
 .screen--map {
   max-width: 1200px;
+  padding: 60px 48px 88px;
+  animation: fadeIn 0.3s;
 }
 
 .eyebrow {
@@ -382,39 +470,66 @@ a:hover {
   color: var(--text3);
 }
 
+/* The subsection heading throughout every detail page — "Overview",
+   "Responsibilities", "References Cited". Bold, ink-colored and sized to
+   read as a real heading; a patent's own section captions are typed this
+   way, not as a muted caption sitting above something bigger. */
 .section-label {
   font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
+  font-weight: 700;
+  font-size: 13.5px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text3);
+  color: var(--text);
   margin-top: 48px;
+}
+
+/* A column head paired with a list (CompanyDetail's "responsibilities" /
+   "achievements", Profile's "strengths" / "preferred problems") carries the
+   same heading weight as .section-label — it is that list's only heading. */
+.two-col > div > .eyebrow {
+  font-weight: 700;
+  font-size: 13.5px;
+  letter-spacing: 0.08em;
+  color: var(--text);
 }
 
 .display {
   font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 34px;
-  margin: 14px 0 6px;
+  font-weight: 600;
+  font-size: 32px;
+  margin: 0 0 6px;
   color: var(--text);
 }
 
-.display--hero {
-  font-size: 42px;
-  line-height: 1.12;
-  margin: 14px 0 4px;
-}
-
 .display--detail {
-  font-size: 32px;
-  margin: 16px 0 6px;
+  font-size: 30px;
+  margin: 0 0 6px;
 }
 
 .display--case {
-  font-size: 31px;
+  font-size: 29px;
   line-height: 1.25;
-  margin: 16px 0 12px;
+  margin: 0 0 12px;
   text-wrap: pretty;
+}
+
+/* The line every page-level heading gets instead of a kicker sitting above
+   it: docket metadata reads after the heading speaks, never before it. */
+.docket {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--text3);
+  margin: 0 0 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+}
+
+.docket strong {
+  color: var(--accent);
+  font-weight: 500;
 }
 
 .lede {
@@ -439,6 +554,7 @@ a:hover {
   border-top: 1px solid var(--border);
   padding-top: 28px;
   font-family: var(--font-display);
+  font-style: italic;
   font-size: 17px;
   line-height: 1.6;
   color: var(--text2);
@@ -470,19 +586,20 @@ a:hover {
 }
 
 /* ---------------------------------------------------------------------------
-   Cards
+   Cards — exhibits cut from the same paper stock: a hairline rule, never a
+   second, heavier surface.
    --------------------------------------------------------------------------- */
 
 .card {
   border: 1px solid var(--border);
   background: var(--card);
-  border-radius: 6px;
+  border-radius: 3px;
 }
 
 .card-link {
   border: 1px solid var(--border);
   background: var(--card);
-  border-radius: 6px;
+  border-radius: 3px;
   cursor: pointer;
   transition: all 0.18s;
   display: block;
@@ -522,20 +639,97 @@ a:hover {
 }
 
 /* ---------------------------------------------------------------------------
-   Margin notes — the one recurring signature. Used sparingly, by hand, where
-   the record needs a real aside rather than another documented fact. Never
-   inside .prose: it reads as commentary written in the margin, not as the
-   sentence itself.
+   Claim chrome — the one recurring structural device: every company is an
+   independent claim, every case study a dependent claim that cites one, every
+   capability a claim element, every technology a cited reference. Used as
+   small mono badges and reference marks, never as rewritten prose.
+   --------------------------------------------------------------------------- */
+
+.claim-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-radius: 3px;
+  padding: 2px 7px;
+  flex-shrink: 0;
+}
+
+.claim-tag--outline {
+  color: var(--accent);
+  background: transparent;
+  border: 1px solid var(--accent);
+  padding: 1px 6px;
+}
+
+.claim-cite {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text3);
+}
+
+.claim-cite a {
+  color: var(--text2);
+  text-decoration: underline;
+  text-decoration-color: var(--border2);
+  text-underline-offset: 2px;
+}
+
+.claim-cite a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+/* Reference list at the foot of a claim: technologies cited, numbered like a
+   filing's "References Cited". */
+.citation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.citation-item {
+  display: flex;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text2);
+}
+
+.citation-num {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.citation-item a {
+  color: inherit;
+}
+
+.citation-item a:hover {
+  color: var(--accent);
+}
+
+/* ---------------------------------------------------------------------------
+   Margin notes — a typed annotation clipped to the record, not a decorative
+   flourish. Set in the reading face, not a handwritten script.
    --------------------------------------------------------------------------- */
 
 .margin-note {
   display: inline-block;
-  font-family: var(--font-voice);
-  font-weight: 700;
-  color: var(--voice);
-  font-size: 17px;
-  line-height: 1.3;
-  transform: rotate(-2deg);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+  font-size: 15.5px;
+  line-height: 1.4;
   text-wrap: pretty;
 }
 
@@ -545,81 +739,82 @@ a:hover {
 }
 
 /* ---------------------------------------------------------------------------
-   Home
+   Cover — the home screen as a filing's cover sheet.
    --------------------------------------------------------------------------- */
 
-.hero-row {
+.cover-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 208px;
-  gap: 24px;
+  grid-template-columns: minmax(0, 1fr) 190px;
+  gap: 28px;
   align-items: start;
 }
 
-.hero-photo {
-  margin-top: 22px;
-  /* A print sitting slightly askew on the page, not a profile-picture circle. */
-  transform: rotate(1.4deg);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+.cover-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1.12;
+  margin: 0 0 10px;
+  color: var(--text);
 }
 
-.hero-photo-img {
-  display: block;
-  width: 100%;
-  height: auto;
+.cover-abstract {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--text);
+  max-width: 620px;
+  margin: 0 0 4px;
+  text-wrap: pretty;
 }
 
-/* The file/lang pair in .code-intro-head is laid out for a full-width card;
-   at 190px the two ends collide, so this variant stacks them instead. */
-.hero-photo .code-intro-head {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-  padding: 8px 10px;
-}
-
-.hero-photo .code-intro-file {
-  font-size: 10px;
-  line-height: 1.3;
-}
-
-.hero-photo .code-intro-lang {
-  font-size: 9px;
-}
-
-.hero-tags {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-}
-
-.hero-role {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  color: var(--accent);
-}
-
-.hero-sub {
+.cover-abstract strong {
   font-family: var(--font-mono);
   font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: var(--text3);
+  font-weight: 500;
+  margin-right: 8px;
+  vertical-align: 2px;
 }
 
-.badge-open {
+.cover-lede {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text2);
+  max-width: 620px;
+  margin: 14px 0 0;
+  text-wrap: pretty;
+}
+
+/* The one authored stamp on the whole system: an inked, slightly irregular
+   ring, drawn as SVG paths — never a photo, never a filter effect. */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--accent);
-  border: 1px solid var(--accent);
-  border-radius: 4px;
-  padding: 2px 8px;
-  letter-spacing: 0.06em;
+}
+
+.stamp-mark {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.stamp-mark circle,
+.stamp-mark path {
+  stroke: var(--accent);
 }
 
 .contact-row {
   display: flex;
   gap: 8px;
-  margin-bottom: 24px;
+  margin: 20px 0 0;
   flex-wrap: wrap;
 }
 
@@ -629,7 +824,7 @@ a:hover {
   color: var(--text);
   border: 1px solid var(--border2);
   background: var(--card);
-  border-radius: 5px;
+  border-radius: 3px;
   padding: 6px 14px;
   transition: all 0.15s;
 }
@@ -639,20 +834,32 @@ a:hover {
   text-decoration: none;
 }
 
-.availability-line {
-  font-family: var(--font-mono);
-  font-size: 12.5px;
-  color: var(--text2);
-  margin: 0 0 22px;
+.cover-photo {
+  margin-top: 4px;
 }
 
-.hero-oneliner {
-  font-size: 19px;
-  line-height: 1.6;
-  color: var(--text);
-  max-width: 640px;
-  margin: 0 0 14px;
-  text-wrap: pretty;
+.cover-photo-frame {
+  border: 1px solid var(--border2);
+  background: var(--card);
+  padding: 6px;
+  /* A print set slightly askew on the page, not a profile-picture circle. */
+  transform: rotate(1.1deg);
+  box-shadow: 0 10px 24px rgba(33, 26, 16, 0.28);
+}
+
+.cover-photo-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cover-photo-caption {
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--text3);
+  text-align: center;
 }
 
 .hero-evidence {
@@ -660,7 +867,7 @@ a:hover {
   line-height: 1.7;
   color: var(--text2);
   max-width: 640px;
-  margin: 0;
+  margin: 28px 0 0;
   text-wrap: pretty;
 }
 
@@ -717,6 +924,15 @@ a:hover {
   justify-content: space-between;
 }
 
+/* The one place an .eyebrow stands in as a section's only heading (Home's
+   "highlighted case studies") — same weight step as .section-label. */
+.section-head .eyebrow {
+  font-weight: 700;
+  font-size: 13.5px;
+  letter-spacing: 0.08em;
+  color: var(--text);
+}
+
 .section-more {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -761,26 +977,71 @@ a:hover {
   color: var(--text2);
 }
 
+/* ---------------------------------------------------------------------------
+   Readout — repository counts rendered as a calibrated instrument panel
+   rather than a soft stat card: ruled ticks, mono numerals, one index mark.
+   --------------------------------------------------------------------------- */
+
+/* A ruled scale, not a stat-card grid: a ticked baseline runs the full
+   width, each reading drops an index mark to it, like a gauge face rather
+   than four soft metric tiles. */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  overflow: hidden;
-  margin-top: 16px;
+  margin-top: 20px;
+  position: relative;
+}
+
+/* Ruler and index ticks share one coordinate origin — the grid's own padding
+   edge — so the ticks below read as dropping from this baseline rather than
+   floating near it. (.stats-grid carries no padding-top of its own: that
+   would shift where .stat's border-box starts without moving this pseudo-
+   element, which only reads offsets from the padding edge — the bug this
+   comment replaces.) */
+.stats-grid::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      var(--border2) 0,
+      var(--border2) 1px,
+      transparent 1px,
+      transparent 13px
+    ),
+    linear-gradient(var(--border2), var(--border2));
+  background-size: 100% 6px, 100% 1px;
+  background-position: top, bottom;
+  background-repeat: repeat-x, no-repeat;
 }
 
 .stat {
-  background: var(--card);
-  padding: 16px 18px;
+  position: relative;
+  padding: 30px 18px 2px;
+}
+
+/* The index mark: a longer, accent-colored tick pointing this reading out
+   from the shared scale, in place of a card border. */
+.stat::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 18px;
+  width: 1px;
+  height: 20px;
+  background: var(--accent);
 }
 
 .stat-value {
   font-family: var(--font-mono);
-  font-size: 18px;
-  color: var(--text);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
 }
 
 .stat-label {
@@ -816,7 +1077,7 @@ a:hover {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--bg);
+  background: var(--paper);
   border: 1.5px solid var(--text3);
 }
 
@@ -889,7 +1150,7 @@ a:hover {
 .think-item {
   border: 1px solid var(--border);
   background: var(--card);
-  border-radius: 6px;
+  border-radius: 3px;
   padding: 14px 18px;
   font-size: 14px;
   line-height: 1.65;
@@ -943,7 +1204,7 @@ a:hover {
   color: var(--text2);
   border: 1px solid var(--border);
   background: var(--card);
-  border-radius: 4px;
+  border-radius: 3px;
   padding: 4px 10px;
 }
 
@@ -959,7 +1220,7 @@ a:hover {
 }
 
 /* ---------------------------------------------------------------------------
-   Companies
+   Companies — independent claims
    --------------------------------------------------------------------------- */
 
 .entry-card {
@@ -970,6 +1231,7 @@ a:hover {
   display: flex;
   gap: 14px;
   align-items: baseline;
+  flex-wrap: wrap;
 }
 
 .entry-name {
@@ -1054,9 +1316,10 @@ a:hover {
 .lesson {
   border: 1px solid var(--border);
   background: var(--card);
-  border-radius: 6px;
+  border-radius: 3px;
   padding: 14px 18px;
   font-family: var(--font-display);
+  font-style: italic;
   font-size: 14.5px;
   line-height: 1.6;
   color: var(--text2);
@@ -1100,7 +1363,7 @@ a:hover {
 .pill {
   border: 1px solid var(--border);
   background: var(--card);
-  border-radius: 6px;
+  border-radius: 4px;
   padding: 10px 16px;
   cursor: pointer;
   transition: all 0.15s;
@@ -1125,7 +1388,7 @@ a:hover {
 }
 
 /* ---------------------------------------------------------------------------
-   Cases
+   Cases — dependent claims
    --------------------------------------------------------------------------- */
 
 .case-card {
@@ -1133,7 +1396,7 @@ a:hover {
 }
 
 .case-card--featured {
-  border-left: 2px solid var(--accent);
+  border-left: 1px solid var(--accent);
 }
 
 .case-title {
@@ -1187,7 +1450,7 @@ a:hover {
   color: var(--text);
   border: 1px solid var(--border2);
   background: var(--card);
-  border-radius: 6px;
+  border-radius: 3px;
   padding: 5px 12px;
   max-width: 100%;
 }
@@ -1218,7 +1481,7 @@ a:hover {
 /* The one section every write-up is building toward — pulled out of the
    otherwise uniform run of sections so scanning the page lands on it. */
 .case-section--decision {
-  border-left: 2px solid var(--accent);
+  border-left: 1px solid var(--accent);
   padding-left: 20px;
 }
 
@@ -1330,7 +1593,7 @@ a:hover {
   font-size: 10px;
   color: var(--text2);
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: 3px;
   padding: 2px 6px;
   cursor: pointer;
   transition: all 0.12s;
@@ -1345,7 +1608,7 @@ a:hover {
 
 .copy-link {
   border: 1px solid var(--border);
-  border-radius: 5px;
+  border-radius: 3px;
   padding: 6px 10px;
   text-align: center;
   cursor: pointer;
@@ -1407,7 +1670,7 @@ a:hover {
 .diagram-frame {
   border: 1px solid var(--border);
   background: var(--card);
-  border-radius: 6px;
+  border-radius: 3px;
   margin-top: 18px;
   padding: 14px;
 }
@@ -1446,7 +1709,7 @@ a:hover {
 }
 
 /* ---------------------------------------------------------------------------
-   Capabilities / technologies
+   Capabilities / technologies — claim elements and cited references
    --------------------------------------------------------------------------- */
 
 .grid-2 {
@@ -1484,7 +1747,7 @@ a:hover {
 .cap-square {
   width: 8px;
   height: 8px;
-  border-radius: 2px;
+  border-radius: 1px;
   background: var(--accent);
   opacity: 0.85;
   display: inline-block;
@@ -1537,7 +1800,7 @@ a:hover {
 .principle {
   border: 1px solid var(--border);
   background: var(--card);
-  border-radius: 6px;
+  border-radius: 3px;
   overflow: hidden;
   transition: border-color 0.15s;
 }
@@ -1566,18 +1829,19 @@ a:hover {
 }
 
 .principle-toggle:hover {
-  background: var(--panel);
+  background: var(--paper-border);
 }
 
 .principle-num {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--text3);
+  color: var(--accent);
   flex-shrink: 0;
 }
 
 .principle-text {
   font-family: var(--font-display);
+  font-weight: 600;
   font-size: 16.5px;
   line-height: 1.5;
   color: var(--text);
@@ -1642,13 +1906,13 @@ a:hover {
 }
 
 /* ---------------------------------------------------------------------------
-   Evidence map
+   Evidence map — the citation network
    --------------------------------------------------------------------------- */
 
 .map-frame {
   border: 1px solid var(--border);
   background: var(--card);
-  border-radius: 6px;
+  border-radius: 3px;
   margin-top: 28px;
   padding: 12px;
   overflow-x: auto;
@@ -1699,7 +1963,7 @@ a:hover {
   display: flex;
   align-items: center;
   padding: 0 10px;
-  border-radius: 5px;
+  border-radius: 3px;
   background: var(--card);
   cursor: pointer;
   transition: opacity 0.15s;
@@ -1715,13 +1979,14 @@ a:hover {
 }
 
 /* ---------------------------------------------------------------------------
-   Command palette
+   Command palette — desk furniture, like the sidebar: stays dark regardless
+   of which document is open behind it.
    --------------------------------------------------------------------------- */
 
 .palette-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(10, 8, 5, 0.6);
   backdrop-filter: blur(2px);
   z-index: 100;
   display: flex;
@@ -1737,11 +2002,11 @@ a:hover {
   height: fit-content;
   background: var(--card);
   border: 1px solid var(--border2);
-  border-radius: 10px;
+  border-radius: 6px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
 }
 
 .palette-head {
@@ -1786,7 +2051,7 @@ a:hover {
   align-items: baseline;
   gap: 12px;
   padding: 10px 12px;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
   background: transparent;
   border: none;
@@ -1806,7 +2071,7 @@ a:hover {
   text-transform: uppercase;
   color: var(--text3);
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: 3px;
   padding: 2px 6px;
   flex-shrink: 0;
   width: 78px;
@@ -1857,7 +2122,7 @@ a:hover {
 .notfound-code {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--text3);
+  color: var(--accent);
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -1953,7 +2218,7 @@ a:hover {
     min-height: 44px;
     padding: 0 12px;
     border: 1px solid var(--border);
-    border-radius: 6px;
+    border-radius: 4px;
     background: var(--card);
     color: var(--text2);
     font-family: var(--font-mono);
@@ -1977,7 +2242,7 @@ a:hover {
     max-height: calc(100dvh - 56px);
     overflow-y: auto;
     overscroll-behavior: contain;
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
   }
 
   .sidebar[data-open="true"] .sidebar-panel {
@@ -2029,6 +2294,9 @@ a:hover {
   .screen--case,
   .screen--map {
     padding: 40px 24px 72px;
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
   }
 
   .stats-grid {
@@ -2041,14 +2309,13 @@ a:hover {
     gap: 28px;
   }
 
-  /* The photo trails the source file on a phone rather than squeezing beside
-     it — at this width a 190px column would leave the code with nowhere to
-     wrap. */
-  .hero-row {
+  /* The photo trails the applicant block on a phone rather than squeezing
+     beside it — at this width a 190px column leaves nothing to breathe. */
+  .cover-grid {
     grid-template-columns: 1fr;
   }
 
-  .hero-photo {
+  .cover-photo {
     width: 150px;
     margin-top: 18px;
   }
@@ -2163,12 +2430,12 @@ a:hover {
 }
 
 @media (max-width: 560px) {
-  .display--hero {
-    font-size: 32px;
+  .cover-title {
+    font-size: 30px;
   }
 
   .display {
-    font-size: 27px;
+    font-size: 25px;
   }
 
   .screen,
@@ -2247,17 +2514,6 @@ a:hover {
   }
 }
 
-@keyframes caretBlink {
-  0%,
-  48% {
-    opacity: 1;
-  }
-  49%,
-  100% {
-    opacity: 0;
-  }
-}
-
 /* --- Scroll reveal ------------------------------------------------------- */
 
 html[data-js="1"] [data-reveal="out"][data-reveal-mode="children"] > *,
@@ -2304,31 +2560,21 @@ html[data-js="1"] [data-reveal="in"][data-reveal-mode="children"] > *:nth-child(
 /* Each page renders its own .screen, so a route change remounts the node and
    replays this. The two leading elements arrive just behind the container,
    which reads as the document settling rather than a slide. */
-.screen {
+.screen,
+.screen--wide,
+.screen--case,
+.screen--map {
   animation: revealUp 0.34s var(--ease-reveal) both;
 }
 
-html[data-js="1"] .screen > .eyebrow {
+html[data-js="1"] .screen > .eyebrow,
+html[data-js="1"] .screen > .breadcrumb {
   animation: revealUp 0.4s var(--ease-reveal) 0.05s both;
 }
 
-html[data-js="1"] .screen > .display {
+html[data-js="1"] .screen > .display,
+html[data-js="1"] .screen > .cover-title {
   animation: revealUp 0.44s var(--ease-reveal) 0.1s both;
-}
-
-/* --- Terminal caret ----------------------------------------------------- */
-
-/* Empty content string: a decorative block, never announced by a screen
-   reader, and no extra element in the heading's accessible name. */
-.display--hero::after {
-  content: "";
-  display: inline-block;
-  width: 0.34em;
-  height: 0.9em;
-  margin-left: 0.16em;
-  vertical-align: -0.09em;
-  background: var(--accent);
-  animation: caretBlink 1.15s step-end infinite;
 }
 
 /* --- Case diagram draw-in ----------------------------------------------- */
@@ -2384,124 +2630,4 @@ html[data-js="1"] .map-frame[data-reveal="in"] .map-edge {
   align-items: center;
   gap: 10px;
   margin-top: 20px;
-}
-
-/* ---------------------------------------------------------------------------
-   Code intro (home)
-
-   A static, fully-legible "source file" card — the portfolio-as-function bit
-   without gating any of it behind a scroll interaction. It used to sharpen in
-   line by line, pinned to the viewport for ~2 screens of scroll before the
-   page would continue; reading the whole thing now costs nothing.
-   --------------------------------------------------------------------------- */
-
-.code-intro {
-  margin-top: 22px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--card);
-  overflow: hidden;
-}
-
-.code-intro-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 9px 16px;
-  border-bottom: 1px solid var(--border);
-  background: var(--panel);
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.06em;
-}
-
-.code-intro-file {
-  color: var(--text2);
-}
-
-.code-intro-lang {
-  color: var(--text3);
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-}
-
-.code-intro-body {
-  padding: 18px 0;
-  font-family: var(--font-mono);
-  font-size: 13.5px;
-  /* Fixed line box: the tail lines reserve their space before they sharpen, so
-     nothing reflows as the reader scrolls. */
-  line-height: 25px;
-}
-
-.code-line {
-  padding-left: calc(20px + var(--indent, 0) * 22px);
-  padding-right: 20px;
-  /* Long strings wrap under their own indent rather than forcing the panel to
-     scroll sideways on a narrow screen. */
-  text-indent: 0;
-  white-space: normal;
-  word-break: break-word;
-  /* Empty lines still need to occupy a line box. */
-  min-height: 25px;
-}
-
-.code-body {
-  color: var(--text2);
-}
-
-.tok-kw {
-  color: var(--accent);
-}
-
-.tok-str {
-  color: var(--text);
-}
-
-.tok-punc {
-  color: var(--text3);
-}
-
-.tok-id {
-  color: var(--text);
-}
-
-.tok-com {
-  color: var(--text3);
-  font-style: italic;
-}
-
-/* The name keeps h1 semantics but sheds the block layout and display face —
-   a 45px Special Elite heading mid-expression would break the illusion that
-   this is a source file. Larger and heavier than the code around it instead. */
-.code-name {
-  display: inline;
-  margin: 0;
-  font-family: inherit;
-  font-size: 19px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--text);
-}
-
-.code-caret {
-  display: inline-block;
-  width: 0.5em;
-  height: 0.95em;
-  margin-left: 0.3em;
-  vertical-align: -0.13em;
-  background: var(--accent);
-  animation: caretBlink 1.15s step-end infinite;
-}
-
-@media (max-width: 560px) {
-  .code-intro-body {
-    font-size: 12px;
-  }
-
-  .code-line {
-    padding-left: calc(14px + var(--indent, 0) * 14px);
-    padding-right: 14px;
-  }
 }

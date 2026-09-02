@@ -15,8 +15,12 @@ export default function Principles() {
 
   return (
     <div className="screen">
-      <div className="eyebrow">principles / earned, not adopted</div>
-      <h1 className="display">Engineering Principles</h1>
+      <h1 className="display" style={{ margin: "0 0 10px" }}>
+        Engineering Principles
+      </h1>
+      <div className="docket">
+        <span>earned, not adopted</span>
+      </div>
       <p className="lede">
         Each principle has an origin story and at least one place it was applied
         again. Open one.

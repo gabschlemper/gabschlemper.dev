@@ -4,8 +4,12 @@ import { companies, profile } from "../data/knowledge-base";
 export default function Journey() {
   return (
     <div className="screen">
-      <div className="eyebrow">career journey / evolution</div>
-      <h1 className="display">The story of becoming more capable</h1>
+      <h1 className="display" style={{ margin: "0 0 10px" }}>
+        The story of becoming more capable
+      </h1>
+      <div className="docket">
+        <span>prosecution history — each stage a further amendment</span>
+      </div>
       <p className="lede">
         Each stage is defined by what I was learning, not where I was sitting.
       </p>

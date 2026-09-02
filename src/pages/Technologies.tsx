@@ -5,8 +5,12 @@ import { techSlug } from "../lib/slug";
 export default function Technologies() {
   return (
     <div className="screen screen--wide">
-      <div className="eyebrow">technologies / how, not just what</div>
-      <h1 className="display">Technologies</h1>
+      <h1 className="display" style={{ margin: "0 0 10px" }}>
+        Technologies
+      </h1>
+      <div className="docket">
+        <span>{technologies.length} references cited — how, not just what</span>
+      </div>
       <p className="lede">Every entry documents how I used it — not a logo grid.</p>
 
       <div className="grid-2 grid-2--tight">

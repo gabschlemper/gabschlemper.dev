@@ -4,8 +4,12 @@ import { capabilities, cases, companies } from "../data/knowledge-base";
 export default function Capabilities() {
   return (
     <div className="screen screen--wide">
-      <div className="eyebrow">capabilities / claims with evidence</div>
-      <h1 className="display">Capabilities</h1>
+      <h1 className="display" style={{ margin: "0 0 10px" }}>
+        Capabilities
+      </h1>
+      <div className="docket">
+        <span>{capabilities.length} claim elements, cited across every claim</span>
+      </div>
       <p className="lede">
         Not technologies — capabilities. Each one links to the documents that
         prove it.

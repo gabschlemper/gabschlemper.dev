@@ -24,11 +24,14 @@ export default function CapabilityDetail() {
       </div>
 
       <h1 className="display display--detail">{capability.name}</h1>
+      <div className="docket" style={{ margin: "0 0 12px" }}>
+        <span className="claim-tag claim-tag--outline">claim element</span>
+      </div>
       <p className="lede" style={{ maxWidth: 620 }}>
         {capability.desc}
       </p>
       <div className="entry-period" style={{ marginTop: 20 }}>
-        evidence: {provingCases.length} proving documents ·{" "}
+        cited in: {provingCases.length} proving documents ·{" "}
         {provingCompanies.length} companies
       </div>
 
