@@ -2328,6 +2328,14 @@ a:hover {
     display: none;
   }
 
+  /* .entry-head wraps at this width (company name/period no longer share a
+     row with the case/technology count) — the auto margin meant for pushing
+     the count to the far end of a shared row instead strands it right-
+     aligned and disconnected on its own line. */
+  .entry-meta {
+    margin-left: 0;
+  }
+
   /* --- Touch targets ----------------------------------------------------
      Everything below is the same control at a size a finger can land on.
      None of these change on desktop, where a cursor is precise. */
@@ -2461,9 +2469,15 @@ a:hover {
     margin-left: 0;
   }
 
+  /* Stays 3 columns, not 2: the markup is 3 keys followed by 3 values (one
+     grid item per cell, row-major), so any column count that doesn't match
+     the number of fact pairs re-pairs each key with the wrong value. Equal
+     fractions plus text wrap avoid the horizontal overflow "auto" columns
+     would cause at this width instead. */
   .fact-grid {
-    grid-template-columns: repeat(2, auto);
-    gap: 10px 24px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px 14px;
+    width: 100%;
   }
 
   .featured-card {

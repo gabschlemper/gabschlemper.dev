@@ -42,8 +42,8 @@ export default function Journey() {
                 </span>
                 <span className="entry-period">{company.period}</span>
                 <span
-                  className="entry-period"
-                  style={{ marginLeft: "auto", color: "var(--accent)" }}
+                  className="entry-period entry-meta"
+                  style={{ color: "var(--accent)" }}
                 >
                   {company.role}
                 </span>
