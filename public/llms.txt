@@ -1,6 +1,6 @@
 # Gabriela Schlemper
 
-> Software Engineer based in Bray, Co. Wicklow, Ireland (EU) — Italian citizenship, no
+> Software Engineer based in Dublin, Ireland (EU) — Italian citizenship, no
 > sponsorship needed in Europe, open to remote or on-site roles. Works primarily in
 > React, TypeScript, Vue (2 and 3), Node.js (NestJS, Fastify) and event-driven
 > distributed systems (Kafka, PostgreSQL). Currently a Software Engineer at Dynamox.

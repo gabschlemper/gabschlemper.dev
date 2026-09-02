@@ -16,7 +16,7 @@ export const config = {
    * name — the fact recruiters filter on first.
    */
   availability:
-    "Based in Bray, Ireland (EU) · Italian citizenship, no sponsorship needed in Europe · remote or on-site",
+    "Italian citizenship, no sponsorship needed in Europe · remote or on-site",
 
   /**
    * Contact links. Empty strings are omitted from the contact row rather than
