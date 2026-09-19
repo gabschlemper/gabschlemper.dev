@@ -94,11 +94,9 @@ export default function Home() {
 
       <p className="hero-evidence">
         Every experience in this repository answers one question:{" "}
-        <strong>“What evidence does this give about the engineer I am?”</strong>
+        <strong>“What evidence does this give about the engineer I am?”</strong>{" "}
+        <span className="hero-evidence-aside">↳ also: I will actually read your email</span>
       </p>
-      <span className="margin-note margin-note--block">
-        ↳ also: I will actually read your email
-      </span>
 
       <div className="section-label">career journey — claims 1–{companies.length}</div>
       <Reveal className="journey-strip">
@@ -163,8 +161,6 @@ export default function Home() {
           );
         })}
       </Reveal>
-
-      <div className="quote">“{profile.quote}”</div>
     </div>
   );
 }

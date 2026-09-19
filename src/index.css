@@ -2,46 +2,62 @@
    Gabriela Schlemper — design tokens
 
    The concept stays a documentation repo, not a landing page — and the world
-   is now literal: the portfolio as a filed patent. Companies are independent
-   claims, case studies are dependent claims ("the system of claim N,
-   wherein…"), technologies are cited references. The desk is dark; every
-   document — the whole reading surface, .screen and everything in it — is a
-   dark, warm sheet one step lighter than the desk it sits on. One committed
-   ink, ballpoint blue — the convention for signing an original rather than a
-   photocopy — marks claim numbers, status, and citation ties; nothing else
-   on the page is colored. Chrome (nav, dockets, reference numerals) stays
-   JetBrains Mono; claim prose is set in Source Serif 4 throughout — one
-   family, weight and size do the hierarchy work, the way a real filing
+   is still literal: the portfolio as a filed patent. Companies are
+   independent claims, case studies are dependent claims ("the system of
+   claim N, wherein…"), technologies are cited references. The desk is dark;
+   every document — the whole reading surface, .screen and everything in it —
+   is a cool graphite sheet one step lighter than the desk it sits on. The
+   neutrals run graphite, not sepia: a modern registry, not aged parchment.
+
+   Three committed inks carry the structural signal: electric indigo for
+   everything a person signs (claim numbers, links, active state, focus),
+   magenta for the one authored stamp mark, and amber for the instrument
+   register — the ruled readout and the numbered reference list — so a
+   filing's three real inks (pen, seal, engraved plate) each carry a
+   distinct, non-decorative role. Chrome (nav, dockets, reference numerals)
+   stays JetBrains Mono; claim prose is set in Source Serif 4 throughout —
+   one family, weight and size do the hierarchy work, the way a real filing
    would.
    --------------------------------------------------------------------------- */
 
 :root {
   /* Desk — sidebar, palette, gutters around the document. */
-  --bg: #100e0a;
-  --panel: #17140e;
-  --border: #2c2718;
-  --border2: #423a24;
-  --text: #ece7d8;
-  --text2: #a89a78;
-  --text3: #8a7d5e; /* ~4.6:1 on --bg — AA for the 10-11.5px labels that use it */
-  --card: #201c13;
+  --bg: #0b0b0f;
+  --panel: #131318;
+  --border: #2a2a33;
+  --border2: #3c3c48;
+  --text: #e9e9ee;
+  --text2: #a3a3b0;
+  --text3: #82828f; /* ~5.2:1 on --bg — AA for the 10-11.5px labels that use it */
+  --card: #1b1b22;
 
-  /* One committed ink: ballpoint blue. Used for claim numbers, status,
-     citation ties and links — never decorative. */
-  --accent: #5b84d6;
-  --accent-ink: #f9eee1; /* text on a solid --accent fill */
-  --sel: rgba(91, 132, 214, 0.22);
+  /* Signing ink: electric indigo. Links, claim numbers, citation ties, focus.
+     --accent is tuned for use AS text/borders on dark surfaces; --accent-fill
+     is a deeper tone for solid badge/active-state fills so --accent-ink text
+     sitting on top still clears 4.5:1 (a single flat indigo can't satisfy
+     both "light enough to read on near-black" and "dark enough for white
+     text on top" at once). */
+  --accent: #8a7ef2;
+  --accent-fill: #5145d8;
+  --accent-ink: #f5f4ff; /* text on a solid --accent-fill */
+  --sel: rgba(138, 126, 242, 0.22);
+
+  /* Magenta: the one authored stamp mark only — never a second link color. */
+  --accent2: #ef5da8;
+  /* Amber: the instrument register — readout ticks/values, citation
+     numerals — kept distinct from signing-indigo links. */
+  --accent3: #f2b84b;
 
   /* The document — applied inside .screen (see "Document surface" below).
      Dark by request: a filed sheet under a desk lamp still reads dark, one
-     step lighter and warmer than the desk it sits on, not a lit white page. */
-  --paper: #1c1810;
-  --paper-card: #242016;
-  --paper-border: #3a331f;
-  --paper-border2: #52492c;
-  --ink: #efe9da;
-  --ink2: #a89a78;
-  --ink3: #8f8362; /* ~4.9:1 on --paper — AA for small mono labels */
+     step lighter than the desk it sits on, not a lit white page. */
+  --paper: #16161d;
+  --paper-card: #1f1f28;
+  --paper-border: #2f2f3a;
+  --paper-border2: #454552;
+  --ink: #eeeef3;
+  --ink2: #a7a7b4;
+  --ink3: #868693; /* ~5.0:1 on --paper — AA for small mono labels */
 
   --font-body: "Source Serif 4", Georgia, serif;
   --font-display: "Source Serif 4", Georgia, serif;
@@ -52,26 +68,32 @@
   /* Daylight desk: paper and desk sit closer in tone than the night-lamp
      dark theme, but the desk stays the cooler, duller surface — the paper is
      still visibly the lit thing. */
-  --bg: #ded6bf;
-  --panel: #d6cdb2;
-  --border: #c7bc9c;
-  --border2: #b3a67f;
-  --text: #241d11;
-  --text2: #5c5136;
-  --text3: #6b5f40; /* ~4.8:1 on --bg — AA for the 10-11.5px labels that use it */
-  --card: #e7e0c9;
+  --bg: #eef0f4;
+  --panel: #e6e8ee;
+  --border: #d7dae2;
+  --border2: #c2c6d1;
+  --text: #14141a;
+  --text2: #4d4d5c;
+  --text3: #6b6b7a; /* ~4.6:1 on --bg — AA for the 10-11.5px labels that use it */
+  --card: #ffffff;
 
-  --accent: #2c56a3;
-  --accent-ink: #fdf6ea;
-  --sel: rgba(44, 86, 163, 0.16);
+  /* In daylight one indigo already clears 4.5:1 both as text and, with
+     --accent-ink on top, as a solid fill — no separate fill tone needed. */
+  --accent: #4f46e5;
+  --accent-fill: #4f46e5;
+  --accent-ink: #fdfdff;
+  --sel: rgba(79, 70, 229, 0.16);
 
-  --paper: #fbf6e9;
-  --paper-card: #f3ead2;
-  --paper-border: #e2d5ac;
-  --paper-border2: #cbb885;
-  --ink: #201a10;
-  --ink2: #55492e;
-  --ink3: #675b3c;
+  --accent2: #c2185b;
+  --accent3: #8f6207;
+
+  --paper: #ffffff;
+  --paper-card: #f5f6fa;
+  --paper-border: #e2e4ec;
+  --paper-border2: #cfd2dc;
+  --ink: #14141a;
+  --ink2: #4d4d5c;
+  --ink3: #6b6b7a;
 }
 
 * {
@@ -364,8 +386,8 @@ a:hover {
 }
 
 .nav-link[aria-current="page"] {
-  color: var(--ink);
-  background: var(--accent);
+  color: var(--accent-ink);
+  background: var(--accent-fill);
 }
 
 .theme-toggle {
@@ -654,7 +676,7 @@ a:hover {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--accent-ink);
-  background: var(--accent);
+  background: var(--accent-fill);
   border-radius: 3px;
   padding: 2px 7px;
   flex-shrink: 0;
@@ -705,7 +727,7 @@ a:hover {
 }
 
 .citation-num {
-  color: var(--accent);
+  color: var(--accent3);
   flex-shrink: 0;
 }
 
@@ -797,7 +819,7 @@ a:hover {
   font-size: 10.5px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent2);
 }
 
 .stamp-mark {
@@ -808,7 +830,7 @@ a:hover {
 
 .stamp-mark circle,
 .stamp-mark path {
-  stroke: var(--accent);
+  stroke: var(--accent2);
 }
 
 .contact-row {
@@ -874,6 +896,16 @@ a:hover {
 .hero-evidence strong {
   color: var(--text);
   font-weight: 400;
+}
+
+/* The margin-note aside folded inline instead of its own block below —
+   two full-weight sentences back to back read as one undifferentiated
+   paragraph; one thesis line plus a short, visibly lighter aside reads as
+   a single stop instead of two. */
+.hero-evidence-aside {
+  font-style: italic;
+  font-size: 13px;
+  color: var(--text3);
 }
 
 .journey-strip {
@@ -1033,14 +1065,14 @@ a:hover {
   left: 18px;
   width: 1px;
   height: 20px;
-  background: var(--accent);
+  background: var(--accent3);
 }
 
 .stat-value {
   font-family: var(--font-mono);
   font-weight: 700;
   font-size: 20px;
-  color: var(--accent);
+  color: var(--accent3);
   font-variant-numeric: tabular-nums;
 }
 
