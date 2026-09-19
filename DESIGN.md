@@ -1,6 +1,6 @@
 ---
-name: Gabriela Schlemper — The Filed Claim
-description: A portfolio recast as a filed patent — companies as independent claims, case studies as dependent claims, technologies as cited references.
+name: Gabriela Schlemper — The Filed Record
+description: A portfolio recast as a filing office's desk — companies, case studies, capabilities and technologies as documents on paper, cross-linked but not numbered against each other.
 colors:
   desk-ground: "#0b0b0f"
   desk-panel: "#131318"
@@ -75,17 +75,6 @@ components:
   card-hover:
     backgroundColor: "{colors.paper-card}"
     rounded: "{rounded.exhibit}"
-  claim-tag:
-    backgroundColor: "{colors.electric-indigo-fill}"
-    textColor: "{colors.electric-indigo-ink}"
-    typography: "{typography.label}"
-    rounded: "3px"
-    padding: "2px 7px"
-  claim-tag-outline:
-    backgroundColor: "transparent"
-    textColor: "{colors.electric-indigo}"
-    typography: "{typography.label}"
-    padding: "1px 6px"
   nav-link-active:
     backgroundColor: "{colors.electric-indigo-fill}"
     textColor: "{colors.electric-indigo-ink}"
@@ -104,23 +93,23 @@ components:
     padding: "6px 14px"
 ---
 
-# Design System: Gabriela Schlemper — The Filed Claim
+# Design System: Gabriela Schlemper — The Filed Record
 
 ## Overview
 
-**Creative North Star: "The Filed Claim"**
+**Creative North Star: "The Filed Record"**
 
-The site is a patent filing, not a project grid or a motion-heavy dev-portfolio flex. A near-black graphite desk (`#0b0b0f`) carries the site chrome — sidebar, command palette, scrollbar — as fixed desk furniture that never changes with the document open on it. Every route renders inside `.screen`, a single sheet of document paper that sits *on* that desk, lifted by a soft compound shadow rather than a hard drop-shadow or a light/dark contrast switch. The neutrals run cool graphite, not sepia or aged parchment: a modern registry rather than a stack of yellowed paper — the desk stays the darkest surface in the room; the paper is one step lighter, so it still visibly reads as the lit thing, without the system reaching for daylight-white or for warmth. The light theme (`data-theme="light"`) is a genuinely separate, bright variant reserved for the explicit toggle, not a blend of the two dark surfaces.
+The site is a filing office's desk, not a project grid or a motion-heavy dev-portfolio flex. A near-black graphite desk (`#0b0b0f`) carries the site chrome — sidebar, command palette, scrollbar — as fixed desk furniture that never changes with the document open on it. Every route renders inside `.screen`, a single sheet of document paper that sits *on* that desk, lifted by a soft compound shadow rather than a hard drop-shadow or a light/dark contrast switch. The neutrals run cool graphite, not sepia or aged parchment: a modern registry rather than a stack of yellowed paper — the desk stays the darkest surface in the room; the paper is one step lighter, so it still visibly reads as the lit thing, without the system reaching for daylight-white or for warmth. The light theme (`data-theme="light"`) is a genuinely separate, bright variant reserved for the explicit toggle, not a blend of the two dark surfaces.
 
-Companies are independent claims, case studies are dependent claims ("the system of claim N, wherein…"), capabilities are claim elements, technologies are numbered cited references. This structural vocabulary is expressed through small mono badges (`claim-tag`), inline citation numerals, and a foot-of-document reference list — never through rewritten prose. Three committed inks carry that structure: electric indigo signs claim numbers, links, and active state; magenta marks the one authored stamp; amber engraves the readout and citation numerals. Nothing else on the page is colored. Type does the rest of the hierarchy work: Source Serif 4 for every claim/prose face at every size, JetBrains Mono for every number, date, label, and piece of document chrome. No third face, no system UI font, ever appears.
+Companies, case studies, capabilities and technologies are each their own filed document — cross-linked (a case study names its company, cites its technologies, links its capabilities) but never numbered against each other. An earlier version of this system numbered everything as patent claims ("claim 4.2," "independent"/"dependent," "claim element"); that vocabulary read as bureaucratic overhead rather than structure, so the numbering is gone — the desk, the paper, the docket, and the filing atmosphere stayed, the cross-referencing now just reads as plain links and plain section labels. Three committed inks still carry the structural signal: electric indigo for links and active state; magenta for the one authored stamp; amber for the instrument register (readouts, the technology citation list). Nothing else on the page is colored. Type does the rest of the hierarchy work: Source Serif 4 for every reading face at every size, JetBrains Mono for every number, date, label, and piece of document chrome. No third face, no system UI font, ever appears.
 
 The one authored physical touch is the stamp mark on the cover — a hand-drawn two-ring checkmark SVG, "approved for contact" — and it is deliberately singular: the system does not multiply stamps, textures, or decorative flourishes elsewhere. Depth is conveyed by layered shadow and the desk/paper token split, never by neobrutalist hard-offset shadows, glyph icons, or a system display face standing in for the serif.
 
 **Key Characteristics:**
-- Three committed inks, each a distinct filing tool, not a "brand palette": electric indigo signs (claim numbers, links, active nav, focus), magenta marks the one authored stamp, amber engraves the instrument register (readouts, citation numerals). Nothing else on the page is colored.
+- Three committed inks, each a distinct filing tool, not a "brand palette": electric indigo signs (links, active nav, focus), magenta marks the one authored stamp, amber engraves the instrument register (readouts, the technology citation list). Nothing else on the page is colored.
 - Two-family type system only: Source Serif 4 for reading, JetBrains Mono for every number and label. No third face.
 - The paper document visibly lifts off the dark desk via a compound ambient shadow, not a light/dark surface switch.
-- A recurring claim/citation vocabulary (`claim-tag`, `citation-list`, `docket`) stands in for a features list — structure is argued, not decorated.
+- Structure is carried by plain links, a numbered technology citation list, and `.docket` metadata lines — not by a numbering scheme layered on top of the content.
 - Counts render as a ruled instrument readout (ticked scale + index marks), never as soft stat-card tiles.
 
 ## Colors
@@ -128,15 +117,15 @@ The one authored physical touch is the stamp mark on the cover — a hand-drawn 
 A two-surface, three-ink system: a near-black graphite desk holds fixed chrome; a slightly lighter graphite paper holds every document; three committed inks — signing indigo, signal magenta, registry amber — split the structural signal that a single accent used to carry alone. All values below are the shipped dark theme, the default and primary reading surface; the light theme composes its own tones for each role rather than inverting these (see each entry).
 
 ### Primary — Electric Indigo (signing ink)
-- **Text/link tone** (`#8a7ef2` dark / `#4f46e5` light): claim-number outline badges, inline links, citation-tie links, focus rings, the ⌘K caret, margin notes, selection highlight (`rgba(138, 126, 242, 0.22)` dark / `rgba(79, 70, 229, 0.16)` light). Tuned to read clearly as text/borders directly on desk, paper, *and* paper-card (4.9–5.9:1 across all three in dark).
-- **Fill tone** (`--accent-fill`: `#5145d8` dark / same `#4f46e5` light): the background of solid badges and active state — `claim-tag`, the active nav link. Dark theme needs a second, deeper indigo here: a single flat indigo can't be light enough to read on near-black *and* dark enough for white text on top of it at once, so the fill sits one step darker than the text/link tone, paired with `--accent-ink` (`#f5f4ff`). Light theme's indigo already clears both directions, so fill and text share one value there.
+- **Text/link tone** (`#8a7ef2` dark / `#4f46e5` light): inline links, the case-affiliation link, focus rings, the ⌘K caret, margin notes, selection highlight (`rgba(138, 126, 242, 0.22)` dark / `rgba(79, 70, 229, 0.16)` light). Tuned to read clearly as text/borders directly on desk, paper, *and* paper-card (4.9–5.9:1 across all three in dark).
+- **Fill tone** (`--accent-fill`: `#5145d8` dark / same `#4f46e5` light): the background of the active nav link, the only solid-fill use in the system. Dark theme needs a second, deeper indigo here: a single flat indigo can't be light enough to read on near-black *and* dark enough for white text on top of it at once, so the fill sits one step darker than the text/link tone, paired with `--accent-ink` (`#f5f4ff`). Light theme's indigo already clears both directions, so fill and text share one value there.
 - Never used decoratively; always a link, an active/selected state, or a focus indicator.
 
 ### Secondary — Signal Magenta (the one authored stamp)
 - **`#ef5da8`** dark / **`#c2185b`** light: the cover's "open to opportunities" stamp — the mark's ring, checkmark stroke, and label — only. Not a second link color, not a status palette; it stays confined to this one singular, hand-authored mark, the same restraint the stamp itself always had.
 
 ### Tertiary — Registry Amber (the instrument register)
-- **`#f2b84b`** dark / **`#8f6207`** light: the ruled readout (`.stat-value`, its index tick) and the citation numerals (`.citation-num`) in the References Cited list — the two places numbers are measured or catalogued rather than signed or linked. Gives the "instrument panel" and "engraved reference plate" reading its own register, distinct from a clickable link.
+- **`#f2b84b`** dark / **`#8f6207`** light: the ruled readout (`.stat-value`, its index tick) and the citation numerals (`.citation-num`) in a case study's technology list — the two places numbers are measured or catalogued rather than signed or linked. Gives the "instrument panel" and "engraved reference plate" reading its own register, distinct from a clickable link.
 
 ### Neutral — Desk (chrome: sidebar, command palette, gutters)
 - **Desk Ground** (`#0b0b0f`): page background outside the document; the darkest surface in the system.
@@ -152,7 +141,7 @@ A two-surface, three-ink system: a near-black graphite desk holds fixed chrome; 
 - **Ink / Ink Secondary / Ink Tertiary** (`#eeeef3` / `#a7a7b4` / `#868693`): body, secondary, and small-label text on paper. Ink Tertiary is verified ~5.0:1 on paper — AA for small mono labels.
 
 ### Named Rules
-**The Three Inks Rule.** Every saturated color in the system is one of exactly three, each a real filing tool with one job: electric indigo signs (links, active state, focus, claim numbers), signal magenta marks the one authored stamp, registry amber engraves the instrument register (readouts, citation numerals). No color is ever used outside its assigned role, no fourth ink is introduced, and magenta never spreads past the singular stamp mark into a general second accent.
+**The Three Inks Rule.** Every saturated color in the system is one of exactly three, each a real filing tool with one job: electric indigo signs (links, active state, focus), signal magenta marks the one authored stamp, registry amber engraves the instrument register (readouts, citation numerals). No color is ever used outside its assigned role, no fourth ink is introduced, and magenta never spreads past the singular stamp mark into a general second accent.
 
 **The Paper-Lifts-Off-Desk Rule.** Depth between chrome and document is conveyed by token split (desk vs. paper, one step lighter) plus a compound ambient shadow on `.screen` — never by a light/dark theme switch. Both surfaces stay dark graphite in the default theme; only the explicit light-theme toggle is genuinely bright.
 
@@ -161,7 +150,7 @@ A two-surface, three-ink system: a near-black graphite desk holds fixed chrome; 
 **Display/Body Font:** Source Serif 4 (with Georgia, serif fallback)
 **Label/Mono Font:** JetBrains Mono (with ui-monospace, monospace fallback)
 
-**Character:** One serif carries every size of reading prose, from the 40px cover title down to 13px inline text — weight (400/600/700) and size do the hierarchy work rather than a second display face, "the way a real filing would." JetBrains Mono is reserved entirely for numbers, dates, structural labels, and document chrome (nav, docket lines, claim tags, citation numerals) — it never appears as reading prose.
+**Character:** One serif carries every size of reading prose, from the 40px cover title down to 13px inline text — weight (400/600/700) and size do the hierarchy work rather than a second display face, "the way a real filing would." JetBrains Mono is reserved entirely for numbers, dates, structural labels, and document chrome (nav, docket lines, citation numerals) — it never appears as reading prose.
 
 ### Hierarchy
 - **Display** (700, 40px, 1.12 line-height): `.cover-title`, the Home screen's applicant name — the largest text in the system.
@@ -209,8 +198,8 @@ Corners run a narrow three-step scale by role, never by whim: **3px** ("exhibit"
 - **Shadow Strategy:** none at rest; `.card-link` hover adds only a 2px upward `translateY`, no added shadow — cards are "exhibits cut from the same paper stock," never a second, heavier surface floating above the document.
 - **Internal Padding:** varies by density: 14–18px for compact list items (`.mini-card`, `.think-item`), 18–22px for standard cards (`.cap-card`), 20–26px for featured/entry cards (`.entry-card`, `.featured-card`).
 
-### Claim Chrome (signature component)
-The recurring structural device that stands in for a features list. `.claim-tag` is a solid badge (mono, uppercase, 10px, `2px 7px` padding) filled with `--accent-fill` and set in `--accent-ink`, marking a claim number; `.claim-tag--outline` is the same badge inverted (`--accent` text, 1px `--accent` border, transparent fill) for a secondary/citing reference. `.citation-list` sits at the foot of a claim as a numbered "References Cited" block — each `.citation-item` pairs an amber (`--accent3`) `.citation-num` with the cited technology, its link text turning signing-indigo only on hover. `.docket` is the mono metadata line every page-level heading gets instead of a kicker. Used only as small badges and reference marks; never as rewritten prose, and never for anything the content model doesn't actually support (a company that isn't a claim, a technology that isn't cited).
+### Citations
+A case study's technologies render as a numbered list at the foot of the document (`.citation-list`) rather than a chip cloud: each `.citation-item` pairs an amber (`--accent3`) `.citation-num` with the technology name, its link text turning signing-indigo only on hover. `.docket` is the mono metadata line every page-level heading gets instead of a kicker — used for availability, dates, and document counts, never for a numbering scheme layered over the content.
 
 ### Readout (signature component)
 Repository counts (`.stats-grid`) render as a calibrated instrument panel, not stat-card tiles: a repeating-gradient ruled tick baseline runs the full width, and each `.stat` drops an amber (`--accent3`) index mark (a short vertical tick) to it in place of a card border. Values (`.stat-value`) are mono, bold, tabular-nums, amber; labels are small tracked mono caps. The amber register — not signing-indigo — is what marks this as measured/catalogued rather than linked. Counts animate via `CountUp`, which settles the last ~30% of the value on scroll-into-view rather than climbing from zero — deliberately, so a static/prerendered capture never shows a false "0."
@@ -244,5 +233,6 @@ The one authored, hand-drawn mark in the system: a two-ring circle with a checkm
 - **Don't** multiply the stamp mark or any hand-authored texture into a general decorative device; it is a singular, one-time authored touch on the Home cover.
 - **Don't** let signal magenta spread past the stamp, or registry amber past the readout/citation numerals, into a general second or third link color — each ink stays confined to its one assigned role.
 - **Don't** reach for sepia, cream, or any warm parchment tone for the neutrals — this world is cool graphite, a modern registry, not aged paper.
+- **Don't** reintroduce a claim/reference numbering scheme (`claim 4.2`, "independent"/"dependent," "claim element") — it was tried and removed for reading like bureaucratic overhead; cross-references are plain links and plain section labels now.
 - **Don't** use `.eyebrow` as a caption sitting above a separate, bigger heading (a kicker). Its only sanctioned use is standing in as a section's own heading, weighted to match `.section-label`.
 - **Don't** use a glyph icon font or system display face; icons that exist (the stamp mark) are hand-drawn inline SVG, and every face is Source Serif 4 or JetBrains Mono.

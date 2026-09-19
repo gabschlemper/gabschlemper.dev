@@ -14,8 +14,6 @@ export default function CompanyDetail() {
 
   if (!company) return <NotFound />;
 
-  const claimNum = companies.findIndex((entry) => entry.id === company.id) + 1;
-
   const companyCases = company.caseIds
     .map((caseId) => cases.find((study) => study.id === caseId))
     .filter((study): study is NonNullable<typeof study> => Boolean(study));
@@ -29,10 +27,6 @@ export default function CompanyDetail() {
       </div>
 
       <div className="card company-header">
-        <div className="docket" style={{ margin: "0 0 12px" }}>
-          <span className="claim-tag">{t.companyDetail.claim(claimNum)}</span>
-          <span className="claim-tag claim-tag--outline">{t.companyDetail.independent}</span>
-        </div>
         <h1 className="display display--detail">{company.name}</h1>
         <div className="fact-grid">
           <div className="fact-key">{t.companyDetail.role}</div>
@@ -89,7 +83,7 @@ export default function CompanyDetail() {
       </div>
 
       <div className="section-label" style={{ marginTop: 40 }}>
-        {t.companyDetail.referencesCited}
+        {t.companyDetail.technologies}
       </div>
       <div className="chip-row">
         {company.technologies.map((tech) => (
@@ -106,16 +100,13 @@ export default function CompanyDetail() {
       {companyCases.length > 0 && (
         <>
           <div className="section-label" style={{ marginTop: 40 }}>
-            {t.companyDetail.dependentClaims(companyCases.length, claimNum)}
+            {t.companyDetail.caseStudiesHere(companyCases.length)}
           </div>
           <div className="stack" style={{ gap: 10, marginTop: 14 }}>
-            {companyCases.map((study, i) => (
+            {companyCases.map((study) => (
               <Link className="card-link" to={loc(`/cases/${study.id}`)} key={study.id}>
                 <div className="mini-card">
                   <div className="mini-meta">
-                    <span className="claim-tag claim-tag--outline">
-                      {t.companyDetail.claimDep(claimNum, i + 1)}
-                    </span>
                     <span>{study.category}</span>
                     <span style={{ marginLeft: "auto" }}>{study.readingTime}</span>
                   </div>

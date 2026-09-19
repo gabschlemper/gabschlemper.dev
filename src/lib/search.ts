@@ -80,7 +80,7 @@ function build(kb: KnowledgeBaseModule, t: Strings, locale: Locale): SearchEntry
     [t.search.journey, loc("/journey"), t.search.journeySub],
     [t.search.companies, loc("/companies"), t.search.entries(companies.length)],
     [t.search.cases, loc("/cases"), t.search.entries(cases.length)],
-    [t.search.capabilities, loc("/capabilities"), t.search.claimsWithEvidence(capabilities.length)],
+    [t.search.capabilities, loc("/capabilities"), t.search.capabilitiesWithEvidence(capabilities.length)],
     [t.search.technologies, loc("/technologies"), t.search.entries(technologies.length)],
     [t.search.principles, loc("/principles"), t.search.principlesCount(principles.length)],
     [t.search.map, loc("/map"), t.search.mapSub],

@@ -29,10 +29,7 @@ export default function CapabilityDetail() {
       </div>
 
       <h1 className="display display--detail">{capability.name}</h1>
-      <div className="docket" style={{ margin: "0 0 12px" }}>
-        <span className="claim-tag claim-tag--outline">{t.capabilityDetail.claimElement}</span>
-      </div>
-      <p className="lede" style={{ maxWidth: 620 }}>
+      <p className="lede" style={{ maxWidth: 620, marginTop: 12 }}>
         {capability.desc}
       </p>
       <div className="entry-period" style={{ marginTop: 20 }}>

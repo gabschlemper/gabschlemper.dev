@@ -52,7 +52,7 @@ export interface Strings {
     entries: (n: number) => string;
     cases: string;
     capabilities: string;
-    claimsWithEvidence: (n: number) => string;
+    capabilitiesWithEvidence: (n: number) => string;
     technologies: string;
     principles: string;
     principlesCount: (n: number) => string;
@@ -83,14 +83,11 @@ export interface Strings {
   companies: {
     title: string;
     docket: (n: number) => string;
-    claim: (n: number) => string;
     caseStudiesAnd: (cases: number, techs: number) => string;
     phase: (phase: string) => string;
   };
   companyDetail: {
     breadcrumb: string;
-    claim: (n: number) => string;
-    independent: string;
     role: string;
     period: string;
     domain: string;
@@ -98,22 +95,19 @@ export interface Strings {
     businessDomain: string;
     responsibilities: string;
     achievements: string;
-    referencesCited: string;
-    dependentClaims: (n: number, claim: number) => string;
+    technologies: string;
+    caseStudiesHere: (n: number) => string;
     lessonsLearned: string;
-    claimDep: (claim: number, dep: number) => string;
   };
   cases: {
     title: string;
     docket: (n: number) => string;
     lede: string;
-    claimDep: (claim: number, dep: number) => string;
     featured: (readingTime: string) => string;
   };
   caseDetail: {
     breadcrumb: string;
-    claimDep: (claim: number, dep: number) => string;
-    dependentCites: string;
+    at: string;
     impact: string;
     category: string;
     difficulty: string;
@@ -121,8 +115,8 @@ export interface Strings {
     customerFacing: string;
     readingTime: string;
     company: string;
-    claimElements: string;
-    referencesCited: string;
+    capabilities: string;
+    technologies: string;
     copyLink: string;
     linkCopied: string;
     onThisPage: string;
@@ -135,7 +129,6 @@ export interface Strings {
   };
   capabilityDetail: {
     breadcrumb: string;
-    claimElement: string;
     citedIn: (cases: number, companies: number) => string;
     provingDocuments: string;
     exercisedAt: string;
@@ -148,7 +141,6 @@ export interface Strings {
   };
   technologyDetail: {
     breadcrumb: string;
-    referenceCited: string;
     howIUsedIt: string;
     companies: string;
     appearsIn: string;
@@ -246,12 +238,12 @@ export const en: Strings = {
     entries: (n) => `${n} entries`,
     cases: "Case Studies",
     capabilities: "Capabilities",
-    claimsWithEvidence: (n) => `${n} claims with evidence`,
+    capabilitiesWithEvidence: (n) => `${n} capabilities backed by evidence`,
     technologies: "Technologies",
     principles: "Engineering Principles",
     principlesCount: (n) => `${n} principles`,
     map: "Evidence Map",
-    mapSub: "why each claim holds",
+    mapSub: "how the evidence connects",
     engineeringPrinciple: "engineering principle",
   },
   contact: {
@@ -265,7 +257,7 @@ export const en: Strings = {
     availability: "Italian citizenship, no sponsorship needed in Europe · remote or on-site",
     yearsExperience: (n) => ` · ${n} years experience`,
     abstractLabel: "Abstract",
-    careerJourney: (n) => `career journey — claims 1–${n}`,
+    careerJourney: (n) => `career journey — ${n} companies`,
     highlightedCaseStudies: "highlighted case studies",
     all: (n) => `all ${n} →`,
     impact: "impact:",
@@ -276,15 +268,12 @@ export const en: Strings = {
   },
   companies: {
     title: "Companies",
-    docket: (n) => `${n} independent claims filed`,
-    claim: (n) => `claim ${n}`,
+    docket: (n) => `${n} companies documented`,
     caseStudiesAnd: (cases, techs) => `${cases} case studies · ${techs} technologies`,
     phase: (phase) => `phase: ${phase.toLowerCase()}`,
   },
   companyDetail: {
     breadcrumb: "companies",
-    claim: (n) => `claim ${n}`,
-    independent: "independent",
     role: "role",
     period: "period",
     domain: "domain",
@@ -292,22 +281,19 @@ export const en: Strings = {
     businessDomain: "business domain",
     responsibilities: "responsibilities",
     achievements: "achievements",
-    referencesCited: "references cited",
-    dependentClaims: (n, claim) => `dependent claims — ${n} filed under claim ${claim}`,
+    technologies: "technologies",
+    caseStudiesHere: (n) => `${n} case studies here`,
     lessonsLearned: "lessons learned",
-    claimDep: (claim, dep) => `claim ${claim}.${dep}`,
   },
   cases: {
     title: "Case Studies",
-    docket: (n) => `${n} dependent claims filed`,
+    docket: (n) => `${n} case studies documented`,
     lede: "Context, constraints, alternatives, decision, trade-offs. Never just the output.",
-    claimDep: (claim, dep) => `claim ${claim}.${dep}`,
     featured: (readingTime) => `★ featured · ${readingTime}`,
   },
   caseDetail: {
     breadcrumb: "case-studies",
-    claimDep: (claim, dep) => `claim ${claim}.${dep}`,
-    dependentCites: "dependent — cites",
+    at: "at",
     impact: "impact",
     category: "category",
     difficulty: "difficulty",
@@ -315,34 +301,32 @@ export const en: Strings = {
     customerFacing: "customer facing",
     readingTime: "reading time",
     company: "company",
-    claimElements: "claim elements",
-    referencesCited: "references cited",
+    capabilities: "capabilities",
+    technologies: "technologies",
     copyLink: "copy link",
     linkCopied: "✓ link copied",
     onThisPage: "on this page",
   },
   capabilities: {
     title: "Capabilities",
-    docket: (n) => `${n} claim elements, cited across every claim`,
+    docket: (n) => `${n} capabilities, each backed by evidence`,
     lede: "Not technologies — capabilities. Each one links to the documents that prove it.",
     evidence: (cases, companies) => `${cases} case studies · ${companies} companies`,
   },
   capabilityDetail: {
     breadcrumb: "capabilities",
-    claimElement: "claim element",
-    citedIn: (cases, companies) => `cited in: ${cases} proving documents · ${companies} companies`,
+    citedIn: (cases, companies) => `evidenced in: ${cases} case studies · ${companies} companies`,
     provingDocuments: "proving documents",
     exercisedAt: "exercised at",
   },
   technologies: {
     title: "Technologies",
-    docket: (n) => `${n} references cited — how, not just what`,
+    docket: (n) => `${n} technologies — how, not just what`,
     lede: "Every entry documents how I used it — not a logo grid.",
     freelance: "freelance",
   },
   technologyDetail: {
     breadcrumb: "technologies",
-    referenceCited: "reference cited",
     howIUsedIt: "how i used it",
     companies: "companies",
     appearsIn: "appears in",
@@ -376,8 +360,8 @@ export const en: Strings = {
   },
   evidenceMap: {
     title: "Evidence Map",
-    docket: "citation network — why each claim holds",
-    lede: "Capabilities connect to the case studies that prove them, the companies where they happened, and the technologies involved. Tap or hover a node to trace a claim; open it to read the document.",
+    docket: "citation network — how the evidence connects",
+    lede: "Capabilities connect to the case studies that prove them, the companies where they happened, and the technologies involved. Tap or hover a node to trace a connection; open it to read the document.",
     hint: "the graph is wider than the screen — drag it sideways →",
     columns: {
       capabilities: "capabilities",
@@ -387,7 +371,7 @@ export const en: Strings = {
     },
   },
   notFound: {
-    code: "404 — rejected, no such claim on file",
+    code: "404 — no such document on file",
     title: "Nothing filed here",
     lede: "This path does not match any document in the repository. Try the search, or start from the",
     index: "index",
@@ -445,12 +429,12 @@ export const pt: Strings = {
     entries: (n) => `${n} registros`,
     cases: "Estudos de Caso",
     capabilities: "Capacidades",
-    claimsWithEvidence: (n) => `${n} reivindicações com evidência`,
+    capabilitiesWithEvidence: (n) => `${n} capacidades comprovadas com evidência`,
     technologies: "Tecnologias",
     principles: "Princípios de Engenharia",
     principlesCount: (n) => `${n} princípios`,
     map: "Mapa de Evidências",
-    mapSub: "por que cada reivindicação se sustenta",
+    mapSub: "como a evidência se conecta",
     engineeringPrinciple: "princípio de engenharia",
   },
   contact: {
@@ -464,7 +448,7 @@ export const pt: Strings = {
     availability: "Cidadania italiana, sem necessidade de patrocínio de visto na Europa · remoto ou presencial",
     yearsExperience: (n) => ` · ${n} anos de experiência`,
     abstractLabel: "Resumo",
-    careerJourney: (n) => `trajetória profissional — reivindicações 1–${n}`,
+    careerJourney: (n) => `trajetória profissional — ${n} empresas`,
     highlightedCaseStudies: "estudos de caso em destaque",
     all: (n) => `todos os ${n} →`,
     impact: "impacto:",
@@ -475,15 +459,12 @@ export const pt: Strings = {
   },
   companies: {
     title: "Empresas",
-    docket: (n) => `${n} reivindicações independentes registradas`,
-    claim: (n) => `reivindicação ${n}`,
+    docket: (n) => `${n} empresas documentadas`,
     caseStudiesAnd: (cases, techs) => `${cases} estudos de caso · ${techs} tecnologias`,
     phase: (phase) => `fase: ${phase.toLowerCase()}`,
   },
   companyDetail: {
     breadcrumb: "empresas",
-    claim: (n) => `reivindicação ${n}`,
-    independent: "independente",
     role: "cargo",
     period: "período",
     domain: "domínio",
@@ -491,22 +472,19 @@ export const pt: Strings = {
     businessDomain: "domínio de negócio",
     responsibilities: "responsabilidades",
     achievements: "conquistas",
-    referencesCited: "referências citadas",
-    dependentClaims: (n, claim) => `reivindicações dependentes — ${n} registradas sob a reivindicação ${claim}`,
+    technologies: "tecnologias",
+    caseStudiesHere: (n) => `${n} estudos de caso aqui`,
     lessonsLearned: "lições aprendidas",
-    claimDep: (claim, dep) => `reivindicação ${claim}.${dep}`,
   },
   cases: {
     title: "Estudos de Caso",
-    docket: (n) => `${n} reivindicações dependentes registradas`,
+    docket: (n) => `${n} estudos de caso documentados`,
     lede: "Contexto, restrições, alternativas, decisão, trade-offs. Nunca só o resultado.",
-    claimDep: (claim, dep) => `reivindicação ${claim}.${dep}`,
     featured: (readingTime) => `★ destaque · ${readingTime}`,
   },
   caseDetail: {
     breadcrumb: "estudos-de-caso",
-    claimDep: (claim, dep) => `reivindicação ${claim}.${dep}`,
-    dependentCites: "dependente — cita",
+    at: "na",
     impact: "impacto",
     category: "categoria",
     difficulty: "dificuldade",
@@ -514,34 +492,32 @@ export const pt: Strings = {
     customerFacing: "voltado ao cliente",
     readingTime: "tempo de leitura",
     company: "empresa",
-    claimElements: "elementos da reivindicação",
-    referencesCited: "referências citadas",
+    capabilities: "capacidades",
+    technologies: "tecnologias",
     copyLink: "copiar link",
     linkCopied: "✓ link copiado",
     onThisPage: "nesta página",
   },
   capabilities: {
     title: "Capacidades",
-    docket: (n) => `${n} elementos de reivindicação, citados em todas as reivindicações`,
+    docket: (n) => `${n} capacidades, cada uma comprovada por evidência`,
     lede: "Não são tecnologias — são capacidades. Cada uma linka para os documentos que a comprovam.",
     evidence: (cases, companies) => `${cases} estudos de caso · ${companies} empresas`,
   },
   capabilityDetail: {
     breadcrumb: "capacidades",
-    claimElement: "elemento da reivindicação",
-    citedIn: (cases, companies) => `citada em: ${cases} documentos comprobatórios · ${companies} empresas`,
+    citedIn: (cases, companies) => `evidenciada em: ${cases} estudos de caso · ${companies} empresas`,
     provingDocuments: "documentos comprobatórios",
     exercisedAt: "exercida em",
   },
   technologies: {
     title: "Tecnologias",
-    docket: (n) => `${n} referências citadas — como, não só o quê`,
+    docket: (n) => `${n} tecnologias — como, não só o quê`,
     lede: "Cada entrada documenta como eu usei — não é uma grade de logos.",
     freelance: "freelance",
   },
   technologyDetail: {
     breadcrumb: "tecnologias",
-    referenceCited: "referência citada",
     howIUsedIt: "como eu usei",
     companies: "empresas",
     appearsIn: "aparece em",
@@ -575,8 +551,8 @@ export const pt: Strings = {
   },
   evidenceMap: {
     title: "Mapa de Evidências",
-    docket: "rede de citações — por que cada reivindicação se sustenta",
-    lede: "Capacidades se conectam aos estudos de caso que as comprovam, às empresas onde aconteceram, e às tecnologias envolvidas. Toque ou passe o mouse sobre um nó para rastrear uma reivindicação; abra-o para ler o documento.",
+    docket: "rede de citações — como a evidência se conecta",
+    lede: "Capacidades se conectam aos estudos de caso que as comprovam, às empresas onde aconteceram, e às tecnologias envolvidas. Toque ou passe o mouse sobre um nó para rastrear uma conexão; abra-o para ler o documento.",
     hint: "o grafo é mais largo que a tela — arraste para o lado →",
     columns: {
       capabilities: "capacidades",
@@ -586,7 +562,7 @@ export const pt: Strings = {
     },
   },
   notFound: {
-    code: "404 — rejeitado, nenhuma reivindicação encontrada",
+    code: "404 — nenhum documento registrado nesse endereço",
     title: "Nada registrado aqui",
     lede: "Este caminho não corresponde a nenhum documento no repositório. Tente a busca, ou comece pelo",
     index: "índice",

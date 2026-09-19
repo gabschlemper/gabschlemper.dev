@@ -1,23 +1,22 @@
 /* ---------------------------------------------------------------------------
    Gabriela Schlemper — design tokens
 
-   The concept stays a documentation repo, not a landing page — and the world
-   is still literal: the portfolio as a filed patent. Companies are
-   independent claims, case studies are dependent claims ("the system of
-   claim N, wherein…"), technologies are cited references. The desk is dark;
-   every document — the whole reading surface, .screen and everything in it —
-   is a cool graphite sheet one step lighter than the desk it sits on. The
-   neutrals run graphite, not sepia: a modern registry, not aged parchment.
+   The concept stays a documentation repo, not a landing page — the portfolio
+   as a filed record: companies, case studies, capabilities and technologies
+   are each their own filed document, cross-linked but not numbered against
+   each other. The desk is dark; every document — the whole reading surface,
+   .screen and everything in it — is a cool graphite sheet one step lighter
+   than the desk it sits on. The neutrals run graphite, not sepia: a modern
+   registry, not aged parchment.
 
    Three committed inks carry the structural signal: electric indigo for
-   everything a person signs (claim numbers, links, active state, focus),
-   magenta for the one authored stamp mark, and amber for the instrument
-   register — the ruled readout and the numbered reference list — so a
-   filing's three real inks (pen, seal, engraved plate) each carry a
-   distinct, non-decorative role. Chrome (nav, dockets, reference numerals)
-   stays JetBrains Mono; claim prose is set in Source Serif 4 throughout —
-   one family, weight and size do the hierarchy work, the way a real filing
-   would.
+   everything a person signs (links, active state, focus), magenta for the
+   one authored stamp mark, and amber for the instrument register — the ruled
+   readout and the numbered technology list — so a filing's three real inks
+   (pen, seal, engraved plate) each carry a distinct, non-decorative role.
+   Chrome (nav, dockets, reference numerals) stays JetBrains Mono; reading
+   prose is set in Source Serif 4 throughout — one family, weight and size do
+   the hierarchy work, the way a real filing would.
    --------------------------------------------------------------------------- */
 
 :root {
@@ -31,7 +30,7 @@
   --text3: #82828f; /* ~5.2:1 on --bg — AA for the 10-11.5px labels that use it */
   --card: #1b1b22;
 
-  /* Signing ink: electric indigo. Links, claim numbers, citation ties, focus.
+  /* Signing ink: electric indigo. Links, active nav state, focus.
      --accent is tuned for use AS text/borders on dark surfaces; --accent-fill
      is a deeper tone for solid badge/active-state fills so --accent-ink text
      sitting on top still clears 4.5:1 (a single flat indigo can't satisfy
@@ -684,54 +683,29 @@ a:hover {
 }
 
 /* ---------------------------------------------------------------------------
-   Claim chrome — the one recurring structural device: every company is an
-   independent claim, every case study a dependent claim that cites one, every
-   capability a claim element, every technology a cited reference. Used as
-   small mono badges and reference marks, never as rewritten prose.
+   Case-company affiliation — a small mono cite line under a case study's
+   title linking back to the company it happened at.
    --------------------------------------------------------------------------- */
 
-.claim-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent-ink);
-  background: var(--accent-fill);
-  border-radius: 3px;
-  padding: 2px 7px;
-  flex-shrink: 0;
-}
-
-.claim-tag--outline {
-  color: var(--accent);
-  background: transparent;
-  border: 1px solid var(--accent);
-  padding: 1px 6px;
-}
-
-.claim-cite {
+.case-affiliation {
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--text3);
 }
 
-.claim-cite a {
+.case-affiliation a {
   color: var(--text2);
   text-decoration: underline;
   text-decoration-color: var(--border2);
   text-underline-offset: 2px;
 }
 
-.claim-cite a:hover {
+.case-affiliation a:hover {
   color: var(--accent);
   text-decoration-color: var(--accent);
 }
 
-/* Reference list at the foot of a claim: technologies cited, numbered like a
-   filing's "References Cited". */
+/* Numbered technology list at the foot of a case study. */
 .citation-list {
   display: flex;
   flex-direction: column;
@@ -1275,7 +1249,7 @@ a:hover {
 }
 
 /* ---------------------------------------------------------------------------
-   Companies — independent claims
+   Companies
    --------------------------------------------------------------------------- */
 
 .entry-card {
@@ -1443,7 +1417,7 @@ a:hover {
 }
 
 /* ---------------------------------------------------------------------------
-   Cases — dependent claims
+   Case studies
    --------------------------------------------------------------------------- */
 
 .case-card {
@@ -1764,7 +1738,7 @@ a:hover {
 }
 
 /* ---------------------------------------------------------------------------
-   Capabilities / technologies — claim elements and cited references
+   Capabilities / technologies
    --------------------------------------------------------------------------- */
 
 .grid-2 {

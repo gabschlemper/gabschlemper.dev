@@ -17,7 +17,7 @@ export default function Companies() {
       </div>
 
       <div className="stack" style={{ gap: 14, marginTop: 28 }}>
-        {companies.map((company, i) => (
+        {companies.map((company) => (
           <Link
             className="card-link"
             to={withLocale(`/companies/${company.id}`, locale)}
@@ -25,7 +25,6 @@ export default function Companies() {
           >
             <div className="entry-card">
               <div className="entry-head">
-                <span className="claim-tag">{t.companies.claim(i + 1)}</span>
                 <span className="entry-name">{company.name}</span>
                 <span className="entry-period">{company.period}</span>
                 <span className="entry-meta">

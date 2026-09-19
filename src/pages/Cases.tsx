@@ -6,7 +6,7 @@ export default function Cases() {
   // Source order: highest-seniority case studies first, per
   // scripts/generate-portfolio.mjs in professional-knowledge-base. "Featured"
   // (has a hand-drawn diagram) is shown as a badge only, not a sort key.
-  const { cases, companies } = useKnowledgeBase();
+  const { cases } = useKnowledgeBase();
   const locale = useLocale();
   const t = useStrings();
   const loc = (path: string) => withLocale(path, locale);
@@ -22,35 +22,23 @@ export default function Cases() {
       <p className="lede">{t.cases.lede}</p>
 
       <div className="stack" style={{ gap: 12, marginTop: 28 }}>
-        {cases.map((study) => {
-          const company = companies.find((entry) => entry.name === study.company);
-          const claimNum = company ? companies.indexOf(company) + 1 : null;
-          const depNum =
-            company && claimNum ? company.caseIds.indexOf(study.id) + 1 : null;
-
-          return (
-            <Link className="card-link" to={loc(`/cases/${study.id}`)} key={study.id}>
-              <div
-                className={`case-card${study.featured ? " case-card--featured" : ""}`}
-              >
-                <div className="card-meta">
-                  {claimNum && depNum && (
-                    <span className="claim-tag claim-tag--outline">
-                      {t.cases.claimDep(claimNum, depNum)}
-                    </span>
-                  )}
-                  <span className="accent">{study.company}</span>
-                  <span>{study.category}</span>
-                  <span className="push">
-                    {study.featured ? t.cases.featured(study.readingTime) : study.readingTime}
-                  </span>
-                </div>
-                <div className="case-title">{study.title}</div>
-                <div className="case-summary">{study.summary}</div>
+        {cases.map((study) => (
+          <Link className="card-link" to={loc(`/cases/${study.id}`)} key={study.id}>
+            <div
+              className={`case-card${study.featured ? " case-card--featured" : ""}`}
+            >
+              <div className="card-meta">
+                <span className="accent">{study.company}</span>
+                <span>{study.category}</span>
+                <span className="push">
+                  {study.featured ? t.cases.featured(study.readingTime) : study.readingTime}
+                </span>
               </div>
-            </Link>
-          );
-        })}
+              <div className="case-title">{study.title}</div>
+              <div className="case-summary">{study.summary}</div>
+            </div>
+          </Link>
+        ))}
       </div>
     </div>
   );

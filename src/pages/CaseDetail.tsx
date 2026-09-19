@@ -64,9 +64,6 @@ export default function CaseDetail() {
   if (!study) return <NotFound />;
 
   const company = companies.find((entry) => entry.name === study.company);
-  const claimNum = company ? companies.indexOf(company) + 1 : null;
-  const depNum =
-    company && claimNum ? company.caseIds.indexOf(study.id) + 1 : null;
 
   const scrollToSection = (sectionId: string) => {
     const el = document.getElementById(`sec-${sectionId}`);
@@ -115,15 +112,10 @@ export default function CaseDetail() {
           </div>
 
           <h1 className="display display--case">{study.title}</h1>
-          {claimNum && depNum && company && (
+          {company && (
             <div className="docket" style={{ margin: "0 0 12px" }}>
-              <span className="claim-tag">{t.caseDetail.claimDep(claimNum, depNum)}</span>
-              <span className="claim-cite">
-                {t.caseDetail.dependentCites}{" "}
-                <Link to={loc(`/companies/${company.id}`)}>
-                  {t.companyDetail.claim(claimNum)}
-                </Link>{" "}
-                ({company.name})
+              <span className="case-affiliation">
+                {t.caseDetail.at} <Link to={loc(`/companies/${company.id}`)}>{company.name}</Link>
               </span>
             </div>
           )}
@@ -220,7 +212,7 @@ export default function CaseDetail() {
             </div>
 
             <div>
-              <div className="case-fact-key">{t.caseDetail.claimElements}</div>
+              <div className="case-fact-key">{t.caseDetail.capabilities}</div>
               <div className="tag-row">
                 {study.capabilities.map((name) => {
                   const capability = capabilities.find((c) => c.name === name);
@@ -242,7 +234,7 @@ export default function CaseDetail() {
             </div>
 
             <div>
-              <div className="case-fact-key">{t.caseDetail.referencesCited}</div>
+              <div className="case-fact-key">{t.caseDetail.technologies}</div>
               <div className="citation-list">
                 {study.technologies.map((tech, i) => (
                   <div className="citation-item" key={tech}>

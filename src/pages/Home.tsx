@@ -112,12 +112,7 @@ export default function Home() {
             {i > 0 && <div className="journey-arrow">←</div>}
             <Link className="card-link" to={loc(`/companies/${company.id}`)}>
               <div className="journey-card">
-                <div className="journey-card-period">
-                  <span className="claim-tag claim-tag--outline">
-                    {t.companies.claim(i + 1)}
-                  </span>{" "}
-                  {company.period}
-                </div>
+                <div className="journey-card-period">{company.period}</div>
                 <div className="journey-card-name">{company.name}</div>
                 <div className="journey-card-phase">{company.phase}</div>
               </div>
@@ -126,14 +121,11 @@ export default function Home() {
         ))}
       </Reveal>
 
-      {/* Deliberately flat, not literally "claim 1's dependents": the home
-          screen surveys the whole docket (all N claims, via the tagged
-          journey strip above) cross-cut with the strongest evidence
-          regardless of which claim it cites — nesting every claim's full
-          dependent list here would read as claim 1's page twice and cost
-          the fast scan the brief asked for. Each card still carries its own
-          claim.dependent tag, so the citation is never lost, just not
-          grouped by claim on this one overview screen. */}
+      {/* Deliberately flat, not grouped by company: the home screen surveys
+          the whole roster (via the journey strip above) cross-cut with the
+          strongest evidence regardless of which company it's from — nesting
+          every company's full case list here would read as that company's
+          page twice and cost the fast scan the brief asked for. */}
       <div className="section-head">
         <div className="eyebrow">{t.home.highlightedCaseStudies}</div>
         <Link className="section-more" to={loc("/cases")}>
@@ -141,34 +133,22 @@ export default function Home() {
         </Link>
       </div>
       <Reveal className="stack" style={{ gap: 12, marginTop: 16 }}>
-        {featured.map((study) => {
-          const company = companies.find((entry) => entry.name === study.company);
-          const claimNum = company ? companies.indexOf(company) + 1 : null;
-          const depNum =
-            company && claimNum ? company.caseIds.indexOf(study.id) + 1 : null;
-
-          return (
-            <Link className="card-link" to={loc(`/cases/${study.id}`)} key={study.id}>
-              <div className="featured-card">
-                <div className="card-meta">
-                  {claimNum && depNum && (
-                    <span className="claim-tag claim-tag--outline">
-                      {t.cases.claimDep(claimNum, depNum)}
-                    </span>
-                  )}
-                  <span className="accent">{study.company}</span>
-                  <span>{study.category}</span>
-                  <span className="push">{study.readingTime}</span>
-                </div>
-                <div className="featured-title">{study.title}</div>
-                <div className="featured-summary">{study.summary}</div>
-                <div className="featured-impact">
-                  {t.home.impact} <span>{study.impact.join(" · ")}</span>
-                </div>
+        {featured.map((study) => (
+          <Link className="card-link" to={loc(`/cases/${study.id}`)} key={study.id}>
+            <div className="featured-card">
+              <div className="card-meta">
+                <span className="accent">{study.company}</span>
+                <span>{study.category}</span>
+                <span className="push">{study.readingTime}</span>
               </div>
-            </Link>
-          );
-        })}
+              <div className="featured-title">{study.title}</div>
+              <div className="featured-summary">{study.summary}</div>
+              <div className="featured-impact">
+                {t.home.impact} <span>{study.impact.join(" · ")}</span>
+              </div>
+            </div>
+          </Link>
+        ))}
       </Reveal>
     </div>
   );

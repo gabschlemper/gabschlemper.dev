@@ -31,11 +31,8 @@ export default function TechnologyDetail() {
       </div>
 
       <h1 className="display display--detail">{tech.name}</h1>
-      <div className="docket" style={{ margin: "0 0 4px" }}>
-        <span className="claim-tag claim-tag--outline">{t.technologyDetail.referenceCited}</span>
-      </div>
 
-      <div className="section-label" style={{ marginTop: 24 }}>
+      <div className="section-label" style={{ marginTop: 12 }}>
         {t.technologyDetail.howIUsedIt}
       </div>
       <p className="prose" style={{ maxWidth: 640 }}>
