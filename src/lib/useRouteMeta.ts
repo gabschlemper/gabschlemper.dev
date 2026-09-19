@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_TITLE, SITE_URL, resolveMeta } from "./meta";
+import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_TITLE, SITE_URL, resolveMeta } from "../lib/meta";
+import { useKnowledgeBase } from "./useKnowledgeBase";
+import { HOME_LABEL } from "./meta";
 
 function setMetaByName(name: string, content: string) {
   let tag = document.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);
@@ -32,6 +34,17 @@ function setCanonical(href: string) {
   tag.setAttribute("href", href);
 }
 
+function setAlternate(hreflang: string, href: string) {
+  let tag = document.querySelector<HTMLLinkElement>(`link[rel="alternate"][hreflang="${hreflang}"]`);
+  if (!tag) {
+    tag = document.createElement("link");
+    tag.setAttribute("rel", "alternate");
+    tag.setAttribute("hreflang", hreflang);
+    document.head.appendChild(tag);
+  }
+  tag.setAttribute("href", href);
+}
+
 const JSONLD_ID = "route-jsonld";
 
 function setRouteJsonLd(json: object | null) {
@@ -52,17 +65,19 @@ function setRouteJsonLd(json: object | null) {
 /** Applies the route's resolved SEO metadata to <head> after each navigation. */
 export function useRouteMeta() {
   const { pathname } = useLocation();
+  const kb = useKnowledgeBase();
 
   useEffect(() => {
-    const meta = resolveMeta(pathname);
-    const fullTitle = meta.title ? `${meta.title} · ${SITE_NAME}` : SITE_TITLE;
-    const canonicalUrl = `${SITE_URL}${meta.path === "/" ? "" : meta.path}`;
+    const meta = resolveMeta(pathname, kb);
+    const fullTitle = meta.title ? `${meta.title} · ${SITE_NAME}` : SITE_TITLE[meta.locale];
+    const canonicalUrl = `${SITE_URL}${meta.path}`;
 
     document.title = fullTitle;
     setMetaByName("description", meta.description);
     setMetaByProperty("og:title", fullTitle);
     setMetaByProperty("og:description", meta.description);
     setMetaByProperty("og:url", canonicalUrl);
+    setMetaByProperty("og:locale", meta.locale === "pt" ? "pt_BR" : "en_US");
     setMetaByProperty(
       "og:type",
       meta.entityType === "Article" ? "article" : meta.entityType === "ProfilePage" ? "profile" : "website",
@@ -70,6 +85,15 @@ export function useRouteMeta() {
     setMetaByName("twitter:title", fullTitle);
     setMetaByName("twitter:description", meta.description);
     setCanonical(canonicalUrl);
+
+    // Reciprocal hreflang between this exact document and its other-locale
+    // twin — same canonical path, prefix stripped/added by resolveMeta's own
+    // withLocale helper (meta.path already carries the current locale).
+    const enPath = meta.locale === "pt" ? meta.path.replace(/^\/pt/, "") || "/" : meta.path;
+    const ptPath = meta.locale === "pt" ? meta.path : meta.path === "/" ? "/pt" : `/pt${meta.path}`;
+    setAlternate("en", `${SITE_URL}${enPath}`);
+    setAlternate("pt-BR", `${SITE_URL}${ptPath}`);
+    setAlternate("x-default", `${SITE_URL}${enPath}`);
 
     if (meta.notFound) {
       setMetaByName("robots", "noindex, follow");
@@ -83,7 +107,12 @@ export function useRouteMeta() {
         ? {
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: HOME_LABEL[meta.locale],
+                item: `${SITE_URL}${meta.locale === "pt" ? "/pt" : ""}`,
+              },
               ...meta.breadcrumbs.map((crumb, i) => ({
                 "@type": "ListItem",
                 position: i + 2,
@@ -103,6 +132,7 @@ export function useRouteMeta() {
         keywords: meta.article.keywords.join(", "),
         about: meta.article.about,
         image: DEFAULT_OG_IMAGE,
+        inLanguage: meta.locale === "pt" ? "pt-BR" : "en",
         author: { "@type": "Person", name: "Gabriela Schlemper", url: SITE_URL },
         publisher: { "@type": "Person", name: "Gabriela Schlemper", url: SITE_URL },
         mainEntityOfPage: canonicalUrl,
@@ -113,5 +143,5 @@ export function useRouteMeta() {
     } else {
       setRouteJsonLd(null);
     }
-  }, [pathname]);
+  }, [pathname, kb]);
 }

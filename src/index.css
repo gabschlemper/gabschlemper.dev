@@ -414,6 +414,29 @@ a:hover {
   font-weight: 400;
 }
 
+/* The other locale's equivalent of the current page, not a generic language
+   picker — same control size and rest state as .theme-toggle, but its own
+   role (a link, not a stateful toggle), so it's centered rather than
+   space-between. */
+.locale-toggle {
+  display: block;
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 7px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--text2);
+  transition: all 0.15s;
+}
+
+.locale-toggle:hover {
+  border-color: var(--border2);
+  color: var(--text);
+  text-decoration: none;
+}
+
 .sidebar-foot {
   margin-top: auto;
   display: flex;

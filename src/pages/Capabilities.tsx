@@ -1,19 +1,22 @@
 import { Link } from "react-router-dom";
-import { capabilities, cases, companies } from "../data/knowledge-base";
+import { useKnowledgeBase, useLocale, useStrings } from "../lib/useKnowledgeBase";
+import { withLocale } from "../lib/locale";
 
 export default function Capabilities() {
+  const { capabilities, cases, companies } = useKnowledgeBase();
+  const locale = useLocale();
+  const t = useStrings();
+  const loc = (path: string) => withLocale(path, locale);
+
   return (
     <div className="screen screen--wide">
       <h1 className="display" style={{ margin: "0 0 10px" }}>
-        Capabilities
+        {t.capabilities.title}
       </h1>
       <div className="docket">
-        <span>{capabilities.length} claim elements, cited across every claim</span>
+        <span>{t.capabilities.docket(capabilities.length)}</span>
       </div>
-      <p className="lede">
-        Not technologies — capabilities. Each one links to the documents that
-        prove it.
-      </p>
+      <p className="lede">{t.capabilities.lede}</p>
 
       <div className="grid-2">
         {capabilities.map((capability) => {
@@ -28,7 +31,7 @@ export default function Capabilities() {
           return (
             <Link
               className="card-link"
-              to={`/capabilities/${capability.id}`}
+              to={loc(`/capabilities/${capability.id}`)}
               key={capability.id}
             >
               <div className="cap-card">
@@ -42,8 +45,7 @@ export default function Capabilities() {
                 </div>
                 <div className="cap-desc">{capability.desc}</div>
                 <div className="cap-evidence">
-                  {provingCases.length} case studies · {provingCompanies.length}{" "}
-                  companies
+                  {t.capabilities.evidence(provingCases.length, provingCompanies.length)}
                 </div>
               </div>
             </Link>

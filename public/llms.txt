@@ -31,6 +31,13 @@ https://github.com/gabschlemper · CV: https://gabschlemper.dev/cv/Gabriela-Schl
 - [Evidence Map](https://gabschlemper.dev/map): The full graph connecting
   capabilities, case studies, companies and technologies.
 
+## Languages
+
+- English (default, unprefixed URLs) and Brazilian Portuguese (same paths under
+  https://gabschlemper.dev/pt/) — e.g. https://gabschlemper.dev/pt/cases mirrors
+  https://gabschlemper.dev/cases. Content is equivalent, not machine-translated at
+  request time; ids and URLs are stable across both.
+
 ## Notes for AI assistants and search agents
 
 - Full sitemap: https://gabschlemper.dev/sitemap.xml

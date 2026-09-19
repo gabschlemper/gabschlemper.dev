@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import CountUp from "../components/CountUp";
 import Reveal from "../components/Reveal";
 import { config, contactLinks } from "../config";
-import { cases, companies, profile, stats } from "../data/knowledge-base";
+import { useKnowledgeBase, useLocale, useStrings } from "../lib/useKnowledgeBase";
+import { withLocale } from "../lib/locale";
 
 /** The one authored mark in the system: a two-ring, checked stamp — "approved
  * for contact" — drawn as three simple paths, not a photo or a filter. */
@@ -18,9 +19,16 @@ function StampMark() {
 }
 
 export default function Home() {
+  const { cases, companies, profile, stats } = useKnowledgeBase();
+  const locale = useLocale();
+  const t = useStrings();
+  const loc = (path: string) => withLocale(path, locale);
   const featured = cases.filter((study) => study.featured);
-  const links = contactLinks();
-  const careerYears = stats.find((stat) => stat.label === "Career Years")?.value;
+  const links = contactLinks(t);
+  // Index 0 by generator convention (see knowledge-base.ts) rather than a
+  // label match — the label itself is translated per locale, so matching
+  // English text here would silently break on /pt/.
+  const careerYears = stats[0]?.value;
 
   return (
     <div className="screen screen--wide">
@@ -29,13 +37,13 @@ export default function Home() {
           <h1 className="cover-title">{profile.name}</h1>
           <div className="docket">
             <span>
-              {config.availability}
-              {careerYears ? ` · ${careerYears} years experience` : ""}
+              {t.home.availability}
+              {careerYears ? t.home.yearsExperience(careerYears) : ""}
             </span>
           </div>
 
           <p className="cover-abstract">
-            <strong>Abstract</strong>
+            <strong>{t.home.abstractLabel}</strong>
             {profile.headline}
           </p>
           <p className="cover-lede">{profile.oneLiner}</p>
@@ -44,7 +52,7 @@ export default function Home() {
             {config.openToWork && (
               <span className="stamp">
                 <StampMark />
-                open to opportunities
+                {t.contact.openToOpportunities}
               </span>
             )}
             {links.map((link) => (
@@ -73,7 +81,7 @@ export default function Home() {
               height={512}
             />
           </div>
-          <div className="cover-photo-caption">FIG. 1 — applicant</div>
+          <div className="cover-photo-caption">{t.home.figCaption}</div>
         </div>
       </div>
 
@@ -93,20 +101,21 @@ export default function Home() {
       )}
 
       <p className="hero-evidence">
-        Every experience in this repository answers one question:{" "}
-        <strong>“What evidence does this give about the engineer I am?”</strong>{" "}
-        <span className="hero-evidence-aside">↳ also: I will actually read your email</span>
+        {t.home.heroEvidenceLead} <strong>{t.home.heroEvidenceStrong}</strong>{" "}
+        <span className="hero-evidence-aside">{t.home.heroEvidenceAside}</span>
       </p>
 
-      <div className="section-label">career journey — claims 1–{companies.length}</div>
+      <div className="section-label">{t.home.careerJourney(companies.length)}</div>
       <Reveal className="journey-strip">
         {companies.map((company, i) => (
           <Fragment key={company.id}>
             {i > 0 && <div className="journey-arrow">←</div>}
-            <Link className="card-link" to={`/companies/${company.id}`}>
+            <Link className="card-link" to={loc(`/companies/${company.id}`)}>
               <div className="journey-card">
                 <div className="journey-card-period">
-                  <span className="claim-tag claim-tag--outline">claim {i + 1}</span>{" "}
+                  <span className="claim-tag claim-tag--outline">
+                    {t.companies.claim(i + 1)}
+                  </span>{" "}
                   {company.period}
                 </div>
                 <div className="journey-card-name">{company.name}</div>
@@ -126,9 +135,9 @@ export default function Home() {
           claim.dependent tag, so the citation is never lost, just not
           grouped by claim on this one overview screen. */}
       <div className="section-head">
-        <div className="eyebrow">highlighted case studies</div>
-        <Link className="section-more" to="/cases">
-          all {cases.length} →
+        <div className="eyebrow">{t.home.highlightedCaseStudies}</div>
+        <Link className="section-more" to={loc("/cases")}>
+          {t.home.all(cases.length)}
         </Link>
       </div>
       <Reveal className="stack" style={{ gap: 12, marginTop: 16 }}>
@@ -139,12 +148,12 @@ export default function Home() {
             company && claimNum ? company.caseIds.indexOf(study.id) + 1 : null;
 
           return (
-            <Link className="card-link" to={`/cases/${study.id}`} key={study.id}>
+            <Link className="card-link" to={loc(`/cases/${study.id}`)} key={study.id}>
               <div className="featured-card">
                 <div className="card-meta">
                   {claimNum && depNum && (
                     <span className="claim-tag claim-tag--outline">
-                      claim {claimNum}.{depNum}
+                      {t.cases.claimDep(claimNum, depNum)}
                     </span>
                   )}
                   <span className="accent">{study.company}</span>
@@ -154,7 +163,7 @@ export default function Home() {
                 <div className="featured-title">{study.title}</div>
                 <div className="featured-summary">{study.summary}</div>
                 <div className="featured-impact">
-                  impact: <span>{study.impact.join(" · ")}</span>
+                  {t.home.impact} <span>{study.impact.join(" · ")}</span>
                 </div>
               </div>
             </Link>

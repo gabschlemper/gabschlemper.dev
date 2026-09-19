@@ -1,17 +1,22 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { search } from "../lib/search";
+import { useKnowledgeBase, useStrings } from "../lib/useKnowledgeBase";
+import type { Locale } from "../lib/locale";
 
 interface Props {
   onClose: () => void;
   onNavigate: (to: string) => void;
+  locale: Locale;
 }
 
-export default function CommandPalette({ onClose, onNavigate }: Props) {
+export default function CommandPalette({ onClose, onNavigate, locale }: Props) {
+  const kb = useKnowledgeBase();
+  const t = useStrings();
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const results = useMemo(() => search(query), [query]);
+  const results = useMemo(() => search(query, kb, t, locale), [query, kb, t, locale]);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -49,7 +54,7 @@ export default function CommandPalette({ onClose, onNavigate }: Props) {
         onClick={(event) => event.stopPropagation()}
         role="dialog"
         aria-modal="true"
-        aria-label="Search documents"
+        aria-label={t.palette.dialogLabel}
       >
         <div className="palette-head">
           <input
@@ -60,8 +65,8 @@ export default function CommandPalette({ onClose, onNavigate }: Props) {
               setQuery(event.target.value);
               setSelected(0);
             }}
-            placeholder="search companies, cases, capabilities…"
-            aria-label="Search query"
+            placeholder={t.palette.placeholder}
+            aria-label={t.palette.searchLabel}
           />
 
           {/* Narrow screens open this as a full-height sheet, which leaves no
@@ -71,9 +76,9 @@ export default function CommandPalette({ onClose, onNavigate }: Props) {
             type="button"
             className="palette-close"
             onClick={onClose}
-            aria-label="Close search"
+            aria-label={t.palette.closeAria}
           >
-            close
+            {t.palette.close}
           </button>
         </div>
 
@@ -87,20 +92,20 @@ export default function CommandPalette({ onClose, onNavigate }: Props) {
               onMouseEnter={() => setSelected(i)}
               onClick={() => onNavigate(result.to)}
             >
-              <span className="palette-kind">{result.kind}</span>
+              <span className="palette-kind">{t.palette.kind[result.kind]}</span>
               <span className="palette-title">{result.title}</span>
               <span className="palette-sub">{result.sub}</span>
             </button>
           ))}
           {results.length === 0 && (
-            <div className="palette-empty">no documents match</div>
+            <div className="palette-empty">{t.palette.empty}</div>
           )}
         </div>
 
         <div className="palette-foot">
-          <span>↑↓ navigate</span>
-          <span>↵ open</span>
-          <span>esc close</span>
+          <span>{t.palette.navigate}</span>
+          <span>{t.palette.open}</span>
+          <span>{t.palette.escClose}</span>
         </div>
       </div>
     </div>

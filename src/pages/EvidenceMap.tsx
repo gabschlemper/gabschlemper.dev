@@ -1,12 +1,16 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { buildEvidenceMap } from "../lib/evidenceMap";
+import { useKnowledgeBase, useLocale, useStrings } from "../lib/useKnowledgeBase";
 import { useReveal } from "../lib/useReveal";
 
 export default function EvidenceMapPage() {
+  const kb = useKnowledgeBase();
+  const locale = useLocale();
+  const t = useStrings();
   const navigate = useNavigate();
   const [focus, setFocus] = useState<string | null>(null);
-  const map = useMemo(() => buildEvidenceMap(), []);
+  const map = useMemo(() => buildEvidenceMap(kb, t, locale), [kb, t, locale]);
   const { ref, visible } = useReveal<HTMLDivElement>();
 
   const active = focus ? map.neighbours(focus) : null;
@@ -14,20 +18,16 @@ export default function EvidenceMapPage() {
   return (
     <div className="screen screen--map">
       <h1 className="display" style={{ margin: "0 0 10px" }}>
-        Evidence Map
+        {t.evidenceMap.title}
       </h1>
       <div className="docket">
-        <span>citation network — why each claim holds</span>
+        <span>{t.evidenceMap.docket}</span>
       </div>
       <p className="lede" style={{ maxWidth: 680 }}>
-        Capabilities connect to the case studies that prove them, the companies
-        where they happened, and the technologies involved. Tap or hover a node
-        to trace a claim; open it to read the document.
+        {t.evidenceMap.lede}
       </p>
 
-      <div className="map-hint">
-        the graph is wider than the screen — drag it sideways&nbsp;→
-      </div>
+      <div className="map-hint">{t.evidenceMap.hint}</div>
 
       <div className="map-frame" ref={ref} data-reveal={visible ? "in" : "out"}>
         <div className="map-stage" style={{ height: map.height }}>

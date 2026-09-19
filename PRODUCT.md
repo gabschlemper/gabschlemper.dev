@@ -32,6 +32,7 @@ Content is authored upstream in a private repository (`professional-knowledge-ba
 - Case studies can include hand-authored architecture diagrams (`CaseDiagramSpec`), text-derived rather than decorative.
 - Command palette (⌘K) search across all documents.
 - Dark/light theme, persisted to localStorage.
+- English (default, unprefixed) and Brazilian Portuguese (`/pt/...`, same route ids) locales. English is one static import, always in the client bundle; pt-BR is a separate module loaded on demand (`src/data/knowledge-base.pt.ts`) so an English visitor's bundle never grows. The pt-BR data is an AI-drafted, human-reviewable translation artifact — English (`knowledge-base.ts`) stays the sole content source of truth per the knowledge-base repo's own ADR-0001.
 - Content structure, routes, and cross-referencing are fixed by the data model in `knowledge-base.ts` — a redesign changes presentation, not information architecture.
 
 ## Brand Commitments

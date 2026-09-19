@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { cases, principles } from "../data/knowledge-base";
+import { useKnowledgeBase, useLocale, useStrings } from "../lib/useKnowledgeBase";
+import { withLocale } from "../lib/locale";
 
 export default function Principles() {
+  const { cases, principles } = useKnowledgeBase();
+  const locale = useLocale();
+  const t = useStrings();
+  const loc = (path: string) => withLocale(path, locale);
   const { hash } = useLocation();
   const [open, setOpen] = useState<string | null>(null);
 
@@ -11,20 +16,17 @@ export default function Principles() {
     const id = hash.replace(/^#/, "");
     if (!id) return;
     if (principles.some((principle) => principle.id === id)) setOpen(id);
-  }, [hash]);
+  }, [hash, principles]);
 
   return (
     <div className="screen">
       <h1 className="display" style={{ margin: "0 0 10px" }}>
-        Engineering Principles
+        {t.principles.title}
       </h1>
       <div className="docket">
-        <span>earned, not adopted</span>
+        <span>{t.principles.docket}</span>
       </div>
-      <p className="lede">
-        Each principle has an origin story and at least one place it was applied
-        again. Open one.
-      </p>
+      <p className="lede">{t.principles.lede}</p>
 
       <div className="stack" style={{ gap: 12, marginTop: 28 }}>
         {principles.map((principle, i) => {
@@ -51,25 +53,25 @@ export default function Principles() {
 
               <div className="principle-body">
                 <div>
-                  <div className="principle-key">explanation</div>
+                  <div className="principle-key">{t.principles.explanation}</div>
                   <div className="principle-explanation">
                     {principle.explanation}
                   </div>
                 </div>
                 <div>
-                  <div className="principle-key">origin</div>
+                  <div className="principle-key">{t.principles.origin}</div>
                   <div className="principle-origin">{principle.origin}</div>
                 </div>
                 {related && (
                   <div>
-                    <div className="principle-key">related case study</div>
-                    <Link className="principle-case" to={`/cases/${related.id}`}>
+                    <div className="principle-key">{t.principles.relatedCaseStudy}</div>
+                    <Link className="principle-case" to={loc(`/cases/${related.id}`)}>
                       {related.title} →
                     </Link>
                   </div>
                 )}
                 <div>
-                  <div className="principle-key">where i applied it again</div>
+                  <div className="principle-key">{t.principles.whereAppliedAgain}</div>
                   <div className="principle-origin">{principle.applied}</div>
                 </div>
               </div>

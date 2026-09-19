@@ -1,17 +1,23 @@
 import { Link } from "react-router-dom";
-import { companies, technologies } from "../data/knowledge-base";
+import { useKnowledgeBase, useLocale, useStrings } from "../lib/useKnowledgeBase";
+import { withLocale } from "../lib/locale";
 import { techSlug } from "../lib/slug";
 
 export default function Technologies() {
+  const { companies, technologies } = useKnowledgeBase();
+  const locale = useLocale();
+  const t = useStrings();
+  const loc = (path: string) => withLocale(path, locale);
+
   return (
     <div className="screen screen--wide">
       <h1 className="display" style={{ margin: "0 0 10px" }}>
-        Technologies
+        {t.technologies.title}
       </h1>
       <div className="docket">
-        <span>{technologies.length} references cited — how, not just what</span>
+        <span>{t.technologies.docket(technologies.length)}</span>
       </div>
-      <p className="lede">Every entry documents how I used it — not a logo grid.</p>
+      <p className="lede">{t.technologies.lede}</p>
 
       <div className="grid-2 grid-2--tight">
         {technologies.map((tech) => {
@@ -22,7 +28,7 @@ export default function Technologies() {
           return (
             <Link
               className="card-link"
-              to={`/technologies/${techSlug(tech.name)}`}
+              to={loc(`/technologies/${techSlug(tech.name)}`)}
               key={tech.name}
             >
               <div className="tech-card">
@@ -31,7 +37,7 @@ export default function Technologies() {
                   <span className="tech-meta">
                     {usedAt.length > 0
                       ? usedAt.map((company) => company.name).join(" · ")
-                      : "freelance"}
+                      : t.technologies.freelance}
                   </span>
                 </div>
                 <div className="tech-usage">{tech.usage}</div>

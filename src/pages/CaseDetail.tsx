@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import CaseDiagram from "../components/CaseDiagram";
-import { capabilities, cases, companies } from "../data/knowledge-base";
+import { useKnowledgeBase, useLocale, useStrings } from "../lib/useKnowledgeBase";
+import { withLocale } from "../lib/locale";
 import { techSlug } from "../lib/slug";
 import NotFound from "./NotFound";
 
@@ -14,6 +15,10 @@ const ALWAYS_OPEN = new Set(["context", "problem", "decision", "impact"]);
 
 export default function CaseDetail() {
   const { id } = useParams();
+  const { capabilities, cases, companies } = useKnowledgeBase();
+  const locale = useLocale();
+  const t = useStrings();
+  const loc = (path: string) => withLocale(path, locale);
   const study = cases.find((entry) => entry.id === id);
 
   const [progress, setProgress] = useState(0);
@@ -85,11 +90,11 @@ export default function CaseDetail() {
   };
 
   const facts: Array<[string, string]> = [
-    ["category", study.category],
-    ["difficulty", study.difficulty],
-    ["ownership", study.ownership],
-    ["customer facing", study.customerFacing],
-    ["reading time", study.readingTime],
+    [t.caseDetail.category, study.category],
+    [t.caseDetail.difficulty, study.difficulty],
+    [t.caseDetail.ownership, study.ownership],
+    [t.caseDetail.customerFacing, study.customerFacing],
+    [t.caseDetail.readingTime, study.readingTime],
   ];
 
   return (
@@ -104,7 +109,7 @@ export default function CaseDetail() {
       <div className="screen screen--case">
         <article>
           <div className="breadcrumb">
-            <Link to="/cases">case-studies</Link>
+            <Link to={loc("/cases")}>{t.caseDetail.breadcrumb}</Link>
             <span>/</span>
             <span>{study.id}</span>
           </div>
@@ -112,20 +117,20 @@ export default function CaseDetail() {
           <h1 className="display display--case">{study.title}</h1>
           {claimNum && depNum && company && (
             <div className="docket" style={{ margin: "0 0 12px" }}>
-              <span className="claim-tag">
-                claim {claimNum}.{depNum}
-              </span>
+              <span className="claim-tag">{t.caseDetail.claimDep(claimNum, depNum)}</span>
               <span className="claim-cite">
-                dependent — cites{" "}
-                <Link to={`/companies/${company.id}`}>claim {claimNum}</Link> (
-                {company.name})
+                {t.caseDetail.dependentCites}{" "}
+                <Link to={loc(`/companies/${company.id}`)}>
+                  {t.companyDetail.claim(claimNum)}
+                </Link>{" "}
+                ({company.name})
               </span>
             </div>
           )}
           <p className="case-lede">{study.summary}</p>
 
           <div className="case-impact-strip">
-            <span className="case-impact-label">impact</span>
+            <span className="case-impact-label">{t.caseDetail.impact}</span>
             {study.impact.map((line) => (
               <span className="case-impact-chip" key={line}>
                 {line}
@@ -204,9 +209,9 @@ export default function CaseDetail() {
             ))}
 
             <div>
-              <div className="case-fact-key">company</div>
+              <div className="case-fact-key">{t.caseDetail.company}</div>
               {company ? (
-                <Link className="case-fact-link" to={`/companies/${company.id}`}>
+                <Link className="case-fact-link" to={loc(`/companies/${company.id}`)}>
                   {study.company}
                 </Link>
               ) : (
@@ -215,14 +220,14 @@ export default function CaseDetail() {
             </div>
 
             <div>
-              <div className="case-fact-key">claim elements</div>
+              <div className="case-fact-key">{t.caseDetail.claimElements}</div>
               <div className="tag-row">
                 {study.capabilities.map((name) => {
                   const capability = capabilities.find((c) => c.name === name);
                   return capability ? (
                     <Link
                       className="tag"
-                      to={`/capabilities/${capability.id}`}
+                      to={loc(`/capabilities/${capability.id}`)}
                       key={name}
                     >
                       {name}
@@ -237,19 +242,19 @@ export default function CaseDetail() {
             </div>
 
             <div>
-              <div className="case-fact-key">references cited</div>
+              <div className="case-fact-key">{t.caseDetail.referencesCited}</div>
               <div className="citation-list">
                 {study.technologies.map((tech, i) => (
                   <div className="citation-item" key={tech}>
                     <span className="citation-num">[{i + 1}]</span>
-                    <Link to={`/technologies/${techSlug(tech)}`}>{tech}</Link>
+                    <Link to={loc(`/technologies/${techSlug(tech)}`)}>{tech}</Link>
                   </div>
                 ))}
               </div>
             </div>
 
             <button type="button" className="copy-link" onClick={copyLink}>
-              {copied ? "✓ link copied" : "copy link"}
+              {copied ? t.caseDetail.linkCopied : t.caseDetail.copyLink}
             </button>
           </div>
 
@@ -257,7 +262,7 @@ export default function CaseDetail() {
               where a jump-to-section list is 200 lines too late to be useful —
               the reading-progress bar covers that job on mobile instead. */}
           <div className="case-toc">
-            <div className="toc-label">on this page</div>
+            <div className="toc-label">{t.caseDetail.onThisPage}</div>
             <div className="toc">
               {study.sections.map((section) => (
                 <button

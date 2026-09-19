@@ -1,23 +1,25 @@
 import { Link } from "react-router-dom";
-import { cases, companies } from "../data/knowledge-base";
+import { useKnowledgeBase, useLocale, useStrings } from "../lib/useKnowledgeBase";
+import { withLocale } from "../lib/locale";
 
 export default function Cases() {
   // Source order: highest-seniority case studies first, per
   // scripts/generate-portfolio.mjs in professional-knowledge-base. "Featured"
   // (has a hand-drawn diagram) is shown as a badge only, not a sort key.
+  const { cases, companies } = useKnowledgeBase();
+  const locale = useLocale();
+  const t = useStrings();
+  const loc = (path: string) => withLocale(path, locale);
 
   return (
     <div className="screen">
       <h1 className="display" style={{ margin: "0 0 10px" }}>
-        Case Studies
+        {t.cases.title}
       </h1>
       <div className="docket">
-        <span>{cases.length} dependent claims filed</span>
+        <span>{t.cases.docket(cases.length)}</span>
       </div>
-      <p className="lede">
-        Context, constraints, alternatives, decision, trade-offs. Never just the
-        output.
-      </p>
+      <p className="lede">{t.cases.lede}</p>
 
       <div className="stack" style={{ gap: 12, marginTop: 28 }}>
         {cases.map((study) => {
@@ -27,22 +29,20 @@ export default function Cases() {
             company && claimNum ? company.caseIds.indexOf(study.id) + 1 : null;
 
           return (
-            <Link className="card-link" to={`/cases/${study.id}`} key={study.id}>
+            <Link className="card-link" to={loc(`/cases/${study.id}`)} key={study.id}>
               <div
                 className={`case-card${study.featured ? " case-card--featured" : ""}`}
               >
                 <div className="card-meta">
                   {claimNum && depNum && (
                     <span className="claim-tag claim-tag--outline">
-                      claim {claimNum}.{depNum}
+                      {t.cases.claimDep(claimNum, depNum)}
                     </span>
                   )}
                   <span className="accent">{study.company}</span>
                   <span>{study.category}</span>
                   <span className="push">
-                    {study.featured
-                      ? `★ featured · ${study.readingTime}`
-                      : study.readingTime}
+                    {study.featured ? t.cases.featured(study.readingTime) : study.readingTime}
                   </span>
                 </div>
                 <div className="case-title">{study.title}</div>

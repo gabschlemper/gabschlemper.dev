@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { config } from "../config";
 import { navGroups } from "../lib/nav";
+import { otherLocale, withLocale } from "../lib/locale";
+import { useLocale, useStrings } from "../lib/useKnowledgeBase";
 import type { Theme } from "../lib/useTheme";
 
 interface Props {
@@ -11,8 +13,11 @@ interface Props {
 }
 
 export default function Sidebar({ theme, onToggleTheme, onOpenPalette }: Props) {
-  const groups = navGroups;
   const { pathname } = useLocation();
+  const locale = useLocale();
+  const t = useStrings();
+  const groups = navGroups(t, locale);
+  const other = otherLocale(locale);
 
   /**
    * Narrow screens collapse the whole column into a 56px bar, so the nav lives
@@ -53,20 +58,18 @@ export default function Sidebar({ theme, onToggleTheme, onOpenPalette }: Props) 
         <div className="sidebar-bar">
           <Link
             className="sidebar-brand"
-            to="/"
+            to={withLocale("/", locale)}
             aria-label="Gabriela Schlemper — home"
           >
             <div className="sidebar-brand-title">Gabriela Schlemper</div>
-            <div className="sidebar-brand-sub">
-              love building stuff.
-            </div>
+            <div className="sidebar-brand-sub">{t.sidebar.brandSub}</div>
           </Link>
 
           {/* Mobile only. The ⌘K hint below is unreachable on a phone, so search
               needs a real, thumb-sized control in the bar. */}
           <div className="sidebar-bar-actions">
             <button type="button" className="bar-btn" onClick={onOpenPalette}>
-              search
+              {t.sidebar.search}
             </button>
             <button
               type="button"
@@ -75,18 +78,18 @@ export default function Sidebar({ theme, onToggleTheme, onOpenPalette }: Props) 
               aria-expanded={open}
               aria-controls="site-nav"
             >
-              {open ? "✕ close" : "☰ menu"}
+              {open ? t.sidebar.close : t.sidebar.menu}
             </button>
           </div>
         </div>
 
         <div className="sidebar-panel" id="site-nav">
           <button type="button" className="search-trigger" onClick={onOpenPalette}>
-            <span>search…</span>
+            <span>{t.sidebar.searchTrigger}</span>
             <span className="kbd">⌘K</span>
           </button>
 
-          <nav className="nav" aria-label="Documents" onClick={() => setOpen(false)}>
+          <nav className="nav" aria-label={t.sidebar.documentsLabel} onClick={() => setOpen(false)}>
             {groups.map((group) => (
               <div className="nav-group" key={group.label}>
                 <div className="nav-group-label">{group.label}</div>
@@ -100,14 +103,17 @@ export default function Sidebar({ theme, onToggleTheme, onOpenPalette }: Props) 
           </nav>
 
           <div className="sidebar-foot">
+            <Link className="locale-toggle" to={withLocale(pathname, other)} lang={other}>
+              {other === "pt" ? "PT-BR" : "EN"}
+            </Link>
             <button
               type="button"
               className="theme-toggle"
               onClick={onToggleTheme}
-              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+              aria-label={t.sidebar.switchToTheme(theme === "dark" ? "light" : "dark")}
             >
-              <span>theme</span>
-              <strong>{theme === "dark" ? "dark ●" : "light ○"}</strong>
+              <span>{t.sidebar.theme}</span>
+              <strong>{theme === "dark" ? t.sidebar.themeDark : t.sidebar.themeLight}</strong>
             </button>
             <div className="sidebar-rev">{config.revision}</div>
           </div>

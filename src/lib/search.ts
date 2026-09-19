@@ -1,10 +1,7 @@
-import {
-  capabilities,
-  cases,
-  companies,
-  principles,
-  technologies,
-} from "../data/knowledge-base";
+import type { KnowledgeBaseModule } from "../data/knowledgeBase";
+import type { Locale } from "./locale";
+import { withLocale } from "./locale";
+import type { Strings } from "./strings";
 import { techSlug } from "./slug";
 
 export type ResultKind =
@@ -23,7 +20,9 @@ export interface SearchEntry {
   haystack: string;
 }
 
-function build(): SearchEntry[] {
+function build(kb: KnowledgeBaseModule, t: Strings, locale: Locale): SearchEntry[] {
+  const { capabilities, cases, companies, principles, technologies } = kb;
+  const loc = (path: string) => withLocale(path, locale);
   const entries: SearchEntry[] = [];
 
   for (const company of companies) {
@@ -31,7 +30,7 @@ function build(): SearchEntry[] {
       kind: "company",
       title: company.name,
       sub: `${company.role} · ${company.period}`,
-      to: `/companies/${company.id}`,
+      to: loc(`/companies/${company.id}`),
       haystack: `${company.name} ${company.domain} ${company.summary}`,
     });
   }
@@ -41,7 +40,7 @@ function build(): SearchEntry[] {
       kind: "case",
       title: study.title,
       sub: `${study.company} · ${study.category}`,
-      to: `/cases/${study.id}`,
+      to: loc(`/cases/${study.id}`),
       haystack: `${study.title} ${study.summary} ${study.capabilities.join(" ")} ${study.technologies.join(" ")}`,
     });
   }
@@ -51,7 +50,7 @@ function build(): SearchEntry[] {
       kind: "capability",
       title: capability.name,
       sub: capability.desc,
-      to: `/capabilities/${capability.id}`,
+      to: loc(`/capabilities/${capability.id}`),
       haystack: `${capability.name} ${capability.desc}`,
     });
   }
@@ -61,7 +60,7 @@ function build(): SearchEntry[] {
       kind: "tech",
       title: tech.name,
       sub: tech.usage,
-      to: `/technologies/${techSlug(tech.name)}`,
+      to: loc(`/technologies/${techSlug(tech.name)}`),
       haystack: `${tech.name} ${tech.usage}`,
     });
   }
@@ -70,21 +69,21 @@ function build(): SearchEntry[] {
     entries.push({
       kind: "principle",
       title: principle.text,
-      sub: "engineering principle",
-      to: `/principles#${principle.id}`,
+      sub: t.search.engineeringPrinciple,
+      to: loc(`/principles#${principle.id}`),
       haystack: `${principle.text} ${principle.explanation} ${principle.origin}`,
     });
   }
 
   const pages: Array<[string, string, string]> = [
-    ["Profile", "/profile", "technical identity"],
-    ["Career Journey", "/journey", "how the capability grew"],
-    ["Companies", "/companies", `${companies.length} entries`],
-    ["Case Studies", "/cases", `${cases.length} entries`],
-    ["Capabilities", "/capabilities", `${capabilities.length} claims with evidence`],
-    ["Technologies", "/technologies", `${technologies.length} entries`],
-    ["Engineering Principles", "/principles", `${principles.length} principles`],
-    ["Evidence Map", "/map", "why each claim holds"],
+    [t.search.profile, loc("/profile"), t.search.profileSub],
+    [t.search.journey, loc("/journey"), t.search.journeySub],
+    [t.search.companies, loc("/companies"), t.search.entries(companies.length)],
+    [t.search.cases, loc("/cases"), t.search.entries(cases.length)],
+    [t.search.capabilities, loc("/capabilities"), t.search.claimsWithEvidence(capabilities.length)],
+    [t.search.technologies, loc("/technologies"), t.search.entries(technologies.length)],
+    [t.search.principles, loc("/principles"), t.search.principlesCount(principles.length)],
+    [t.search.map, loc("/map"), t.search.mapSub],
   ];
   for (const [title, to, sub] of pages) {
     entries.push({ kind: "page", title, sub, to, haystack: `${title} ${sub}` });
@@ -93,19 +92,28 @@ function build(): SearchEntry[] {
   return entries;
 }
 
-let cached: SearchEntry[] | null = null;
+const cache = new Map<Locale, SearchEntry[]>();
 
-export function searchIndex(): SearchEntry[] {
-  cached ??= build();
-  return cached;
+export function searchIndex(kb: KnowledgeBaseModule, t: Strings, locale: Locale): SearchEntry[] {
+  let entries = cache.get(locale);
+  if (!entries) {
+    entries = build(kb, t, locale);
+    cache.set(locale, entries);
+  }
+  return entries;
 }
 
-export function search(query: string): SearchEntry[] {
-  const index = searchIndex();
+export function search(
+  query: string,
+  kb: KnowledgeBaseModule,
+  t: Strings,
+  locale: Locale,
+): SearchEntry[] {
+  const index = searchIndex(kb, t, locale);
   const q = query.trim().toLowerCase();
 
   if (!q) {
-    const featured = new Set(cases.filter((c) => c.featured).map((c) => c.id));
+    const featured = new Set(kb.cases.filter((c) => c.featured).map((c) => c.id));
     return index
       .filter(
         (entry) =>

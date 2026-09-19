@@ -1,6 +1,8 @@
 // Site configuration. These were editor-configurable props in the design
 // export; here they are plain constants.
 
+import type { Strings } from "./lib/strings";
+
 export const config = {
   /** Theme used on first visit, before any localStorage preference exists. */
   defaultTheme: "dark" as "dark" | "light",
@@ -10,13 +12,6 @@ export const config = {
 
   /** Show the "open to opportunities" badge. */
   openToWork: true,
-
-  /**
-   * Rendered as the home screen's docket line, directly under the applicant's
-   * name — the fact recruiters filter on first.
-   */
-  availability:
-    "Italian citizenship, no sponsorship needed in Europe · remote or on-site",
 
   /**
    * Contact links. Empty strings are omitted from the contact row rather than
@@ -36,11 +31,11 @@ export interface ContactLink {
   href: string;
 }
 
-export function contactLinks(): ContactLink[] {
+export function contactLinks(t: Strings): ContactLink[] {
   const links: ContactLink[] = [];
-  if (config.email) links.push({ label: "email", href: `mailto:${config.email}` });
-  if (config.linkedin) links.push({ label: "linkedin", href: config.linkedin });
-  if (config.github) links.push({ label: "github", href: config.github });
-  if (config.cvUrl) links.push({ label: "download cv ↓", href: config.cvUrl });
+  if (config.email) links.push({ label: t.contact.email, href: `mailto:${config.email}` });
+  if (config.linkedin) links.push({ label: t.contact.linkedin, href: config.linkedin });
+  if (config.github) links.push({ label: t.contact.github, href: config.github });
+  if (config.cvUrl) links.push({ label: t.contact.downloadCv, href: config.cvUrl });
   return links;
 }

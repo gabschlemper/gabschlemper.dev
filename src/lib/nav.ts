@@ -1,3 +1,6 @@
+import type { Strings } from "./strings";
+import { withLocale, type Locale } from "./locale";
+
 export interface NavLink {
   label: string;
   to: string;
@@ -13,24 +16,27 @@ export interface NavGroup {
  * screens but never linked them from the sidebar, leaving them reachable only
  * by typing a URL. They are listed here so every document has a route in.
  */
-export const navGroups: NavGroup[] = [
-  {
-    label: "overview",
-    links: [
-      { label: "Home", to: "/" },
-      { label: "Profile", to: "/profile" },
-      { label: "Career Journey", to: "/journey" },
-    ],
-  },
-  {
-    label: "evidence",
-    links: [
-      { label: "Companies", to: "/companies" },
-      { label: "Case Studies", to: "/cases" },
-      { label: "Capabilities", to: "/capabilities" },
-      { label: "Technologies", to: "/technologies" },
-      { label: "Principles", to: "/principles" },
-      { label: "Evidence Map", to: "/map" },
-    ],
-  },
-];
+export function navGroups(t: Strings, locale: Locale): NavGroup[] {
+  const loc = (path: string) => withLocale(path, locale);
+  return [
+    {
+      label: t.nav.groupOverview,
+      links: [
+        { label: t.nav.home, to: loc("/") },
+        { label: t.nav.profile, to: loc("/profile") },
+        { label: t.nav.journey, to: loc("/journey") },
+      ],
+    },
+    {
+      label: t.nav.groupEvidence,
+      links: [
+        { label: t.nav.companies, to: loc("/companies") },
+        { label: t.nav.cases, to: loc("/cases") },
+        { label: t.nav.capabilities, to: loc("/capabilities") },
+        { label: t.nav.technologies, to: loc("/technologies") },
+        { label: t.nav.principles, to: loc("/principles") },
+        { label: t.nav.map, to: loc("/map") },
+      ],
+    },
+  ];
+}

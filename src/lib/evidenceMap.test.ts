@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { buildEvidenceMap } from "./evidenceMap";
+import * as en from "../data/knowledge-base";
+import { en as enStrings } from "./strings";
 
 describe("buildEvidenceMap", () => {
-  const map = buildEvidenceMap();
+  const map = buildEvidenceMap(en, enStrings, "en");
 
   it("gives every node a unique key", () => {
     const keys = map.nodes.map((node) => node.key);

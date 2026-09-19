@@ -1,9 +1,14 @@
 import { Link, useParams } from "react-router-dom";
-import { capabilities, cases, companies } from "../data/knowledge-base";
+import { useKnowledgeBase, useLocale, useStrings } from "../lib/useKnowledgeBase";
+import { withLocale } from "../lib/locale";
 import NotFound from "./NotFound";
 
 export default function CapabilityDetail() {
   const { id } = useParams();
+  const { capabilities, cases, companies } = useKnowledgeBase();
+  const locale = useLocale();
+  const t = useStrings();
+  const loc = (path: string) => withLocale(path, locale);
   const capability = capabilities.find((entry) => entry.id === id);
 
   if (!capability) return <NotFound />;
@@ -18,31 +23,30 @@ export default function CapabilityDetail() {
   return (
     <div className="screen">
       <div className="breadcrumb">
-        <Link to="/capabilities">capabilities</Link>
+        <Link to={loc("/capabilities")}>{t.capabilityDetail.breadcrumb}</Link>
         <span>/</span>
         <span>{capability.name}</span>
       </div>
 
       <h1 className="display display--detail">{capability.name}</h1>
       <div className="docket" style={{ margin: "0 0 12px" }}>
-        <span className="claim-tag claim-tag--outline">claim element</span>
+        <span className="claim-tag claim-tag--outline">{t.capabilityDetail.claimElement}</span>
       </div>
       <p className="lede" style={{ maxWidth: 620 }}>
         {capability.desc}
       </p>
       <div className="entry-period" style={{ marginTop: 20 }}>
-        cited in: {provingCases.length} proving documents ·{" "}
-        {provingCompanies.length} companies
+        {t.capabilityDetail.citedIn(provingCases.length, provingCompanies.length)}
       </div>
 
       {provingCases.length > 0 && (
         <>
           <div className="section-label" style={{ marginTop: 32 }}>
-            proving documents
+            {t.capabilityDetail.provingDocuments}
           </div>
           <div className="stack" style={{ gap: 10, marginTop: 14 }}>
             {provingCases.map((study) => (
-              <Link className="card-link" to={`/cases/${study.id}`} key={study.id}>
+              <Link className="card-link" to={loc(`/cases/${study.id}`)} key={study.id}>
                 <div className="mini-card">
                   <div className="mini-meta">
                     <span style={{ color: "var(--accent)" }}>{study.company}</span>
@@ -60,11 +64,11 @@ export default function CapabilityDetail() {
       {provingCompanies.length > 0 && (
         <>
           <div className="section-label" style={{ marginTop: 36 }}>
-            exercised at
+            {t.capabilityDetail.exercisedAt}
           </div>
           <div className="pill-row">
             {provingCompanies.map((company) => (
-              <Link className="pill" to={`/companies/${company.id}`} key={company.id}>
+              <Link className="pill" to={loc(`/companies/${company.id}`)} key={company.id}>
                 <span className="pill-name">{company.name}</span>
                 <span className="pill-period">{company.period}</span>
               </Link>

@@ -1,10 +1,15 @@
 import { Link, useParams } from "react-router-dom";
-import { cases, companies } from "../data/knowledge-base";
+import { useKnowledgeBase, useLocale, useStrings } from "../lib/useKnowledgeBase";
+import { withLocale } from "../lib/locale";
 import { techSlug } from "../lib/slug";
 import NotFound from "./NotFound";
 
 export default function CompanyDetail() {
   const { id } = useParams();
+  const { cases, companies } = useKnowledgeBase();
+  const locale = useLocale();
+  const t = useStrings();
+  const loc = (path: string) => withLocale(path, locale);
   const company = companies.find((entry) => entry.id === id);
 
   if (!company) return <NotFound />;
@@ -18,21 +23,21 @@ export default function CompanyDetail() {
   return (
     <div className="screen">
       <div className="breadcrumb">
-        <Link to="/companies">companies</Link>
+        <Link to={loc("/companies")}>{t.companyDetail.breadcrumb}</Link>
         <span>/</span>
         <span>{company.name}</span>
       </div>
 
       <div className="card company-header">
         <div className="docket" style={{ margin: "0 0 12px" }}>
-          <span className="claim-tag">claim {claimNum}</span>
-          <span className="claim-tag claim-tag--outline">independent</span>
+          <span className="claim-tag">{t.companyDetail.claim(claimNum)}</span>
+          <span className="claim-tag claim-tag--outline">{t.companyDetail.independent}</span>
         </div>
         <h1 className="display display--detail">{company.name}</h1>
         <div className="fact-grid">
-          <div className="fact-key">role</div>
-          <div className="fact-key">period</div>
-          <div className="fact-key">domain</div>
+          <div className="fact-key">{t.companyDetail.role}</div>
+          <div className="fact-key">{t.companyDetail.period}</div>
+          <div className="fact-key">{t.companyDetail.domain}</div>
           <div className="fact-val">{company.role}</div>
           <div className="fact-val">{company.period}</div>
           <div className="fact-val">{company.domain}</div>
@@ -41,7 +46,7 @@ export default function CompanyDetail() {
       </div>
 
       <div className="section-label" style={{ marginTop: 44 }}>
-        overview
+        {t.companyDetail.overview}
       </div>
       {company.overview.map((para) => (
         <p className="prose" key={para}>
@@ -50,7 +55,7 @@ export default function CompanyDetail() {
       ))}
 
       <div className="section-label" style={{ marginTop: 40 }}>
-        business domain
+        {t.companyDetail.businessDomain}
       </div>
       {company.businessDomain.map((para) => (
         <p className="prose" key={para}>
@@ -60,7 +65,7 @@ export default function CompanyDetail() {
 
       <div className="two-col" style={{ marginTop: 40 }}>
         <div>
-          <div className="eyebrow">responsibilities</div>
+          <div className="eyebrow">{t.companyDetail.responsibilities}</div>
           <ul className="dash-list">
             {company.responsibilities.map((item) => (
               <li key={item}>
@@ -71,7 +76,7 @@ export default function CompanyDetail() {
           </ul>
         </div>
         <div>
-          <div className="eyebrow">achievements</div>
+          <div className="eyebrow">{t.companyDetail.achievements}</div>
           <ul className="dash-list">
             {company.achievements.map((item) => (
               <li key={item}>
@@ -84,11 +89,15 @@ export default function CompanyDetail() {
       </div>
 
       <div className="section-label" style={{ marginTop: 40 }}>
-        references cited
+        {t.companyDetail.referencesCited}
       </div>
       <div className="chip-row">
         {company.technologies.map((tech) => (
-          <Link className="chip chip--link" to={`/technologies/${techSlug(tech)}`} key={tech}>
+          <Link
+            className="chip chip--link"
+            to={loc(`/technologies/${techSlug(tech)}`)}
+            key={tech}
+          >
             {tech}
           </Link>
         ))}
@@ -97,15 +106,15 @@ export default function CompanyDetail() {
       {companyCases.length > 0 && (
         <>
           <div className="section-label" style={{ marginTop: 40 }}>
-            dependent claims — {companyCases.length} filed under claim {claimNum}
+            {t.companyDetail.dependentClaims(companyCases.length, claimNum)}
           </div>
           <div className="stack" style={{ gap: 10, marginTop: 14 }}>
             {companyCases.map((study, i) => (
-              <Link className="card-link" to={`/cases/${study.id}`} key={study.id}>
+              <Link className="card-link" to={loc(`/cases/${study.id}`)} key={study.id}>
                 <div className="mini-card">
                   <div className="mini-meta">
                     <span className="claim-tag claim-tag--outline">
-                      claim {claimNum}.{i + 1}
+                      {t.companyDetail.claimDep(claimNum, i + 1)}
                     </span>
                     <span>{study.category}</span>
                     <span style={{ marginLeft: "auto" }}>{study.readingTime}</span>
@@ -119,7 +128,7 @@ export default function CompanyDetail() {
       )}
 
       <div className="section-label" style={{ marginTop: 40 }}>
-        lessons learned
+        {t.companyDetail.lessonsLearned}
       </div>
       <div className="stack" style={{ gap: 10, marginTop: 14 }}>
         {company.lessons.map((lesson) => (

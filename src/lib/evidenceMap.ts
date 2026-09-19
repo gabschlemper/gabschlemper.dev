@@ -1,4 +1,6 @@
-import { capabilities, cases, companies, technologies } from "../data/knowledge-base";
+import type { KnowledgeBaseModule } from "../data/knowledgeBase";
+import { withLocale, type Locale } from "./locale";
+import type { Strings } from "./strings";
 import { techSlug } from "./slug";
 
 export interface MapNode {
@@ -37,7 +39,13 @@ function labelWidth(text: string): number {
   return Math.round(text.length * 6.7) + 22;
 }
 
-export function buildEvidenceMap(): EvidenceMap {
+export function buildEvidenceMap(
+  kb: KnowledgeBaseModule,
+  t: Strings,
+  locale: Locale,
+): EvidenceMap {
+  const { capabilities, cases, companies, technologies } = kb;
+  const loc = (path: string) => withLocale(path, locale);
   const usedCapabilities = capabilities.filter((capability) =>
     cases.some((study) => study.capabilities.includes(capability.name)),
   );
@@ -80,7 +88,7 @@ export function buildEvidenceMap(): EvidenceMap {
       258 - w,
       columnY(usedCapabilities.length, i),
       w,
-      `/capabilities/${capability.id}`,
+      loc(`/capabilities/${capability.id}`),
     );
   });
 
@@ -93,7 +101,7 @@ export function buildEvidenceMap(): EvidenceMap {
       330,
       columnY(cases.length, i),
       labelWidth(label),
-      `/cases/${study.id}`,
+      loc(`/cases/${study.id}`),
     );
   });
 
@@ -104,7 +112,7 @@ export function buildEvidenceMap(): EvidenceMap {
       700,
       columnY(companies.length, i),
       labelWidth(company.name),
-      `/companies/${company.id}`,
+      loc(`/companies/${company.id}`),
     );
   });
 
@@ -115,7 +123,7 @@ export function buildEvidenceMap(): EvidenceMap {
       880,
       columnY(usedTechnologies.length, i),
       labelWidth(tech.name),
-      `/technologies/${techSlug(tech.name)}`,
+      loc(`/technologies/${techSlug(tech.name)}`),
     );
   });
 
@@ -157,10 +165,10 @@ export function buildEvidenceMap(): EvidenceMap {
   return {
     height,
     columns: [
-      { x: 30, label: "capabilities" },
-      { x: 330, label: "case studies" },
-      { x: 700, label: "companies" },
-      { x: 880, label: "technologies" },
+      { x: 30, label: t.evidenceMap.columns.capabilities },
+      { x: 330, label: t.evidenceMap.columns.caseStudies },
+      { x: 700, label: t.evidenceMap.columns.companies },
+      { x: 880, label: t.evidenceMap.columns.technologies },
     ],
     nodes,
     edges,
