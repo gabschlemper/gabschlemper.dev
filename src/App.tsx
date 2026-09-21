@@ -1,4 +1,4 @@
-import { Suspense, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   BrowserRouter,
   Route,
@@ -14,6 +14,7 @@ import Sidebar from "./components/Sidebar";
 import { useTheme } from "./lib/useTheme";
 import { useRouteMeta } from "./lib/useRouteMeta";
 import { useLocale, useStrings } from "./lib/useKnowledgeBase";
+import { KnowledgeBaseProvider } from "./lib/KnowledgeBaseContext";
 
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
@@ -99,44 +100,36 @@ export function Shell() {
         {t.misc.skipToContent}
       </a>
 
-      {/* pt-BR's data chunk loads on demand (see src/data/knowledgeBase.ts) —
-          anything under here that calls useKnowledgeBase() only ever
-          suspends on a /pt/* route, and only until that chunk resolves
-          (typically instant, and always resolved by the time a page has
-          rendered enough for the command palette to be reachable). English
-          never suspends. */}
-      <Suspense fallback={null}>
-        <Sidebar
-          theme={theme}
-          onToggleTheme={toggle}
-          onOpenPalette={() => setPaletteOpen(true)}
+      <Sidebar
+        theme={theme}
+        onToggleTheme={toggle}
+        onOpenPalette={() => setPaletteOpen(true)}
+      />
+
+      <main className="main" id="content">
+        <ScrollToTop />
+        <Routes>
+          {ROUTES.map(({ path, element }) => (
+            <Route key={`en:${path}`} path={path} element={element} />
+          ))}
+          {ROUTES.map(({ path, element }) => (
+            <Route
+              key={`pt:${path}`}
+              path={path === "/" ? "/pt" : `/pt${path}`}
+              element={element}
+            />
+          ))}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+
+      {paletteOpen && (
+        <CommandPalette
+          onClose={() => setPaletteOpen(false)}
+          onNavigate={go}
+          locale={locale}
         />
-
-        <main className="main" id="content">
-          <ScrollToTop />
-          <Routes>
-            {ROUTES.map(({ path, element }) => (
-              <Route key={`en:${path}`} path={path} element={element} />
-            ))}
-            {ROUTES.map(({ path, element }) => (
-              <Route
-                key={`pt:${path}`}
-                path={path === "/" ? "/pt" : `/pt${path}`}
-                element={element}
-              />
-            ))}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-
-        {paletteOpen && (
-          <CommandPalette
-            onClose={() => setPaletteOpen(false)}
-            onNavigate={go}
-            locale={locale}
-          />
-        )}
-      </Suspense>
+      )}
     </div>
   );
 }
@@ -144,7 +137,9 @@ export function Shell() {
 export default function App() {
   return (
     <BrowserRouter>
-      <Shell />
+      <KnowledgeBaseProvider>
+        <Shell />
+      </KnowledgeBaseProvider>
       <Analytics />
       <SpeedInsights />
     </BrowserRouter>

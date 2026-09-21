@@ -24,14 +24,17 @@ async function loadServerBundle() {
         import { renderToStaticMarkup } from "react-dom/server";
         import { StaticRouter } from "react-router-dom/server";
         import { Shell } from "./src/App";
+        import { KnowledgeBaseProvider } from "./src/lib/KnowledgeBaseContext";
         import { resolveMeta, allRoutes, SITE_NAME, SITE_TITLE, HOME_LABEL } from "./src/lib/meta";
-        import { readKnowledgeBase, preloadKnowledgeBase } from "./src/data/knowledgeBase";
+        import { readKnowledgeBaseSync, preloadKnowledgeBase } from "./src/data/knowledgeBase";
         import { localeFromPath, withLocale } from "./src/lib/locale";
         import * as en from "./src/data/knowledge-base";
 
-        // renderToStaticMarkup is synchronous and can't await a Suspense
-        // boundary's thrown promise, so the pt-BR data chunk has to already
-        // be resolved (not just kicked off) before any /pt/* route renders.
+        // renderToStaticMarkup is synchronous and can't await a dynamic
+        // import, so the pt-BR data chunk has to already be resolved (not
+        // just kicked off) before any /pt/* route renders. Once warm,
+        // KnowledgeBaseProvider picks the module up synchronously (effects
+        // never run in a static render, so it must not depend on one).
         export async function warmup() {
           await preloadKnowledgeBase("pt");
         }
@@ -41,9 +44,13 @@ async function loadServerBundle() {
         }
 
         export function renderRoute(path) {
-          const kb = readKnowledgeBase(localeFromPath(path));
+          const kb = readKnowledgeBaseSync(localeFromPath(path));
           const html = renderToStaticMarkup(
-            createElement(StaticRouter, { location: path }, createElement(Shell)),
+            createElement(
+              StaticRouter,
+              { location: path },
+              createElement(KnowledgeBaseProvider, null, createElement(Shell)),
+            ),
           );
           return { html, meta: resolveMeta(path, kb) };
         }
