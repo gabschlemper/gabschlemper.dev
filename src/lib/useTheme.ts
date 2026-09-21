@@ -16,8 +16,8 @@ function readStored(): Theme | null {
 
 /* The theme lives on a data attribute rather than prefers-color-scheme, so
    mobile browser chrome has nothing to follow on its own — this keeps the
-   address bar from staying dark behind a light page. */
-const CHROME: Record<Theme, string> = { dark: "#14120d", light: "#ded6bf" };
+   address bar from staying dark behind a light page. Values track --bg. */
+const CHROME: Record<Theme, string> = { dark: "#0b0b0f", light: "#eef0f4" };
 
 function apply(theme: Theme) {
   document.documentElement.dataset.theme = theme;
@@ -27,6 +27,9 @@ function apply(theme: Theme) {
 }
 
 export function useTheme() {
+  // Lazy initial state so the very first render already has the stored theme
+  // (the visual theme itself was applied even earlier by an inline script in
+  // index.html, which is what prevents a dark flash for light-theme readers).
   const [theme, setTheme] = useState<Theme>(() => readStored() ?? config.defaultTheme);
 
   useEffect(() => {

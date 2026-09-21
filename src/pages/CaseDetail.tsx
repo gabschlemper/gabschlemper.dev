@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import CaseDiagram from "../components/CaseDiagram";
 import { useKnowledgeBase, useLocale, useStrings } from "../lib/useKnowledgeBase";
@@ -21,7 +21,9 @@ export default function CaseDetail() {
   const loc = (path: string) => withLocale(path, locale);
   const study = cases.find((entry) => entry.id === id);
 
-  const [progress, setProgress] = useState(0);
+  // The bar is written straight to the DOM: putting scroll progress in state
+  // re-rendered this whole page (every paragraph) on every scroll frame.
+  const barRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState("");
   const [copied, setCopied] = useState(false);
 
@@ -35,7 +37,8 @@ export default function CaseDetail() {
         frame = 0;
         const max =
           document.documentElement.scrollHeight - window.innerHeight;
-        setProgress(max > 0 ? Math.min(1, window.scrollY / max) : 0);
+        const ratio = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+        if (barRef.current) barRef.current.style.width = `${Math.round(ratio * 100)}%`;
 
         let current = "";
         document.querySelectorAll<HTMLElement>("[data-sec]").forEach((el) => {
@@ -97,10 +100,7 @@ export default function CaseDetail() {
   return (
     <>
       <div className="progress-track">
-        <div
-          className="progress-fill"
-          style={{ width: `${Math.round(progress * 100)}%` }}
-        />
+        <div className="progress-fill" ref={barRef} style={{ width: "0%" }} />
       </div>
 
       <div className="screen screen--case">
