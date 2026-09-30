@@ -184,11 +184,15 @@ export const stats: Stat[] = [
   },
   {
     "label": "Case Studies",
-    "value": "14"
+    "value": "16"
   },
   {
     "label": "Architecture Decisions",
     "value": "5+"
+  },
+  {
+    "label": "This Site's JS (gzip)",
+    "value": "~41 kB"
   }
 ]
 
@@ -250,14 +254,14 @@ export const companies: Company[] = [
       "Communication",
       "Ownership",
       "Technical Leadership",
+      "Reliability",
+      "Backend Engineering",
       "Performance Engineering",
       "Frontend Engineering",
-      "Backend Engineering",
       "Product Thinking",
       "UX",
       "Debugging",
       "Security",
-      "Reliability",
       "Observability",
       "Testing",
       "Data Engineering",
@@ -273,6 +277,7 @@ export const companies: Company[] = [
       "error-observability",
       "container-hardening",
       "production-incident-role-bindings-consumer",
+      "answer-submission-outbox",
       "code-review-technical-leadership",
       "ai-orchestrated-feature-flag-removal",
       "materialized-hierarchy-and-backfill-residue",
@@ -281,7 +286,7 @@ export const companies: Company[] = [
     "lessons": [
       "Eventually-consistent derived data should have exactly one computation path. Multiple writers deriving the same value is the defect; consolidating the derivation is the fix.",
       "Parallel AI agents need the same safety design as any other concurrent workers. Isolate their work by disjoint file ownership, or they will corrupt each other's changes exactly like any other race condition.",
-      "Push hierarchy traversal into the database. A recursive query that returns matches with their ancestors beats a per-level request cascade the client has to orchestrate."
+      "Put the promise where you can keep it. A synchronous boundary should confirm only what is already guaranteed. Here that was \"validated and durably stored\", not \"processed\"."
     ]
   },
   {
@@ -391,6 +396,118 @@ export const companies: Company[] = [
 ]
 
 export const cases: CaseStudy[] = [
+  {
+    "id": "answer-submission-outbox",
+    "featured": false,
+    "title": "Accepting inspection answers instantly and processing them durably, with an outbox",
+    "company": "Dynamox",
+    "category": "Distributed Systems",
+    "summary": "Redesigned how field inspectors' answers reach the platform, so the mobile app gets an immediate confirmation after validation while a background consumer processes the answers durably, with retries and traceable failures; outcome qualitative, not measured.",
+    "capabilities": [
+      "System Design",
+      "Distributed Systems",
+      "Reliability",
+      "Backend Engineering"
+    ],
+    "technologies": [
+      "Kafka",
+      "PostgreSQL"
+    ],
+    "impact": [
+      "The mobile app receives a confirmation as soon as validation passes, instead of waiting for every answer to be processed.",
+      "Accepted answers are stored durably before processing, so a downstream failure no longer risks losing them; failed groups are retried and recorded with enough context to reprocess.",
+      "Heavy processing moved off the request path, so peak-hour submissions no longer do all their work at arrival.",
+      "Every group is traceable end to end by its identifier, and time-to-integration is logged, which gives the team a way to measure the flow in production."
+    ],
+    "difficulty": "High",
+    "ownership": "Led",
+    "customerFacing": "Yes",
+    "readingTime": "2 min",
+    "sections": [
+      {
+        "id": "context",
+        "title": "Context",
+        "paras": [
+          "It is the clearest example of me designing a flow across a boundary I don't control: a mobile client on an unreliable connection, talking to a backend that does expensive work. It is evidence for system design and reliability reasoning: what must be synchronous, what can be deferred, and what has to be durable in between."
+        ]
+      },
+      {
+        "id": "problem",
+        "title": "Problem",
+        "paras": [
+          "At the end of an inspection route, the mobile app sends the whole batch of answers: questions answered, measurements, justifications, \"no anomalies\" confirmations, plus who sent them and for which route and checklist. The backend handled the entire batch inside the request. That had three consequences:"
+        ],
+        "bullets": [
+          "Large submissions were slow, because the user waited for every answer to be fully processed.",
+          "Failures could be silent. If the connection dropped mid-processing, the app had no reliable signal of what had or hadn't been saved.",
+          "Peak hours concentrated load, since many inspectors finish routes around the same times and every submission did its full work on arrival."
+        ]
+      },
+      {
+        "id": "constraints",
+        "title": "Constraints",
+        "bullets": [
+          "The client is a mobile app in the field. Connectivity is unreliable, and the inspector needs a clear \"your answers are safe\" signal before moving on. Any design that leaves that ambiguous pushes the problem onto the person holding the phone.",
+          "Not everything can be deferred. Some failures must reach the inspector while they can still act on them (wrong permissions, a route or checklist that doesn't exist, an asset that isn't on that route). Others (a processing error deep in the pipeline) should never be the inspector's problem.",
+          "One submission mixes several kinds of work. Checklist answers, measurement-point answers, justifications and \"not applicable\" results each need different processing and different downstream events.",
+          "Duplicates are expected. A retrying client on a flaky connection will sometimes send the same answers twice."
+        ]
+      },
+      {
+        "id": "decision",
+        "title": "Decision",
+        "paras": [
+          "I split the flow at the point where the backend can honestly promise \"your answers are safe\", and made everything before that point fast and everything after it durable."
+        ],
+        "bullets": [
+          "Validate synchronously, completely. Authentication, role, required fields, existence of routes, checklists and measurement points, that each asset belongs to the route it was answered under, and that the inspector may access those routes. All of it runs before anything is accepted, so every error the inspector can fix comes back immediately, with details. Accidental duplicates are removed at this stage too.",
+          "Persist to an outbox, grouped and traceable. Valid answers are written to an outbox table, grouped by what they belong to (a checklist on a route, or a measurement point on a route). Each group gets a unique identifier and records its kind, its operation mode, the full payload, the inspector, and whether it was sent by the inspector or on their behalf by support.",
+          "Confirm to the app at that point. The response lists the groups created and their identifiers. From the inspector's perspective the submission is done; the answers are durably stored even if nothing downstream has run yet.",
+          "Process in the background. A consumer receives the outbox entries through Kafka, validates each message, routes it to the processor for its mode, writes the answers to their final tables, and publishes events so reports, dashboards, alerts and inspection history update.",
+          "Make failures recoverable, not just visible. A processing failure is recorded with the Kafka topic, partition and offset, the mode, the group identifier, the answer count and the stack trace, and the message is kept so it can be reprocessed. Each processed group also logs the time between submission and integration."
+        ]
+      },
+      {
+        "id": "tradeoffs",
+        "title": "Trade-offs",
+        "bullets": [
+          "Eventual consistency over a synchronous \"fully saved\" answer. The confirmation now means \"safely stored\", not \"visible everywhere\". The inspector gets a fast, reliable answer; the cost is a short window in which reports don't yet reflect the submission, which is why time-to-integration is logged per group.",
+          "Strict validation at the edge over validating in the background. Doing all validation in the request makes it heavier than a bare \"store and acknowledge\", but it keeps every user-fixable error in front of the user and keeps the background consumer from ever needing to report back to a phone.",
+          "Grouping by checklist or measurement point over one record per submission. Groups give each unit of work its own identifier, mode and failure record, so one bad group can be traced and reprocessed without replaying the whole submission."
+        ]
+      },
+      {
+        "id": "impact",
+        "title": "Impact",
+        "paras": [
+          "Qualitative; no before/after metric was captured."
+        ],
+        "bullets": [
+          "The mobile app receives a confirmation as soon as validation passes, instead of waiting for every answer to be processed.",
+          "Accepted answers are stored durably before processing, so a downstream failure no longer risks losing them; failed groups are retried and recorded with enough context to reprocess.",
+          "Heavy processing moved off the request path, so peak-hour submissions no longer do all their work at arrival.",
+          "Every group is traceable end to end by its identifier, and time-to-integration is logged, which gives the team a way to measure the flow in production."
+        ]
+      },
+      {
+        "id": "lessons",
+        "title": "Lessons Learned",
+        "bullets": [
+          "Put the promise where you can keep it. A synchronous boundary should confirm only what is already guaranteed. Here that was \"validated and durably stored\", not \"processed\".",
+          "Errors belong to whoever can fix them. User-fixable errors go back in the request; system errors go to a durable, reprocessable record. Mixing the two is what makes failures feel silent.",
+          "The unit of retry is a design decision. Choosing the group (not the request, not the single answer) as the unit made identifiers, logging and reprocessing all line up."
+        ]
+      },
+      {
+        "id": "evidence",
+        "title": "Evidence",
+        "bullets": [
+          "Feature functional documentation (internal), explaining the flow for a non-engineering audience.",
+          "Structured logs per submission and per processed group, including time-to-integration."
+        ]
+      }
+    ]
+  },
   {
     "id": "analytics-service",
     "featured": false,
@@ -515,6 +632,123 @@ export const cases: CaseStudy[] = [
           "Verified performance and cost work: load tests run against production queries parameterized by two real tenant contexts (2026-06-26 to 2026-07-17), and a separate clustering investigation to reduce scanned bytes, both before the service went wide.",
           "Verified product surface (2026-07 to 2026-08): the anomaly-management page, an adherence chart tab, a recurring-alerts table with its data contract agreed front-to-back before either side was built, the endpoint behind it, and an accumulated-alerts view still in progress, each shipped behind a feature flag, several with a mocked contract landing before the real endpoint.",
           "Source (private): consolidated career knowledge base; internal architecture decision record; Jira epics and subtasks in the inspection domain, 2026-03 to 2026-08."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "measuring-a-defect-before-fixing-it",
+    "featured": false,
+    "title": "Measuring a defect before fixing it, and being wrong about the measurement",
+    "company": "Dynamox",
+    "category": "Debugging",
+    "summary": "Reduced the estimated blast radius of a customer-facing metric defect from ~29k cycles to 445 that actually showed a wrong number to a customer, turning a proposed historical-correction project into an audited script over a few hundred rows.",
+    "capabilities": [
+      "Debugging",
+      "Technical Decision Making",
+      "Ownership",
+      "Product Thinking",
+      "Testing"
+    ],
+    "technologies": [
+      "PostgreSQL",
+      "JavaScript",
+      "TypeScript",
+      "NestJS"
+    ],
+    "impact": [
+      "Blast radius corrected from ~29,000 records to 445 that actually displayed a wrong percentage to a customer, across three customers rather than the twenty implied by the raw count.",
+      "A whole class of defect found that the first analysis had missed entirely, 4,174 records, almost all customer-facing, because my initial filter assumed a condition that did not hold.",
+      "Turned a proposed historical-correction project into an audited one-off script over a few hundred rows, reviewable by hand.",
+      "Every defect reproduced in a controlled environment with a written prediction before any fix was merged; each fix shipped with a regression test verified to fail without it.",
+      "Two independent reproductions, fifteen hours apart, of the defect whose cause had been described incorrectly in the tracker."
+    ],
+    "difficulty": "High",
+    "ownership": "End-to-end",
+    "customerFacing": "Yes",
+    "readingTime": "2 min",
+    "sections": [
+      {
+        "id": "context",
+        "title": "Context",
+        "paras": [
+          "This is where I stopped treating \"how big is this?\" as a preamble to the real work and started treating it as the work. I produced a number, acted on it, then found it wrong by an order of magnitude, twice, and each correction changed what the team should do next.",
+          "It is my strongest evidence of investigating under ambiguity, of separating a defect from behaviour that merely looks like one, and of being the person who corrects their own analysis in front of stakeholders rather than defending it. It also shows a discipline I now consider non-negotiable: reproduce first, fix second."
+        ]
+      },
+      {
+        "id": "problem",
+        "title": "Problem",
+        "paras": [
+          "A compliance percentage, derived from how many inspection items were completed against how many were due in a time window, was visibly wrong for several customers. Support had escalated individual cases; a product analyst had extracted a list of affected records; nobody knew the real extent.",
+          "The metric was not wrong in one way. It was wrong in several independent ways that produced similar-looking symptoms: a denominator that silently dropped items, a denominator that included items that were not due, counters that summed the same inspection twice, and a repair script that had itself written bad values. Percentages above 100% existed in production, up to 279%."
+        ]
+      },
+      {
+        "id": "constraints",
+        "title": "Constraints",
+        "paras": [
+          "The symptoms did not map one-to-one to causes. A record showing 0% could be a real defect, or a route that legitimately had nothing to inspect that period. A record showing \"more inspections than items\" could come from duplicate answers or from a dropped item. Counting symptoms would have produced a number, just not a true one.",
+          "The correct value was not always recoverable. The system does not keep a history of what a route contained at a past moment. For a large share of records it was possible to prove the stored value was wrong, and impossible to say what it should have been.",
+          "Most of the data was noise. The production database also hosts internal and homologation tenants whose routes generate records continuously and are never inspected. Any naive count is dominated by them.",
+          "The investigation ran against a read-only production replica, so every question had to be answered with a SELECT, and expensive ones had to be shaped to finish at all."
+        ]
+      },
+      {
+        "id": "decision",
+        "title": "Decision",
+        "paras": [
+          "I framed one question: *for each affected record, can I prove it is wrong, and can I compute what it should be?* Those are two different questions, and the answer to the second decides whether a fix is even possible.",
+          "Classify before counting. I built a taxonomy where each record falls in exactly one bucket: correct; provably wrong with a recoverable value; provably wrong with an unrecoverable value. The third bucket only exists because route composition history is not kept, and naming it early stopped me from promising a correction I could not deliver.",
+          "Validate the method against the data. The recomputation agreed with the stored value in 95% of records. That agreement is what made the 5% disagreement trustworthy: if my rule were wrong, it would have disagreed everywhere.",
+          "Separate defect from expected behaviour. The largest bucket, ~24,000 records showing 0%, turned out to be routes that genuinely had nothing to inspect. Real, but not a counter defect: a display decision for product, not a correction for engineering. This is where the first order-of-magnitude correction came from.",
+          "Separate customers from test data. Of the records that were both wrong and correctable, 93% belonged to internal and homologation tenants. Reporting the raw number would have overstated customer impact by more than an order of magnitude.",
+          "Then reproduce, one defect at a time. Each defect got a named route in staging, a written prediction of the expected numbers before the test ran, and a control route designed to stay unchanged. The control is what let me claim a defect was the null handling and not the periodicity rule itself: a route without the triggering condition behaved correctly across twenty consecutive cycles while the affected one failed in nineteen of twenty.",
+          "Only then, the fixes. Small, single-cause changes, each with a regression test verified to fail without the fix."
+        ]
+      },
+      {
+        "id": "tradeoffs",
+        "title": "Trade-offs",
+        "bullets": [
+          "Exact counts for the small, decidable populations; sampling for the large one. A full recomputation across every record was measured at roughly twelve hours of database work. I ran exact counts where the population was small enough to enumerate, and a 1% sample where it was not, then narrowed the exact scope by restricting to the routes that could exhibit the defect at all. Precision where it changed the decision, estimates where it did not.",
+          "A documented \"unrecoverable\" bucket over an estimated correction. A previous repair script had guessed at values and introduced a defect that persisted for eleven consecutive periods for one customer. That precedent is why I preferred publishing \"we can fix this half and not that half\" over a heuristic that would look complete.",
+          "Declining seven stacked pull requests to rebuild one problem at a time. The work had grown into dependent branches spanning multiple defects, which made any single one impossible to validate alone. Discarding open work is expensive and looks like backtracking; I argued against it at first, then followed it once the decision was made, and the rebuilt sequence was genuinely easier to review and to test. My initial objection was about sunk cost, and the decision was about reviewability.",
+          "Reproducing before fixing, even when the cause was already visible in the code. For several defects I could point at the line from reading alone. Reproducing anyway caught two cases where my explanation was wrong: a code path I believed was live had been replaced by another service, and a scenario I had written could not occur because a client-side guard prevented it."
+        ]
+      },
+      {
+        "id": "impact",
+        "title": "Impact",
+        "bullets": [
+          "Blast radius corrected from ~29,000 records to 445 that actually displayed a wrong percentage to a customer, across three customers rather than the twenty implied by the raw count.",
+          "A whole class of defect found that the first analysis had missed entirely, 4,174 records, almost all customer-facing, because my initial filter assumed a condition that did not hold.",
+          "Turned a proposed historical-correction project into an audited one-off script over a few hundred rows, reviewable by hand.",
+          "Every defect reproduced in a controlled environment with a written prediction before any fix was merged; each fix shipped with a regression test verified to fail without it.",
+          "Two independent reproductions, fifteen hours apart, of the defect whose cause had been described incorrectly in the tracker."
+        ]
+      },
+      {
+        "id": "lessons",
+        "title": "Lessons Learned",
+        "bullets": [
+          "\"How big is this?\" is an engineering task, not a preamble. The first number I produced was wrong by ten times, and it was the number the team would have planned around. Measurement deserves the same scepticism as code.",
+          "Separate \"provably wrong\" from \"fixable\". They are different questions, and only the second one decides whether a correction is possible. Conflating them leads to promising a repair for data whose correct value no longer exists.",
+          "A control case is worth more than another failing case. The route that behaved correctly across twenty cycles is what made the failing route's nineteen failures attributable to one specific cause instead of a general suspicion.",
+          "Test data in a production database will dominate any naive count. Filtering it out changed the recommendation completely; reporting without filtering would have cost credibility the first time someone checked.",
+          "Reproduce before fixing, even when the cause looks obvious. Reading code tells you what a path does, not whether that path is the one running. Two of my confident explanations were wrong for exactly that reason.",
+          "Correcting your own published number early is cheaper than defending it. Each correction changed the plan, and each was easier to make before the plan had been committed to than after."
+        ]
+      },
+      {
+        "id": "evidence",
+        "title": "Evidence",
+        "bullets": [
+          "Production measurement, read-only replica, 120-day window: ~888,000 records analysed; 95% verified correct by an independent recomputation; defect population classified into correctable and unrecoverable buckets with exact counts for the former.",
+          "Staging reproduction, named scenarios with written predictions: one route exhibited the defect in 19 of 20 consecutive cycles with a constant signature, while its control route was correct in all 20. The same route isolated a second, independent defect with the opposite signature, making both visible in a single dataset.",
+          "Fixes shipped as small, single-cause pull requests, each with regression tests confirmed to fail without the change, across two services.",
+          "Tracker restructured to one task per defect, each carrying the reproduction, the measured volume, the product decision quoted verbatim, and the acceptance scenarios.",
+          "Two published numbers corrected by me before release, once in a stakeholder-facing document and once in a pull request description."
         ]
       }
     ]
@@ -2275,6 +2509,21 @@ export const capabilities: Capability[] = [
     "desc": "Shaping services, contracts and data flows before code exists."
   },
   {
+    "id": "distributed-systems",
+    "name": "Distributed Systems",
+    "desc": "Designing systems where independent services stay consistent about shared facts."
+  },
+  {
+    "id": "reliability",
+    "name": "Reliability",
+    "desc": "Idempotency, reversibility, and designing for failure as the default."
+  },
+  {
+    "id": "backend-engineering",
+    "name": "Backend Engineering",
+    "desc": "Services, APIs, event consumers and the data they own."
+  },
+  {
     "id": "technical-decision-making",
     "name": "Technical Decision Making",
     "desc": "Weighing alternatives explicitly, choosing the option that ages well rather than the one that ships fastest."
@@ -2285,14 +2534,24 @@ export const capabilities: Capability[] = [
     "desc": "Proposal → implementation → adoption → deletion of the old path."
   },
   {
-    "id": "backend-engineering",
-    "name": "Backend Engineering",
-    "desc": "Services, APIs, event consumers and the data they own."
-  },
-  {
     "id": "security",
     "name": "Security",
     "desc": "Threat and privacy risk folded into the design itself, not bolted on after, from hardened containers to access and data-protection boundaries."
+  },
+  {
+    "id": "debugging",
+    "name": "Debugging",
+    "desc": "Root-causing under uncertainty: reproducing, isolating, and fixing without guessing."
+  },
+  {
+    "id": "product-thinking",
+    "name": "Product Thinking",
+    "desc": "Engineering choices evaluated by their effect on the user's workflow."
+  },
+  {
+    "id": "testing",
+    "name": "Testing",
+    "desc": "Suites that stay trustworthy, because a red build must mean something."
   },
   {
     "id": "incident-response",
@@ -2315,24 +2574,9 @@ export const capabilities: Capability[] = [
     "desc": ""
   },
   {
-    "id": "debugging",
-    "name": "Debugging",
-    "desc": "Root-causing under uncertainty: reproducing, isolating, and fixing without guessing."
-  },
-  {
-    "id": "reliability",
-    "name": "Reliability",
-    "desc": "Idempotency, reversibility, and designing for failure as the default."
-  },
-  {
     "id": "frontend-engineering",
     "name": "Frontend Engineering",
     "desc": "Production interfaces: architecture, performance, accessibility."
-  },
-  {
-    "id": "product-thinking",
-    "name": "Product Thinking",
-    "desc": "Engineering choices evaluated by their effect on the user's workflow."
   },
   {
     "id": "ux",
@@ -2340,19 +2584,9 @@ export const capabilities: Capability[] = [
     "desc": "Dense engineering data kept legible under time pressure."
   },
   {
-    "id": "distributed-systems",
-    "name": "Distributed Systems",
-    "desc": "Designing systems where independent services stay consistent about shared facts."
-  },
-  {
     "id": "technical-leadership",
     "name": "Technical Leadership",
     "desc": "Standards adopted voluntarily; becoming the reference others consult."
-  },
-  {
-    "id": "testing",
-    "name": "Testing",
-    "desc": "Suites that stay trustworthy, because a red build must mean something."
   },
   {
     "id": "design-systems",
@@ -2388,6 +2622,10 @@ export const technologies: Technology[] = [
   {
     "name": "TypeScript",
     "usage": "Default language across both frontends and NestJS services. Types as documentation."
+  },
+  {
+    "name": "JavaScript",
+    "usage": "Where it all started, on freelance frontend work under review."
   },
   {
     "name": "NestJS",
