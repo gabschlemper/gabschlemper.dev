@@ -6,8 +6,8 @@ import { techNameFromSlug, techSlug } from "./slug";
 export const SITE_NAME = "Gabriela Schlemper";
 /** Full keyword-bearing title used verbatim on the home route. */
 export const SITE_TITLE: Record<Locale, string> = {
-  en: "Gabriela Schlemper — Software Engineer (React, TypeScript, Vue) · Ireland/EU",
-  pt: "Gabriela Schlemper — Engenheira de Software (React, TypeScript, Vue) · Irlanda/UE",
+  en: "Gabriela Schlemper — Full-Stack Software Engineer | System Design",
+  pt: "Gabriela Schlemper — Engenheira de Software Full-Stack | Arquitetura de Sistemas",
 };
 export const SITE_URL = "https://gabschlemper.dev";
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/images/profile-512.webp`;
@@ -82,7 +82,7 @@ export function resolveMeta(pathname: string, kb: KnowledgeBaseModule): RouteMet
       ? {
           title: undefined,
           description:
-            "Gabriela Schlemper — Engenheira de Software especializada em React, TypeScript e Vue, baseada na Irlanda (UE), aberta a vagas remotas ou presenciais. Eu documento decisões de engenharia em vez de listar tecnologias.",
+            "Trabalho entre interfaces de produto, serviços de backend e os dados que conectam os dois. Veja como investigo problemas, avalio alternativas e acompanho uma mudança até a produção.",
           path,
           breadcrumbs: [],
           entityType: "WebSite",
@@ -91,7 +91,7 @@ export function resolveMeta(pathname: string, kb: KnowledgeBaseModule): RouteMet
       : {
           title: undefined,
           description:
-            "Gabriela Schlemper — Software Engineer specializing in React, TypeScript and Vue, based in Ireland (EU), open to remote and on-site roles. I document engineering decisions instead of listing technologies.",
+            "I work across product interfaces, backend services, and the data between them. Explore how I investigate problems, weigh alternatives, and follow changes into production.",
           path,
           breadcrumbs: [],
           entityType: "WebSite",
@@ -104,8 +104,8 @@ export function resolveMeta(pathname: string, kb: KnowledgeBaseModule): RouteMet
       title: locale === "pt" ? "Perfil" : "Profile",
       description:
         locale === "pt"
-          ? "A identidade técnica de Gabriela Schlemper: filosofia de engenharia, pontos fortes e o tipo de problema que eu procuro — React, TypeScript, Vue e sistemas distribuídos na Irlanda/UE."
-          : "Gabriela Schlemper's technical identity: engineering philosophy, strengths and the kind of problems I look for — React, TypeScript, Vue and distributed-systems work in Ireland/EU.",
+        ? "Como Gabriela Schlemper trabalha entre interfaces, serviços de backend e dados: exemplos de investigação, decisões de arquitetura e desenvolvimento full-stack."
+          : "How Gabriela Schlemper works across interfaces, backend services, and data, with examples of investigation, architecture decisions, and full-stack delivery.",
       path,
       breadcrumbs: [{ name: locale === "pt" ? "Perfil" : "Profile", path }],
       entityType: "ProfilePage",
@@ -164,8 +164,8 @@ export function resolveMeta(pathname: string, kb: KnowledgeBaseModule): RouteMet
       title: locale === "pt" ? "Estudos de Caso" : "Case Studies",
       description:
         locale === "pt"
-          ? "Estudos de caso de engenharia de software da Dynamox e da AQTech: contexto, restrições, alternativas, decisão e trade-offs por trás de sistemas em React, TypeScript, Vue e Node.js."
-          : "Software engineering case studies from Dynamox and AQTech: context, constraints, alternatives, decision and trade-offs behind React, TypeScript, Vue and Node.js systems.",
+          ? "Histórias de engenharia da Dynamox e da AQTech: os problemas, as alternativas consideradas, as decisões tomadas e o que mudou depois."
+          : "Engineering stories from Dynamox and AQTech: the problems, alternatives, decisions, and what changed afterward.",
       path,
       breadcrumbs: [{ name: locale === "pt" ? "Estudos de Caso" : "Case Studies", path: withLocale("/cases", locale) }],
       entityType: "CollectionPage",
@@ -199,8 +199,8 @@ export function resolveMeta(pathname: string, kb: KnowledgeBaseModule): RouteMet
       title: locale === "pt" ? "Capacidades" : "Capabilities",
       description:
         locale === "pt"
-          ? "Capacidades de engenharia, não uma lista de tecnologias — sistemas distribuídos, design de sistemas, engenharia frontend e backend, cada uma comprovada pelos estudos de caso que a sustentam."
-          : "Engineering capabilities, not a technology list — distributed systems, system design, frontend and backend engineering, each backed by the case studies that prove it.",
+          ? "Temas que aparecem no trabalho de Gabriela: sistemas distribuídos, design de sistemas e desenvolvimento frontend e backend, ligados a exemplos concretos."
+          : "Themes across Gabriela's work, from distributed systems and system design to frontend and backend delivery, linked to concrete examples.",
       path,
       breadcrumbs: [{ name: locale === "pt" ? "Capacidades" : "Capabilities", path: withLocale("/capabilities", locale) }],
       entityType: "CollectionPage",
@@ -260,8 +260,8 @@ export function resolveMeta(pathname: string, kb: KnowledgeBaseModule): RouteMet
       title: locale === "pt" ? "Princípios de Engenharia" : "Engineering Principles",
       description:
         locale === "pt"
-          ? "Princípios de engenharia com histórias de origem — como Gabriela Schlemper aborda invariantes, corretude, adoção e tomada de decisão em arquitetura de software."
-          : "Eight engineering principles with origin stories — how Gabriela Schlemper approaches invariants, correctness, adoption and decision-making in software architecture.",
+          ? "Dez princípios de engenharia que Gabriela Schlemper desenvolveu a partir de decisões e problemas reais."
+          : "Ten engineering principles Gabriela Schlemper developed through real decisions and problems.",
       path,
       breadcrumbs: [{ name: locale === "pt" ? "Princípios de Engenharia" : "Engineering Principles", path: withLocale("/principles", locale) }],
       entityType: "CollectionPage",

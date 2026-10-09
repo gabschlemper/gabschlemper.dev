@@ -6,7 +6,7 @@ import NotFound from "./NotFound";
 
 export default function CompanyDetail() {
   const { id } = useParams();
-  const { cases, companies } = useKnowledgeBase();
+  const { cases, companies, technologies } = useKnowledgeBase();
   const locale = useLocale();
   const t = useStrings();
   const loc = (path: string) => withLocale(path, locale);
@@ -86,15 +86,22 @@ export default function CompanyDetail() {
         {t.companyDetail.technologies}
       </div>
       <div className="chip-row">
-        {company.technologies.map((tech) => (
-          <Link
-            className="chip chip--link"
-            to={loc(`/technologies/${techSlug(tech)}`)}
-            key={tech}
-          >
-            {tech}
-          </Link>
-        ))}
+        {company.technologies.map((tech) => {
+          const hasDetailPage = technologies.some((entry) => entry.name === tech);
+          return hasDetailPage ? (
+            <Link
+              className="chip chip--link"
+              to={loc(`/technologies/${techSlug(tech)}`)}
+              key={tech}
+            >
+              {tech}
+            </Link>
+          ) : (
+            <span className="chip" key={tech}>
+              {tech}
+            </span>
+          );
+        })}
       </div>
 
       {companyCases.length > 0 && (
