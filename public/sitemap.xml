@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://gabschlemper.dev/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/" />
@@ -10,7 +10,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt" />
@@ -18,7 +18,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/profile</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/profile" />
@@ -26,7 +26,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/profile</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/profile" />
@@ -34,7 +34,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/journey</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/journey" />
@@ -42,7 +42,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/journey</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/journey" />
@@ -50,7 +50,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/companies</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/companies" />
@@ -58,7 +58,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/companies</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/companies" />
@@ -66,7 +66,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/cases</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/cases" />
@@ -74,7 +74,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/cases</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/cases" />
@@ -82,7 +82,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities" />
@@ -90,7 +90,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities" />
@@ -98,7 +98,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/technologies</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/technologies" />
@@ -106,7 +106,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/technologies</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/technologies" />
@@ -114,7 +114,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/principles</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/principles" />
@@ -122,7 +122,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/principles</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/principles" />
@@ -130,7 +130,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/map</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/map" />
@@ -138,7 +138,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/map</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/map" />
@@ -146,7 +146,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/companies/dynamox</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/companies/dynamox" />
@@ -154,7 +154,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/companies/dynamox</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/companies/dynamox" />
@@ -162,7 +162,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/companies/aqtech</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/companies/aqtech" />
@@ -170,7 +170,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/companies/aqtech</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/companies/aqtech" />
@@ -178,7 +178,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/companies/freelance</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/companies/freelance" />
@@ -186,7 +186,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/companies/freelance</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/companies/freelance" />
@@ -194,7 +194,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/cases/answer-submission-outbox</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/cases/answer-submission-outbox" />
@@ -202,7 +202,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/cases/answer-submission-outbox</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/cases/answer-submission-outbox" />
@@ -210,7 +210,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/cases/route-adherence-investigation</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/cases/route-adherence-investigation" />
@@ -218,7 +218,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/cases/route-adherence-investigation</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/cases/route-adherence-investigation" />
@@ -226,7 +226,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/cases/analytics-service</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/cases/analytics-service" />
@@ -234,7 +234,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/cases/analytics-service</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/cases/analytics-service" />
@@ -242,7 +242,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/cases/production-incident-role-bindings-consumer</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/cases/production-incident-role-bindings-consumer" />
@@ -250,7 +250,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/cases/production-incident-role-bindings-consumer</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/cases/production-incident-role-bindings-consumer" />
@@ -258,7 +258,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/cases/materialized-hierarchy-and-backfill-residue</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/cases/materialized-hierarchy-and-backfill-residue" />
@@ -266,7 +266,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/cases/materialized-hierarchy-and-backfill-residue</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/cases/materialized-hierarchy-and-backfill-residue" />
@@ -274,7 +274,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/cases/prod-data-correction</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/cases/prod-data-correction" />
@@ -282,7 +282,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/cases/prod-data-correction</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/cases/prod-data-correction" />
@@ -290,7 +290,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/cases/single-computation-path</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/cases/single-computation-path" />
@@ -298,7 +298,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/cases/single-computation-path</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/cases/single-computation-path" />
@@ -306,7 +306,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/cases/ai-orchestrated-feature-flag-removal</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/cases/ai-orchestrated-feature-flag-removal" />
@@ -314,7 +314,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/cases/ai-orchestrated-feature-flag-removal</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/cases/ai-orchestrated-feature-flag-removal" />
@@ -322,7 +322,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/cases/flaky-e2e</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/cases/flaky-e2e" />
@@ -330,7 +330,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/cases/flaky-e2e</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/cases/flaky-e2e" />
@@ -338,7 +338,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/cases/container-hardening</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/cases/container-hardening" />
@@ -346,7 +346,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/cases/container-hardening</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/cases/container-hardening" />
@@ -354,7 +354,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/cases/workspace-sync</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/cases/workspace-sync" />
@@ -362,7 +362,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/cases/workspace-sync</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/cases/workspace-sync" />
@@ -370,7 +370,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/cases/hibernation-scope-removal</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/cases/hibernation-scope-removal" />
@@ -378,7 +378,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/cases/hibernation-scope-removal</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/cases/hibernation-scope-removal" />
@@ -386,7 +386,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/cases/asset-tree-search</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/cases/asset-tree-search" />
@@ -394,7 +394,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/cases/asset-tree-search</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/cases/asset-tree-search" />
@@ -402,7 +402,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/cases/design-system</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/cases/design-system" />
@@ -410,7 +410,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/cases/design-system</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/cases/design-system" />
@@ -418,7 +418,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/cases/error-observability</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/cases/error-observability" />
@@ -426,7 +426,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/cases/error-observability</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/cases/error-observability" />
@@ -434,7 +434,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/cases/code-review-technical-leadership</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/cases/code-review-technical-leadership" />
@@ -442,7 +442,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/cases/code-review-technical-leadership</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/cases/code-review-technical-leadership" />
@@ -450,7 +450,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/system-design</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities/system-design" />
@@ -458,7 +458,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities/system-design</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities/system-design" />
@@ -466,7 +466,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/distributed-systems</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities/distributed-systems" />
@@ -474,7 +474,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities/distributed-systems</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities/distributed-systems" />
@@ -482,7 +482,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/reliability</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities/reliability" />
@@ -490,7 +490,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities/reliability</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities/reliability" />
@@ -498,7 +498,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/backend-engineering</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities/backend-engineering" />
@@ -506,7 +506,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities/backend-engineering</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities/backend-engineering" />
@@ -514,7 +514,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/debugging</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities/debugging" />
@@ -522,7 +522,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities/debugging</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities/debugging" />
@@ -530,7 +530,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/technical-decision-making</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities/technical-decision-making" />
@@ -538,7 +538,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities/technical-decision-making</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities/technical-decision-making" />
@@ -546,7 +546,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/ownership</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities/ownership" />
@@ -554,7 +554,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities/ownership</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities/ownership" />
@@ -562,7 +562,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/product-thinking</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities/product-thinking" />
@@ -570,7 +570,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities/product-thinking</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities/product-thinking" />
@@ -578,7 +578,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/testing</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities/testing" />
@@ -586,7 +586,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities/testing</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities/testing" />
@@ -594,7 +594,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/security</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities/security" />
@@ -602,7 +602,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities/security</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities/security" />
@@ -610,7 +610,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/incident-response</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities/incident-response" />
@@ -618,7 +618,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities/incident-response</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities/incident-response" />
@@ -626,7 +626,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/communication</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities/communication" />
@@ -634,7 +634,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities/communication</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities/communication" />
@@ -642,7 +642,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/performance-engineering</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities/performance-engineering" />
@@ -650,7 +650,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities/performance-engineering</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities/performance-engineering" />
@@ -658,7 +658,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/data-engineering</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities/data-engineering" />
@@ -666,7 +666,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities/data-engineering</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities/data-engineering" />
@@ -674,7 +674,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/technical-leadership</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities/technical-leadership" />
@@ -682,7 +682,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities/technical-leadership</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities/technical-leadership" />
@@ -690,7 +690,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/frontend-engineering</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities/frontend-engineering" />
@@ -698,7 +698,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities/frontend-engineering</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities/frontend-engineering" />
@@ -706,7 +706,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/ux</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities/ux" />
@@ -714,7 +714,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities/ux</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities/ux" />
@@ -722,7 +722,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/design-systems</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities/design-systems" />
@@ -730,7 +730,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities/design-systems</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities/design-systems" />
@@ -738,7 +738,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/accessibility</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities/accessibility" />
@@ -746,7 +746,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities/accessibility</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities/accessibility" />
@@ -754,7 +754,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/developer-experience</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities/developer-experience" />
@@ -762,7 +762,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities/developer-experience</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities/developer-experience" />
@@ -770,7 +770,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/capabilities/observability</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/capabilities/observability" />
@@ -778,7 +778,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/capabilities/observability</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/capabilities/observability" />
@@ -786,7 +786,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/technologies/react</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/technologies/react" />
@@ -794,7 +794,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/technologies/react</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/technologies/react" />
@@ -802,7 +802,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/technologies/vue</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/technologies/vue" />
@@ -810,7 +810,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/technologies/vue</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/technologies/vue" />
@@ -818,7 +818,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/technologies/typescript</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/technologies/typescript" />
@@ -826,7 +826,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/technologies/typescript</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/technologies/typescript" />
@@ -834,7 +834,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/technologies/javascript</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/technologies/javascript" />
@@ -842,7 +842,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/technologies/javascript</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/technologies/javascript" />
@@ -850,7 +850,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/technologies/nestjs</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/technologies/nestjs" />
@@ -858,7 +858,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/technologies/nestjs</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/technologies/nestjs" />
@@ -866,7 +866,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/technologies/fastify</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/technologies/fastify" />
@@ -874,7 +874,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/technologies/fastify</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/technologies/fastify" />
@@ -882,7 +882,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/technologies/kafka</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/technologies/kafka" />
@@ -890,7 +890,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/technologies/kafka</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/technologies/kafka" />
@@ -898,7 +898,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/technologies/postgresql</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/technologies/postgresql" />
@@ -906,7 +906,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/technologies/postgresql</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/technologies/postgresql" />
@@ -914,7 +914,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/technologies/prisma</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/technologies/prisma" />
@@ -922,7 +922,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/technologies/prisma</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/technologies/prisma" />
@@ -930,7 +930,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/technologies/vuetify</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/technologies/vuetify" />
@@ -938,7 +938,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/technologies/vuetify</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/technologies/vuetify" />
@@ -946,7 +946,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/technologies/terraform</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/technologies/terraform" />
@@ -954,7 +954,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/technologies/terraform</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/technologies/terraform" />
@@ -962,7 +962,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/technologies/bigquery</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/technologies/bigquery" />
@@ -970,7 +970,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/technologies/bigquery</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/technologies/bigquery" />
@@ -978,7 +978,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/technologies/kubernetes</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/technologies/kubernetes" />
@@ -986,7 +986,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/technologies/kubernetes</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/technologies/kubernetes" />
@@ -994,7 +994,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/technologies/sentry</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/technologies/sentry" />
@@ -1002,7 +1002,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/technologies/sentry</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/technologies/sentry" />
@@ -1010,7 +1010,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/technologies/docker</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/technologies/docker" />
@@ -1018,7 +1018,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/technologies/docker</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/technologies/docker" />
@@ -1026,7 +1026,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/technologies/vitest</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/technologies/vitest" />
@@ -1034,7 +1034,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/technologies/vitest</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/technologies/vitest" />
@@ -1042,7 +1042,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/technologies/claude-code</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://gabschlemper.dev/technologies/claude-code" />
@@ -1050,7 +1050,7 @@
   </url>
   <url>
     <loc>https://gabschlemper.dev/pt/technologies/claude-code</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://gabschlemper.dev/pt/technologies/claude-code" />
