@@ -1,12 +1,10 @@
 # Gabriela Schlemper
 
-> Software Engineer based in Dublin, Ireland (EU) — Italian citizenship, no
-> sponsorship needed in Europe, open to remote or on-site roles. Works primarily in
-> React, TypeScript, Vue (2 and 3), Node.js (NestJS, Fastify) and event-driven
-> distributed systems (Kafka, PostgreSQL). Currently a Software Engineer at Dynamox.
-> This site is a documentation repository, not a landing page: every claim links to
-> the case study that proves it — context, constraints, alternatives, decision and
-> trade-offs, never just the output.
+> Full-stack software engineer working across product interfaces, backend services,
+> and the data between them. Currently based in Florianópolis, Brazil; Italian (EU)
+> citizen and able to relocate to Ireland within a few weeks of an offer. Currently a
+> Software Engineer at Dynamox. This portfolio follows a few problems from context
+> through the decisions and work that changed them.
 
 Contact: gabschlemper@gmail.com · https://linkedin.com/in/gabrielaschlemper ·
 https://github.com/gabschlemper · CV: https://gabschlemper.dev/cv/Gabriela-Schlemper-CV.pdf

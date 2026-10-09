@@ -104,26 +104,26 @@ export interface Principle {
 
 export const profile: Profile = {
   "name": "Gabriela Schlemper",
-  "headline": "Engenheira de Software focada em construir sistemas escaláveis através de decisões de engenharia bem pensadas.",
-  "oneLiner": "Eu documento decisões de engenharia em vez de listar tecnologias.",
+  "headline": "Engenheira de software full-stack, entre interfaces de produto, serviços de backend e os dados que conectam os dois.",
+  "oneLiner": "Gosto de entender por que um sistema se comporta de certa forma antes de decidir o que mudar.",
   "about": [
-    "Sou uma engenheira de software cuja carreira evoluiu de implementar interfaces frontend para desenhar sistemas distribuídos. Não otimizo para o número de tecnologias que conheço; otimizo para entender por que os sistemas são construídos do jeito que são.",
-    "Gosto de problemas envolvendo arquitetura, sistemas distribuídos, developer experience e engenharia frontend."
+    "Na Dynamox, trabalho em ferramentas para inspeção industrial. Uma mudança pode passar pela tela usada por quem faz a inspeção, pela API por trás dela e por cópias dos mesmos dados em outros serviços. Tento entender esse caminho inteiro antes de decidir onde corrigir o problema.",
+    "Às vezes, o trabalho começa com uma decisão de arquitetura; em outras, com um relato de que um número parece errado. Nos dois casos, testo minha explicação contra o comportamento do sistema e deixo os trade-offs claros para que outras pessoas possam questioná-los."
   ],
   "philosophy": [
-    "Boa engenharia é, em grande parte, sobre decisões, não sobre código. Trato cada sistema como um conjunto de afirmações que precisam permanecer verdadeiras ao longo do tempo, sobre ownership, consistência e quem tem permissão para computar o quê. Quando essas afirmações são implícitas, os sistemas se desalinham; quando explícitas, permanecem corretos.",
-    "Esta base de conhecimento é escrita da forma como acredito que engenharia deveria ser documentada: contexto, restrições, alternativas, decisão, trade-offs. Nunca só o resultado."
+    "Quando vários serviços guardam versões do mesmo dado, a pergunta difícil é qual deles pode alterá-lo e como os outros recebem a mudança. Uma regra clara nesse limite evita muitos casos especiais depois.",
+    "Registro as alternativas e os motivos da decisão. Assim, o time pode revisar o raciocínio, voltar a ele mais tarde ou usá-lo quando surgir um problema parecido."
   ],
   "evolution": [
     {
       "year": "Hoje",
-      "label": "Platform engineering, arquitetura e desenvolvimento assistido por IA",
-      "detail": "Interessada nos sistemas que tornam outros engenheiros mais rápidos e seguros."
+      "label": "Engenharia full-stack na Dynamox",
+      "detail": "Funcionalidades do produto, arquitetura de backend e dados que precisam permanecer consistentes entre serviços."
     },
     {
       "year": "2025",
       "label": "Desenhando sistemas distribuídos",
-      "detail": "Dynamox. Consistência entre serviços, arquitetura orientada a eventos, ownership."
+      "detail": "Dynamox. Consistência entre serviços, eventos e decisões que atravessam a stack."
     },
     {
       "year": "2024",
@@ -142,35 +142,31 @@ export const profile: Profile = {
     }
   ],
   "howIThink": [
-    "Comece pelos invariantes. Antes de desenhar, escrevo o que nunca pode ser falso, e então escolho a arquitetura que torna violações impossíveis, não apenas improváveis.",
-    "Prefira a corretude enfadonha. Um sistema provadamente correto vence um sistema engenhoso, mesmo quando o engenhoso é mais rápido de construir.",
-    "Torne a adoção o caminho mais fácil. Padrões, design systems e processos só sobrevivem quando segui-los dá menos trabalho do que ignorá-los.",
-    "Decisões são documentos. Se uma decisão não é escrita com suas alternativas, o time vai reabrir essa discussão em seis meses."
+    "Antes de mudar o comportamento em produção, quero saber o que os dados mostram — e se o método usado para medi-los é confiável.",
+    "Se dois serviços calculam o mesmo valor, procuro um lugar único para fazer esse cálculo e uma forma clara de avisar os demais.",
+    "Em um fluxo assíncrono, pergunto o que o sistema pode prometer agora e o que acontece se o processamento falhar depois.",
+    "Quando uma decisão envolve mais de um time, registro os trade-offs antes da implementação. Assim, dá para discutir o limite enquanto ainda é barato mudá-lo."
   ],
   "strengths": [
-    "Consistência entre serviços e design de ownership de dados",
-    "Transformar conhecimento tácito do time em padrões explícitos",
-    "Arquitetura de componentes e design systems",
-    "Comunicação técnica escrita",
-    "Ownership de ponta a ponta: da proposta à implementação à adoção"
+    "Acompanhar uma mudança de dados por interfaces, APIs, consumers e tabelas",
+    "Encontrar onde uma regra compartilhada deve ficar entre serviços",
+    "Construir fluxos de frontend junto das APIs e dos modelos de dados por trás deles",
+    "Escrever decisões para que o time possa revisar o raciocínio, não só a conclusão",
+    "Levar uma funcionalidade da definição do problema até a implantação"
   ],
   "interests": [
     "Sistemas Distribuídos",
     "Arquitetura de Software",
-    "Developer Experience",
-    "Engenharia Assistida por IA",
-    "Platform Engineering",
-    "Liderança Técnica",
-    "Documentação de Engenharia",
-    "Gestão do Conhecimento"
+    "Engenharia Frontend",
+    "Developer Experience"
   ],
   "preferredProblems": [
-    "Sistemas em que múltiplos serviços discordam sobre o mesmo fato",
-    "Times que entregam rápido mas não conseguem explicar por que as coisas são construídas do jeito que são",
-    "Bases de código frontend que precisam de arquitetura, não de mais componentes",
-    "Fluxos de trabalho em que IA pode ajudar sem remover o julgamento humano"
+    "Um valor que muda dependendo do serviço ou da tela em que é consultado",
+    "Uma funcionalidade útil que fica lenta por causa de dados espalhados em uma hierarquia grande",
+    "Uma divergência em produção cuja primeira explicação não bate com as evidências",
+    "Um fluxo que precisa continuar funcionando quando uma requisição ou mensagem falha no meio do caminho"
   ],
-  "quote": "O objetivo não é colecionar tecnologias. O objetivo é entender como tomar boas decisões de engenharia."
+  "quote": "Antes de corrigir um sistema, quero entender o que ele promete — e se cumpre essa promessa."
 }
 
 export const stats: Stat[] = [
@@ -184,7 +180,7 @@ export const stats: Stat[] = [
   },
   {
     "label": "Estudos de Caso",
-    "value": "14"
+    "value": "16"
   },
   {
     "label": "Decisões de Arquitetura",
@@ -200,7 +196,7 @@ export const companies: Company[] = [
     "period": "2025-Present",
     "domain": "Inspeção industrial & monitoramento de condição",
     "phase": "Aprendendo sistemas distribuídos e arquitetura de software",
-    "summary": "Empresa de monitoramento e inspeção industrial onde cresci de júnior a desenvolvedora full-stack plena, tornando-me a referência do time em sincronização de dados entre serviços.",
+    "summary": "Trabalho na plataforma de inspeção industrial da Dynamox, entre a interface usada em campo e os serviços de backend. Minha trajetória passou de um foco maior em frontend para problemas de dados e sincronização entre serviços.",
     "overview": [
       "A Dynamox constrói uma plataforma de monitoramento e inspeção industrial (manutenção preditiva para ativos industriais). Entrei em fevereiro de 2025 e trabalho no squad dono do domínio de inspeção: rotas de inspeção, checklists, times, conformidade (\"adherence\") e relatórios, construindo tanto o frontend web quanto os serviços de backend por trás dele."
     ],
@@ -214,19 +210,13 @@ export const companies: Company[] = [
       "Trabalho de plataforma: remediação de segurança/CVEs, observabilidade, infraestrutura de CI/CD e testes, e infrastructure-as-code para o time."
     ],
     "achievements": [
-      "Tornei-me a referência do time em sincronização entre serviços através de uma propagação atômica de edição em sete tabelas entre dois serviços, culminando em uma decisão de arquitetura que conduzi de forma autônoma.",
-      "Tornei uma suite de testes não confiável em confiável novamente, desbloqueando o CI do time, e, em review, refutei empiricamente três das quatro mudanças de produção propostas.",
-      "Fundei um novo serviço de analytics/relatórios, incluindo a decisão de arquitetura OLTP-vs-OLAP por trás dele, revisada e aprovada por sete stakeholders entre engenharia e o time de plataforma, com uma revisão de risco de segurança/privacidade incorporada à própria decisão e um risco de latência que identifiquei e corrigi entre duas versões do ADR.",
-      "Fui responsável por confiabilidade em produção e integridade de dados, incluindo correções de dados em larga escala seguras e reversíveis, e resposta a incidentes com post-mortems.",
-      "Transformei um incidente de produção que bloqueava clientes em uma decisão de arquitetura documentada através de um post-mortem, um ADR e um consumer reconstruído, depois identifiquei a causa raiz de um deadlock de produção posterior como uma incompatibilidade de particionamento de mensageria e fechei uma lacuna de falha silenciosa com retry e uma dead-letter queue.",
-      "Entreguei uma funcionalidade complexa de ponta a ponta, sozinha, entre banco de dados, backend e frontend.",
-      "Elevei o patamar de engenharia do time em observabilidade, segurança e documentação, muitas vezes por iniciativa própria.",
-      "Prototipei IA aplicada com um design orientado à segurança, um agente human-in-the-loop para criação de rotas em massa: o modelo classifica candidatos e nunca emite identificadores, e toda escrita passa por confirmação humana explícita. Estágio de protótipo, chegando ao modo de escrita com testes, nunca lançado em produção. (Deliberadamente não é um estudo de caso; ver a nota de curadoria ao final deste arquivo.)",
-      "Eliminei um schema de API de 5.000 linhas mantido manualmente ao gerar OpenAPI a partir dos próprios decorators do código, validado em um endpoint até o resultado gerado bater com o manual, depois expandido para ~10 domínios rumo a ~21 controllers, junto com a adição do primeiro pipeline de teste de CI do serviço. (Deliberadamente não é um estudo de caso; ver a nota de curadoria ao final deste arquivo.)",
-      "Tornei o hardening de containers e dependências uma prática trimestral permanente ao longo de quatro trimestres: 135 CVEs sinalizados e todos os 7 críticos remediados na primeira passagem, depois uma auditoria levada de 69 achados para 16, CVEs de SO sem correção de 160 para 0, e a imagem final de 1,64 GB para 463 MB.",
-      "Identifiquei uma query do warehouse em 69% de um teto rígido de bytes antes que começasse a falhar, depois auditei minha própria migração, encontrei 79% das linhas de produção nunca preenchidas retroativamente e 9.299 alertas silenciosamente perdidos do produto, e reparei 70.502 linhas de forma idempotente.",
-      "Mudei o escopo de um épico definido pelo produto ao mover onde um novo estado é tratado. Um status de \"ativo hibernado\" em toda a plataforma foi especificado como uma regra de exclusão para oito caminhos de leitura; aplicá-lo uma única vez no limite de escrita tornou a maior parte desse escopo desnecessária, e o design refinado substituiu o item do roadmap como a fonte da verdade do épico. Contribuição de design; desenvolvimento programado para começar em 2026-08-31, então ainda não há número entregue.",
-      "Promovida de júnior a pleno em ~11 meses, respaldada por evidências em todas as seis áreas de competência."
+      "Eu e outro engenheiro estabelecemos a base de um serviço de relatórios depois que escrevi a decisão de arquitetura para separar consultas analíticas do banco transacional. A implantação está em andamento.",
+      "Conduzi o trabalho de uma mudança de sincronização que atravessava sete tabelas e dois serviços; depois, o time passou a me consultar como referência nesse tipo de problema.",
+      "Na árvore de ativos, contribuí com a travessia recursiva no backend: o padrão de N×3 consultas sequenciais caiu para três. Outro engenheiro fez a maior parte da tarefa final de busca.",
+      "Investiguei divergências de aderência às rotas com dados de produção e reproduções em staging, revendo meu critério de medição quando se mostrou amplo demais.",
+      "Uma mudança de limpeza de roles que implementei causou perda de acesso entre workspaces. Assumi o post-mortem e a decisão arquitetural; o squad compartilhou a implementação do consumer substituto.",
+      "Ajudei a manter a segurança e a confiabilidade dos serviços, incluindo hardening de containers e dependências ao longo de vários ciclos.",
+      "Fui promovida de júnior a nível pleno em cerca de 11 meses; o dossiê considerou backend, frontend, arquitetura, segurança, qualidade e entrega contínua."
     ],
     "technologies": [
       "React",
@@ -250,38 +240,40 @@ export const companies: Company[] = [
       "Comunicação",
       "Senso de Dono",
       "Liderança Técnica",
+      "Confiabilidade",
+      "Engenharia Backend",
       "Engenharia de Performance",
       "Engenharia Frontend",
-      "Engenharia Backend",
       "Visão de Produto",
       "UX",
       "Debugging",
       "Segurança",
-      "Confiabilidade",
       "Observabilidade",
       "Testes",
       "Engenharia de Dados",
       "Resposta a Incidentes"
     ],
     "caseIds": [
-      "single-computation-path",
-      "workspace-sync",
-      "flaky-e2e",
       "analytics-service",
-      "prod-data-correction",
+      "workspace-sync",
+      "single-computation-path",
       "asset-tree-search",
+      "code-review-technical-leadership",
+      "hibernation-scope-removal",
+      "route-adherence-investigation",
+      "materialized-hierarchy-and-backfill-residue",
+      "flaky-e2e",
       "error-observability",
       "container-hardening",
+      "prod-data-correction",
       "production-incident-role-bindings-consumer",
-      "code-review-technical-leadership",
       "ai-orchestrated-feature-flag-removal",
-      "materialized-hierarchy-and-backfill-residue",
-      "hibernation-scope-removal"
+      "answer-submission-outbox"
     ],
     "lessons": [
-      "Dados derivados eventualmente consistentes deveriam ter exatamente um caminho de computação. Múltiplos escritores derivando o mesmo valor é o defeito; consolidar a derivação é a correção.",
-      "Agentes de IA paralelos precisam do mesmo design de segurança que qualquer outro worker concorrente. Isole o trabalho deles por ownership de arquivos disjuntos, ou eles vão corromper as mudanças uns dos outros exatamente como qualquer outra race condition.",
-      "Empurre a travessia de hierarquia para o banco de dados. Uma query recursiva que retorna resultados com seus ancestrais vence uma cascata de requisições por nível que o cliente teria que orquestrar."
+      "Dados derivados eventualmente consistentes precisam de um único caminho de cálculo. Múltiplos serviços calculando o mesmo valor criam o defeito; concentrar o cálculo corrige essa disputa.",
+      "Agentes de IA em paralelo precisam de limites claros de arquivos, como qualquer trabalhador concorrente. Sem isso, podem sobrescrever as mudanças uns dos outros.",
+      "Uma confirmação síncrona deve prometer só o que já está garantido. Neste caso, os dados estavam validados e armazenados com segurança, não necessariamente processados."
     ]
   },
   {
@@ -392,12 +384,174 @@ export const companies: Company[] = [
 
 export const cases: CaseStudy[] = [
   {
+    "id": "answer-submission-outbox",
+    "featured": false,
+    "title": "Confirmar o envio das respostas e processá-las com segurança depois",
+    "company": "Dynamox",
+    "category": "Sistemas Distribuídos",
+    "summary": "Desenhei e conduzi com apoio do time um fluxo para que inspetores recebessem confirmação assim que as respostas fossem validadas e armazenadas, enquanto o processamento pesado acontecia em segundo plano. A caixa de saída mantém cada grupo rastreável e reprocessável; o resultado é qualitativo, sem métrica antes e depois.",
+    "capabilities": [
+      "Design de Sistemas",
+      "Sistemas Distribuídos",
+      "Confiabilidade",
+      "Engenharia Backend"
+    ],
+    "technologies": [
+      "Kafka",
+      "PostgreSQL"
+    ],
+    "impact": [
+      "O aplicativo recebe confirmação depois da validação e do armazenamento durável, sem esperar o processamento completo. Falhas posteriores podem ser rastreadas e reprocessadas. Não há métrica comparativa de desempenho ou taxa de falhas."
+    ],
+    "difficulty": "Alta",
+    "ownership": "Desenho da funcionalidade e condução com apoio do time",
+    "customerFacing": "Sim",
+    "readingTime": "2 min",
+    "sections": [
+      {
+        "id": "context",
+        "title": "Contexto",
+        "paras": [
+          "Ao fim de uma rota, o aplicativo envia de uma vez as respostas coletadas pelo inspetor. A conexão pode cair, e o servidor fazia o processamento dentro da requisição."
+        ]
+      },
+      {
+        "id": "problem",
+        "title": "Problema",
+        "paras": [
+          "Envios grandes demoravam porque o aplicativo aguardava todo o processamento. Uma queda de conexão podia deixar incerto o que foi salvo, e os horários de pico concentravam a carga."
+        ]
+      },
+      {
+        "id": "constraints",
+        "title": "Restrições",
+        "paras": [
+          "O aplicativo é usado em campo, onde a conexão pode ser instável. O inspetor precisa saber que as respostas estão seguras antes de seguir para a próxima tarefa.",
+          "Nem tudo podia ficar para o processamento em segundo plano: erros corrigíveis pelo inspetor precisavam voltar na requisição; falhas internas precisavam ficar rastreáveis e recuperáveis.",
+          "Um envio podia conter diferentes tipos de resposta, e uma conexão instável também podia fazer o aplicativo reenviar o mesmo conteúdo."
+        ]
+      },
+      {
+        "id": "decision",
+        "title": "Decisão",
+        "paras": [
+          "Separei a confirmação do recebimento do momento em que o processamento termina. A API valida o que o inspetor pode corrigir, grava respostas válidas em grupos rastreáveis e confirma o armazenamento. Um consumer processa os grupos depois.",
+          "As mensagens passam pelo Kafka. O consumer grava as respostas finais e publica eventos para relatórios e histórico. Falhas ficam registradas com dados suficientes para investigação e reprocessamento."
+        ]
+      },
+      {
+        "id": "tradeoffs",
+        "title": "Trade-offs",
+        "paras": [
+          "A confirmação significa que as respostas foram validadas e armazenadas com segurança, não que já estejam visíveis em todo lugar. A resposta fica rápida, com uma janela curta de consistência eventual."
+        ]
+      },
+      {
+        "id": "impact",
+        "title": "Resultado",
+        "paras": [
+          "O aplicativo não precisa aguardar todo o processamento para receber confirmação. O processamento pesado saiu do caminho da requisição; falhas posteriores podem ser identificadas e reprocessadas. Não foi medida uma diferença antes e depois."
+        ]
+      },
+      {
+        "id": "lessons",
+        "title": "Lições",
+        "paras": [
+          "Uma confirmação síncrona deve prometer só o que já está garantido. Neste fluxo, isso era “validado e armazenado com segurança”, não “processado”.",
+          "Erros que o usuário consegue corrigir devem voltar na requisição; falhas do processamento ficam registradas para recuperação."
+        ]
+      },
+      {
+        "id": "evidence",
+        "title": "Evidências",
+        "bullets": [
+          "A documentação funcional interna explica o fluxo para pessoas não engenheiras.",
+          "Os logs registram cada envio e grupo processado, incluindo o tempo até a integração."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "route-adherence-investigation",
+    "featured": true,
+    "title": "Medindo defeitos de aderência às rotas antes de mudar a produção",
+    "company": "Dynamox",
+    "category": "Debugging",
+    "summary": "Investiguei relatos sobre aderência às rotas antes de propor uma mudança. Consultas de leitura em produção e reproduções em staging mostraram que meu primeiro critério era amplo demais; revisei a medição e usei os resultados para orientar correções específicas. As contagens são de populações diferentes, e a tendência pós-release era uma medida do time.",
+    "capabilities": [
+      "Debugging",
+      "Tomada de Decisão Técnica",
+      "Senso de Dono",
+      "Visão de Produto",
+      "Testes"
+    ],
+    "technologies": [
+      "PostgreSQL",
+      "JavaScript",
+      "TypeScript",
+      "NestJS"
+    ],
+    "impact": [
+      "Na comparação posterior, 34.320 ciclos foram analisados. Após revisar 4.842 candidatos com um critério mais restrito, restaram 88 defeitos demonstráveis. Esses números não devem ser somados aos da revisão separada de 120 dias. A melhora de Data Quality foi reportada por uma analista de produto e incluiu mudanças de outras pessoas."
+    ],
+    "difficulty": "Alta",
+    "ownership": "Investigação e correções",
+    "customerFacing": "Sim",
+    "readingTime": "4 min",
+    "sections": [
+      {
+        "id": "context",
+        "title": "Contexto",
+        "paras": [
+          "Relatos de clientes apontavam valores de aderência às rotas que pareciam incorretos. Antes de mudar o comportamento em produção, eu queria separar defeitos de comportamentos esperados do produto."
+        ]
+      },
+      {
+        "id": "problem",
+        "title": "Problema",
+        "paras": [
+          "A primeira consulta agrupava defeitos reais, rotas vazias que exibiam zero corretamente e dados de tenants de teste. Outra comparação marcava valores que mudariam sem provar que estavam errados. Uma correção ampla poderia alterar dados válidos."
+        ]
+      },
+      {
+        "id": "decision",
+        "title": "Raciocínio",
+        "paras": [
+          "Comparei resultados somente de leitura em produção com reproduções controladas em staging. Ao revisar os ciclos candidatos, percebi que meu critério era amplo demais; ajustei a regra e refiz a análise. Registrei o resultado esperado antes de cada reprodução e usei uma rota de controle."
+        ]
+      },
+      {
+        "id": "implementation",
+        "title": "Correções",
+        "paras": [
+          "Depois da investigação, dividi o trabalho em correções pequenas, cada uma para uma causa e com teste de regressão. A proposta passou de uma correção histórica ampla para mudanças específicas em defeitos demonstráveis."
+        ]
+      },
+      {
+        "id": "impact",
+        "title": "Resultado",
+        "paras": [
+          "A comparação posterior cobriu 34.320 ciclos. Ao rever 4.842 candidatos com o critério mais restrito, restaram 88 defeitos demonstráveis. Essa análise é distinta da revisão de 120 dias. O indicador de Data Quality após as releases era do time e incluiu outras contribuições; não o atribuo isoladamente ao meu trabalho."
+        ]
+      },
+      {
+        "id": "evidence",
+        "title": "Evidências",
+        "bullets": [
+          "A análise de produção foi somente de leitura; as reproduções usaram cenários nomeados e rotas de controle em staging.",
+          "Revisei o critério amplo depois que ele não se sustentou diante dos ciclos candidatos.",
+          "As correções foram entregues em pull requests pequenos, com testes que falhavam sem a mudança."
+        ]
+      }
+    ]
+  },
+  {
     "id": "analytics-service",
     "featured": false,
-    "title": "Fundando um serviço de analytics ao mover relatórios para fora do banco transacional",
+    "title": "Tirar os relatórios do banco transacional",
     "company": "Dynamox",
-    "category": "Greenfield",
-    "summary": "Fundei um novo serviço de relatórios que separa leituras analíticas pesadas do banco de dados transacional, resolvendo timeouts de indicadores, enquadrando o trade-off OLTP-vs-OLAP, revisando criticamente a decisão de arquitetura, e construindo o walking skeleton e sua camada de dados.",
+    "category": "Arquitetura",
+    "summary": "Indicadores para clientes sofriam timeout porque consultas analíticas disputavam recursos com o tráfego da aplicação. Escrevi a decisão para separar as cargas, revisei a análise inicial para considerar a latência do warehouse e ajudei outro engenheiro a estabelecer a base do serviço. A implantação está em andamento; a latência final ainda não foi medida.",
     "capabilities": [
       "Design de Sistemas",
       "Tomada de Decisão Técnica",
@@ -409,18 +563,13 @@ export const cases: CaseStudy[] = [
       "NestJS",
       "Fastify",
       "BigQuery",
-      "Terraform",
-      "Redis"
+      "Terraform"
     ],
     "impact": [
-      "Fundei o serviço de relatórios (autora fundadora) com leituras analíticas separadas do banco transacional, que é a correção estrutural para os timeouts de indicadores.",
-      "Entreguei o serviço base integrado ao warehouse analítico, com um modelo de dados curado, consciente de custo, isolado por tenant, e rotinas de carga em infrastructure-as-code.",
-      "Tornei a decisão de arquitetura revisável e multifuncional ao enquadrá-la como uma matriz explícita com uma comparação escrita, uma revisão de segurança/privacidade, e uma recomendação preliminar, revisada e aprovada por sete stakeholders entre engenharia e o time de plataforma em vez de decidida isoladamente.",
-      "Identifiquei e fechei um risco de latência antes de ir para produção, revisando minha própria recomendação de primeira passagem ao identificar que o warehouse analítico não era inerentemente de baixa latência, transformando um possível incidente pós-lançamento em um requisito de design.",
-      "Qualitativo: arquitetura analítica em rollout para eliminar os timeouts; latência final do indicador ainda não capturada como um número de antes/depois. <!-- TODO: adicionar números de latência quando disponíveis -->"
+      "A arquitetura separa leituras analíticas da carga transacional e está sendo implantada para tratar os timeouts. A base do serviço e as tabelas analíticas com isolamento por tenant estão prontas. Não há medição de latência antes e depois."
     ],
     "difficulty": "Alta",
-    "ownership": "Liderei",
+    "ownership": "Decisão de arquitetura; base compartilhada",
     "customerFacing": "Sim",
     "readingTime": "2 min",
     "sections": [
@@ -428,93 +577,44 @@ export const cases: CaseStudy[] = [
         "id": "context",
         "title": "Contexto",
         "paras": [
-          "Esta é minha evidência mais forte de design de sistemas estratégico, no nível de arquitetura de dados, e de ownership greenfield. A maior parte do meu trabalho estende sistemas existentes; aqui eu comecei um, o que significou tomar decisões fundamentais sobre runtime, processo de release, modelo de dados, modelo de custo e isolamento de tenant que são caras de reverter depois.",
-          "Isso mostra que consigo manter uma decisão na altitude de *onde uma classe de carga de trabalho pertence* (armazenamento transacional vs. warehouse analítico) em vez da altitude de uma única query; que decomponho uma decisão conflada em eixos independentes em vez de comparar opções empacotadas; e que reviso minha própria análise anterior quando encontro uma lacuna real nela, em vez de defender a primeira versão. É também minha evidência mais clara de que incorporo segurança e privacidade em uma decisão de arquitetura como um insumo de primeira classe em vez de um checklist aplicado depois, e que a própria decisão foi revisada e aprovada por stakeholders entre engenharia e o time de plataforma, não tomada isoladamente."
+          "Indicadores de inspeção voltados a clientes estavam sofrendo timeout. As consultas analíticas rodavam no mesmo banco transacional que atendia a aplicação."
         ]
       },
       {
         "id": "problem",
         "title": "Problema",
         "paras": [
-          "Um conjunto de indicadores voltados ao cliente agregava grandes volumes de dados de inspeção. Essas agregações rodavam como queries analíticas pesadas, vários joins mais cálculos em tempo de execução (agregações, porcentagens, contagens), diretamente contra o banco de dados transacional que também servia tráfego de aplicação ao vivo. Conforme os dados cresciam, os indicadores começaram a dar timeout: o schema tinha sido desenhado para acesso transacional, não para leituras analíticas, e a carga analítica competia com a carga transacional com quem dividia o armazenamento. Otimizar queries individuais era tratar o sintoma; a carga de trabalho estava no lugar errado, e uma funcionalidade de relatórios relacionada estava prestes a precisar das mesmas agregações, o que só aumentaria a contenção."
-        ]
-      },
-      {
-        "id": "constraints",
-        "title": "Restrições",
-        "bullets": [
-          "A decisão tinha dois eixos conflados. Uma passagem anterior por essa decisão comparava apenas duas alternativas empacotadas, cada uma mudando *tanto* qual serviço é dono da lógica de relatórios *quanto* qual banco de dados a sustenta, o que dificultava saber qual eixo estava de fato conduzindo cada trade-off.",
-          "A correção óbvia subestimava um risco real. O warehouse analítico em consideração não é, por natureza, um armazenamento de baixa latência, já que toda query tem um piso de centenas de milissegundos a segundos. Servir uma tela síncrona voltada ao cliente diretamente dele arriscava trocar timeouts por lentidão em vez de corrigi-los.",
-          "Fundar um serviço significa escolhas quase irreversíveis. Runtime, estrutura de projeto, ferramentas de release e o modelo de dados são baratos de escolher e caros de mudar depois que código e dados se acumulam.",
-          "O espaço de trade-offs era amplo e multifuncional. Isolamento de carga, isolamento de deploy, complexidade operacional, consistência eventual, multi-tenancy, custo e vendor lock-in interagiam entre si, e a decisão precisava ser legível o suficiente para que stakeholders entre engenharia e o time de plataforma a revisassem e aprovassem.",
-          "Custo é uma restrição de primeira classe em analytics. Um warehouse analítico cobra por dados escaneados, então uma query sem filtro é tanto um problema de custo quanto, no extremo, um problema de disponibilidade.",
-          "Os dados cruzam uma fronteira de privacidade. A cópia analítica carregaria dados operacionais multi-tenant, incluindo campos que podem identificar a pessoa que realizou uma inspeção, tornando proteção de dados uma questão de arquitetura em vez de algo parafusado depois."
+          "Mover as consultas para um warehouse isolaria as cargas, mas esse banco tem uma latência mínima própria. Consultá-lo diretamente em uma tela síncrona poderia trocar um timeout por lentidão."
         ]
       },
       {
         "id": "decision",
         "title": "Decisão",
         "paras": [
-          "Comecei pelo trade-off, corrigi minha própria análise quando tinha uma lacuna, e depois reduzi o risco da construção."
-        ],
-        "bullets": [
-          "Decompus a decisão em uma matriz 2×2 explícita. Qual serviço é dono da lógica de relatórios (o serviço transacional existente vs. um novo) cruzado com qual banco de dados a sustenta (um armazenamento relacional ajustado vs. um warehouse analítico), em vez de comparar alternativas empacotadas. Isolar os dois eixos tornou cada trade-off legível por si só: isolamento de carga acabou dependendo quase inteiramente do eixo do serviço, enquanto adequação analítica e custo dependiam quase inteiramente do eixo do banco de dados.",
-          "Voltei atrás e corrigi minha própria recomendação anterior. Depois da primeira passagem, identifiquei que o warehouse analítico que eu estava recomendando não é um armazenamento de baixa latência por natureza, e que servir uma tela síncrona voltada ao cliente diretamente dele poderia trocar um tipo de timeout por outro tipo de lentidão. Revisei a decisão para exigir uma camada de serving explícita em vez de consultar o warehouse a cada requisição.",
-          "Negociei uma fronteira de ownership explícita com o time de plataforma. O pipeline de ingestão deles já movia eventos operacionais para o warehouse analítico; escopei o novo serviço para ser dono apenas da camada de agregação, da API e do cache sobre ela, com uma camada bem definida de tabelas limpas como o contrato entre os dois domínios, em vez de duplicar ingestão, retry e dead-lettering que o time de plataforma já tinha construído.",
-          "Rodei uma revisão completa de risco de segurança e privacidade como parte da mesma decisão, cobrindo confidencialidade (acesso de menor privilégio e autorização por tenant em cada leitura), integridade (deduplicando eventos que podem chegar mais de uma vez ou fora de ordem), disponibilidade (uma query sem filtro se torna um risco de custo e disponibilidade em um warehouse cobrado por escaneamento), e privacidade (campos que podem identificar a pessoa que realizou uma inspeção), com uma mitigação concreta para cada uma, respaldada por pesquisa comparativa de stacks e um benchmark de mercado para o restante da decisão.",
-          "Construí um walking skeleton, a versão mais fina possível de ponta a ponta do serviço (um runtime enxuto, scaffolding de projeto, containerização, e uma conexão funcional com o warehouse analítico), para provar o formato antes de investir em funcionalidades. Sou a autora fundadora do repositório.",
-          "Modelei tabelas analíticas curadas para custo e isolamento de tenant, incluindo um snapshot diário e uma view do estado mais recente, particionadas por data e clusterizadas com o identificador de tenant primeiro para que queries comuns escaneiem menos dados e a query de um tenant não possa ver as linhas de outro.",
-          "Criei o dataset, as tabelas e as rotinas de carga como infrastructure-as-code, incluindo a lógica de consistência e incremental diária, para que a camada de dados seja reproduzível em vez de construída manualmente."
+          "Escrevi uma decisão que comparava quatro combinações entre serviço responsável e banco. Quando percebi que a primeira recomendação subestimava a latência do warehouse, revisei-a para exigir uma camada de serving. Também analisei custo, isolamento por tenant, segurança e privacidade; sete stakeholders revisaram a decisão."
         ]
       },
       {
-        "id": "tradeoffs",
-        "title": "Trade-offs",
-        "bullets": [
-          "Separar leituras analíticas do OLTP em vez de ajustar as queries transacionais. Mover a carga de trabalho remove a causa raiz, contenção de recursos em um armazenamento construído para transações, enquanto ajustar apenas adia o problema. Custo aceito: um segundo armazenamento de dados e um pipeline para mantê-lo atualizado.",
-          "Uma camada de serving materializada com um cache na frente dela, em vez de consultar o warehouse diretamente a cada requisição. Custa uma peça móvel extra, materialização agendada e invalidação de cache, mas é o que de fato corrige uma tela síncrona voltada ao cliente; consultar um warehouse cobrado por escaneamento ao vivo a cada requisição teria recriado o problema de latência em outro lugar.",
-          "Um teto rígido de custo que falha a query de forma fechada, em vez de confiar que toda query será escrita eficientemente. Uma query sem os filtros exigidos é rejeitada antes de rodar, em vez de ter permissão para escanear (e cobrar por) uma tabela inteira. Custa uma query rejeitada ocasional; compra uma conta limitada e previsível em vez de um incidente silencioso de custo ou disponibilidade.",
-          "Ser dona apenas da camada de agregação em vez de ser dona da ingestão de ponta a ponta. A alternativa rejeitada teria reconstruído os consumers de mensageria, retry e dead-lettering que o pipeline do time de plataforma já fornecia. A superfície operacional extra, e a migração de dados históricos que viria junto, não valia o controle marginal que compraria.",
-          "Consistência eventual para relatórios em vez de atualização estrita. Relatórios toleram dados brevemente desatualizados, então um read model atualizado em uma agenda é aceitável, e bem mais barato, do que manter uma cópia analítica estritamente sincronizada."
+        "id": "implementation",
+        "title": "Implementação",
+        "paras": [
+          "A base do serviço foi construída com outro engenheiro. Contribuí para o walking skeleton e a camada de dados; o time de plataforma manteve o pipeline de ingestão existente. As etapas de produto posteriores foram trabalho do time ampliado."
         ]
       },
       {
         "id": "impact",
-        "title": "Impacto",
-        "bullets": [
-          "Fundei o serviço de relatórios (autora fundadora) com leituras analíticas separadas do banco transacional, que é a correção estrutural para os timeouts de indicadores.",
-          "Entreguei o serviço base integrado ao warehouse analítico, com um modelo de dados curado, consciente de custo, isolado por tenant, e rotinas de carga em infrastructure-as-code.",
-          "Tornei a decisão de arquitetura revisável e multifuncional ao enquadrá-la como uma matriz explícita com uma comparação escrita, uma revisão de segurança/privacidade, e uma recomendação preliminar, revisada e aprovada por sete stakeholders entre engenharia e o time de plataforma em vez de decidida isoladamente.",
-          "Identifiquei e fechei um risco de latência antes de ir para produção, revisando minha própria recomendação de primeira passagem ao identificar que o warehouse analítico não era inerentemente de baixa latência, transformando um possível incidente pós-lançamento em um requisito de design.",
-          "Qualitativo: arquitetura analítica em rollout para eliminar os timeouts; latência final do indicador ainda não capturada como um número de antes/depois. <!-- TODO: adicionar números de latência quando disponíveis -->"
-        ]
-      },
-      {
-        "id": "lessons",
-        "title": "Lições Aprendidas",
+        "title": "Resultado",
         "paras": [
-          "Conhecimento de engenharia reutilizável que levo adiante disso:"
-        ],
-        "bullets": [
-          "Decomponha uma decisão conflada em eixos independentes antes de comparar alternativas. Empacotar duas escolhas em uma opção de \"ou/ou\" faz parecer um único trade-off quando na verdade são dois, e você pode acabar trocando algo que não precisava estar na mesa.",
-          "Revisite sua própria decisão quando encontrar uma lacuna real nela. Perceber que um caminho de leitura síncrono e voltado ao cliente não tolera o piso natural de latência de um armazenamento, e corrigir a recomendação antes de ir para produção, valeu mais do que defender a primeira versão.",
-          "Análise de segurança e privacidade pertence dentro da decisão de arquitetura, não depois dela. Uma decisão de modelo de dados já determina sua fronteira de isolamento de tenant, sua fronteira de acesso, e seu risco de disponibilidade baseado em custo, então revisar isso separadamente, depois, é revisar tarde demais para mudar barato.",
-          "Carga analítica não pertence ao seu armazenamento transacional. Quando agregações pesadas e tráfego ao vivo dividem um banco de dados, a correção geralmente é separar a carga de trabalho, não ajustar a query.",
-          "Em um warehouse analítico, o modelo de dados é uma decisão de custo, e uma query sem limites é um risco de disponibilidade, não só de lentidão. Clustering, tabelas curadas e um teto rígido de custo por query são o que mantém um armazenamento cobrado por escaneamento acessível e previsível."
+          "A arquitetura separa as leituras analíticas do banco transacional e está sendo implantada para tratar os timeouts. A base do serviço e as tabelas analíticas isoladas por tenant estão prontas. Não foi registrada uma comparação de latência antes e depois."
         ]
       },
       {
         "id": "evidence",
-        "title": "Evidência",
+        "title": "Evidências",
         "bullets": [
-          "Autora fundadora do repositório do serviço; construí o walking skeleton e a camada de dados.",
-          "Escrevi uma decisão de arquitetura documentada comparando quatro alternativas em uma matriz explícita serviço × banco de dados, com uma análise de risco de segurança/privacidade dedicada e guardrails de custo como parte da recomendação, revisada e aprovada por sete stakeholders entre engenharia e o time de plataforma.",
-          "Revisei a decisão entre duas versões depois de identificar um risco de latência que a primeira versão tinha subestimado.",
-          "Tabelas analíticas curadas e rotinas de carga em infrastructure-as-code.",
-          "Verificado o andamento contra o tracker (2026-07): o dataset de staging, depois duas tabelas curadas (uma tabela de staging delta de 24 horas e uma tabela clusterizada de estado atual diário) carregadas incrementalmente por um `MERGE` diário mais uma rotina de intervalo mais amplo como rede de segurança para mensagens atrasadas; uma table-valued function como o único ponto de entrada que o serviço chama, para que o formato da query fique em infraestrutura versionada em vez de SQL construído por strings; queries agendadas para atualização incremental; permissões de warehouse para o time; e então a mesma stack em produção. Cada peça entregue como infrastructure-as-code, staging primeiro.",
-          "Verificado trabalho de performance e custo: testes de carga rodados contra queries de produção parametrizadas por dois contextos reais de tenant (2026-06-26 a 2026-07-17), e uma investigação separada de clustering para reduzir bytes escaneados, ambos antes do serviço ir amplo.",
-          "Verificada a superfície de produto (2026-07 a 2026-08): a página de gestão de anomalias, uma aba de gráfico de adherence, uma tabela de alertas recorrentes com seu contrato de dados acordado de ponta a ponta antes de qualquer lado ser construído, o endpoint por trás dela, e uma view de alertas acumulados ainda em progresso, cada uma entregue atrás de uma feature flag, várias com um contrato mockado chegando antes do endpoint real.",
-          "Fonte (privada): base de conhecimento de carreira consolidada; registro interno de decisão de arquitetura; épicos e subtarefas do Jira no domínio de inspeção, 2026-03 a 2026-08."
+          "A decisão comparou quatro alternativas e foi aprovada por sete pessoas de engenharia e plataforma.",
+          "Os registros mostram trabalho compartilhado na base do serviço; não reivindico autoria exclusiva do repositório ou da implementação inicial.",
+          "O modelo de dados e as rotinas de carga foram versionados como infraestrutura e passaram por staging antes de produção."
         ]
       }
     ]
@@ -522,10 +622,10 @@ export const cases: CaseStudy[] = [
   {
     "id": "production-incident-role-bindings-consumer",
     "featured": false,
-    "title": "Respondendo a um incidente de produção com a decisão de arquitetura que faltava, não só um patch",
+    "title": "O incidente de permissões — e o deadlock separado que apareceu depois",
     "company": "Dynamox",
     "category": "Incidente",
-    "summary": "Identifiquei a causa raiz de um incidente de produção que bloqueava clientes como uma suposição de arquitetura não documentada, reconstruí o consumer afetado com um post-mortem, um ADR e documentação de regras de negócio, depois, após o rollout expor um deadlock de banco de dados, diagnostiquei-o como uma incompatibilidade de particionamento do Kafka e substituí a perda silenciosa de mensagens por retry, uma dead-letter queue e serialização por usuário.",
+    "summary": "Uma mudança de limpeza de roles que implementei tratava o acesso como global e o removeu entre workspaces. Assumi a resposta ao incidente, documentei a regra ausente e conduzi a direção arquitetural de um consumer substituto entregue pelo squad. Meses depois, investiguei um deadlock diferente ligado ao particionamento do Kafka e contribuí para o lock por usuário e o tratamento recuperável de falhas; a taxa posterior de erros não foi medida.",
     "capabilities": [
       "Resposta a Incidentes",
       "Design de Sistemas",
@@ -538,14 +638,10 @@ export const cases: CaseStudy[] = [
       "PostgreSQL"
     ],
     "impact": [
-      "Resolvi o incidente que bloqueava o cliente e documentei a decisão de arquitetura ausente para que a mesma lacuna não possa reabrir silenciosamente.",
-      "Dei ao domínio um consumer devidamente consciente de workspace no serviço atual do time, onde nenhum existia antes.",
-      "Eliminei o deadlock de produção em sua causa raiz (incompatibilidade de partition-key), não maquiando o sintoma.",
-      "Substituí a perda silenciosa de mensagens por um caminho de falha recuperável, com retry para erros transitórios e uma dead-letter queue para os permanentes, fechando uma lacuna onde falhas antes desapareciam sem deixar rastro.",
-      "Qualitativo: maior confiança na confiabilidade de um consumer crítico para permissões; nenhum incidente do mesmo tipo se repetiu após a correção."
+      "O consumer substituto foi ativado em março de 2026. As mudanças posteriores de lock e recuperação vieram em junho e julho. Não há medição pós-deploy que permita afirmar uma redução na taxa de deadlocks."
     ],
     "difficulty": "Alta",
-    "ownership": "Ponta a ponta",
+    "ownership": "Resposta ao incidente e direção arquitetural; implementação do squad",
     "customerFacing": "Sim",
     "readingTime": "2 min",
     "sections": [
@@ -553,88 +649,44 @@ export const cases: CaseStudy[] = [
         "id": "context",
         "title": "Contexto",
         "paras": [
-          "Esta é minha evidência mais clara de resposta a incidentes que corrige a classe do bug, não a instância, e de permanecer com um problema ao longo de dois atos: o incidente inicial, e o modo de falha mais sutil que só apareceu depois que a correção foi para produção. Nas duas vezes, resisti ao patch mais rápido disponível em favor de entender por que o sistema estava errado desde o início, e deixei a resposta documentada para que a próxima pessoa não precisasse redescobri-la.",
-          "Isso também mostra uma maturidade operacional que vai além de \"corrigi o bug\": diagnosticar um deadlock de produção a partir de logs, rastreando-o até uma incompatibilidade específica entre o particionamento de um sistema de mensageria e o padrão real de contenção dos dados, é raciocínio em nível de sistemas sob pressão, o tipo de debugging que separa \"reiniciei o pod\" de realmente entender a falha."
+          "Implementei uma mudança no fluxo de limpeza de roles. Ela tratava a associação de uma pessoa como global, embora a pessoa possa ter acesso em vários workspaces."
         ]
       },
       {
         "id": "problem",
         "title": "Problema",
         "paras": [
-          "Um cliente ficou preso em uma tela permanente de \"erro de sincronização\" e não conseguia concluir seu trabalho, um bloqueio duro, não um bug cosmético. A causa próxima remontava a como um consumer de gestão de permissões tratava uma edição: uma decisão sobre se a lógica desse consumer deveria estar restrita a um workspace nunca tinha sido tornada explícita em lugar nenhum, então uma mudança que assumiu o escopo errado passou despercebida. O consumer subjacente para esse domínio também só existia no serviço legado do time; o serviço mais novo não tinha equivalente, o que era parte do motivo pelo qual a lacuna nunca tinha aparecido antes.",
-          "Meses depois que a reconstrução foi para produção, um segundo problema, aparentemente não relacionado, apareceu: o novo consumer começou a lançar deadlocks de banco de dados em produção."
-        ]
-      },
-      {
-        "id": "constraints",
-        "title": "Restrições",
-        "bullets": [
-          "O defeito real não estava no caminho de código que falhou. Estava em uma decisão que nunca foi escrita. Corrigir o bug de escopo imediato teria deixado a mesma classe de erro possível na próxima mudança, porque nada registrava *por que* o consumer precisava se comportar da forma que deveria.",
-          "As próprias palavras do usuário tornaram o impacto concreto. Ele estava bloqueado no meio de uma tarefa e frustrado; não havia ambiguidade sobre se isso importava.",
-          "O deadlock era intermitente e não óbvio. Um erro genérico de \"transação falhou\" não dá nenhuma pista por si só de que a causa real é uma incompatibilidade entre como o trabalho é distribuído (particionamento) e como os dados subjacentes são de fato disputados.",
-          "O tratamento de falhas existente piorava o deadlock. Mensagens com falha estavam sendo silenciosamente engolidas e seu offset confirmado mesmo assim, então antes mesmo de poder ser corrigido de verdade, o próprio modo de falha teve que mudar de \"desaparece sem deixar rastro\" para \"visível e recuperável.\""
+          "Dois usuários perderam acesso entre workspaces e não conseguiam concluir o trabalho. A feature flag conteve o incidente naquele dia, mas não corrigiu a suposição sobre o escopo."
         ]
       },
       {
         "id": "decision",
         "title": "Decisão",
         "paras": [
-          "Tratei o incidente como dois problemas de diagnóstico separados, meses um do outro, e recusei-me a encerrar qualquer um deles com uma correção superficial."
-        ],
-        "bullets": [
-          "Escrevi o post-mortem primeiro. Antes de reconstruir qualquer coisa, documentei o que aconteceu e por quê, para que o incidente tivesse um registro de responsabilidade, não só um ticket fechado.",
-          "Tornei a decisão ausente explícita em um ADR. Ele cobre por que o consumer precisa respeitar o escopo de workspace, como deveria lidar com exclusões, como proteger a rastreabilidade de registros, e como casos extremos deveriam se comportar, em vez de codificar a correção só no código, onde a próxima pessoa teria que fazer engenharia reversa do raciocínio.",
-          "Documentei as regras de negócio separadamente, porque elas estavam espalhadas pelo código de aplicação sem uma referência central, o que era parte do motivo pelo qual a lacuna original passou despercebida.",
-          "Reconstruí o consumer propriamente no serviço e stack atuais do time, em vez de aplicar patch na implementação legada, já que o domínio ainda não tinha um equivalente lá.",
-          "Meses depois, diagnostiquei o deadlock a partir de logs de produção, não por tentativa e erro. Busquei a assinatura de erro específica, encontrei rajadas repetidas, e confirmei o mecanismo: o tópico era particionado pelo identificador da própria mudança, não pelo usuário afetado, então múltiplas mensagens sobre o *mesmo* usuário podiam cair em partições diferentes e ser processadas simultaneamente, colidindo ao atualizar a mesma linha.",
-          "Corrigi o mecanismo, não só o sintoma. Serializei atualizações por usuário afetado para que mensagens concorrentes sobre a mesma pessoa não pudessem mais competir entre si, e substituí o caminho de falha silenciosa por retry para erros transitórios e uma dead-letter queue para os permanentes, para que uma falha agora seja visível e recuperável em vez de invisível."
+          "Assumi o post-mortem e escrevi a decisão de arquitetura e as regras de negócio. A validação da exclusão deveria ocorrer no serviço dono das permissões; o consumer ficaria responsável por replicar o resultado. Conduzi o épico e sua direção arquitetural. O squad compartilhou a implementação e implantação."
         ]
       },
       {
-        "id": "tradeoffs",
-        "title": "Trade-offs",
-        "bullets": [
-          "Escrever um post-mortem, um ADR e documentação de regras de negócio em vez de entregar uma correção direta. Documentação tomou tempo real que o patch mais rápido não tomaria, mas a lacuna original existia *porque* a decisão nunca tinha sido escrita, e repetir esse erro teria custado mais depois do que economizou agora.",
-          "Reconstruir o consumer na stack atual em vez de aplicar patch na legada. Um patch teria sido mais rápido, mas teria mantido o domínio dividido entre dois serviços sem uma única fonte da verdade, e deixado o serviço mais novo sem um comportamento de que precisava.",
-          "Diagnosticar a causa raiz do deadlock em vez de adicionar um retry e chamar de resolvido. Um retry cego teria mascarado a colisão sem removê-la; rastrear a incompatibilidade até a partition key fez a correção endereçar a contenção real em vez de escondê-la.",
-          "Serializar por usuário em vez de ampliar a transação ou o orçamento de retry. Estreitar a correção exatamente ao escopo da colisão (mesmo usuário, mensagens concorrentes) evitou uma lentidão mais ampla e vaga que uma correção mais defensiva teria introduzido em todo lugar."
+        "id": "implementation",
+        "title": "Acompanhamento",
+        "paras": [
+          "Meses depois, logs de produção revelaram um deadlock diferente no novo consumer. Mensagens sobre a mesma pessoa podiam cair em partições diferentes do Kafka e rodar ao mesmo tempo. Identifiquei a incompatibilidade e contribuí com um advisory lock do PostgreSQL por usuário, retry e dead-letter queue."
         ]
       },
       {
         "id": "impact",
-        "title": "Impacto",
-        "bullets": [
-          "Resolvi o incidente que bloqueava o cliente e documentei a decisão de arquitetura ausente para que a mesma lacuna não possa reabrir silenciosamente.",
-          "Dei ao domínio um consumer devidamente consciente de workspace no serviço atual do time, onde nenhum existia antes.",
-          "Eliminei o deadlock de produção em sua causa raiz (incompatibilidade de partition-key), não maquiando o sintoma.",
-          "Substituí a perda silenciosa de mensagens por um caminho de falha recuperável, com retry para erros transitórios e uma dead-letter queue para os permanentes, fechando uma lacuna onde falhas antes desapareciam sem deixar rastro.",
-          "Qualitativo: maior confiança na confiabilidade de um consumer crítico para permissões; nenhum incidente do mesmo tipo se repetiu após a correção."
-        ]
-      },
-      {
-        "id": "lessons",
-        "title": "Lições Aprendidas",
+        "title": "Resultado",
         "paras": [
-          "Conhecimento de engenharia reutilizável que levo adiante disso:"
-        ],
-        "bullets": [
-          "Um incidente causado por uma decisão não documentada não está corrigido até que a decisão seja escrita. Do contrário, você corrigiu o sintoma e deixou a causa livre para ressurgir em outra forma.",
-          "Um erro genérico de \"transação falhou\" é um ponto de partida, não um diagnóstico. A causa real costuma estar uma camada acima, aqui entre como o trabalho foi particionado e como os dados eram de fato disputados.",
-          "Nunca deixe uma falha desaparecer silenciosamente. Um sistema que engole um erro e confirma mesmo assim é pior do que um que falha ruidosamente, porque você precisa conseguir ver uma falha antes de poder corrigir sua causa.",
-          "Corrija o escopo exato da contenção, não toda a superfície ao redor. Serializar por usuário afetado resolveu a colisão real sem deixar tudo mais lento."
+          "O consumer substituto entrou em produção em março de 2026. As mudanças de lock e recuperação vieram em junho e julho. Não há medição posterior que permita afirmar uma redução de deadlocks."
         ]
       },
       {
         "id": "evidence",
-        "title": "Evidência",
+        "title": "Evidências",
         "bullets": [
-          "Escrevi o post-mortem, o ADR e a documentação de regras de negócio do domínio, antes de reconstruir o consumer.",
-          "Reconstruí o consumer no serviço e stack atuais do time; ativado em produção.",
-          "Diagnostiquei de forma independente um deadlock de produção posterior como uma incompatibilidade de partition-key do Kafka via análise de logs, e substituí a perda silenciosa de mensagens por retry, dead-letter queue e serialização por usuário.",
-          "Verificado contra o tracker. O incidente é datado de 2026-01-13, e a resposta foi decomposta na mesma semana: o post-mortem (2026-01-13 a 2026-01-19), o documento de regras de negócio do domínio (fechado 2026-01-29) e o ADR (2026-01-19 a 2026-01-28) foram todas tarefas rastreadas que *precederam* a reconstrução, não redações produzidas depois.",
-          "Verificada a reconstrução: serviço base e integração de mensageria (2026-01-21 a 2026-01-26), os casos de uso de criação e exclusão (fechado 2026-02-17), um endpoint de soft-delete em lote para as relações afetadas, uma feature flag em staging (2026-02-17), ativação em produção (2026-03-16) com um erro de produção investigado e fechado no mesmo dia, e uma tarefa separada para reparar os usuários que o bug original já tinha corrompido (2026-01-16 a 2026-02-20).",
-          "Verificado o acompanhamento, meses depois: uma exceção de validação de contrato de dados (2026-06-29), o deadlock de transação (2026-06-30 a 2026-07-01, quatro pull requests), uma inconsistência de ciclo de vida de usuário entre upsert e exclusão de papel (2026-07-07), e tratamento para o caso em que todos os papéis de um usuário são excluídos de uma vez.",
-          "Fonte (privada): registro de incidente do Jira e seu post-mortem, ADR e tarefas de acompanhamento vinculados, tracker de engenharia da Dynamox; os pull requests correspondentes."
+          "A mudança que causou o incidente foi minha; o post-mortem registrou a suposição e seu efeito.",
+          "A decisão de arquitetura e as regras de negócio foram documentadas antes da reconstrução.",
+          "Os registros mostram a entrega do consumer pelo squad e minhas contribuições na investigação posterior."
         ]
       }
     ]
@@ -884,125 +936,6 @@ export const cases: CaseStudy[] = [
           "Padrão de comando de correção (dry-run, arquivo de rollback, republicação de eventos) reutilizado em vários comandos do time.",
           "Verificado contra o tracker, cinco comandos de correção distintos em vez de um: rotas deixadas com mais de um usuário responsável (2025-10-15), rotas corrompidas por um teste de integração contra um sistema parceiro (2025-12-03 a 12-08), reprocessamento de rotas afetadas pelo novo caminho de atualização parcial (2026-01), usuários corrompidos por um bug de consumer (2026-01-16 a 2026-02-20), e ciclos duplicados removidos (2026-03-19 a 03-25). Esse espalhamento por quatro meses e quatro defeitos de dados distintos é o que faz disso um *padrão*, não um script pontual.",
           "Fonte: tarefas do Jira no domínio de inspeção, 2025-10 a 2026-03, e os pull requests correspondentes; contagens de registros e os detalhes de rollback/dry-run vêm da base de conhecimento de carreira consolidada (privada)."
-        ]
-      }
-    ]
-  },
-  {
-    "id": "asset-tree-search",
-    "featured": false,
-    "title": "Entregando uma árvore de ativos grande de ponta a ponta, do SQL recursivo ao prefetch progressivo",
-    "company": "Dynamox",
-    "category": "Performance",
-    "summary": "Entreguei busca e navegação rápida sobre árvores de ativos muito grandes de ponta a ponta, com SQL recursivo no backend e uma UX de busca com cache em memória e prefetch progressivo em segundo plano no frontend, eliminando o carregamento repetido que tornava o fluxo mais usado lento.",
-    "capabilities": [
-      "Engenharia de Performance",
-      "Engenharia Frontend",
-      "Engenharia Backend",
-      "Visão de Produto",
-      "Senso de Dono",
-      "UX"
-    ],
-    "technologies": [
-      "PostgreSQL",
-      "NestJS",
-      "React"
-    ],
-    "impact": [
-      "Entreguei busca e navegação rápida sobre árvores de ativos grandes de ponta a ponta entre banco de dados, backend e frontend, no fluxo mais usado do módulo.",
-      "Eliminei o carregamento repetido que tornava lenta a navegação em árvores grandes, via cache e prefetch progressivo.",
-      "Adicionei busca de ativos onde não havia nenhuma, com resultados mostrados em contexto.",
-      "Qualitativo: uma melhora clara na performance percebida e na UX em um fluxo de alto tráfego; nenhuma métrica rígida de antes/depois foi capturada. <!-- TODO: adicionar números de tempo se disponíveis -->"
-    ],
-    "difficulty": "Alta",
-    "ownership": "Ponta a ponta",
-    "customerFacing": "Sim",
-    "readingTime": "2 min",
-    "sections": [
-      {
-        "id": "context",
-        "title": "Contexto",
-        "paras": [
-          "Esta é minha evidência mais forte de ownership full-stack e raciocínio de performance. Por ser dona do banco de dados, do backend e do frontend, pude colocar cada parte da solução na camada a que pertencia, travessia no banco de dados e ocultação de latência no cliente, em vez de forçar uma camada a compensar outra.",
-          "Isso também mostra uma decisão de UX em nível de produto tomada como um trade-off de engenharia: escolher revelar resultados de busca expandindo a árvore em vez de filtrá-la mudou tanto o que o usuário vê quanto como os dados precisam carregar."
-        ]
-      },
-      {
-        "id": "problem",
-        "title": "Problema",
-        "paras": [
-          "Ao construir ou editar uma rota de inspeção, usuários navegam por uma hierarquia de ativos que pode ser muito grande. Eles precisavam ver descrições de ativos e buscar ativos por nome, mas a árvore carregava devagar e não havia busca. No fluxo mais usado do módulo, isso significava espera repetida e nenhuma forma de pular para um ativo conhecido."
-        ]
-      },
-      {
-        "id": "constraints",
-        "title": "Restrições",
-        "bullets": [
-          "Os dados são profundamente hierárquicos e grandes. Encontrar resultados e mostrá-los em contexto significa percorrer uma árvore grande, e a abordagem ingênua é uma cascata de queries por nível.",
-          "Busca sobre uma árvore tem uma bifurcação de UX com consequências de dados. Você filtra a árvore até os resultados, ou revela os resultados no lugar? A escolha muda o que o usuário entende e quais dados você precisa carregar.",
-          "Performance percebida é o alvo real. Até um backend rápido parece lento se o cliente bloqueia a cada expansão, então a latência precisava ser escondida, não só reduzida.",
-          "Eu era dona das três camadas, então todo trade-off entre fazer o trabalho em SQL, na API, ou no cliente era meu para acertar."
-        ]
-      },
-      {
-        "id": "decision",
-        "title": "Decisão",
-        "paras": [
-          "Coloquei cada responsabilidade na camada adequada a ela."
-        ],
-        "bullets": [
-          "Travessia no banco de dados, via SQL recursivo. Uma query recursiva encontra ativos correspondentes e sobe até seus ancestrais em uma única passagem, então o servidor retorna resultados já em seu contexto de árvore em vez do cliente costurar várias requisições. Deduplicei resultados e computei \"tem filhos\" de forma barata para que os nós renderizassem corretamente sem round-trips extras.",
-          "Busca que revela em vez de filtrar. No frontend, apliquei debounce na query e escolhi expandir os nós dos resultados no lugar, com navegação entre resultados, em vez de reduzir a árvore só aos resultados. Isso mantém cada resultado legível em sua hierarquia real.",
-          "Um cache em memória por termo de busca, para que repetir ou refinar uma busca não recarregue o que já é conhecido.",
-          "Prefetch progressivo, nível a nível, em segundo plano, para que os próximos níveis já estejam carregando antes do usuário expandi-los, o que esconde latência no caminho comum.",
-          "Documentei os casos de uso (incluindo fluxos alternativos para os diferentes atores) e fiz o rollout atrás de uma feature flag, staging antes de produção."
-        ]
-      },
-      {
-        "id": "tradeoffs",
-        "title": "Trade-offs",
-        "bullets": [
-          "Uma query recursiva em vez de muitas queries por nível. Uma travessia recursiva retorna resultados com seus ancestrais em uma única passagem, evitando uma cascata tagarela, ao custo de uma query mais complexa para ser dona e raciocinar sobre ela.",
-          "Expandir resultados no lugar em vez de filtrar a árvore. Revelar resultados em sua hierarquia real preserva contexto e orientação, onde uma lista filtrada seria mais simples mas removeria a estrutura de que os usuários dependem. Aceitei uma lógica de carregamento mais envolvida para manter o resultado significativo.",
-          "Prefetch progressivo em segundo plano em vez de carregamento sob demanda. Prefetch esconde latência no caminho mais comum ao custo de buscar antecipadamente algo que o usuário pode não acabar precisando, uma boa troca no fluxo mais movimentado do módulo.",
-          "Um cache em memória por termo em vez de recarregar. Cache troca um pouco de memória e contabilidade de cache pela eliminação do carregamento repetido durante uma sessão de busca."
-        ]
-      },
-      {
-        "id": "impact",
-        "title": "Impacto",
-        "bullets": [
-          "Entreguei busca e navegação rápida sobre árvores de ativos grandes de ponta a ponta entre banco de dados, backend e frontend, no fluxo mais usado do módulo.",
-          "Eliminei o carregamento repetido que tornava lenta a navegação em árvores grandes, via cache e prefetch progressivo.",
-          "Adicionei busca de ativos onde não havia nenhuma, com resultados mostrados em contexto.",
-          "Qualitativo: uma melhora clara na performance percebida e na UX em um fluxo de alto tráfego; nenhuma métrica rígida de antes/depois foi capturada. <!-- TODO: adicionar números de tempo se disponíveis -->"
-        ]
-      },
-      {
-        "id": "lessons",
-        "title": "Lições Aprendidas",
-        "paras": [
-          "Conhecimento de engenharia reutilizável que levo adiante disso:"
-        ],
-        "bullets": [
-          "Empurre a travessia de hierarquia para o banco de dados. Uma query recursiva que retorna resultados com seus ancestrais vence uma cascata de requisições por nível que o cliente teria que orquestrar.",
-          "Uma escolha de UX de busca é uma decisão de engenharia. \"Revelar no lugar\" vs. \"filtrar até os resultados\" muda tanto a compreensão quanto o formato dos dados que você carrega, então decida isso deliberadamente.",
-          "Esconda a latência, não só a reduza. Prefetch progressivo e cache por termo fazem o caminho comum parecer instantâneo mesmo quando ainda resta algum trabalho.",
-          "Ser dona de cada camada permite resolver cada problema onde ele pertence. Essa é a maior vantagem de um ownership full-stack de verdade."
-        ]
-      },
-      {
-        "id": "evidence",
-        "title": "Evidência",
-        "bullets": [
-          "Entreguei sozinha entre banco de dados (SQL recursivo), backend e frontend.",
-          "Funcionalidade lançada em produção atrás de uma feature flag depois de staging.",
-          "Documentei casos de uso incluindo fluxos alternativos por ator.",
-          "Verificado contra o tracker (2026-05-19 a 2026-06-17): dois itens, o endpoint que expõe a descrição de um ativo aos formulários de rota, e a travessia recursiva em si. O antes/depois registrado é N×3 queries sequenciais substituídas por 3 no total: uma CTE recursiva para todos os nós descendentes, depois uma query em lote para pontos de medição e outra para checklists, com a árvore montada em memória em O(n) via um mapa id→nó.",
-          "Verificado trabalho arquitetural, não só uma query: as regras de montagem da árvore (agrupar uma única folha como um nó direto versus N folhas sob um agrupador, a regra de ordenação, e `hasChildren` computado a partir dos filhos montados em vez de uma subquery no banco) foram extraídas do adapter do repositório para um montador na camada de domínio, restaurando a fronteira hexagonal que o código anterior tinha cruzado. Um nó raiz sentinela removeu a necessidade de arrays separados para filhos de raiz versus aninhados.",
-          "Verificado um bug encontrado e com causa raiz identificada na mesma passagem: máquinas folha sem nós filhos mas com pontos de medição diretos não retornavam nada de forma recursiva, porque um retorno antecipado em \"nenhuma linha descendente\" as descartava antes da query de folha rodar. Corrigido incluindo o próprio id da raiz na busca de folhas.",
-          "Verificado trabalho de frontend: eliminei uma dupla busca ao adicionar (uma expansão de um nível seguida imediatamente por uma recursiva), armazenei em cache o resultado recursivo na árvore do cliente para que uma expansão posterior não custe nada, e mudei a saga de latest-wins para tratamento por ação para que adicionar duas máquinas rapidamente não cancele mais a primeira. Tudo isso protegido por uma feature flag, com o caminho legado intocado quando a flag está desligada.",
-          "Fonte (privada): itens do Jira no domínio de inspeção, 2026-05 a 2026-06; base de conhecimento de carreira consolidada."
         ]
       }
     ]
@@ -1835,6 +1768,80 @@ export const cases: CaseStudy[] = [
     ]
   },
   {
+    "id": "asset-tree-search",
+    "featured": false,
+    "title": "Busca em hierarquias de ativos: contribuição no backend de uma funcionalidade compartilhada",
+    "company": "Dynamox",
+    "category": "Performance",
+    "summary": "Navegar por uma hierarquia grande exigia consultas repetidas e carregava devagar. Contribuí com a travessia recursiva no backend, reduzindo o padrão de N×3 chamadas sequenciais para três consultas. Outro engenheiro fez a maior parte da tarefa final de busca. A funcionalidade trouxe busca contextual e prefetch; a latência antes e depois não foi medida.",
+    "capabilities": [
+      "Engenharia de Performance",
+      "Engenharia Frontend",
+      "Engenharia Backend",
+      "Visão de Produto",
+      "Senso de Dono",
+      "UX"
+    ],
+    "technologies": [
+      "PostgreSQL",
+      "NestJS",
+      "React"
+    ],
+    "impact": [
+      "O padrão de consultas caiu de N×3 chamadas sequenciais para três na travessia recursiva e nos dados relacionados. A busca foi lançada no fluxo de configuração de rotas. Não há medição comparativa de latência, e o trabalho foi compartilhado."
+    ],
+    "difficulty": "Alta",
+    "ownership": "Contribuição de backend em funcionalidade compartilhada",
+    "customerFacing": "Sim",
+    "readingTime": "2 min",
+    "sections": [
+      {
+        "id": "context",
+        "title": "Contexto",
+        "paras": [
+          "Quem configurava rotas de inspeção precisava navegar por hierarquias grandes de ativos. O caminho antigo repetia consultas ao banco, carregava devagar e não oferecia busca."
+        ]
+      },
+      {
+        "id": "problem",
+        "title": "Problema",
+        "paras": [
+          "A busca precisava mostrar cada resultado dentro da hierarquia. Buscar nível por nível deixava a API verbosa; uma lista plana perderia o contexto que ajuda a reconhecer o ativo."
+        ]
+      },
+      {
+        "id": "decision",
+        "title": "Decisão",
+        "paras": [
+          "Contribuí com uma consulta recursiva em PostgreSQL e agrupei consultas relacionadas: três no total em vez de N×3 chamadas sequenciais. A árvore era montada na camada de domínio em O(n). Outro engenheiro concluiu a maior parte da tarefa final de busca."
+        ]
+      },
+      {
+        "id": "implementation",
+        "title": "Implementação",
+        "paras": [
+          "A funcionalidade compartilhada adicionou busca contextual, cache em memória e prefetch progressivo atrás de uma feature flag. O caminho legado continuou disponível durante a implantação."
+        ]
+      },
+      {
+        "id": "impact",
+        "title": "Resultado",
+        "paras": [
+          "A travessia recursiva e os dados relacionados passaram de N×3 chamadas sequenciais para três consultas. A busca foi lançada na configuração de rotas. Não há medição comparativa de latência; o trabalho foi compartilhado."
+        ]
+      },
+      {
+        "id": "evidence",
+        "title": "Evidências",
+        "bullets": [
+          "Os registros mostram meu trabalho na travessia recursiva e no endpoint, além da contribuição maior de outro engenheiro na tarefa final de busca.",
+          "A comparação registrada é de N×3 chamadas para uma CTE recursiva e duas consultas em lote.",
+          "A funcionalidade foi lançada atrás de uma flag; o caminho legado permaneceu quando ela estava desligada."
+        ]
+      }
+    ]
+  },
+  {
     "id": "design-system",
     "featured": true,
     "title": "Introduzindo um Design System onde não existia nenhum",
@@ -2390,6 +2397,10 @@ export const technologies: Technology[] = [
     "usage": "Linguagem padrão nos dois frontends e nos serviços NestJS. Tipos como documentação."
   },
   {
+    "name": "JavaScript",
+    "usage": "Onde comecei, em projetos freelance de frontend revisados por um engenheiro experiente."
+  },
+  {
     "name": "NestJS",
     "usage": "Serviços de backend na Dynamox, incluindo o serviço dono da métrica e seus consumers Kafka."
   },
@@ -2408,10 +2419,6 @@ export const technologies: Technology[] = [
   {
     "name": "Prisma",
     "usage": "ORM para serviços Postgres; disciplina de migração para mudanças de schema."
-  },
-  {
-    "name": "Redis",
-    "usage": "Cache gerenciado na frente do warehouse de analytics para leituras síncronas e quentes."
   },
   {
     "name": "Vuetify",
@@ -2529,4 +2536,3 @@ export const principles: Principle[] = [
     "applied": "Agora uma pergunta permanente sobre qualquer coluna derivada: o que garante que ela está populada, e essa garantia lê de outro lugar?"
   }
 ]
-
