@@ -104,31 +104,31 @@ export interface Principle {
 
 export const profile: Profile = {
   "name": "Gabriela Schlemper",
-  "headline": "Software Engineer focused on building scalable systems through thoughtful engineering decisions.",
-  "oneLiner": "I document engineering decisions instead of listing technologies.",
+  "headline": "Full-stack software engineer working across product interfaces, backend services, and the data between them.",
+  "oneLiner": "I like figuring out why a system behaves the way it does before deciding what to change.",
   "about": [
-    "I'm a software engineer whose career has evolved from implementing frontend interfaces to designing distributed systems. I don't optimize for the number of technologies I know; I optimize for understanding why systems are built the way they are.",
-    "I enjoy problems involving architecture, distributed systems, developer experience and frontend engineering."
+    "At Dynamox, I work on tools for industrial inspection. A change can touch the screen an inspector uses, the API behind it, and copies of the same data in other services. I try to understand that whole path before deciding where a fix belongs.",
+    "Some work starts with an architecture decision; some starts with a report that a number looks wrong. In both cases, I test my explanation against the system's behavior and make the trade-offs clear enough for other people to challenge."
   ],
   "philosophy": [
-    "Good engineering is mostly about decisions, not code. I treat every system as a set of claims that must stay true over time, about ownership, consistency, and who is allowed to compute what. When those claims are implicit, systems drift; when explicit, they stay correct.",
-    "This knowledge base is written the way I believe engineering should be documented: context, constraints, alternatives, decision, trade-offs. Never just the output."
+    "When several services hold a version of the same fact, the hard question is which one gets to change it and how the others catch up. A clear rule at that boundary can prevent a lot of special cases later.",
+    "I write down the alternatives and the reasons for a decision. That gives the team something concrete to review, revisit, or use when a similar problem comes up."
   ],
   "evolution": [
     {
       "year": "Today",
-      "label": "Platform engineering, architecture and AI-assisted development",
-      "detail": "Interested in the systems that make other engineers faster and safer."
+      "label": "Full-stack engineering at Dynamox",
+      "detail": "Product-facing features, backend architecture, and data that has to stay consistent across services."
     },
     {
       "year": "2025",
       "label": "Designing distributed systems",
-      "detail": "Dynamox. Cross-service consistency, event-driven architecture, ownership."
+      "detail": "Dynamox. Cross-service consistency, event-driven systems, and decisions that span the stack."
     },
     {
       "year": "2024",
       "label": "Building frontend systems",
-      "detail": "Design System, component architecture, standards the team adopted voluntarily."
+      "detail": "Design System, reusable frontend components, standards the team adopted voluntarily."
     },
     {
       "year": "2023",
@@ -142,35 +142,31 @@ export const profile: Profile = {
     }
   ],
   "howIThink": [
-    "Start from invariants. Before designing, I write down what must never be false, then choose the architecture that makes violations impossible rather than unlikely.",
-    "Prefer boring correctness. A provably correct system beats a clever one, even when the clever one is faster to build.",
-    "Make adoption the easiest path. Standards, design systems and processes only survive when following them is less work than ignoring them.",
-    "Decisions are documents. If a decision isn't written down with its alternatives, the team will re-litigate it in six months."
+    "Before changing production behavior, I want to know what the data says—and whether my way of measuring it is sound.",
+    "If two services calculate the same value, I look for one place to do the calculation and a clear way for the others to catch up.",
+    "For asynchronous work, I ask what the system can honestly promise now, and what happens if later processing fails.",
+    "When a decision crosses team boundaries, I write down the trade-offs before implementation so people can question the boundary while it is still cheap to change."
   ],
   "strengths": [
-    "Cross-service consistency and data ownership design",
-    "Turning implicit team knowledge into explicit standards",
-    "Component architecture and design systems",
-    "Written technical communication",
-    "End-to-end ownership: proposal to implementation to adoption"
+    "Tracing a data change across interfaces, APIs, consumers, and stored copies",
+    "Finding where a shared rule belongs across services",
+    "Building frontend flows alongside the APIs and data models behind them",
+    "Writing decisions so teammates can review the reasoning, not just the conclusion",
+    "Taking a feature from problem framing through rollout"
   ],
   "interests": [
     "Distributed Systems",
     "Software Architecture",
-    "Developer Experience",
-    "AI-assisted Engineering",
-    "Platform Engineering",
-    "Technical Leadership",
-    "Engineering Documentation",
-    "Knowledge Management"
+    "Frontend Engineering",
+    "Developer Experience"
   ],
   "preferredProblems": [
-    "Systems where multiple services disagree about the same fact",
-    "Teams that ship fast but can't explain why things are built the way they are",
-    "Frontend codebases that need architecture, not more components",
-    "Workflows where AI can assist without removing human judgment"
+    "A value that changes depending on which service or screen you ask",
+    "A useful feature slowed down by data spread across a large hierarchy",
+    "A production discrepancy where the first explanation does not fit the evidence",
+    "A workflow that needs to keep working when a request or message fails halfway through"
   ],
-  "quote": "The goal isn't to collect technologies. The goal is to understand how to make good engineering decisions."
+  "quote": "Before I fix a system, I want to understand what it promises—and whether it keeps that promise."
 }
 
 export const stats: Stat[] = [
@@ -189,10 +185,6 @@ export const stats: Stat[] = [
   {
     "label": "Architecture Decisions",
     "value": "5+"
-  },
-  {
-    "label": "This Site's JS (gzip)",
-    "value": "~41 kB"
   }
 ]
 
@@ -218,19 +210,13 @@ export const companies: Company[] = [
       "Platform work: security/CVE remediation, observability, CI/CD and test infrastructure, and infrastructure-as-code for the team."
     ],
     "achievements": [
-      "Became the team's reference for cross-service synchronization through an atomic, seven-table edit propagation across two services, culminating in an architecture decision I owned autonomously.",
-      "Made an unreliable test suite trustworthy again, unblocking the team's CI, and, in review, empirically disproved three of four proposed production changes.",
-      "Founded a new analytics/reporting service, including the OLTP-vs-OLAP architecture decision behind it, reviewed and signed off by seven stakeholders across engineering and the platform team, with a security/privacy risk review folded into the decision itself and a latency risk I caught and corrected between two versions of the ADR.",
-      "Owned production reliability and data-integrity work, including safe, reversible large-scale data corrections and incident response with post-mortems.",
-      "Turned a customer-blocking production incident into a documented architecture decision through a post-mortem, an ADR, and a rebuilt consumer, then root-caused a later production deadlock to a messaging-partition mismatch and closed a silent-failure gap with retry and a dead-letter queue.",
-      "Delivered a complex feature end to end, alone, across database, backend, and front end.",
-      "Raised the team's engineering baseline in observability, security, and documentation, often on my own initiative.",
-      "Prototyped applied AI with a safety-first design, a human-in-the-loop agent for bulk route creation: the model ranks candidates and never emits identifiers, and every write goes through explicit human confirmation. Prototype stage, reaching write mode with tests, never shipped to production. (Deliberately not a case study; see the curation note at the end of this file.)",
-      "Eliminated a 5,000-line hand-maintained API schema by generating OpenAPI from the code's own decorators, validated on one endpoint until the generated output matched the manual one, then rolled out across ~10 domains toward ~21 controllers, alongside adding the service's first CI test pipeline. (Deliberately not a case study; see the curation note at the end of this file.)",
-      "Made container and dependency hardening a standing quarterly practice across four quarters: 135 CVEs flagged and all 7 critical remediated in the first pass, then an audit taken from 69 findings to 16, unfixable OS CVEs from 160 to 0, and the shipped image from 1.64 GB to 463 MB.",
-      "Caught a warehouse query at 69% of a hard byte ceiling before it started failing, then audited my own migration, found 79% of production rows never backfilled and 9,299 alerts silently dropped from the product, and repaired 70,502 rows idempotently.",
-      "Changed the shape of a product-defined epic by moving where a new state is handled. A platform-wide \"hibernated asset\" status was specified as an exclusion rule for eight read paths; applying it once at the write boundary made most of that scope unnecessary, and the refined design replaced the roadmap item as the epic's source of truth. Design contribution; development scheduled to start 2026-08-31, so no shipped number yet.",
-      "Promoted from junior to mid-level in ~11 months, backed by evidence across all six competency areas."
+      "I wrote the architecture decision to move heavy customer-reporting queries away from the database serving live application traffic. Another engineer and I established the service foundation; rollout is underway, and end-state latency has not been measured.",
+      "I led the work to keep edits to an organizational node consistent across seven tables and two services. That became the work teammates used when they needed help reasoning about cross-service data changes.",
+      "I contributed recursive backend traversal to asset-tree search, reducing the query pattern from N×3 sequential calls to three. The overall feature was shared; another engineer completed most of the final search issue.",
+      "I investigated route-adherence reports with production data and staging reproductions. When my first diagnostic rule proved too broad, I changed the measurement before the team chose targeted fixes. The post-release Data Quality trend is a team measure, not an isolated result of my work.",
+      "A role-cleanup change I wrote removed access across workspaces. I owned the incident response and architecture follow-through; the squad delivered the replacement consumer. Months later, I diagnosed a separate deadlock and contributed to its per-user locking and failure-recovery work. No post-deployment error-rate measure is available.",
+      "I also worked on production data corrections, container and dependency hardening, observability, and test infrastructure. The linked studies describe the scope and evidence for each.",
+      "I moved from junior to mid-level in about 11 months; the promotion dossier covered backend, frontend, architecture, security, quality, and continuous delivery."
     ],
     "technologies": [
       "React",
@@ -268,20 +254,21 @@ export const companies: Company[] = [
       "Incident Response"
     ],
     "caseIds": [
-      "single-computation-path",
-      "workspace-sync",
-      "flaky-e2e",
       "analytics-service",
-      "prod-data-correction",
+      "workspace-sync",
+      "single-computation-path",
       "asset-tree-search",
+      "code-review-technical-leadership",
+      "hibernation-scope-removal",
+      "route-adherence-investigation",
+      "materialized-hierarchy-and-backfill-residue",
+      "flaky-e2e",
       "error-observability",
       "container-hardening",
+      "prod-data-correction",
       "production-incident-role-bindings-consumer",
-      "answer-submission-outbox",
-      "code-review-technical-leadership",
       "ai-orchestrated-feature-flag-removal",
-      "materialized-hierarchy-and-backfill-residue",
-      "hibernation-scope-removal"
+      "answer-submission-outbox"
     ],
     "lessons": [
       "Eventually-consistent derived data should have exactly one computation path. Multiple writers deriving the same value is the defect; consolidating the derivation is the fix.",
@@ -509,140 +496,12 @@ export const cases: CaseStudy[] = [
     ]
   },
   {
-    "id": "analytics-service",
-    "featured": false,
-    "title": "Founding an analytics service by moving reporting off the transactional database",
-    "company": "Dynamox",
-    "category": "Greenfield",
-    "summary": "Founded a new reporting service that separates heavy analytical reads from the transactional database, resolving indicator timeouts, framing the OLTP-vs-OLAP trade-off, critically reviewing the architecture decision, and building the walking skeleton and its data layer.",
-    "capabilities": [
-      "System Design",
-      "Technical Decision Making",
-      "Ownership",
-      "Backend Engineering",
-      "Security"
-    ],
-    "technologies": [
-      "NestJS",
-      "Fastify",
-      "BigQuery",
-      "Terraform",
-      "Redis"
-    ],
-    "impact": [
-      "Founded the reporting service (founding author) with analytical reads separated from the transactional database, which is the structural fix for the indicator timeouts.",
-      "Delivered the base service integrated with the analytical warehouse, with a curated, cost-aware, tenant-isolated data model and infrastructure-as-code load routines.",
-      "Made the architecture decision reviewable and cross-functional by framing it as an explicit matrix with a written comparison, a security/privacy review, and a preliminary recommendation, reviewed and signed off by seven stakeholders across engineering and the platform team rather than decided in isolation.",
-      "Caught and closed a latency risk before it shipped, by revising my own first-pass recommendation once I identified that the analytical warehouse wasn't inherently low-latency, turning a potential post-launch incident into a design requirement instead.",
-      "Qualitative: analytical architecture in rollout to eliminate the timeouts; end-state indicator latency not yet captured as a before/after number. <!-- TODO: add latency numbers once available -->"
-    ],
-    "difficulty": "High",
-    "ownership": "Led",
-    "customerFacing": "Yes",
-    "readingTime": "2 min",
-    "sections": [
-      {
-        "id": "context",
-        "title": "Context",
-        "paras": [
-          "This is my strongest evidence of strategic, data-architecture-level system design and of greenfield ownership. Most of my work extends existing systems; here I started one, which meant making foundational choices about runtime, release process, data model, cost model, and tenant isolation that are expensive to reverse later.",
-          "It shows I can hold a decision at the altitude of *where a class of workload belongs* (transactional store vs. analytical warehouse) rather than at the altitude of a single query; that I decompose a conflated decision into independent axes instead of comparing bundled options; and that I revise my own prior analysis when I find a real gap in it, instead of defending the first version. It's also my clearest evidence that I fold security and privacy into an architecture decision as a first-class input rather than a checklist applied afterward, and that the decision itself was reviewed and signed off by stakeholders across engineering and the platform team, not made in isolation."
-        ]
-      },
-      {
-        "id": "problem",
-        "title": "Problem",
-        "paras": [
-          "A set of customer-facing indicators aggregated large volumes of inspection data. Those aggregations ran as heavy analytical queries, several joins plus runtime calculations (aggregations, percentages, counts), directly against the transactional database that also served live application traffic. As data grew, the indicators started timing out: the schema had been designed for transactional access, not for analytical reads, and the analytical load competed with the transactional workload it shared a store with. Optimizing individual queries was treating the symptom; the workload was in the wrong place, and a related reporting feature was about to need the same aggregations, which would only add to the contention."
-        ]
-      },
-      {
-        "id": "constraints",
-        "title": "Constraints",
-        "bullets": [
-          "The decision had two conflated axes. An earlier pass at this decision compared only two bundled alternatives, each changing *both* which service owns the reporting logic *and* which database backs it, which made it hard to tell which axis was actually driving each trade-off.",
-          "The obvious fix under-weighted a real risk. The analytical warehouse under consideration is not, by nature, a low-latency store, since every query has a floor of hundreds of milliseconds to seconds. Serving a synchronous, customer-facing screen straight from it risked trading timeouts for slowness instead of fixing them.",
-          "Founding a service means irreversible-ish choices. Runtime, project structure, release tooling, and the data model are cheap to pick and expensive to change once code and data accumulate.",
-          "The trade-off space was wide and cross-functional. Load isolation, deploy isolation, operational complexity, eventual consistency, multi-tenancy, cost, and vendor lock-in all interacted, and the decision had to be legible enough for stakeholders across engineering and the platform team to review and sign off on it.",
-          "Cost is a first-class constraint in analytics. An analytical warehouse bills by data scanned, so an unfiltered query is both a cost problem and, at the extreme, an availability problem.",
-          "The data crosses a privacy boundary. The analytical copy would carry multi-tenant operational data, including fields that can identify the person who performed an inspection, making data protection an architecture question rather than something bolted on after."
-        ]
-      },
-      {
-        "id": "decision",
-        "title": "Decision",
-        "paras": [
-          "I started from the trade-off, corrected my own analysis when it had a gap, then de-risked the build."
-        ],
-        "bullets": [
-          "Decomposed the decision into an explicit 2×2 matrix. Which service owns the reporting logic (the existing transactional service vs. a new one) crossed with which database backs it (a tuned relational store vs. an analytical warehouse), instead of comparing bundled alternatives. Isolating the two axes made each trade-off legible on its own: workload isolation turned out to depend almost entirely on the service axis, while analytical fit and cost depended almost entirely on the database axis.",
-          "Went back and corrected my own earlier recommendation. After the first pass, I identified that the analytical warehouse I was recommending is not a low-latency store by nature, and that serving a synchronous, customer-facing screen directly from it could trade one kind of timeout for a different kind of slowness. I revised the decision to require an explicit serving layer rather than querying the warehouse on every request.",
-          "Negotiated an explicit ownership boundary with the platform team. Their existing ingestion pipeline already moved operational events into the analytical warehouse; I scoped the new service to own only the aggregation layer, the API, and the cache on top of it, with one well-defined layer of cleaned tables as the contract between the two domains, rather than duplicating ingestion, retry, and dead-lettering the platform team had already built.",
-          "Ran a full security and privacy risk review as part of the same decision, covering confidentiality (least-privilege access and per-tenant authorization on every read), integrity (deduplicating events that can arrive more than once or out of order), availability (an unfiltered query becomes a cost and availability risk in a scan-billed warehouse), and privacy (fields that can identify the person who performed an inspection), with a concrete mitigation for each, backed by comparative research on stacks and a market benchmark for the rest of the decision.",
-          "Built a walking skeleton, the thinnest end-to-end version of the service (a lean runtime, project scaffolding, containerization, and a working connection to the analytical warehouse), to prove the shape before investing in features. I'm the founding author of the repository.",
-          "Modeled curated analytical tables for cost and tenant isolation, including a daily snapshot and a most-recent view, partitioned by date and clustered with the tenant identifier first so common queries scan less data and one tenant's query can't see another's rows.",
-          "Created the dataset, tables, and load routines as infrastructure-as-code, including the consistency and daily-incremental logic, so the data layer is reproducible rather than hand-built."
-        ]
-      },
-      {
-        "id": "tradeoffs",
-        "title": "Trade-offs",
-        "bullets": [
-          "Separating analytical reads from OLTP over tuning the transactional queries. Moving the workload removes the root cause, resource contention on a store built for transactions, where tuning only postpones it. Accepted cost: a second data store and a pipeline to keep it current.",
-          "A materialized serving layer with a cache in front of it, over querying the warehouse directly on every request. Costs an extra moving part, scheduled materialization and cache invalidation, but is what actually fixes a synchronous, customer-facing screen; querying a scan-billed warehouse live on every request would have re-created the latency problem in a new place.",
-          "A hard cost ceiling that fails a query closed, over trusting every query to be written efficiently. A query missing its required filters is rejected before it runs, rather than allowed to scan (and bill for) an entire table. Costs an occasional rejected query; buys a bounded, predictable bill instead of a silent cost or availability incident.",
-          "Owning only the aggregation layer over owning ingestion end-to-end. The rejected alternative would have rebuilt the messaging consumers, retry, and dead-lettering the platform team's pipeline already provided. The extra operational surface, and the historical-data migration that came with it, wasn't worth the marginal control it bought.",
-          "Eventual consistency for reporting over strict freshness. Reporting can tolerate briefly stale data, so a read model refreshed on a schedule is acceptable, and far cheaper, than keeping an analytical copy strictly in lock-step."
-        ]
-      },
-      {
-        "id": "impact",
-        "title": "Impact",
-        "bullets": [
-          "Founded the reporting service (founding author) with analytical reads separated from the transactional database, which is the structural fix for the indicator timeouts.",
-          "Delivered the base service integrated with the analytical warehouse, with a curated, cost-aware, tenant-isolated data model and infrastructure-as-code load routines.",
-          "Made the architecture decision reviewable and cross-functional by framing it as an explicit matrix with a written comparison, a security/privacy review, and a preliminary recommendation, reviewed and signed off by seven stakeholders across engineering and the platform team rather than decided in isolation.",
-          "Caught and closed a latency risk before it shipped, by revising my own first-pass recommendation once I identified that the analytical warehouse wasn't inherently low-latency, turning a potential post-launch incident into a design requirement instead.",
-          "Qualitative: analytical architecture in rollout to eliminate the timeouts; end-state indicator latency not yet captured as a before/after number. <!-- TODO: add latency numbers once available -->"
-        ]
-      },
-      {
-        "id": "lessons",
-        "title": "Lessons Learned",
-        "paras": [
-          "Reusable engineering knowledge I carry forward from this:"
-        ],
-        "bullets": [
-          "Decompose a conflated decision into independent axes before comparing alternatives. Bundling two choices into one \"either/or\" option makes it look like a single trade-off when it's really two, and you can end up trading away something that didn't need to be on the table.",
-          "Revisit your own decision when you find a real gap in it. Catching that a synchronous, customer-facing read path can't tolerate a store's natural latency floor, and fixing the recommendation before it shipped, was worth more than defending the first version.",
-          "Security and privacy analysis belongs inside the architecture decision, not after it. A data model decision already determines your tenant-isolation boundary, your access boundary, and your cost-based availability risk, so reviewing those separately, later, is reviewing them too late to change cheaply.",
-          "Analytical load does not belong on your transactional store. When heavy aggregations and live traffic share a database, the fix is usually to separate the workload, not to tune the query.",
-          "In an analytical warehouse, the data model is a cost decision, and an unbounded query is an availability risk rather than just a slow one. Clustering, curated tables, and a hard cost ceiling per query are what keep a scan-billed store both affordable and predictable."
-        ]
-      },
-      {
-        "id": "evidence",
-        "title": "Evidence",
-        "bullets": [
-          "Founding author of the service repository; built the walking skeleton and data layer.",
-          "Authored a written architecture decision comparing four alternatives across an explicit service × database matrix, with a dedicated security/privacy risk analysis and cost guardrails as part of the recommendation, reviewed and approved by seven stakeholders across engineering and the platform team.",
-          "Revised the decision between two versions after identifying a latency risk the first version had underweighted.",
-          "Curated analytical tables and infrastructure-as-code load routines.",
-          "Verified build-out against the tracker (2026-07): the staging dataset, then two curated tables (a 24-hour delta staging table and a clustered daily current-state table) loaded incrementally by a daily `MERGE` plus a wider-range routine as a safety net for late-arriving messages; a table-valued function as the single entry point the service calls, so query shape stays in versioned infrastructure rather than string-built SQL; scheduled queries for incremental refresh; warehouse permissions for the team; then the same stack in production. Every piece delivered as infrastructure-as-code, staging first.",
-          "Verified performance and cost work: load tests run against production queries parameterized by two real tenant contexts (2026-06-26 to 2026-07-17), and a separate clustering investigation to reduce scanned bytes, both before the service went wide.",
-          "Verified product surface (2026-07 to 2026-08): the anomaly-management page, an adherence chart tab, a recurring-alerts table with its data contract agreed front-to-back before either side was built, the endpoint behind it, and an accumulated-alerts view still in progress, each shipped behind a feature flag, several with a mocked contract landing before the real endpoint.",
-          "Source (private): consolidated career knowledge base; internal architecture decision record; Jira epics and subtasks in the inspection domain, 2026-03 to 2026-08."
-        ]
-      }
-    ]
-  },
-  {
-    "id": "measuring-a-defect-before-fixing-it",
-    "featured": false,
-    "title": "Measuring a defect before fixing it, and being wrong about the measurement",
+    "id": "route-adherence-investigation",
+    "featured": true,
+    "title": "Measuring route-adherence defects before changing production behavior",
     "company": "Dynamox",
     "category": "Debugging",
-    "summary": "Reduced the estimated blast radius of a customer-facing metric defect from ~29k cycles to 445 that actually showed a wrong number to a customer, turning a proposed historical-correction project into an audited script over a few hundred rows.",
+    "summary": "I investigated customer reports about route adherence instead of starting with a code change. Production queries and staging reproductions exposed an overly broad diagnostic rule; after narrowing it, I used the evidence to guide targeted fixes. The counts describe different populations, and the post-release trend was a team measure rather than an isolated result of my work.",
     "capabilities": [
       "Debugging",
       "Technical Decision Making",
@@ -657,14 +516,84 @@ export const cases: CaseStudy[] = [
       "NestJS"
     ],
     "impact": [
-      "Blast radius corrected from ~29,000 records to 445 that actually displayed a wrong percentage to a customer, across three customers rather than the twenty implied by the raw count.",
-      "A whole class of defect found that the first analysis had missed entirely, 4,174 records, almost all customer-facing, because my initial filter assumed a condition that did not hold.",
-      "Turned a proposed historical-correction project into an audited one-off script over a few hundred rows, reviewable by hand.",
-      "Every defect reproduced in a controlled environment with a written prediction before any fix was merged; each fix shipped with a regression test verified to fail without it.",
-      "Two independent reproductions, fifteen hours apart, of the defect whose cause had been described incorrectly in the tracker."
+      "The later comparison covered 34,320 cycles; after reviewing 4,842 candidates against the narrower criterion, 88 demonstrable defects remained. Those counts describe that later analysis only and are not interchangeable with the separate 120-day review. A product analyst also reported a post-release team Data Quality improvement; the releases included other contributors, so I do not present that trend as my individual result."
     ],
     "difficulty": "High",
-    "ownership": "End-to-end",
+    "ownership": "Investigation and fixes",
+    "customerFacing": "Yes",
+    "readingTime": "4 min",
+    "sections": [
+      {
+        "id": "context",
+        "title": "Context",
+        "paras": [
+          "Customer reports pointed to route-adherence values that did not look right. Before changing production behavior, I wanted to know which records were actually wrong and which were expected product behavior."
+        ]
+      },
+      {
+        "id": "problem",
+        "title": "Problem",
+        "paras": [
+          "The first query grouped together real defects, empty routes that correctly displayed zero, and internal test data. A later comparison also flagged values that would change without proving they were incorrect. A broad correction based on those results could have changed valid customer data."
+        ]
+      },
+      {
+        "id": "decision",
+        "title": "Decision",
+        "paras": [
+          "I compared read-only production results with controlled staging reproductions. When a review of candidate cycles showed that my diagnostic rule was too broad, I changed the criterion and re-ran the analysis. For each reproduced defect, I wrote down the expected result first and used a control route to check that the rule itself was not causing the difference."
+        ]
+      },
+      {
+        "id": "implementation",
+        "title": "Implementation",
+        "paras": [
+          "Only after the investigation did I split the work into small, single-cause fixes, each with a regression test. The proposal moved from a broad historical correction to targeted changes for defects we could demonstrate."
+        ]
+      },
+      {
+        "id": "impact",
+        "title": "Impact",
+        "paras": [
+          "The later comparison covered 34,320 cycles; after reviewing 4,842 candidates against the narrower criterion, 88 demonstrable defects remained. Those counts describe that later analysis only and are not interchangeable with the separate 120-day review. A product analyst also reported a post-release team Data Quality improvement; the releases included other contributors, so I do not present that trend as my individual result."
+        ]
+      },
+      {
+        "id": "evidence",
+        "title": "Evidence",
+        "bullets": [
+          "Production analysis was read-only; reproductions used named staging scenarios and control routes.",
+          "The broader criterion was revised after it failed review against the candidate data.",
+          "The fixes were shipped in small pull requests with regression tests that failed without the change."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "analytics-service",
+    "featured": false,
+    "title": "Moving customer reporting off the transactional database",
+    "company": "Dynamox",
+    "category": "Greenfield",
+    "summary": "Customer-facing indicators were timing out as analytical queries competed with live application traffic. I authored the architecture decision to separate the workloads, revised it to account for warehouse latency, and helped another engineer establish the service foundation. Rollout is in progress; end-state latency has not been measured.",
+    "capabilities": [
+      "System Design",
+      "Technical Decision Making",
+      "Ownership",
+      "Backend Engineering",
+      "Security"
+    ],
+    "technologies": [
+      "NestJS",
+      "Fastify",
+      "BigQuery",
+      "Terraform"
+    ],
+    "impact": [
+      "The architecture separates analytical reads from the transactional workload and is being rolled out to address the timeouts. The service foundation and curated, tenant-isolated warehouse tables are in place. No before-and-after indicator latency has been captured."
+    ],
+    "difficulty": "High",
+    "ownership": "Architecture decision; shared service foundation",
     "customerFacing": "Yes",
     "readingTime": "2 min",
     "sections": [
@@ -672,83 +601,44 @@ export const cases: CaseStudy[] = [
         "id": "context",
         "title": "Context",
         "paras": [
-          "This is where I stopped treating \"how big is this?\" as a preamble to the real work and started treating it as the work. I produced a number, acted on it, then found it wrong by an order of magnitude, twice, and each correction changed what the team should do next.",
-          "It is my strongest evidence of investigating under ambiguity, of separating a defect from behaviour that merely looks like one, and of being the person who corrects their own analysis in front of stakeholders rather than defending it. It also shows a discipline I now consider non-negotiable: reproduce first, fix second."
+          "Customer-facing inspection indicators were timing out. Their analytical queries ran on the same transactional database that served live application traffic."
         ]
       },
       {
         "id": "problem",
         "title": "Problem",
         "paras": [
-          "A compliance percentage, derived from how many inspection items were completed against how many were due in a time window, was visibly wrong for several customers. Support had escalated individual cases; a product analyst had extracted a list of affected records; nobody knew the real extent.",
-          "The metric was not wrong in one way. It was wrong in several independent ways that produced similar-looking symptoms: a denominator that silently dropped items, a denominator that included items that were not due, counters that summed the same inspection twice, and a repair script that had itself written bad values. Percentages above 100% existed in production, up to 279%."
-        ]
-      },
-      {
-        "id": "constraints",
-        "title": "Constraints",
-        "paras": [
-          "The symptoms did not map one-to-one to causes. A record showing 0% could be a real defect, or a route that legitimately had nothing to inspect that period. A record showing \"more inspections than items\" could come from duplicate answers or from a dropped item. Counting symptoms would have produced a number, just not a true one.",
-          "The correct value was not always recoverable. The system does not keep a history of what a route contained at a past moment. For a large share of records it was possible to prove the stored value was wrong, and impossible to say what it should have been.",
-          "Most of the data was noise. The production database also hosts internal and homologation tenants whose routes generate records continuously and are never inspected. Any naive count is dominated by them.",
-          "The investigation ran against a read-only production replica, so every question had to be answered with a SELECT, and expensive ones had to be shaped to finish at all."
+          "Moving the queries to an analytical warehouse would isolate the workload, but a warehouse has a latency floor. Serving a synchronous screen from it could replace one timeout with a different kind of slowness."
         ]
       },
       {
         "id": "decision",
         "title": "Decision",
         "paras": [
-          "I framed one question: *for each affected record, can I prove it is wrong, and can I compute what it should be?* Those are two different questions, and the answer to the second decides whether a fix is even possible.",
-          "Classify before counting. I built a taxonomy where each record falls in exactly one bucket: correct; provably wrong with a recoverable value; provably wrong with an unrecoverable value. The third bucket only exists because route composition history is not kept, and naming it early stopped me from promising a correction I could not deliver.",
-          "Validate the method against the data. The recomputation agreed with the stored value in 95% of records. That agreement is what made the 5% disagreement trustworthy: if my rule were wrong, it would have disagreed everywhere.",
-          "Separate defect from expected behaviour. The largest bucket, ~24,000 records showing 0%, turned out to be routes that genuinely had nothing to inspect. Real, but not a counter defect: a display decision for product, not a correction for engineering. This is where the first order-of-magnitude correction came from.",
-          "Separate customers from test data. Of the records that were both wrong and correctable, 93% belonged to internal and homologation tenants. Reporting the raw number would have overstated customer impact by more than an order of magnitude.",
-          "Then reproduce, one defect at a time. Each defect got a named route in staging, a written prediction of the expected numbers before the test ran, and a control route designed to stay unchanged. The control is what let me claim a defect was the null handling and not the periodicity rule itself: a route without the triggering condition behaved correctly across twenty consecutive cycles while the affected one failed in nineteen of twenty.",
-          "Only then, the fixes. Small, single-cause changes, each with a regression test verified to fail without the fix."
+          "I authored an architecture decision that compared four combinations of service ownership and database choice. When I noticed that my first recommendation underplayed warehouse latency, I revised it to require a serving layer. The decision also included cost, tenant-isolation, security, and privacy risks, and was reviewed by seven stakeholders."
         ]
       },
       {
-        "id": "tradeoffs",
-        "title": "Trade-offs",
-        "bullets": [
-          "Exact counts for the small, decidable populations; sampling for the large one. A full recomputation across every record was measured at roughly twelve hours of database work. I ran exact counts where the population was small enough to enumerate, and a 1% sample where it was not, then narrowed the exact scope by restricting to the routes that could exhibit the defect at all. Precision where it changed the decision, estimates where it did not.",
-          "A documented \"unrecoverable\" bucket over an estimated correction. A previous repair script had guessed at values and introduced a defect that persisted for eleven consecutive periods for one customer. That precedent is why I preferred publishing \"we can fix this half and not that half\" over a heuristic that would look complete.",
-          "Declining seven stacked pull requests to rebuild one problem at a time. The work had grown into dependent branches spanning multiple defects, which made any single one impossible to validate alone. Discarding open work is expensive and looks like backtracking; I argued against it at first, then followed it once the decision was made, and the rebuilt sequence was genuinely easier to review and to test. My initial objection was about sunk cost, and the decision was about reviewability.",
-          "Reproducing before fixing, even when the cause was already visible in the code. For several defects I could point at the line from reading alone. Reproducing anyway caught two cases where my explanation was wrong: a code path I believed was live had been replaced by another service, and a scenario I had written could not occur because a client-side guard prevented it."
+        "id": "implementation",
+        "title": "Implementation",
+        "paras": [
+          "The service foundation was shared with another engineer. I contributed to the walking skeleton and data layer; the platform team continued to own the existing ingestion pipeline. Later product work was delivered by the broader team."
         ]
       },
       {
         "id": "impact",
         "title": "Impact",
-        "bullets": [
-          "Blast radius corrected from ~29,000 records to 445 that actually displayed a wrong percentage to a customer, across three customers rather than the twenty implied by the raw count.",
-          "A whole class of defect found that the first analysis had missed entirely, 4,174 records, almost all customer-facing, because my initial filter assumed a condition that did not hold.",
-          "Turned a proposed historical-correction project into an audited one-off script over a few hundred rows, reviewable by hand.",
-          "Every defect reproduced in a controlled environment with a written prediction before any fix was merged; each fix shipped with a regression test verified to fail without it.",
-          "Two independent reproductions, fifteen hours apart, of the defect whose cause had been described incorrectly in the tracker."
-        ]
-      },
-      {
-        "id": "lessons",
-        "title": "Lessons Learned",
-        "bullets": [
-          "\"How big is this?\" is an engineering task, not a preamble. The first number I produced was wrong by ten times, and it was the number the team would have planned around. Measurement deserves the same scepticism as code.",
-          "Separate \"provably wrong\" from \"fixable\". They are different questions, and only the second one decides whether a correction is possible. Conflating them leads to promising a repair for data whose correct value no longer exists.",
-          "A control case is worth more than another failing case. The route that behaved correctly across twenty cycles is what made the failing route's nineteen failures attributable to one specific cause instead of a general suspicion.",
-          "Test data in a production database will dominate any naive count. Filtering it out changed the recommendation completely; reporting without filtering would have cost credibility the first time someone checked.",
-          "Reproduce before fixing, even when the cause looks obvious. Reading code tells you what a path does, not whether that path is the one running. Two of my confident explanations were wrong for exactly that reason.",
-          "Correcting your own published number early is cheaper than defending it. Each correction changed the plan, and each was easier to make before the plan had been committed to than after."
+        "paras": [
+          "The architecture separates analytical reads from the transactional workload and is being rolled out to address the timeouts. The service foundation and curated, tenant-isolated warehouse tables are in place. No before-and-after indicator latency has been captured."
         ]
       },
       {
         "id": "evidence",
         "title": "Evidence",
         "bullets": [
-          "Production measurement, read-only replica, 120-day window: ~888,000 records analysed; 95% verified correct by an independent recomputation; defect population classified into correctable and unrecoverable buckets with exact counts for the former.",
-          "Staging reproduction, named scenarios with written predictions: one route exhibited the defect in 19 of 20 consecutive cycles with a constant signature, while its control route was correct in all 20. The same route isolated a second, independent defect with the opposite signature, making both visible in a single dataset.",
-          "Fixes shipped as small, single-cause pull requests, each with regression tests confirmed to fail without the change, across two services.",
-          "Tracker restructured to one task per defect, each carrying the reproduction, the measured volume, the product decision quoted verbatim, and the acceptance scenarios.",
-          "Two published numbers corrected by me before release, once in a stakeholder-facing document and once in a pull request description."
+          "The architecture decision compared four alternatives and was approved by seven stakeholders across engineering and the platform team.",
+          "Tracker records show shared service foundation work; I do not claim sole authorship of the repository or initial implementation.",
+          "The data model and load routines were built as infrastructure-as-code and deployed to staging before production."
         ]
       }
     ]
@@ -756,10 +646,10 @@ export const cases: CaseStudy[] = [
   {
     "id": "production-incident-role-bindings-consumer",
     "featured": false,
-    "title": "Responding to a production incident with the missing architecture decision, not just a patch",
+    "title": "The role-binding incident—and the separate deadlock found later",
     "company": "Dynamox",
     "category": "Incident",
-    "summary": "Root-caused a customer-blocking production incident to an undocumented architecture assumption, rebuilt the affected consumer with a post-mortem, an ADR, and business-rules documentation, then, after rollout exposed a database deadlock, diagnosed it to a Kafka partitioning mismatch and replaced silent message loss with retry, a dead-letter queue, and per-user serialization.",
+    "summary": "A role-cleanup change I implemented treated a user's access as global and removed it across workspaces. I owned the incident response, documented the missing rule, and led the architecture direction for a replacement consumer built by the squad. Months later, I traced a separate deadlock to Kafka partitioning and contributed per-user locking and recoverable failure handling; the later error rate was not measured.",
     "capabilities": [
       "Incident Response",
       "System Design",
@@ -772,14 +662,10 @@ export const cases: CaseStudy[] = [
       "PostgreSQL"
     ],
     "impact": [
-      "Resolved the customer-blocking incident and documented the missing architecture decision so the same gap can't reopen silently.",
-      "Gave the domain a properly workspace-aware consumer in the team's current service, where none had existed before.",
-      "Eliminated the production deadlock at its root cause (partition-key mismatch), not by papering over the symptom.",
-      "Replaced silent message loss with a recoverable failure path, with retry for transient errors and a dead-letter queue for permanent ones, closing a gap where failures had previously disappeared without a trace.",
-      "Qualitative: higher confidence in the reliability of a permissions-critical consumer; no incident of the same kind recurred after the fix."
+      "The replacement consumer was activated in production in March 2026. The later locking and failure-handling changes followed in June and July. No post-deployment error-rate measurement is available, so I do not claim a measured reduction in deadlocks."
     ],
     "difficulty": "High",
-    "ownership": "End-to-end",
+    "ownership": "Incident response and architecture direction; squad implementation",
     "customerFacing": "Yes",
     "readingTime": "2 min",
     "sections": [
@@ -787,88 +673,44 @@ export const cases: CaseStudy[] = [
         "id": "context",
         "title": "Context",
         "paras": [
-          "This is my clearest evidence of incident response that fixes the class of bug rather than the instance, and of staying with a problem across two acts: the initial incident, and the subtler failure mode that only appeared once the fix was in production. Both times, I resisted the fastest available patch in favor of understanding why the system had been wrong in the first place, and left the answer documented so the next person wouldn't have to rediscover it.",
-          "It also shows an operational maturity that goes beyond \"fixed the bug\": diagnosing a production deadlock from logs, tracing it to a specific mismatch between a messaging system's partitioning and the data's actual contention pattern, is systems-level reasoning under pressure, the kind of debugging that separates \"restarted the pod\" from actually understanding the failure."
+          "I changed a role-cleanup flow that removed a user's association after a permission change. I treated that association as global, although users can hold roles in multiple workspaces."
         ]
       },
       {
         "id": "problem",
         "title": "Problem",
         "paras": [
-          "A customer was stuck on a permanent \"sync error\" screen and could not complete their work, a hard block rather than a cosmetic bug. The proximate cause traced to how a permissions-management consumer handled an edit: a decision about whether that consumer's logic should be scoped to a workspace had never been made explicit anywhere, so a change that assumed the wrong scope went out uncaught. The underlying consumer for this domain also only existed in the team's legacy service; the newer service had no equivalent, which was part of why the gap had never surfaced before.",
-          "Months after the rebuild shipped, a second, unrelated-looking problem appeared: the new consumer started throwing database deadlocks in production."
-        ]
-      },
-      {
-        "id": "constraints",
-        "title": "Constraints",
-        "bullets": [
-          "The real defect wasn't in the code path that failed. It was in a decision that was never written down. Patching the immediate scope bug would have left the same class of mistake possible on the next change, because nothing recorded *why* the consumer needed to behave the way it should.",
-          "The user's own words made the stakes concrete. They were blocked mid-task and frustrated; there was no ambiguity about whether this mattered.",
-          "The deadlock was intermittent and non-obvious. A generic \"transaction failed\" error gives no hint by itself that the actual cause is a mismatch between how work is distributed (partitioning) and how the underlying data is actually contended.",
-          "The existing failure handling made the deadlock worse than it looked. Failed messages were being silently swallowed and their offset committed anyway, so before it could even be fixed properly, the failure mode itself had to change from \"disappears without a trace\" to \"visible and recoverable.\""
+          "Two users lost access across workspaces and could not finish their work. The feature flag contained the incident that day, but the immediate mitigation did not explain or prevent the mistaken scope assumption."
         ]
       },
       {
         "id": "decision",
         "title": "Decision",
         "paras": [
-          "I treated the incident as two separate diagnosis problems, months apart, and refused to close either with a surface-level fix."
-        ],
-        "bullets": [
-          "Wrote the post-mortem first. Before rebuilding anything, I documented what happened and why, so the incident had an owned record rather than just a fixed ticket.",
-          "Made the missing decision explicit in an ADR. It covers why the consumer needs to respect workspace scope, how it should handle deletions, how to protect record accountability, and how edge cases should behave, instead of encoding the fix only in code where the next person would have to reverse-engineer the reasoning.",
-          "Documented the business rules separately, because they had been scattered across application code with no central reference, which was itself part of why the original gap went unnoticed.",
-          "Rebuilt the consumer properly in the team's current service and stack, rather than patching the legacy implementation, since the domain didn't have an equivalent there yet.",
-          "Months later, diagnosed the deadlock from production logs, not guesswork. I searched for the specific error signature, found repeated bursts, and confirmed the mechanism: the topic was partitioned by the identifier of the change itself, not by the user it affected, so multiple messages about the *same* user could land on different partitions and be processed concurrently, colliding when they updated the same row.",
-          "Fixed the mechanism, not just the symptom. I serialized updates per affected user so concurrent messages about the same person can no longer race each other, and replaced the silent failure path with retry for transient errors and a dead-letter queue for permanent ones, so a failure is now visible and recoverable instead of invisible."
+          "I owned the post-mortem and wrote the architecture decision and business rules. The decision put deletion validation in the permissions-owning service; the consumer would replicate the result. I led the replacement epic and its architecture direction. The consumer implementation and rollout were shared squad work."
         ]
       },
       {
-        "id": "tradeoffs",
-        "title": "Trade-offs",
-        "bullets": [
-          "Writing a post-mortem, an ADR, and business-rules documentation over shipping a direct fix. Documentation took real time the fastest patch wouldn't have, but the original gap existed *because* the decision was never written down, and repeating that mistake would have cost more later than it saved now.",
-          "Rebuilding the consumer in the current stack over patching the legacy one. A patch would have been faster, but it would have kept the domain split across two services with no single source of truth, and left the newer service without behavior it needed.",
-          "Diagnosing the deadlock's root cause over adding a retry and calling it fixed. A blind retry would have masked the collision without removing it; tracing the mismatch to the partition key made the fix address the actual contention instead of hiding it.",
-          "Serializing per user over widening the transaction or the retry budget. Narrowing the fix to exactly the colliding scope (same user, concurrent messages) avoided a broader, vaguer slowdown that a more defensive fix would have introduced everywhere."
+        "id": "implementation",
+        "title": "Implementation",
+        "paras": [
+          "Months later, production logs showed a separate database deadlock in the replacement consumer. Messages about the same user could land on different Kafka partitions and run at once. I traced the mismatch and contributed a PostgreSQL advisory lock scoped to that user, plus retries and a dead-letter path so failures could be recovered instead of silently discarded."
         ]
       },
       {
         "id": "impact",
         "title": "Impact",
-        "bullets": [
-          "Resolved the customer-blocking incident and documented the missing architecture decision so the same gap can't reopen silently.",
-          "Gave the domain a properly workspace-aware consumer in the team's current service, where none had existed before.",
-          "Eliminated the production deadlock at its root cause (partition-key mismatch), not by papering over the symptom.",
-          "Replaced silent message loss with a recoverable failure path, with retry for transient errors and a dead-letter queue for permanent ones, closing a gap where failures had previously disappeared without a trace.",
-          "Qualitative: higher confidence in the reliability of a permissions-critical consumer; no incident of the same kind recurred after the fix."
-        ]
-      },
-      {
-        "id": "lessons",
-        "title": "Lessons Learned",
         "paras": [
-          "Reusable engineering knowledge I carry forward from this:"
-        ],
-        "bullets": [
-          "An incident caused by an undocumented decision isn't fixed until the decision is written down. Otherwise you've fixed the symptom and left the cause free to resurface in a different shape.",
-          "A generic \"transaction failed\" error is a starting point, not a diagnosis. The real cause is often a mismatch one layer up, here between how work was partitioned and how the data was actually contended.",
-          "Never let a failure disappear silently. A system that swallows an error and commits anyway is worse than one that fails loudly, because you have to be able to see a failure before you can fix its cause.",
-          "Fix the exact scope of the contention, not the whole surface around it. Serializing per affected user solved the actual collision without slowing down everything else."
+          "The replacement consumer was activated in production in March 2026. The later locking and failure-handling changes followed in June and July. No post-deployment error-rate measurement is available, so I do not claim a measured reduction in deadlocks."
         ]
       },
       {
         "id": "evidence",
         "title": "Evidence",
         "bullets": [
-          "Wrote the post-mortem, the ADR, and the business-rules documentation for the domain, ahead of rebuilding the consumer.",
-          "Rebuilt the consumer in the team's current service and stack; activated in production.",
-          "Independently diagnosed a later production deadlock to a Kafka partition-key mismatch via log analysis, and replaced silent message loss with retry, a dead-letter queue, and per-user serialization.",
-          "Verified against the tracker. The incident is dated 2026-01-13, and the response was decomposed the same week: the post-mortem (2026-01-13 to 2026-01-19), the domain business-rules document (closed 2026-01-29) and the ADR (2026-01-19 to 2026-01-28) were all tracked tasks that *preceded* the rebuild, not write-ups produced afterwards.",
-          "Verified rebuild: base service and messaging integration (2026-01-21 to 2026-01-26), the create and delete use cases (closed 2026-02-17), a bulk soft-delete endpoint for the affected relations, a feature flag in staging (2026-02-17), production activation (2026-03-16) with a production error investigated and closed the same day, and a separate task to repair the users the original bug had already corrupted (2026-01-16 to 2026-02-20).",
-          "Verified follow-up, months later: a data-contract validation exception (2026-06-29), the transaction deadlock (2026-06-30 to 2026-07-01, four pull requests), a user-lifecycle inconsistency between upsert and role deletion (2026-07-07), and handling for the case where all of a user's roles are deleted at once.",
-          "Source (private): Jira incident record and its linked post-mortem, ADR, and follow-up tasks, Dynamox engineering tracker; the corresponding pull requests."
+          "The original role-cleanup change was mine; the post-mortem recorded the assumption and its effect.",
+          "The architecture decision and business-rules document preceded the rebuild.",
+          "Tracker records show squad delivery of the replacement consumer and my later investigation and reliability contributions."
         ]
       }
     ]
@@ -1118,125 +960,6 @@ export const cases: CaseStudy[] = [
           "Correction-command pattern (dry-run, rollback file, event re-publishing) reused across several team commands.",
           "Verified against the tracker, five distinct correction commands rather than one: routes left with more than one accountable user (2025-10-15), routes corrupted by an integration test against a partner system (2025-12-03 to 12-08), replaying affected routes through the new partial-update path (2026-01), users corrupted by a consumer bug (2026-01-16 to 2026-02-20), and duplicated cycles removed (2026-03-19 to 03-25). That spread across four months and four distinct data faults is what makes it a *pattern* rather than a one-off script.",
           "Source: Jira tasks in the inspection domain, 2025-10 to 2026-03, and the corresponding pull requests; record counts and the rollback/dry-run details from the consolidated career knowledge base (private)."
-        ]
-      }
-    ]
-  },
-  {
-    "id": "asset-tree-search",
-    "featured": false,
-    "title": "Delivering a large asset tree end to end, from recursive SQL to progressive prefetch",
-    "company": "Dynamox",
-    "category": "Performance",
-    "summary": "Delivered search and fast navigation over very large asset trees end to end, with recursive SQL on the backend and a search UX with in-memory caching and progressive background prefetch on the frontend, eliminating the repeated loading that made the most-used flow slow.",
-    "capabilities": [
-      "Performance Engineering",
-      "Frontend Engineering",
-      "Backend Engineering",
-      "Product Thinking",
-      "Ownership",
-      "UX"
-    ],
-    "technologies": [
-      "PostgreSQL",
-      "NestJS",
-      "React"
-    ],
-    "impact": [
-      "Delivered search and fast navigation over large asset trees end to end across database, backend, and frontend, in the module's most-used flow.",
-      "Eliminated the repeated loading that made browsing large trees slow, via caching and progressive prefetch.",
-      "Added asset search where there was none, with matches shown in context.",
-      "Qualitative: a clear improvement to perceived performance and UX in a high-traffic flow; no hard before/after metric was captured. <!-- TODO: add timing numbers if available -->"
-    ],
-    "difficulty": "High",
-    "ownership": "End-to-end",
-    "customerFacing": "Yes",
-    "readingTime": "2 min",
-    "sections": [
-      {
-        "id": "context",
-        "title": "Context",
-        "paras": [
-          "This is my strongest evidence of full-stack ownership and performance thinking. Because I owned the database, the backend, and the frontend, I could put each part of the solution at the layer where it belonged, traversal in the database and latency-hiding in the client, instead of forcing one layer to compensate for another.",
-          "It also shows a product-level UX decision made as an engineering trade-off: choosing to reveal search matches by expanding the tree rather than filtering it changed both what the user sees and how data has to load."
-        ]
-      },
-      {
-        "id": "problem",
-        "title": "Problem",
-        "paras": [
-          "When building or editing an inspection route, users navigate a hierarchy of assets that can be very large. They needed to see asset descriptions and to search assets by name, but the tree loaded slowly and there was no search. In the module's most-used flow, that meant repeated waiting and no way to jump to a known asset."
-        ]
-      },
-      {
-        "id": "constraints",
-        "title": "Constraints",
-        "bullets": [
-          "The data is deeply hierarchical and large. Finding matches and showing them in context means traversing a big tree, and the naive approach is a cascade of queries per level.",
-          "Search over a tree has a UX fork with data consequences. Do you filter the tree down to matches, or reveal matches in place? The choice changes what the user understands and what data you must load.",
-          "Perceived performance is the real target. Even a fast backend feels slow if the client blocks on every expansion, so the latency had to be hidden, not just reduced.",
-          "I owned all three layers, so every trade-off between doing work in SQL, in the API, or in the client was mine to get right."
-        ]
-      },
-      {
-        "id": "decision",
-        "title": "Decision",
-        "paras": [
-          "I put each responsibility at the layer suited to it."
-        ],
-        "bullets": [
-          "Traversal in the database, via recursive SQL. A recursive query finds matching assets and walks up to their ancestors in one pass, so the server returns matches already in their tree context instead of the client stitching together many requests. I deduplicated matches and computed \"has children\" cheaply so nodes render correctly without extra round-trips.",
-          "Search that reveals rather than filters. On the frontend I debounced the query and chose to expand the nodes of the matches in place, with navigation between results, rather than collapse the tree to matches only. This keeps each result legible in its real hierarchy.",
-          "An in-memory cache per search term, so repeating or refining a search doesn't refetch what's already known.",
-          "Progressive, level-by-level prefetch in the background, so the next levels are already loading before the user expands them, which hides latency on the common path.",
-          "Documented the use cases (including alternative flows for the different actors) and rolled out behind a feature flag, staging before production."
-        ]
-      },
-      {
-        "id": "tradeoffs",
-        "title": "Trade-offs",
-        "bullets": [
-          "A recursive query over many per-level queries. One recursive traversal returns matches with their ancestors in a single pass, avoiding a chatty cascade, at the cost of a more complex query to own and reason about.",
-          "Expanding matches in place over filtering the tree. Revealing results in their real hierarchy preserves context and orientation, where a filtered list would be simpler but strip the structure users rely on. I accepted more involved loading logic to keep the result meaningful.",
-          "Progressive background prefetch over on-demand loading. Prefetching hides latency on the most common path at the cost of doing some fetching the user might not ultimately need, a good trade in the module's busiest flow.",
-          "A per-term in-memory cache over refetching. Caching trades a little memory and cache bookkeeping for the elimination of repeated loading during a search session."
-        ]
-      },
-      {
-        "id": "impact",
-        "title": "Impact",
-        "bullets": [
-          "Delivered search and fast navigation over large asset trees end to end across database, backend, and frontend, in the module's most-used flow.",
-          "Eliminated the repeated loading that made browsing large trees slow, via caching and progressive prefetch.",
-          "Added asset search where there was none, with matches shown in context.",
-          "Qualitative: a clear improvement to perceived performance and UX in a high-traffic flow; no hard before/after metric was captured. <!-- TODO: add timing numbers if available -->"
-        ]
-      },
-      {
-        "id": "lessons",
-        "title": "Lessons Learned",
-        "paras": [
-          "Reusable engineering knowledge I carry forward from this:"
-        ],
-        "bullets": [
-          "Push hierarchy traversal into the database. A recursive query that returns matches with their ancestors beats a per-level request cascade the client has to orchestrate.",
-          "A search UX choice is an engineering decision. \"Reveal in place\" vs. \"filter down\" changes both comprehension and the shape of the data you load, so decide it deliberately.",
-          "Hide latency, don't just reduce it. Progressive prefetch and per-term caching make the common path feel instant even when some work remains.",
-          "Owning every layer lets you solve each problem where it belongs. That is the biggest advantage of true full-stack ownership."
-        ]
-      },
-      {
-        "id": "evidence",
-        "title": "Evidence",
-        "bullets": [
-          "Delivered solo across database (recursive SQL), backend, and frontend.",
-          "Feature shipped to production behind a feature flag after staging.",
-          "Documented use cases including alternative actor flows.",
-          "Verified against the tracker (2026-05-19 to 2026-06-17): two items, the endpoint that exposes an asset's description to the route forms, and the recursive traversal itself. The recorded before/after is N×3 sequential queries replaced by 3 total: one recursive CTE for all descendant nodes, then one batched query each for measurement points and checklists, with the tree assembled in memory in O(n) via an id→node map.",
-          "Verified architectural work, not just a query: the tree-assembly rules (grouping a single leaf as a direct node versus N leaves under a grouper, the ordering rule, and `hasChildren` computed from the assembled children rather than a database subquery) were extracted out of the repository adapter into a domain-layer assembler, restoring the hexagonal boundary the previous code had crossed. A sentinel root node removed the need for separate arrays for root versus nested children.",
-          "Verified bug found and root-caused in the same pass: leaf machines with no child nodes but with direct measurement points returned nothing recursively, because an early return on \"no descendant rows\" discarded them before the leaf query ran. Fixed by including the root's own id in the leaf lookup.",
-          "Verified frontend work: eliminated a double fetch on add (a one-level expand immediately followed by a recursive one), cached the recursive result into the client tree so a later expand costs nothing, and switched the saga from latest-wins to per-action handling so adding two machines quickly no longer cancels the first. All of it gated by a feature flag, with the legacy path untouched when the flag is off.",
-          "Source (private): Jira items in the inspection domain, 2026-05 to 2026-06; consolidated career knowledge base."
         ]
       }
     ]
@@ -2069,6 +1792,80 @@ export const cases: CaseStudy[] = [
     ]
   },
   {
+    "id": "asset-tree-search",
+    "featured": false,
+    "title": "Making asset-tree search faster across the API and interface",
+    "company": "Dynamox",
+    "category": "Performance",
+    "summary": "Browsing a large asset hierarchy meant repeated database queries and slow loading. I contributed a recursive backend traversal that reduced the query pattern from N×3 calls to three, while another engineer completed most of the final search story. The shared feature added contextual search and progressive prefetch; no before-and-after latency was measured.",
+    "capabilities": [
+      "Performance Engineering",
+      "Frontend Engineering",
+      "Backend Engineering",
+      "Product Thinking",
+      "Ownership",
+      "UX"
+    ],
+    "technologies": [
+      "PostgreSQL",
+      "NestJS",
+      "React"
+    ],
+    "impact": [
+      "The query count fell from N×3 sequential calls to three for the recursive result and its related data. Search shipped in the route-configuration flow. No before-and-after latency measure is available, and the work was shared with another engineer."
+    ],
+    "difficulty": "High",
+    "ownership": "Backend contribution to a shared feature",
+    "customerFacing": "Yes",
+    "readingTime": "2 min",
+    "sections": [
+      {
+        "id": "context",
+        "title": "Context",
+        "paras": [
+          "People configuring inspection routes had to browse large asset hierarchies. The old path made repeated database calls and loaded slowly; it also had no search."
+        ]
+      },
+      {
+        "id": "problem",
+        "title": "Problem",
+        "paras": [
+          "Search had to return each matching asset with enough of its tree to show where it belonged. Fetching each level separately made the API chatty, while a flat filtered list would lose the hierarchy that helps users recognize an asset."
+        ]
+      },
+      {
+        "id": "decision",
+        "title": "Decision",
+        "paras": [
+          "I contributed a recursive PostgreSQL query for the backend traversal and batched related data into three queries total instead of N×3 sequential calls. The tree was assembled in the domain layer in O(n). The overall feature crossed the API and UI; another engineer completed most of the final search issue."
+        ]
+      },
+      {
+        "id": "implementation",
+        "title": "Implementation",
+        "paras": [
+          "The shared feature added contextual search, in-memory caching, and progressive prefetch behind a feature flag. The legacy route stayed available while the new path was rolled out."
+        ]
+      },
+      {
+        "id": "impact",
+        "title": "Impact",
+        "paras": [
+          "The query count fell from N×3 sequential calls to three for the recursive result and its related data. Search shipped in the route-configuration flow. No before-and-after latency measure is available, and the work was shared with another engineer."
+        ]
+      },
+      {
+        "id": "evidence",
+        "title": "Evidence",
+        "bullets": [
+          "Tracker records show the recursive traversal and endpoint work, plus another engineer's larger contribution to the final search issue.",
+          "The recorded query comparison is N×3 sequential calls to one recursive CTE and two batched lookups.",
+          "The feature shipped behind a flag; the legacy path remained when the flag was off."
+        ]
+      }
+    ]
+  },
+  {
     "id": "design-system",
     "featured": true,
     "title": "Introducing a Design System where none existed",
@@ -2524,6 +2321,11 @@ export const capabilities: Capability[] = [
     "desc": "Services, APIs, event consumers and the data they own."
   },
   {
+    "id": "debugging",
+    "name": "Debugging",
+    "desc": "Root-causing under uncertainty: reproducing, isolating, and fixing without guessing."
+  },
+  {
     "id": "technical-decision-making",
     "name": "Technical Decision Making",
     "desc": "Weighing alternatives explicitly, choosing the option that ages well rather than the one that ships fastest."
@@ -2534,16 +2336,6 @@ export const capabilities: Capability[] = [
     "desc": "Proposal → implementation → adoption → deletion of the old path."
   },
   {
-    "id": "security",
-    "name": "Security",
-    "desc": "Threat and privacy risk folded into the design itself, not bolted on after, from hardened containers to access and data-protection boundaries."
-  },
-  {
-    "id": "debugging",
-    "name": "Debugging",
-    "desc": "Root-causing under uncertainty: reproducing, isolating, and fixing without guessing."
-  },
-  {
     "id": "product-thinking",
     "name": "Product Thinking",
     "desc": "Engineering choices evaluated by their effect on the user's workflow."
@@ -2552,6 +2344,11 @@ export const capabilities: Capability[] = [
     "id": "testing",
     "name": "Testing",
     "desc": "Suites that stay trustworthy, because a red build must mean something."
+  },
+  {
+    "id": "security",
+    "name": "Security",
+    "desc": "Threat and privacy risk folded into the design itself, not bolted on after, from hardened containers to access and data-protection boundaries."
   },
   {
     "id": "incident-response",
@@ -2574,6 +2371,11 @@ export const capabilities: Capability[] = [
     "desc": ""
   },
   {
+    "id": "technical-leadership",
+    "name": "Technical Leadership",
+    "desc": "Standards adopted voluntarily; becoming the reference others consult."
+  },
+  {
     "id": "frontend-engineering",
     "name": "Frontend Engineering",
     "desc": "Production interfaces: architecture, performance, accessibility."
@@ -2582,11 +2384,6 @@ export const capabilities: Capability[] = [
     "id": "ux",
     "name": "UX",
     "desc": "Dense engineering data kept legible under time pressure."
-  },
-  {
-    "id": "technical-leadership",
-    "name": "Technical Leadership",
-    "desc": "Standards adopted voluntarily; becoming the reference others consult."
   },
   {
     "id": "design-systems",
@@ -2646,10 +2443,6 @@ export const technologies: Technology[] = [
   {
     "name": "Prisma",
     "usage": "ORM for Postgres services; migration discipline for schema changes."
-  },
-  {
-    "name": "Redis",
-    "usage": "Managed cache in front of the analytics warehouse for hot, synchronous reads."
   },
   {
     "name": "Vuetify",
